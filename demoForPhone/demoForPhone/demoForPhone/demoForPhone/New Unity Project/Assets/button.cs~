@@ -1,0 +1,16 @@
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
+public class button : MonoBehaviour
+{
+
+	public Text theinformationShower;
+
+	void getInformation()
+	{
+		
+	}
+
+}
+

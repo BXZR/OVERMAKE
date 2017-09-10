@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
+using Visifire.Charts;
 
 namespace socketServer
 {
@@ -28,11 +29,101 @@ namespace socketServer
         theServer theServerController;//网络服务控制单元，必须有
         FileSaver theFileSaver;//保存到文件中的控制器
         PeackSearcher thePeackFinder;//寻找峰谷的控制单元，用于步态分析
+        Filter theFilter;//专门用于滤波的控制单元
 
         public MainWindow()
         {
             InitializeComponent();
         }
+
+
+        #region 折线图
+        public void CreateChartSpline(string name, List<double> theValues)
+        {
+            //创建一个图标
+            Chart chart = new Chart();
+
+            //设置图标的宽度和高度
+            chart.Width = 580;
+            chart.Height = 380;
+            chart.Margin = new Thickness(100, 5, 10, 5);
+            //是否启用打印和保持图片
+            chart.ToolBarEnabled = false;
+
+            //设置图标的属性
+            chart.ScrollingEnabled = false;//是否启用或禁用滚动
+            chart.View3D = true;//3D效果显示
+
+            //创建一个标题的对象
+            Title title = new Title();
+
+            //设置标题的名称
+            title.Text = name;
+            title.Padding = new Thickness(0, 10, 5, 0);
+
+            //向图标添加标题
+            chart.Titles.Add(title);
+
+            //初始化一个新的Axis
+            Axis xaxis = new Axis();
+            //设置Axis的属性
+            //图表的X轴坐标按什么来分类，如时分秒
+            xaxis.IntervalType = IntervalTypes.Seconds;
+            //图表的X轴坐标间隔如2,3,20等，单位为xAxis.IntervalType设置的时分秒。
+            xaxis.Interval = 1;
+            //设置X轴的时间显示格式为7-10 11：20           
+         //   xaxis.ValueFormatString = "MM秒";
+            //给图标添加Axis            
+            chart.AxesX.Add(xaxis);
+
+            Axis yAxis = new Axis();
+            //设置图标中Y轴的最小值永远为0           
+            yAxis.AxisMinimum = -2;
+            //设置图表中Y轴的后缀          
+            yAxis.Suffix = "m/s2";
+            chart.AxesY.Add(yAxis);
+
+
+            // 创建一个新的数据线。               
+            DataSeries dataSeries = new DataSeries();
+            // 设置数据线的格式。               
+            dataSeries.LegendText = "Y轴加速度";
+
+            dataSeries.RenderAs = RenderAs.Spline;//折线图
+
+            dataSeries.XValueType = ChartValueTypes.Auto;
+            // 设置数据点              
+            DataPoint dataPoint;
+            for (int i = 0; i < theValues.Count; i++)
+            {
+                // 创建一个数据点的实例。                   
+                dataPoint = new DataPoint();
+                // 设置X轴点                    
+                dataPoint.XValue = (double)i/4;
+                //设置Y轴点                   
+                dataPoint.YValue =  theValues [i];
+                dataPoint.MarkerSize = 8;
+                //dataPoint.Tag = tableName.Split('(')[0];
+                //设置数据点颜色                  
+                // dataPoint.Color = new SolidColorBrush(Colors.LightGray);                   
+               // dataPoint.MouseLeftButtonDown += new MouseButtonEventHandler(dataPoint_MouseLeftButtonDown);
+                //添加数据点                   
+                dataSeries.DataPoints.Add(dataPoint);
+            }
+
+            // 添加数据线到数据序列。                
+            chart.Series.Add(dataSeries);
+
+ 
+
+            //将生产的图表增加到Grid，然后通过Grid添加到上层Grid.           
+            Grid gr = new Grid();
+            gr.Children.Add(chart);
+
+            Chart.Children.Add(gr);
+        }
+        #endregion
+
 
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -47,11 +138,19 @@ namespace socketServer
             theServerController = new theServer(theInformationController);
             thePeackFinder = new PeackSearcher();
             theFileSaver = new FileSaver();
+            theFilter = new Filter();
 
             //正式开始
             string showInformation = theServerController.startTheServer();
             MessageBox.Show(showInformation);
         }
+
+
+
+
+
+
+
 
         private void button3_Click(object sender, RoutedEventArgs e)
         {
@@ -62,19 +161,23 @@ namespace socketServer
         private void button4_Click(object sender, RoutedEventArgs e)
         {
 
-            string IS = theInformationController.accelerometerY.Count + "条数据\n";
-            for (int i = 0; i < theInformationController.accelerometerY.Count; i++)
-                IS += theInformationController.accelerometerY[i] + "\n";
+         
+  
+            //为了保证数据干净，要做一次滤波
+            List<double> theFiltered = theFilter.theFilerWork(theInformationController.accelerometerY);
+
+            //查看滤波后的数据
+            string IS = theFiltered.Count + "条数据\n";
+            for (int i = 0; i < theFiltered .Count; i++)
+                IS += theFiltered[i] + "\n";
             theFileSaver.saveInformation(IS);
-            //MessageBox.Show(IS);
-
-            //string IS = theInformationController.allInformation.Count + "条数据\n";
-            //for (int i = 0; i < theInformationController.allInformation.Count; i++)
-            //    IS += theInformationController.allInformation[i] + "\n";
-            //MessageBox.Show(IS);
 
 
-            int stepCount = thePeackFinder.countSteps( theInformationController .accelerometerY);
+            //滤波之后做各种分析，第一项是步态分析，判断走了多少步
+            int stepCount = thePeackFinder.countSteps(theFiltered);
+            CreateChartSpline("Y加速度", theFiltered);
+
+
             MessageBox.Show("一共"+stepCount+"步");
         }
 
@@ -87,6 +190,14 @@ namespace socketServer
         private void Window_Closed(object sender, EventArgs e)
         {
             theServerController.closeServer();
+        }
+
+
+
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+          
         }
 
 

@@ -18,8 +18,10 @@ namespace socketServer
             int direction = wave[0] > 0? -1:1;
           for(int i=0;i< wave .Count -1;i++) 
           {
-               if((wave[i+1]-wave[i])*direction>0)
+              double minus = wave[i+1]-wave[i];
+               if(minus * direction>0  )//放弃突变的情况
                {
+
                     direction*=-1;
                     if(direction == 1)
                     {
@@ -28,12 +30,12 @@ namespace socketServer
                     } 
                     else 
                     {
-                        count++;
+                       // count++;
                        //"波谷"
                      }
               }
           }
-          return count / 2;
+          return count;
         }
 
       /*                  这个是从网上抄过来的高斯方法，需要前期处理，暂时先放在这里                               */

@@ -53,3 +53,15 @@ E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServe
 E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.g.resources
 E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
 E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.exe
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.pdb
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.exe
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.pdb
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\App.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer_MarkupCompile.cache
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.g.resources
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csprojResolveAssemblyReference.cache

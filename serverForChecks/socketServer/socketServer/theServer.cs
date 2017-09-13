@@ -143,7 +143,18 @@ namespace socketServer
                     {
                         //获取了消息information,处理过程需要新一层的封装了
                         //把信息存入到缓存里面去
-                        theInformationController.addInformation(information , UseDataType.accelerometerY);
+                        //要保存多个数据，这里就需要做一下切分，也就是所谓的协议
+                        //暂定的协议： 
+                        //传输内容的大项目用';'切分
+                        //传输内容的小项目用','切分
+                        string[] theSplited = information.Split(';');
+                        //第一大项： Y轴加速度
+                        theInformationController.addInformation(theSplited[0] , UseDataType.accelerometerY);
+                        //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
+                        theInformationController.addInformation(theSplited[1], UseDataType.compassDegree);//正北0度
+                        //第三大项： 陀螺仪的X轴
+                        //第四大项： 陀螺仪的Y轴
+                        //第五大项： 陀螺仪的Z轴
                     }
                     else//客户端请求关闭连接
                     {

@@ -9,5 +9,6 @@
         <Button Content="stepCount" Height="23" HorizontalAlignment="Right" Margin="0,0,52,28" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
         <Grid Margin="22,23,133,55" Name="Chart" />
         <Button Content="Button" Height="23" HorizontalAlignment="Right" Margin="0,0,52,78" Name="button5" VerticalAlignment="Bottom" Width="75" Click="button5_Click" />
+        <Button Content="stepCount" Height="23" HorizontalAlignment="Right" Margin="0,0,179,12" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
     </Grid>
 </Window>

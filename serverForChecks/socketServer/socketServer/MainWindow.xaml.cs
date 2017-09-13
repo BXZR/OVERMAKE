@@ -161,8 +161,6 @@ namespace socketServer
         private void button4_Click(object sender, RoutedEventArgs e)
         {
 
-         
-  
             //为了保证数据干净，要做一次滤波
             List<double> theFiltered = theFilter.theFilerWork(theInformationController.accelerometerY);
 
@@ -198,6 +196,20 @@ namespace socketServer
         private void button5_Click(object sender, RoutedEventArgs e)
         {
           
+        }
+
+        private void button6_Click(object sender, RoutedEventArgs e)
+        {
+            //为了保证数据干净，要做一次滤波
+            List<double> theFiltered = theFilter.theFilerWork(theInformationController.compassDegree);
+
+            //查看滤波后的数据
+            string IS = theFiltered.Count + "条数据\n";
+            for (int i = 0; i < theFiltered.Count; i++)
+                IS += theFiltered[i] + "\n";
+            theFileSaver.saveInformation(IS);
+
+            CreateChartSpline("角度变化", theFiltered);
         }
 
 

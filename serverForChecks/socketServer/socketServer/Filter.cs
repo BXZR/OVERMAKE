@@ -6,6 +6,7 @@ using System.Text;
 namespace socketServer
 {
     //这个类专门用于处理滤波过程
+    //处理的是用于步态检测用的y轴加速度
     class Filter
     {
 

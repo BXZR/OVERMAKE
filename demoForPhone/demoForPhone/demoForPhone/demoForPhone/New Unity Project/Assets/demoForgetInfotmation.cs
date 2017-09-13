@@ -7,7 +7,7 @@ using System;
 public class demoForgetInfotmation : MonoBehaviour {
 
 	int allCount = 0;
-	int maxCount = 300;
+	int maxCount = 3000;
 
 	public server theServer; 
 	public Text theshower;
@@ -18,6 +18,8 @@ public class demoForgetInfotmation : MonoBehaviour {
 
 
 	string informationForAY = "";
+	string informationForGyroDegree = ""; 
+
 
 	public void makeEnd()
 	{
@@ -31,36 +33,28 @@ public class demoForgetInfotmation : MonoBehaviour {
 		Input.gyro.enabled = true; 
 		Input.gyro.updateInterval = 0.05f;  
 		Input.compass.enabled = true;
-		InvokeRepeating ("makeAY", 0.5f, 0.05f);
-		InvokeRepeating ("sendAY", 0.5f, 1f);
+		InvokeRepeating ("makeInformation", 0.5f, 0.05f);
+		InvokeRepeating ("sendInformation", 0.5f, 1f);
 		//StartCoroutine (startGPS ());
 		//locationServerStatus = Input.location.status; //返回设备服务状态  
 		Input.location .Start(10,10);
-			
 		theServer.clientMain ();
-
-	}
-
-
-	void allInformationMake()
-	{
-		string theInformationNow = "";
-		theInformationNow += string.Format ("\n加速计:({0} , {1} , {2})",Input .acceleration.x.ToString("f2") , Input .acceleration .y.ToString("f2") , Input .acceleration .z.ToString("f2"));
-		theInformationNow += string.Format ("   陀螺仪:({0} , {1} , {2})", Input .gyro .rotationRateUnbiased.x.ToString("f2") , Input .gyro .rotationRateUnbiased .y.ToString("f2") , Input  .gyro .rotationRateUnbiased.z.ToString("f2"));
-		theInformationNow += string.Format ("   磁力计:({0} , {1} , {2})", Input .compass .rawVector .x.ToString("f2") , Input .compass .rawVector   .y.ToString("f2") , Input  .compass .rawVector .z.ToString("f2"));
-		theInformationNow += string.Format("\nGPS ({0},{1})", Input.location .lastData.longitude, Input .location .lastData .latitude);
-		information += theInformationNow;
 	}
 
 
 
-	public void sendAY()
+
+
+
+	public void sendInformation()
 	{
-		theServer.send (informationForAY);
+		string sendString = informationForAY +";" + informationForGyroDegree +";";
+		theServer.send (sendString);
 		informationForAY = "";
+		informationForGyroDegree = "";
 	}
 
-	public void  makeAY()
+	public void  makeInformation()
 	{
 		try
 		{
@@ -73,6 +67,7 @@ public class demoForgetInfotmation : MonoBehaviour {
 				CancelInvoke();
 
 			informationForAY += (Input .acceleration .y).ToString("f4")+",";
+			informationForGyroDegree += Input .compass.trueHeading.ToString("f4")+",";
 		}
 		catch(Exception d)
 		{
@@ -80,6 +75,19 @@ public class demoForgetInfotmation : MonoBehaviour {
 		}
 	}
 
+
+
+////////////////////////////////////////////////////////
+
+	void allInformationMake()
+	{
+		string theInformationNow = "";
+		theInformationNow += string.Format ("\n加速计:({0} , {1} , {2})",Input .acceleration.x.ToString("f2") , Input .acceleration .y.ToString("f2") , Input .acceleration .z.ToString("f2"));
+		theInformationNow += string.Format ("   陀螺仪:({0} , {1} , {2})", Input .gyro .rotationRateUnbiased.x.ToString("f2") , Input .gyro .rotationRateUnbiased .y.ToString("f2") , Input  .gyro .rotationRateUnbiased.z.ToString("f2"));
+		theInformationNow += string.Format ("   磁力计:({0} , {1} , {2})", Input .compass .rawVector .x.ToString("f2") , Input .compass .rawVector   .y.ToString("f2") , Input  .compass .rawVector .z.ToString("f2"));
+		theInformationNow += string.Format("\nGPS ({0},{1})", Input.location .lastData.longitude, Input .location .lastData .latitude);
+		information += theInformationNow;
+	}
 	/*
 	 *LocationInfo
 		属性如下：

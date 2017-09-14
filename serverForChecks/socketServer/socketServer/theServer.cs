@@ -148,10 +148,22 @@ namespace socketServer
                         //传输内容的大项目用';'切分
                         //传输内容的小项目用','切分
                         string[] theSplited = information.Split(';');
-                        //第一大项： Y轴加速度
-                        theInformationController.addInformation(theSplited[0] , UseDataType.accelerometerY);
-                        //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
-                        theInformationController.addInformation(theSplited[1], UseDataType.compassDegree);//正北0度
+                        for (int i = 0; i < theSplited.Length; i++)
+                        {
+                            switch (i)
+                            {
+                                case 0:
+                                    {
+                                        //第一大项： Y轴加速度
+                                        theInformationController.addInformation(theSplited[i], UseDataType.accelerometerY);
+                                    }break;
+                                case 1:
+                                    {
+                                        //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
+                                        theInformationController.addInformation(theSplited[1], UseDataType.compassDegree);//正北0度
+                                    }break;
+                            }
+                        }
                         //第三大项： 陀螺仪的X轴
                         //第四大项： 陀螺仪的Y轴
                         //第五大项： 陀螺仪的Z轴

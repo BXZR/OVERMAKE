@@ -16,6 +16,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.IO;
 using Visifire.Charts;
+using System.Windows.Threading;
 
 namespace socketServer
 {
@@ -30,10 +31,12 @@ namespace socketServer
         FileSaver theFileSaver;//保存到文件中的控制器
         PeackSearcher thePeackFinder;//寻找峰谷的控制单元，用于步态分析
         Filter theFilter;//专门用于滤波的控制单元
-
+        DispatcherTimer tm = new DispatcherTimer();//刷新控制单元
+        string stepCountShow = "";
         public MainWindow()
         {
             InitializeComponent();
+         
         }
 
 
@@ -126,6 +129,19 @@ namespace socketServer
 
 
 
+        private void makeFlashController()
+        {
+          
+            tm.Tick += new EventHandler(tm_Tick);
+            tm.Interval = TimeSpan.FromSeconds(0.6);
+            tm.Start();
+        }
+
+        void tm_Tick(object sender, EventArgs e)
+        {
+            List<double> theFiltered = theFilter.theFilerWork(theInformationController.accelerometerY);
+            theStepLabel.Content = "一共走了" + thePeackFinder.countStepsWithTime(theFiltered);
+        }
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             //saveInformation(informationSave);
@@ -140,15 +156,12 @@ namespace socketServer
             theFileSaver = new FileSaver();
             theFilter = new Filter();
 
+            makeFlashController();
+
             //正式开始
             string showInformation = theServerController.startTheServer();
             MessageBox.Show(showInformation);
         }
-
-
-
-
-
 
 
 
@@ -169,12 +182,11 @@ namespace socketServer
             for (int i = 0; i < theFiltered .Count; i++)
                 IS += theFiltered[i] + "\n";
             theFileSaver.saveInformation(IS);
-
+           // MessageBox.Show("GET:\n"+IS);
 
             //滤波之后做各种分析，第一项是步态分析，判断走了多少步
             int stepCount = thePeackFinder.countSteps(theFiltered);
             CreateChartSpline("Y加速度", theFiltered);
-
 
             MessageBox.Show("一共"+stepCount+"步");
         }

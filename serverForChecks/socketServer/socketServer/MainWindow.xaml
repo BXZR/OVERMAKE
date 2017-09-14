@@ -7,8 +7,10 @@
         <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,76,25,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
         <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,23,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
         <Button Content="stepCount" Height="23" HorizontalAlignment="Right" Margin="0,0,52,28" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
-        <Grid Margin="22,23,133,55" Name="Chart" />
+        <Grid Margin="22,23,133,55" Name="Chart">
+            <Label Content="counts" Height="28" Margin="0,-5,435,0" Name="theStepLabel" VerticalAlignment="Top" />
+        </Grid>
         <Button Content="Button" Height="23" HorizontalAlignment="Right" Margin="0,0,52,78" Name="button5" VerticalAlignment="Bottom" Width="75" Click="button5_Click" />
-        <Button Content="stepCount" Height="23" HorizontalAlignment="Right" Margin="0,0,179,12" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
+        <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,179,12" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
     </Grid>
 </Window>

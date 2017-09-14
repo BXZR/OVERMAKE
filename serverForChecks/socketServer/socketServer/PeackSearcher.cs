@@ -11,9 +11,68 @@ namespace socketServer
 
     class PeackSearcher
     {
+
+
+        //判断一步
+        public static int theCount = 0;
+        public static int theCount2 = 0;
+        private static int indexUsed = 0;//前面的下边可以不用了
+        int direction = -1;//wave[0] > 0 ? -1 : 1;
+
+        //返回步数，实时计算的
+        public int countStepsWithTime(List<double> wave)
+        {
+
+            if (wave.Count < 1)
+                return 0;
+           
+            for (int i = indexUsed; i < wave.Count - 1; i++)
+            {
+                double minus = wave[i + 1] - wave[i];
+               
+                if (minus * direction > 0)//放弃突变的情况
+                {
+                    direction *= -1;
+                    if (direction == 1)
+                    {
+                        theCount ++;
+                        //"波峰"
+                    }
+                    else
+                    {
+                        theCount2++;
+                        //"波谷"
+                    }
+                }
+            }
+             indexUsed = wave.Count - 1;
+            //用波峰波谷的数量平均值来做似乎比较好，暂时从个人的逻辑来说
+            return (theCount+ theCount2 )/2;
+        }
+
+        public bool countCheck(List<double> wave)
+        {
+            bool AG = false;
+            if (wave.Count < 1)
+                return AG ;
+
+
+            int stepNow = countSteps(wave);
+            if (stepNow == theCount)
+            {
+                theCount = stepNow;
+                AG = true;
+            }
+
+            return AG;
+        }
+
+
         //返回步数
         public int countSteps(List <double> wave)
         {
+            if (wave.Count < 1)
+                return 0;
             int count = 0;
             int direction = wave[0] > 0? -1:1;
           for(int i=0;i< wave .Count -1;i++) 
@@ -30,15 +89,16 @@ namespace socketServer
                     } 
                     else 
                     {
-                       // count++;
+                       //count++;
                        //"波谷"
                      }
               }
           }
+         //用波峰波谷的数量平均值来做似乎比较好，暂时从个人的逻辑来说
           return count;
         }
 
-      /*                  这个是从网上抄过来的高斯方法，需要前期处理，暂时先放在这里                               */
+      /*     这个是从网上抄过来的高斯方法，需要前期处理，暂时先放在这里                       */
 
         //测试论文代码寻峰方法
         double Gauss(int i, int m, int H)//高斯函数

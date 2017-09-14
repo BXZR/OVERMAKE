@@ -15,6 +15,7 @@ namespace socketServer
     public List <double> theFilerWork(List<double> IN)
     {
         IN = theFliterMethod1(IN);
+        IN = GetKalMan(IN);
         IN = theFliterMethod2(IN);
         return IN;
     }
@@ -73,6 +74,61 @@ namespace socketServer
                 }
             }
             return OUT;
+        }
+
+        //滤波方法3，究极的卡尔曼滤波
+
+        double[] CanShu = { 23, 9, 16, 16, 1, 0, 0, 0 };
+
+        double[] Observ = { 22, 24, 24, 25, 24, 26, 21, 26, };
+
+        //double[] Observ = { 25, 26 };
+
+        public List<double> GetKalMan(List<double> IN)
+        {
+            List<double> outList = new List<double>();
+            
+            double KamanX = CanShu[0];
+
+            double KamanP = CanShu[1];
+
+            double KamanQ = CanShu[2];
+
+            double KamanR = CanShu[3];
+
+            double KamanY = CanShu[4];
+
+            double KamanKg = CanShu[5];
+
+            double KamanSum = CanShu[6];
+
+            for (int i = 0; i < IN.Count; i++)
+            {
+
+                KamanY = KamanX;
+
+                KamanP = KamanP + KamanQ;
+
+                KamanKg = KamanP / (KamanP + KamanR);
+
+                KamanX = (KamanY + KamanKg * ( IN[i] - KamanY));
+
+                KamanSum += KamanX;
+
+                outList.Add(KamanX);
+
+               //this.richTextBox1.Text += KamanX.ToString() + "\n";
+
+                KamanP = (1 - KamanKg) * KamanP;
+
+
+
+            }
+
+           // Average = KamanSum / Observe.Length;
+
+            return outList;
+
         }
 
     }

@@ -15,7 +15,7 @@ namespace socketServer
     {
         //所有的内容实际上都在这个类里面做一下缓存，存好之后处理
 
-        public List<string> allInformation = new List<string>();//总的信息缓存
+       public List<string> allInformation = new List<string>();//总的信息缓存
        public List<double> accelerometerY = new List<double>();//专门用于记录加速计Y轴的数据的数组
        public List <double> compassDegree = new List<double> ();//专门用于记录磁力计辅助数据的数组
         //唯一对外开放的存储方法

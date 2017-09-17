@@ -9,7 +9,7 @@ namespace socketServer
     //处理的是用于步态检测用的y轴加速度
     class Filter
     {
-
+ 
 
      //唯一对外平滑方法
     public List <double> theFilerWork(List<double> IN)
@@ -33,7 +33,7 @@ namespace socketServer
     //    滞后程度取决于a值大小
     //    不能消除滤波频率高于采样频率的1/2的干扰信号
 
-        double theValueA = 0.4f;
+        double theValueA = 0.5f;
         private List<double> theFliterMethod1(List<double> IN)
         {
             for (int i = 1; i < IN.Count; i++)

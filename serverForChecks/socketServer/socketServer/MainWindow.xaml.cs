@@ -19,7 +19,11 @@ using System.Windows.Threading;
 
 namespace socketServer
 {
-  
+
+    //timerFlash就是每隔很短一段时间进行刷新的方法
+    //withSaveedData是很长的一段时间统一处理的方法
+    public enum workType { timerFlash, withSavedData}
+
     //整个程序的主逻辑处理单元
     public partial class MainWindow : Window
     {
@@ -33,7 +37,7 @@ namespace socketServer
         rotationAngel theAngelController;//角度控制单元
         position thePositionController;//最终定位的控制单元
         stepLength theStepLengthController;//用来确定步长的控制单元
-
+        workType theWorkType = workType.timerFlash;//收集数据分析的模式
         public MainWindow()
         {
             InitializeComponent();
@@ -43,36 +47,68 @@ namespace socketServer
 
         private void makeFlashController()
         {
-          
-            tm.Tick += new EventHandler(tm_Tick);
-            tm.Interval = TimeSpan.FromSeconds(0.6);
+            //方法切换在这里判断执行
+            if (theWorkType == workType.timerFlash)//有一点强硬的阶段
+            {
+                tm.Tick += new EventHandler(flashQuitck);
+                tm.Interval = TimeSpan.FromSeconds(0.6);
+            }
+            else if (theWorkType == workType.withSavedData)//个人更加推荐这种方法
+            {
+                tm.Tick += new EventHandler(withSavedData);
+                tm.Interval = TimeSpan.FromSeconds(5);
+            }
             tm.Start();
         }
 
+        /*************************************************方法2（带缓冲）*************************************************************/
+        //主要思路与方法1是差不多的，只不过是在一个比较长的时间之内判断多个波峰和波谷，
+        //然后进行统一的计算
+        //为此需要一个缓冲区
+        void withSavedData(object sender, EventArgs e)
+        {
+
+            List<double> theFilteredAY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree);
+            int stepCount = thePeackFinder.countStepWithStatic(theFilteredAY);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+            //根据下标获得需要的旋转角和步长
+            //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
+            List<double> theStepAngeUse = new List<double> ();
+            List<double> theStepLengthUse = new List<double>();
+            for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
+            {
+                
+                theStepAngeUse.Add(theFilteredD[thePeackFinder .peackBuff [i]]);
+                theStepLengthUse.Add(theStepLengthController.getStepLength());//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+            }
+            theStepLabel.Content = "(带缓存)一共走了" + PeackSearcher.TheStepCount + "/" + thePeackFinder.peackBuff.Count + "步";
+            POSITION.Text =  thePositionController.getPositions(theStepAngeUse , theStepLengthUse);
+        }
+        /*************************************************方法1（比较原始）*************************************************************/
         //判断一步依赖于一个假说：
         //人0.4秒内只能走一步
         //设定时间要比 tm.Interval = TimeSpan.FromSeconds(0.4);
         //争取让每一次计算都包含的是一步
 
-        void tm_Tick(object sender, EventArgs e)
+        //一种实时的方法
+        //很短的时间之内就检查一次
+        //原始思路，这是一个非常鲁莽的方法，效率也不高
+        //思路就是在一个非常短的时间之内最多只可能走出一步，也就是说即使发现了多个波峰，也只认为走出了一步
+        void flashQuitck(object sender, EventArgs e)
         {
             List<double> theFilteredAY = theFilter.theFilerWork(theInformationController.accelerometerY);
             //统一用内部方法来做步态分析，统一修改并节约代码
             if (thePeackFinder.countCheck(theFilteredAY))
             {
-                theStepLabel.Content = "一共走了" + PeackSearcher .TheStepCount + "/" +PeackSearcher .changeCount +"步";
+                theStepLabel.Content = "（不带缓存）一共走了" + PeackSearcher.TheStepCount + "/" +PeackSearcher.changeCount +"步";
                 //判断出了走了步，所以需要进行定位了
                 List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree);
-                double theStepLength = theStepLengthController.getStepLength();
-                double theDegree = theAngelController.getAngelNow(theFilteredD);
-                thePositionController.calculationPosition(theDegree, theStepLength);
+               double theStepLength = theStepLengthController.getStepLength();
+               double theDegree = theAngelController.getAngelNow(theFilteredD);
+              thePositionController.calculationPosition(theDegree, theStepLength);
                 POSITION.Text += "\n角度： " + theDegree.ToString("f4") + " 步长： " + theStepLength.ToString("f4") + " 坐标： " + thePositionController.getPosition();
             }
-        }
-
-
-
-
+}
 
 /******************************按钮事件控制单元***********************************************/
 
@@ -95,6 +131,9 @@ namespace socketServer
             tm = new DispatcherTimer();
             thePositionController = new position ();
             theStepLengthController = new stepLength ();
+
+            theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
+            //相关工程更新
             makeFlashController();
 
             //正式开始

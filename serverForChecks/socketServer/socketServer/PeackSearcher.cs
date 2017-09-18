@@ -26,6 +26,9 @@ namespace socketServer
 
         int stepCountSave = 0;//步数保存并用于判断是不是走出了一步
         //事实上这个变量只在这个方法中使用
+
+        public List<int> peackBuff = new List<int>();//保存波峰的下标的缓冲区
+
         public bool countCheck(List<double> wave)
         {
             if (wave.Count < 1)
@@ -78,11 +81,13 @@ namespace socketServer
             return  CS1;
         }
 
-
-        //基础方法，可以通过这个方法来修改，共有变量
+        //附带缓冲区记录
+        //基础方法，可以通过这个方法来修改共有变量
         //返回步数
+        //传入的是加速度传感器的Y轴的数值
         public int countStepWithStatic(List <double> wave)
         {
+           peackBuff.Clear();//每一次都重新计算，这个方法整体可以考虑大优化
            theCount = 0;//波峰的个数
            theCount2 = 0;//波谷的个数
 
@@ -97,12 +102,13 @@ namespace socketServer
 
                 if (Math.Abs(minus) > canReachGate  && minus * direction > 0)//放弃突变的情况
                 {
-
                     direction *= -1;
                     if (direction == 1)
                     {
                         theCount++;
                         //"波峰"
+                        if ( peackBuff.Count < 3 || ( i- peackBuff[peackBuff .Count -1] ) > 2 )
+                        peackBuff.Add(i);
                     }
                     else
                     {

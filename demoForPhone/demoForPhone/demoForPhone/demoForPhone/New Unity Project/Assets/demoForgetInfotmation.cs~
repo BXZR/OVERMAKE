@@ -7,8 +7,7 @@ using System;
 public class demoForgetInfotmation : MonoBehaviour {
 
 	int allCount = 0;
-	int maxCount = 3000;
-
+	int maxCount = 720000;//这应该是一个很足够的量了，十小时的数据
 	public server theServer; 
 	public Text theshower;
 

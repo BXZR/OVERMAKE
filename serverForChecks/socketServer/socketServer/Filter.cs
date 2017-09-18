@@ -14,10 +14,13 @@ namespace socketServer
      //唯一对外平滑方法
     public List <double> theFilerWork(List<double> IN)
     {
-        IN = theFliterMethod1(IN);
-        IN = GetKalMan(IN);
-        IN = theFliterMethod2(IN);
-        return IN;
+            List<double> outList = new List<double>();
+            for (int i = 0; i < IN.Count; i++)
+                outList.Add(IN[i]);
+        outList = theFliterMethod1(outList);
+        outList = GetKalMan(outList);
+        outList = theFliterMethod2(outList);
+        return outList;
     }
 
     //滤波方法1
@@ -33,7 +36,7 @@ namespace socketServer
     //    滞后程度取决于a值大小
     //    不能消除滤波频率高于采样频率的1/2的干扰信号
 
-        double theValueA = 0.5f;
+        double theValueA = 0.4f;
         private List<double> theFliterMethod1(List<double> IN)
         {
             for (int i = 1; i < IN.Count; i++)

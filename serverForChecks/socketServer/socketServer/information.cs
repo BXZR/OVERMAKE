@@ -64,7 +64,6 @@ namespace socketServer
             {
                 try
                 {
-               
                     theAYData  = Convert.ToDouble( splitInformation[i]);
                 }
                 catch

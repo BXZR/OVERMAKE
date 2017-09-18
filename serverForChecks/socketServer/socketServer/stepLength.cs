@@ -15,7 +15,8 @@ namespace socketServer
         }
 
         //微软研究得到的平均步长
-        //在这里是为了保证架构
+        //在这里是为了保证架构做的基础实现
+        //后期打算用训练后的步长模型来做
         private double stepLength1()
         {
             return 9.5;

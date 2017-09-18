@@ -12,180 +12,110 @@ namespace socketServer
     class PeackSearcher
     {
 
+        private static int theCount = 0;//波峰的个数
+        private static int theCount2 = 0;//波谷的个数
+        private static int theStepCount = 0;//被计算出来的步数
+        public static int TheStepCount { get { return theStepCount; } } //可以直接访问的只读的步数
+        public static int TheCount { get { return theCount; } } //可以直接访问的只读波峰的个数
+        public static int TheCount2 { get { return theStepCount; } } //可以直接访问的只读波谷的个数
 
-        //判断一步
-        public static int theCount = 0;
-        public static int theCount2 = 0;
-        private static int indexUsed = 0;//前面的下边可以不用了
-        int direction = -1;//wave[0] > 0 ? -1 : 1;
+        public static int changeCount = 0;//步数变化的次数
+        private double canReachGate = 0.1f;//没有超过这个加速度就认为是抖动，无视之
+        //返回是否走了一步，用的是内部的变量，实际上也应该怎么做，不推荐外部调用
+ 
 
-        //返回步数，实时计算的
-        public int countStepsWithTime(List<double> wave)
+        int stepCountSave = 0;//步数保存并用于判断是不是走出了一步
+        //事实上这个变量只在这个方法中使用
+        public bool countCheck(List<double> wave)
         {
+            if (wave.Count < 1)
+                return false ;
 
+
+            int stepNow = countStepWith(wave);
+            if (stepCountSave  < stepNow )
+            {
+                theStepCount = stepNow;
+                stepCountSave = stepNow;
+                changeCount++;
+                return true;
+            }
+
+            return false;
+        }
+
+
+        //基础方法,内部方法，并不修改那些变量
+        //返回步数
+        private int countStepWith(List<double> wave)
+        {
+            int CS1 = 0;
+            int CS2 = 0;
             if (wave.Count < 1)
                 return 0;
-           
-            for (int i = indexUsed; i < wave.Count - 1; i++)
+            int direction = wave[0] > 0 ? -1 : 1;
+            for (int i = 0; i < wave.Count - 1; i++)
             {
                 double minus = wave[i + 1] - wave[i];
-               
-                if (minus * direction > 0)//放弃突变的情况
+
+                if ( Math .Abs(minus ) > canReachGate   && minus * direction > 0)//放弃突变的情况
                 {
+
                     direction *= -1;
                     if (direction == 1)
                     {
-                        theCount ++;
+                        CS1++;
                         //"波峰"
                     }
                     else
                     {
-                        theCount2++;
+                        CS2++;
                         //"波谷"
                     }
                 }
             }
-             indexUsed = wave.Count - 1;
             //用波峰波谷的数量平均值来做似乎比较好，暂时从个人的逻辑来说
-            return (theCount+ theCount2 )/2;
-        }
-
-        public bool countCheck(List<double> wave)
-        {
-            bool AG = false;
-            if (wave.Count < 1)
-                return AG ;
-
-
-            int stepNow = countSteps(wave);
-            if (stepNow == theCount)
-            {
-                theCount = stepNow;
-                AG = true;
-            }
-
-            return AG;
+            return  CS1;
         }
 
 
+        //基础方法，可以通过这个方法来修改，共有变量
         //返回步数
-        public int countSteps(List <double> wave)
+        public int countStepWithStatic(List <double> wave)
         {
+           theCount = 0;//波峰的个数
+           theCount2 = 0;//波谷的个数
+
             if (wave.Count < 1)
                 return 0;
-            int count = 0;
-            int direction = wave[0] > 0? -1:1;
+           int direction = wave[0] > 0? -1:1;
           for(int i=0;i< wave .Count -1;i++) 
           {
-              double minus = wave[i+1]-wave[i];
-               if(minus * direction>0  )//放弃突变的情况
-               {
+                if (Math.Abs(wave[i]) < canReachGate)
+                    continue;
+                 double minus = wave[i+1]-wave[i];
 
-                    direction*=-1;
-                    if(direction == 1)
-                    {
-                        count++;
-                       //"波峰"
-                    } 
-                    else 
-                    {
-                       //count++;
-                       //"波谷"
-                     }
-              }
-          }
-         //用波峰波谷的数量平均值来做似乎比较好，暂时从个人的逻辑来说
-          return count;
-        }
-
-      /*     这个是从网上抄过来的高斯方法，需要前期处理，暂时先放在这里                       */
-
-        //测试论文代码寻峰方法
-        double Gauss(int i, int m, int H)//高斯函数
-        {
-            double a = i;
-            double b = H;
-            double c = 4 *   Math.Log((double)2) * (a / b) * (a / b);
-            return    Math .Exp (-c);
-        }//H为半高宽，2m+1为窗宽
-
-        double SimilarGaussConstant(int m, int H)//类高斯常数
-        {
-            double sum = 0;
-            for (int i = -m; i <= m; i++)
-                sum += Gauss(i, m, H);
-            return sum / (2 * m + 1);
-        }
-
-        double SimilarGauss(int i, int m, int H)//类高斯函数
-        {
-            return Gauss(i, m, H) - SimilarGaussConstant(m, H);
-        }
-
-        double SimilarGauss2(int i, int m, int H)//类高斯函数的平方
-        {
-            return SimilarGauss(i, m, H) * SimilarGauss(i, m, H);
-        }
-
-        double IsPossiblePeak(int j, int m, int H, double [] argA)
-        {//可能峰区判断函数
-            double a = 0;
-            double b = 0;
-            for (int i = -m; i <= m; i++)
-            {
-                a += SimilarGauss(i, m, H) * argA[j + i];
-                b += SimilarGauss2(i, m, H) * argA[j + i];
-            }
-            if (b != 0)
-                return a /   Math .Sqrt(b);
-            else
-                return 0;
-        }//argA为待分析数组
-
-      public  int PeakSearch2(int n,int m,int H,double []argA,double C)
-        //n是道数
-        //H是峰的半宽
-        //m是起始道数
-        //两参数可指定为常数
-        {
-            //寻峰函数
-            double a=0;//argB寻峰结果数组
-            int num=0;//C为预先给定的常数
-            bool first=true;
-            bool isP=false;
-            int numb=0;
-            for(int i=m;i<n-m;i++)
-            {
-                numb++;
-                double x = IsPossiblePeak(i,m,H,argA);
-                if(IsPossiblePeak(i,m,H,argA)>C)
+                if (Math.Abs(minus) > canReachGate  && minus * direction > 0)//放弃突变的情况
                 {
-                    if(first==true)
+
+                    direction *= -1;
+                    if (direction == 1)
                     {
-                        first=false;
-                        isP=true;
-                        a=IsPossiblePeak(i,m,H,argA);
+                        theCount++;
+                        //"波峰"
                     }
                     else
                     {
-                        if(a<IsPossiblePeak(i,m,H,argA))
-                        {
-                            a=IsPossiblePeak(i,m,H,argA);
-                        }
+                        theCount2++; 
+                        //"波谷"
                     }
                 }
-                else
-                {
-                    if(isP==true)
-                    {
-                        first=true;
-                        isP=false;
-                        num++;
-                    }
-                }
-            }
-            return num;
+          }
+            theStepCount = theCount;//记录这个步数
+         //用波峰波谷的数量平均值来做似乎比较好，暂时从个人的逻辑来说
+          return theCount;
         }
 
+     
     }
 }

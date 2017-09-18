@@ -50,24 +50,23 @@ namespace socketServer
         }
 
         //判断一步依赖于一个假说：
-        //人0.6秒内只能走一步
-        int countNow = 0;
-        int countShow = 0;
+        //人0.4秒内只能走一步
+        //设定时间要比 tm.Interval = TimeSpan.FromSeconds(0.4);
+        //争取让每一次计算都包含的是一步
+
         void tm_Tick(object sender, EventArgs e)
         {
             List<double> theFilteredAY = theFilter.theFilerWork(theInformationController.accelerometerY);
-            int countget = thePeackFinder.countStepsWithTime(theFilteredAY);
-            if (countget > countNow)
+            //统一用内部方法来做步态分析，统一修改并节约代码
+            if (thePeackFinder.countCheck(theFilteredAY))
             {
-                countNow = countget;
-                countShow++;
-                theStepLabel.Content = "一共走了" + countShow +"步";
+                theStepLabel.Content = "一共走了" + PeackSearcher .TheStepCount + "/" +PeackSearcher .changeCount +"步";
                 //判断出了走了步，所以需要进行定位了
                 List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree);
                 double theStepLength = theStepLengthController.getStepLength();
-                double theDegree =  theAngelController .getAngelNow( theFilteredD);
-                thePositionController.calculationPosition(theDegree , theStepLength);
-                POSITION.Text += "\n角度： "+ theDegree.ToString("f4") + " 步长： "+ theStepLength.ToString("f4") +" 坐标： "+ thePositionController .getPosition();
+                double theDegree = theAngelController.getAngelNow(theFilteredD);
+                thePositionController.calculationPosition(theDegree, theStepLength);
+                POSITION.Text += "\n角度： " + theDegree.ToString("f4") + " 步长： " + theStepLength.ToString("f4") + " 坐标： " + thePositionController.getPosition();
             }
         }
 
@@ -133,11 +132,11 @@ namespace socketServer
             //string IS = theFiltered.Count + "条数据\n";
             //for (int i = 0; i < theFiltered.Count; i++)
             //    IS += theFiltered[i] + "\n";
-           // theFileSaver.saveInformation(IS);
+            // theFileSaver.saveInformation(IS);
             // MessageBox.Show("GET:\n"+IS);
 
             //滤波之后做各种分析，第一项是步态分析，判断走了多少步
-            int stepCount = thePeackFinder.countSteps(theFiltered);
+            int stepCount =thePeackFinder.  countStepWithStatic(theFiltered);
 
             ChartWindow theChartWindow = new ChartWindow();
             theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered);

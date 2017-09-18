@@ -19,7 +19,7 @@ namespace socketServer
         //后期打算用训练后的步长模型来做
         private double stepLength1()
         {
-            return 9.5;
+            return 0.95;
         }
     }
 }

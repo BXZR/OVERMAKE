@@ -50,7 +50,7 @@ namespace socketServer
             }
             for (int i = 0; i < XSave.Count; i++)
             {
-                theInformation  += " (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
+                theInformation  += "角度： "+ angels[i] + "步长： "+stepLengths [i]+"坐标：  (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
             }
             return theInformation;
         }

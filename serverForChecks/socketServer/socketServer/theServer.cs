@@ -155,7 +155,7 @@ namespace socketServer
                                 case 0:
                                     {
                                         //第一大项： Y轴加速度
-                                        theInformationController.addInformation(theSplited[i], UseDataType.accelerometerY);
+                                        theInformationController.addInformation(theSplited[0], UseDataType.accelerometerY);
                                     }break;
                                 case 1:
                                     {
@@ -177,6 +177,7 @@ namespace socketServer
                 }
                 catch //如果发送信息居然失败了，就关掉这个客户端连接
                 {
+                    Console.WriteLine("传送信息失败");
                     myClientSocket.Shutdown(SocketShutdown.Both);
                     myClientSocket.Close();
                     return;

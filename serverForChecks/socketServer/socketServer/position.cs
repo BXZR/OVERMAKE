@@ -6,19 +6,32 @@ using System.Threading.Tasks;
 
 namespace socketServer
 {
+
+    //用来记录的类
+    class transForm
+    {
+        public double X;
+        public double Y;
+        public transForm(double XIn, double YIn)
+        {
+            X = XIn;
+            Y = YIn; 
+        }
+    }
+
     //这个类专门用来计算坐标
     class position
     {
         public double positionX = 0;
         public double positionY = 0;
 
-        
+        public List<transForm> theTransformPosition = new List<transForm>();//真正用来记录坐标的工具
     /*****************************方法1，立即计算的方法*****************************************/
         //最基础的架构公式
         public void calculationPosition ( double angel , double stepLength )
         {
-            positionX = positionX + Math.Cos(angel) * stepLength;
-            positionY = positionY + Math.Sin(angel) * stepLength;
+            positionX = positionX + Math.Sin(angel) * stepLength;
+            positionY = positionY + Math.Cos(angel) * stepLength;
         }
 
         public string getPosition()
@@ -37,22 +50,40 @@ namespace socketServer
         {
             positionX = 0;
             positionY = 0;
-        List<double> XSave = new List<double>();
+            List<double> XSave = new List<double>();
             List<double> YSave = new List<double>();
 
-            string theInformation = "";
+            string theInformation = "角度： 0.0000 步长： 0.9500 坐标： （0.0000,0.0000）\n";
             for (int i = 0; i < angels .Count; i++)
             {
-                positionX = positionX + Math.Cos(angels[i]) * stepLengths[i];
-                positionY = positionY + Math.Sin(angels[i]) * stepLengths[i];
+                double XAdd = Math.Sin(getRadianFromDegree(angels[i])) * stepLengths[i];
+                double YAdd = Math.Cos(getRadianFromDegree(angels[i])) * stepLengths[i];
+                // Console.WriteLine("--"+XAdd+"--"+YAdd+"--");
+                // theInformation += "角度： " + angels[i].ToString("f4") +"\n移动：( " + XAdd.ToString("f4") + " , " + YAdd.ToString("f4") + " )\n------------------\n";
+                positionX += XAdd;
+                positionY += YAdd;
                 XSave.Add(positionX);
                 YSave.Add(positionY);
             }
+
+            theTransformPosition.Clear();
             for (int i = 0; i < XSave.Count; i++)
             {
-                theInformation  += "角度： "+ angels[i] + "步长： "+stepLengths [i]+"坐标：  (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
+                theTransformPosition.Add(new transForm(XSave[i] , YSave[i]));
+                theInformation += "角度： " + angels[i].ToString("f4") + " 步长： "+stepLengths [i]+"坐标：  (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
             }
             return theInformation;
+        }
+
+        // 角度转弧度 π/180×角度
+        double getRadianFromDegree(double degree)
+        {
+            return degree * Math.PI / 180;
+        }
+        // 弧度变角度 180/π×弧度
+        double getDegreeFromRadian(double radian)
+        {
+            return radian * 180 / Math.PI;
         }
     }
 }

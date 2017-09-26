@@ -38,10 +38,13 @@ namespace socketServer
         position thePositionController;//最终定位的控制单元
         stepLength theStepLengthController;//用来确定步长的控制单元
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
+
+        float stepTimer = 2f;//间隔多长时间进行一次计算
+
         public MainWindow()
         {
             InitializeComponent();
-         
+
         }
 
 
@@ -56,7 +59,7 @@ namespace socketServer
             else if (theWorkType == workType.withSavedData)//个人更加推荐这种方法
             {
                 tm.Tick += new EventHandler(withSavedData);
-                tm.Interval = TimeSpan.FromSeconds(5);
+                tm.Interval = TimeSpan.FromSeconds(stepTimer);
             }
             tm.Start();
         }
@@ -73,16 +76,18 @@ namespace socketServer
             int stepCount = thePeackFinder.countStepWithStatic(theFilteredAY);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
             //根据下标获得需要的旋转角和步长
             //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
-            List<double> theStepAngeUse = new List<double> ();
+            List<double> theStepAngeUse = new List<double>();
             List<double> theStepLengthUse = new List<double>();
             for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
             {
-                
-                theStepAngeUse.Add(theFilteredD[thePeackFinder .peackBuff [i]]);
+
+                theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
                 theStepLengthUse.Add(theStepLengthController.getStepLength());//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
             }
             theStepLabel.Content = "(带缓存)一共走了" + PeackSearcher.TheStepCount + "/" + thePeackFinder.peackBuff.Count + "步";
-            POSITION.Text =  thePositionController.getPositions(theStepAngeUse , theStepLengthUse);
+            POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
+            //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
+            drawPositionLine();
         }
         /*************************************************方法1（比较原始）*************************************************************/
         //判断一步依赖于一个假说：
@@ -100,17 +105,17 @@ namespace socketServer
             //统一用内部方法来做步态分析，统一修改并节约代码
             if (thePeackFinder.countCheck(theFilteredAY))
             {
-                theStepLabel.Content = "（不带缓存）一共走了" + PeackSearcher.TheStepCount + "/" +PeackSearcher.changeCount +"步";
+                theStepLabel.Content = "（不带缓存）一共走了" + PeackSearcher.TheStepCount + "/" + PeackSearcher.changeCount + "步";
                 //判断出了走了步，所以需要进行定位了
                 List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree);
-               double theStepLength = theStepLengthController.getStepLength();
-               double theDegree = theAngelController.getAngelNow(theFilteredD);
-              thePositionController.calculationPosition(theDegree, theStepLength);
+                double theStepLength = theStepLengthController.getStepLength();
+                double theDegree = theAngelController.getAngelNow(theFilteredD);
+                thePositionController.calculationPosition(theDegree, theStepLength);
                 POSITION.Text += "\n角度： " + theDegree.ToString("f4") + " 步长： " + theStepLength.ToString("f4") + " 坐标： " + thePositionController.getPosition();
             }
-}
+        }
 
-/******************************按钮事件控制单元***********************************************/
+        /******************************按钮事件控制单元***********************************************/
 
         //保存数据控制的按钮
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -129,8 +134,8 @@ namespace socketServer
             theFilter = new Filter();
             theAngelController = new rotationAngel();
             tm = new DispatcherTimer();
-            thePositionController = new position ();
-            theStepLengthController = new stepLength ();
+            thePositionController = new position();
+            theStepLengthController = new stepLength();
 
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
             //相关工程更新
@@ -154,8 +159,8 @@ namespace socketServer
         //窗口自动关闭的时候也做一次自动的关闭
         private void Window_Closed(object sender, EventArgs e)
         {
-            if(theServerController != null)
-            theServerController.closeServer();
+            if (theServerController != null)
+                theServerController.closeServer();
         }
 
 
@@ -175,7 +180,7 @@ namespace socketServer
             // MessageBox.Show("GET:\n"+IS);
 
             //滤波之后做各种分析，第一项是步态分析，判断走了多少步
-            int stepCount =thePeackFinder.  countStepWithStatic(theFiltered);
+            int stepCount = thePeackFinder.countStepWithStatic(theFiltered);
 
             ChartWindow theChartWindow = new ChartWindow();
             theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered);
@@ -188,8 +193,8 @@ namespace socketServer
         {
             //为了保证数据干净，要做一次滤波
             List<double> theFiltered = theFilter.theFilerWork(theInformationController.compassDegree);
-            if(theFiltered == null)
-              return;
+            if (theFiltered == null)
+                return;
             //查看滤波后的数据
             // string IS = theFiltered.Count + "条数据\n";
             //for (int i = 0; i < theFiltered.Count; i++)
@@ -204,14 +209,106 @@ namespace socketServer
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox .Show( demoForTensorFlow.DEMO());
+            MessageBox.Show(demoForTensorFlow.DEMO());
         }
 
-        
+
         //自动进行位置计算的方法
         private void button5_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        //这个是最基础的绘图示例方法
+        private void draw_Click(object sender, RoutedEventArgs e)
+        {
+
+         
+        }
+
+        //实时的动态绘制路线图
+        private void drawPositionLine()
+        {
+            theCanvas.Children.Clear();
+            var ellipse = new Ellipse()
+            {
+                Width = 10,
+                Height = 10,
+                Fill = new SolidColorBrush(Colors.Red)
+            };
+
+            Canvas.SetLeft(ellipse, theCanvas.Width / 2);
+            Canvas.SetTop(ellipse , theCanvas.Height / 2);
+            theCanvas.Children.Add(ellipse);
+
+            for (int u = 0; u < thePositionController.theTransformPosition.Count-1; u++)
+            {
+                Line drawLine = new Line();
+                drawLine.X1 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u].X *5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y1 = theCanvas.Height / 2 + thePositionController.theTransformPosition[u].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.X2 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u+1].X * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y2 = theCanvas.Height / 2 + thePositionController.theTransformPosition[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Stroke = new SolidColorBrush(Colors.Black);
+                drawLine.StrokeThickness = 2;
+                theCanvas.Children.Add(drawLine);
+            }
+        }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        void drawEclipse()
+        {
+            var circle = new Ellipse()
+            {
+                Width = 100,
+                Height = 100,
+                Fill = new SolidColorBrush(Colors.White)
+            };
+            var ellipse = new Ellipse()
+            {
+                Width = 50,
+                Height = 100,
+                Fill = new SolidColorBrush(Colors.White)
+            };
+            Canvas.SetLeft(ellipse, 100);
+            theCanvas.Children.Add(circle);
+            theCanvas.Children.Add(ellipse);
+        }
+
+        void drawLine()
+        {
+            Line s = new Line();
+
+
+            s.X1 = theCanvas.Width / 2;
+            s.X2 = 0;
+            s.Y1 = theCanvas.Height / 2;
+            s.Y2 = 0;
+            s.Stroke = new SolidColorBrush(Colors.Black);
+
+            s.StrokeThickness = 3;
+            theCanvas.Children.Clear();
+            theCanvas.Children.Add(s);
+        }
+         
+
+        void draw1()
+        {
+            theCanvas.Children.Clear();
+            var polygon2PointsCollection = new PointCollection();
+            polygon2PointsCollection.Add(new Point() { X = 0 , Y = 0});
+
+            polygon2PointsCollection.Add(new Point() { X = 50, Y = 50 });
+            polygon2PointsCollection.Add(new Point() { X = 50, Y = 100 });
+            polygon2PointsCollection.Add(new Point() { X = 100, Y = 50 });
+            var polygon2 = new Polygon()
+            {
+                Stroke = new SolidColorBrush(Colors.Black),
+                Points = polygon2PointsCollection,
+                // Fill = new SolidColorBrush(Colors.White)
+            };
+            Canvas.SetLeft(polygon2, 100);
+            theCanvas.Children.Add(polygon2);
         }
     }
 }

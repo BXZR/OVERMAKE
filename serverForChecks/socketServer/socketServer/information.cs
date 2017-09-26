@@ -40,16 +40,24 @@ namespace socketServer
             double theCDData = 0;
             for(int i=0;i< splitInformation .Length ;i++)
             {
-                try
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
                 {
-
-                   // Random D = new Random();
-                    theCDData = Convert.ToDouble(splitInformation[i]);// +D.Next(20, 180);
-                        
+                    continue;
                 }
-                catch
+                else
                 {
-                    theCDData = 0;
+                    try
+                    {
+
+                        // Random D = new Random();
+                        theCDData = Convert.ToDouble(splitInformation[i]);// +D.Next(20, 180);
+
+                    }
+                    catch
+                    {
+                        Console.WriteLine("信息不完整：" + splitInformation[i]);
+                        theCDData = 0;
+                    }
                 }
                 compassDegree.Add(theCDData);
             }
@@ -62,15 +70,22 @@ namespace socketServer
             double theAYData = 0;
             for(int i=0;i< splitInformation .Length ;i++)
             {
-                try
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
                 {
-                    theAYData  = Convert.ToDouble( splitInformation[i]);
+                    continue;
                 }
-                catch
+                else
                 {
-                    theAYData = 0;
+                    try
+                    {
+                        theAYData = Convert.ToDouble(splitInformation[i]);
+                    }
+                    catch
+                    {
+                        theAYData = 0;
+                    }
+                    accelerometerY.Add(theAYData);
                 }
-                accelerometerY.Add(theAYData);
             }
         }
     }

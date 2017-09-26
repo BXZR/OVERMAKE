@@ -9,10 +9,21 @@
         <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,282" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
         <Grid Margin="10,10,166,76" Name="Chart">
             <Label Content="counts" Height="28" Margin="10,10,425,0" Name="theStepLabel" VerticalAlignment="Top" />
-            <TextBox x:Name="POSITION" HorizontalAlignment="Left" Height="372" Margin="10,57,0,0" TextWrapping="Wrap" Text="POSITION  [start at (0,0)]:" VerticalAlignment="Top" Width="819" IsReadOnlyCaretVisible="True"/>
+            <TextBox x:Name="POSITION" HorizontalAlignment="Left" Height="372" Margin="10,57,0,0" TextWrapping="Wrap" Text="POSITION  [start at (0,0)]:" VerticalAlignment="Top" Width="398" IsReadOnlyCaretVisible="True"/>
+            <Canvas x:Name="theCanvas" Margin="459,57,23,34" Background="#FFFFF0F0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="348" Width="369" RenderTransformOrigin="0.504,0.503">
+                <Canvas.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Canvas.LayoutTransform>
+            </Canvas>
         </Grid>
         <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,25,327" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
         <Button x:Name="button" Content="tensorFlowDEMO" HorizontalAlignment="Left" Margin="21,470,0,0" VerticalAlignment="Top" Width="373" Click="button_Click"/>
         <Button x:Name="button5" Content="position" HorizontalAlignment="Left" Margin="927,267,0,0" VerticalAlignment="Top" Width="75" Click="button5_Click"/>
+        <Button x:Name="draw" Content="draw" HorizontalAlignment="Left" Margin="904,331,0,0" VerticalAlignment="Top" Width="75" Click="draw_Click"/>
     </Grid>
 </Window>

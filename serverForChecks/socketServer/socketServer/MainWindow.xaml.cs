@@ -38,7 +38,7 @@ namespace socketServer
         position thePositionController;//最终定位的控制单元
         stepLength theStepLengthController;//用来确定步长的控制单元
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
-
+        pictureMaker thePictureMaker;//隔一段时间，做一张图片
         float stepTimer = 2f;//间隔多长时间进行一次计算
 
         public MainWindow()
@@ -84,10 +84,18 @@ namespace socketServer
                 theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
                 theStepLengthUse.Add(theStepLengthController.getStepLength());//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
             }
-            theStepLabel.Content = "(带缓存)一共走了" + PeackSearcher.TheStepCount + "/" + thePeackFinder.peackBuff.Count + "步";
+            theStepLabel.Content = "(带缓存)一共走了" + PeackSearcher.TheStepCount + "/" + thePeackFinder.peackBuff.Count + "步        绘制图像： "+SystemSave .pictureNumber +"  总数据量： " + theInformationController.accelerometerY.Count;
             POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
             //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
             drawPositionLine();
+
+            //如果数据足够多，就需要保存成一张图像
+            if (theInformationController.accelerometerY.Count > SystemSave.countUseX)
+            {
+                thePictureMaker.createPictureFromData(theInformationController);
+                theInformationController.flashInformation();
+                SystemSave.stepCount += thePeackFinder.peackBuff.Count;
+            }
         }
         /*************************************************方法1（比较原始）*************************************************************/
         //判断一步依赖于一个假说：
@@ -136,7 +144,7 @@ namespace socketServer
             tm = new DispatcherTimer();
             thePositionController = new position();
             theStepLengthController = new stepLength();
-
+            thePictureMaker = new pictureMaker(); 
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
             //相关工程更新
             makeFlashController();
@@ -309,6 +317,12 @@ namespace socketServer
             };
             Canvas.SetLeft(polygon2, 100);
             theCanvas.Children.Add(polygon2);
+        }
+
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            thePictureMaker = new pictureMaker();
+            thePictureMaker.createPictureFromData();
         }
     }
 }

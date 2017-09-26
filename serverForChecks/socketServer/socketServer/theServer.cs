@@ -162,6 +162,18 @@ namespace socketServer
                                         //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
                                         theInformationController.addInformation(theSplited[1], UseDataType.compassDegree);//正北0度
                                     }break;
+                                case 2:
+                                    {
+                                        //第三大项： X轴加速度
+                                        theInformationController.addInformation(theSplited[2], UseDataType.accelerometerX); 
+                                    }
+                                    break;
+                                case 3:
+                                    {
+                                        //第三大项： Z轴加速度
+                                        theInformationController.addInformation(theSplited[3], UseDataType.accelerometerZ);
+                                    }
+                                    break;
                             }
                         }
                         //第三大项： 陀螺仪的X轴

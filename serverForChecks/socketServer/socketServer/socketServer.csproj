@@ -63,6 +63,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,9 +95,11 @@
     <Compile Include="FileSaver.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="information.cs" />
+    <Compile Include="pictureMaker.cs" />
     <Compile Include="position.cs" />
     <Compile Include="rotationAngel.cs" />
     <Compile Include="stepLength.cs" />
+    <Compile Include="SystemSave.cs" />
     <Compile Include="tensorflowUse.cs" />
     <Compile Include="theServer.cs" />
     <Page Include="ChartWindow.xaml">

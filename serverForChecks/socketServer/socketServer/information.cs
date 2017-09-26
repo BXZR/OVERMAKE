@@ -17,6 +17,8 @@ namespace socketServer
 
        public List<string> allInformation = new List<string>();//总的信息缓存
        public List<double> accelerometerY = new List<double>();//专门用于记录加速计Y轴的数据的数组
+       public List<double> accelerometerZ = new List<double>();//专门用于记录加速计Z轴的数据的数组
+       public List<double> accelerometerX = new List<double>();//专门用于记录加速计X轴的数据的数组
        public List <double> compassDegree = new List<double> ();//专门用于记录磁力计辅助数据的数组
         //唯一对外开放的存储方法
         public void addInformation(string information , UseDataType theType)
@@ -26,11 +28,30 @@ namespace socketServer
             {
                 saveAY(information);
             }
+            if (theType == UseDataType.accelerometerX)
+            {
+               saveAX(information);
+            }
+            if (theType == UseDataType.accelerometerZ)
+            {
+                saveAZ(information);
+            }
             if (theType == UseDataType.compassDegree)
             {
                 saveCD(information);
             }
 
+        }
+
+        //唯一对外开放的清理方法
+        //进入下一个阶段的记录
+        public void flashInformation()
+        {
+            allInformation.Clear();
+            accelerometerY.Clear();
+            accelerometerZ.Clear();
+            accelerometerX.Clear();
+            compassDegree.Clear();
         }
 
          //各种分量的存储小方法,私有，绝对要私有
@@ -88,5 +109,59 @@ namespace socketServer
                 }
             }
         }
+
+        //各种分量的存储小方法,私有，绝对要私有
+        private void saveAX(string information)
+        {
+            string[] splitInformation = information.Split(',');
+            double theAXData = 0;
+            for (int i = 0; i < splitInformation.Length; i++)
+            {
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+                        theAXData = Convert.ToDouble(splitInformation[i]);
+                    }
+                    catch
+                    {
+                        theAXData = 0;
+                    }
+                    accelerometerX.Add(theAXData);
+                }
+            }
+        }
+
+        //各种分量的存储小方法,私有，绝对要私有
+        private void saveAZ(string information)
+        {
+            string[] splitInformation = information.Split(',');
+            double theAZData = 0;
+            for (int i = 0; i < splitInformation.Length; i++)
+            {
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+                        theAZData = Convert.ToDouble(splitInformation[i]);
+                    }
+                    catch
+                    {
+                        theAZData = 0;
+                    }
+                    accelerometerZ.Add(theAZData);
+                }
+            }
+        }
+
+
     }
 }

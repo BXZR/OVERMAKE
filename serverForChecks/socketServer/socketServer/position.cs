@@ -48,8 +48,7 @@ namespace socketServer
         //但是这种方法大幅度减缓了周期，看上去还算合算
         public string getPositions(List<double> angels, List<double> stepLengths)
         {
-            positionX = 0;
-            positionY = 0;
+            
             List<double> XSave = new List<double>();
             List<double> YSave = new List<double>();
 
@@ -66,7 +65,7 @@ namespace socketServer
                 YSave.Add(positionY);
             }
 
-            theTransformPosition.Clear();
+           // theTransformPosition.Clear();
             for (int i = 0; i < XSave.Count; i++)
             {
                 theTransformPosition.Add(new transForm(XSave[i] , YSave[i]));

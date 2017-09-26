@@ -17,7 +17,11 @@ public class demoForgetInfotmation : MonoBehaviour {
 
 
 	string informationForAY = "";
+	string informationForAZ = "";
+	string informationForAX = "";
 	string informationForGyroDegree = ""; 
+
+
 
 
 	public void makeEnd()
@@ -34,7 +38,7 @@ public class demoForgetInfotmation : MonoBehaviour {
 		Input.compass.enabled = true;
 		InvokeRepeating ("makeInformation", 0.5f, 0.05f);
 		InvokeRepeating ("sendInformation", 0.5f, 1f);
-		//StartCoroutine (startGPS ());
+		InvokeRepeating ("textShowFlash", 0.5f, 2f);//StartCoroutine (startGPS ());
 		//locationServerStatus = Input.location.status; //返回设备服务状态  
 		Input.location .Start(10,10);
 		theServer.clientMain ();
@@ -42,15 +46,22 @@ public class demoForgetInfotmation : MonoBehaviour {
 
 
 
-
+	//每隔一段时间清理一下，否则容量不足
+	void textShowFlash()
+	{
+		theshower.text = "";
+		information = "";
+	}
 
 
 	public void sendInformation()
 	{
-		string sendString = informationForAY +";" + informationForGyroDegree +";";
+		string sendString = informationForAY +";" + informationForGyroDegree +";" + informationForAX +";" + informationForAZ;
 		theServer.send (sendString);
 		informationForAY = "";
 		informationForGyroDegree = "";
+		informationForAX = "";
+		informationForAZ = "";
 	}
 
 	public void  makeInformation()
@@ -65,8 +76,10 @@ public class demoForgetInfotmation : MonoBehaviour {
 			if(allCount >maxCount)
 				CancelInvoke();
 
-			informationForAY += (Input .acceleration .y).ToString("f4")+",";
+			informationForAY += (Input .acceleration .y  ).ToString("f4")+",";
 			informationForGyroDegree += Input .compass.trueHeading.ToString("f4")+",";
+			informationForAX  += (Input .acceleration .x).ToString("f4")+",";
+			informationForAZ  += (Input .acceleration .z).ToString("f4")+",";
 		}
 		catch(Exception d)
 		{

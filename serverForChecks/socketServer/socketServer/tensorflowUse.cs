@@ -125,7 +125,7 @@ namespace socketServer
                             }
                         }
                     }
-
+                    //返回的就是一个文件里面的字符串，bestIdx是从网上那边得到的
                     return ($"{Path.GetFileName(file)} 最佳匹配: [{bestIdx}] {best * 100.0}% 标识为：{labels[bestIdx]}");
                 }
             }

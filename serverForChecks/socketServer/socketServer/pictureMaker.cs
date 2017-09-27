@@ -41,10 +41,10 @@ namespace socketServer
                      (
                         255 ,
                         //(int)theInformationController.compassDegree[j]* 255 / 360,
-                        ((int)theInformationController.accelerometerX[j]+2) * 50,
+                        ((int)theInformationController.accelerometerX[j]+7) * 10,
 
-                        ((int)theInformationController.accelerometerY[j]+2)* 50,
-                        ((int)theInformationController.accelerometerZ[j]+2)* 50
+                        ((int)theInformationController.accelerometerY[j]+7)* 10,
+                        ((int)theInformationController.accelerometerZ[j]+7)* 10
                          
                       );
                    // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");

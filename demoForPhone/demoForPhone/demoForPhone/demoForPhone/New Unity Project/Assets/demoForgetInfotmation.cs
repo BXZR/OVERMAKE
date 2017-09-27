@@ -77,6 +77,7 @@ public class demoForgetInfotmation : MonoBehaviour {
 				CancelInvoke();
 
 			informationForAY += (Input .acceleration .y  ).ToString("f4")+",";
+
 			informationForGyroDegree += Input .compass.trueHeading.ToString("f4")+",";
 			informationForAX  += (Input .acceleration .x).ToString("f4")+",";
 			informationForAZ  += (Input .acceleration .z).ToString("f4")+",";
@@ -96,6 +97,7 @@ public class demoForgetInfotmation : MonoBehaviour {
 		string theInformationNow = "";
 		theInformationNow += string.Format ("\n加速计:({0} , {1} , {2})",Input .acceleration.x.ToString("f2") , Input .acceleration .y.ToString("f2") , Input .acceleration .z.ToString("f2"));
 		theInformationNow += string.Format ("   陀螺仪:({0} , {1} , {2})", Input .gyro .rotationRateUnbiased.x.ToString("f2") , Input .gyro .rotationRateUnbiased .y.ToString("f2") , Input  .gyro .rotationRateUnbiased.z.ToString("f2"));
+		theInformationNow += "\n陀螺仪角度 ： "+Input.gyro.attitude.eulerAngles.y + "  磁力计角度： "+Input .compass.trueHeading.ToString("f2") + "  磁力计角度2： "+ Input .compass.headingAccuracy.ToString("f2")+"\n";
 		theInformationNow += string.Format ("   磁力计:({0} , {1} , {2})", Input .compass .rawVector .x.ToString("f2") , Input .compass .rawVector   .y.ToString("f2") , Input  .compass .rawVector .z.ToString("f2"));
 		theInformationNow += string.Format("\nGPS ({0},{1})", Input.location .lastData.longitude, Input .location .lastData .latitude);
 		information += theInformationNow;

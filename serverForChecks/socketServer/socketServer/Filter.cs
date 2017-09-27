@@ -12,12 +12,12 @@ namespace socketServer
  
 
      //唯一对外平滑方法
-    public List <double> theFilerWork(List<double> IN)
+    public List <double> theFilerWork(List<double> IN , float  theValueUse = 0.4f)
     {
             List<double> outList = new List<double>();
             for (int i = 0; i < IN.Count; i++)
                 outList.Add(IN[i]);
-        outList = theFliterMethod1(outList);
+        outList = theFliterMethod1(outList, theValueUse);
         outList = GetKalMan(outList);
         outList = theFliterMethod2(outList);
         return outList;
@@ -36,8 +36,8 @@ namespace socketServer
     //    滞后程度取决于a值大小
     //    不能消除滤波频率高于采样频率的1/2的干扰信号
 
-        double theValueA = 0.4f;
-        private List<double> theFliterMethod1(List<double> IN)
+        //之前的数据占40%的影响，这在step滤波的时候很有用，但是在角度的时候确实不好
+        private List<double> theFliterMethod1(List<double> IN , float theValueA = 0.4f)
         {
             for (int i = 1; i < IN.Count; i++)
             {

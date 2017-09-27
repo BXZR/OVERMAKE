@@ -15,6 +15,7 @@ namespace socketServer
         //图像的长和宽，也是规定的每一个阶段的数据的数量
         public static int countUseX = 400;//每400条数据做一张图片
         public static int countUseY = 300;//这个是重复的
+        public static List<transForm> savedPositions = new List<transForm>();
 
     }
 }

@@ -71,9 +71,9 @@ namespace socketServer
         void withSavedData(object sender, EventArgs e)
         {
 
-            List<double> theFilteredAY = theFilter.theFilerWork(theInformationController.accelerometerY);
-            List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree);
-            int stepCount = thePeackFinder.countStepWithStatic(theFilteredAY);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+            List<double> theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
+            int stepCount = thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
             //根据下标获得需要的旋转角和步长
             //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
             List<double> theStepAngeUse = new List<double>();
@@ -92,9 +92,15 @@ namespace socketServer
             //如果数据足够多，就需要保存成一张图像
             if (theInformationController.accelerometerY.Count > SystemSave.countUseX)
             {
+                for (int i = 0; i < thePositionController.theTransformPosition.Count; i++)
+                {
+                    SystemSave.savedPositions.Add(thePositionController.theTransformPosition[i]);
+                }
+
                 thePictureMaker.createPictureFromData(theInformationController);
                 theInformationController.flashInformation();
                 SystemSave.stepCount += thePeackFinder.peackBuff.Count;
+
             }
         }
         /*************************************************方法1（比较原始）*************************************************************/
@@ -248,6 +254,18 @@ namespace socketServer
             Canvas.SetLeft(ellipse, theCanvas.Width / 2);
             Canvas.SetTop(ellipse , theCanvas.Height / 2);
             theCanvas.Children.Add(ellipse);
+
+            for (int u = 0; u < SystemSave.savedPositions .Count -1; u++)
+            {
+                Line drawLine = new Line();
+                drawLine.X1 = theCanvas.Width / 2 + SystemSave.savedPositions[u].X * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y1 = theCanvas.Height / 2 + SystemSave.savedPositions[u].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.X2 = theCanvas.Width / 2 + SystemSave.savedPositions[u+1].X * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y2 = theCanvas.Height / 2 + SystemSave.savedPositions[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Stroke = new SolidColorBrush(Colors.Magenta);
+                drawLine.StrokeThickness = 2;
+                theCanvas.Children.Add(drawLine);
+            }
 
             for (int u = 0; u < thePositionController.theTransformPosition.Count-1; u++)
             {

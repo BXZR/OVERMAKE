@@ -59,7 +59,7 @@ namespace socketServer
         {
              string []splitInformation = information .Split(',');
             double theCDData = 0;
-            for(int i=0;i< splitInformation .Length ;i++)
+            for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
                 {
@@ -80,7 +80,7 @@ namespace socketServer
                         theCDData = 0;
                     }
                 }
-                compassDegree.Add(theCDData);
+                compassDegree.Add(theCDData +90);//这个是我用别人的手机指南针软件搞出来的角度与这个角度的差异，中间相差90度
             }
         }
     

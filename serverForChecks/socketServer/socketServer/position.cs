@@ -8,7 +8,7 @@ namespace socketServer
 {
 
     //用来记录的类
-    class transForm
+   public class transForm
     {
         public double X;
         public double Y;
@@ -48,7 +48,17 @@ namespace socketServer
         //但是这种方法大幅度减缓了周期，看上去还算合算
         public string getPositions(List<double> angels, List<double> stepLengths)
         {
-            
+            if (SystemSave.savedPositions.Count > 0)
+            {
+                int index = SystemSave.savedPositions.Count-1;
+                positionX = SystemSave.savedPositions[index].X;
+                positionY = SystemSave.savedPositions[index].Y;
+            }
+            else
+            {
+                positionX = 0;
+                positionY = 0;
+            }
             List<double> XSave = new List<double>();
             List<double> YSave = new List<double>();
 
@@ -65,7 +75,7 @@ namespace socketServer
                 YSave.Add(positionY);
             }
 
-           // theTransformPosition.Clear();
+            theTransformPosition.Clear();
             for (int i = 0; i < XSave.Count; i++)
             {
                 theTransformPosition.Add(new transForm(XSave[i] , YSave[i]));

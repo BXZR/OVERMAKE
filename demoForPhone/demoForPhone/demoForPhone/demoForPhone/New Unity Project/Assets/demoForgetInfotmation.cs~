@@ -71,7 +71,7 @@ public class demoForgetInfotmation : MonoBehaviour {
 			allInformationMake();
 			if(Input .location .isEnabledByUser == false)
 				message = "GPS不可用";
-			theshower.text ="<color=#8E1717>"  + message +"</color>   <color=#FFFF00>"+ server .limkS +"</color> "+"\n\n" +information;
+			theshower.text =+"\n\n" +information;
 			allCount ++;
 			if(allCount >maxCount)
 				CancelInvoke();

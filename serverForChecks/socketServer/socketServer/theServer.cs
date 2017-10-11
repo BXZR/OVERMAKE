@@ -179,6 +179,7 @@ namespace socketServer
                         //第三大项： 陀螺仪的X轴
                         //第四大项： 陀螺仪的Y轴
                         //第五大项： 陀螺仪的Z轴
+                        myClientSocket.Send(Encoding.UTF8.GetBytes(SystemSave .stepCount.ToString()));//发送一个步数信息
                     }
                     else//客户端请求关闭连接
                     {

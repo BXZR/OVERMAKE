@@ -46,8 +46,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\demoForgetInfotmation.cs" />
-     <Compile Include="Assets\inputChange.cs" />
+     <Compile Include="Assets\codes\inputChange.cs" />
+     <Compile Include="Assets\codes\systemValues.cs" />
+     <Compile Include="Assets\controller.cs" />
+     <Compile Include="Assets\informationGeter.cs" />
+     <Compile Include="Assets\informationShower.cs" />
      <Compile Include="Assets\server.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity3D 5.6.1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

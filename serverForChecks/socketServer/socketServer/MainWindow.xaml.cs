@@ -39,7 +39,7 @@ namespace socketServer
         stepLength theStepLengthController;//用来确定步长的控制单元
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
-        float stepTimer = 2f;//间隔多长时间进行一次计算
+        float stepTimer = 1f;//间隔多长时间进行一次计算
 
         public MainWindow()
         {
@@ -84,7 +84,7 @@ namespace socketServer
                 theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
                 theStepLengthUse.Add(theStepLengthController.getStepLength());//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
             }
-            theStepLabel.Content = "(带缓存)一共走了" + PeackSearcher.TheStepCount + "/" + thePeackFinder.peackBuff.Count + "步        绘制图像： "+SystemSave .pictureNumber +"  总数据量： " + theInformationController.accelerometerY.Count;
+            theStepLabel.Content = "(带缓存)一共走了" + PeackSearcher.TheStepCount + "/" + thePeackFinder.peackBuff.Count+"/"+SystemSave .stepCount + "步        绘制图像： "+SystemSave .pictureNumber +"  总数据量： " + theInformationController.accelerometerY.Count;
             POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
             //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
             drawPositionLine();
@@ -134,7 +134,10 @@ namespace socketServer
         //保存数据控制的按钮
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            //saveInformation(informationSave);
+            string saveStringUse = "";
+            for (int i = 0; i < SystemSave.savedPositions.Count; i++)
+                saveStringUse += SystemSave.savedPositions[i].toString() + "\n";
+            theFileSaver.saveInformation(saveStringUse);
         }
 
         //startServer按钮控制单元
@@ -227,18 +230,6 @@ namespace socketServer
         }
 
 
-        //自动进行位置计算的方法
-        private void button5_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        //这个是最基础的绘图示例方法
-        private void draw_Click(object sender, RoutedEventArgs e)
-        {
-
-         
-        }
 
         //实时的动态绘制路线图
         private void drawPositionLine()

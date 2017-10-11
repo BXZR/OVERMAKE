@@ -10,6 +10,8 @@ namespace socketServer
     class FileSaver
     {
 
+
+
         //如果传入的是一个字符串List
         public void saveInformation(List<string> theList, string fileName = @"information.txt")
         {

@@ -11,7 +11,7 @@ public class server : MonoBehaviour {
 
 	private static byte[] result = new byte[1024];  
 	private static int myProt = 8886;   //端口  
-
+	public static string  serverIP = "219.216.73.162";
 	static Socket serverSocket;  
 	static Thread myThread;
 	static Socket clientSocketInServer;
@@ -42,7 +42,7 @@ public class server : MonoBehaviour {
 		try
 		{
 		//服务器IP地址  
-		IPAddress ip = IPAddress.Parse("219.216.73.162");  
+		IPAddress ip = IPAddress.Parse(serverIP);  
 		serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);  
 		serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
 		serverSocket.Listen(10);    //设定最多10个排队连接请求  
@@ -104,7 +104,7 @@ public class server : MonoBehaviour {
 	   
 	}
 
-	//////////////////////////////////////////////////////
+//----------------------------------------------------------------------------------------------------------------------//
  
 	public void clientMain(string message = "")
 	{
@@ -117,7 +117,7 @@ public class server : MonoBehaviour {
 	{
  
 		//设定服务器IP地址  
-		IPAddress ip = IPAddress.Parse("219.216.73.162");  
+		IPAddress ip = IPAddress.Parse(serverIP);  
 		if (clientSocket == null)
 		{
 			clientSocket = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);  

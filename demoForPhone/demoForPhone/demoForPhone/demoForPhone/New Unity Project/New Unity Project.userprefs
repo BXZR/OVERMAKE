@@ -1,9 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\demoForgetInfotmation.cs">
     <Files>
-      <File FileName="Assets\server.cs" Line="1" Column="1" />
-      <File FileName="Assets\demoForgetInfotmation.cs" Line="81" Column="47" />
+      <File FileName="Assets\server.cs" Line="14" Column="50" />
+      <File FileName="Assets\demoForgetInfotmation.cs" Line="103" Column="51" />
+      <File FileName="Assets\inputChange.cs" Line="10" Column="60" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

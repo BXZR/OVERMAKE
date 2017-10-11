@@ -17,6 +17,10 @@ namespace socketServer
             X = XIn;
             Y = YIn; 
         }
+        public string toString()
+        {
+            return ("X = " + X + " Y = " + Y);
+        }
     }
 
     //这个类专门用来计算坐标

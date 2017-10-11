@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="555" Width="1027" Closed="Window_Closed">
     <Grid Margin="0,0,-8,0">
-        <Button Content="save" Height="22" HorizontalAlignment="Right" Margin="0,0,25,379" Name="button1" VerticalAlignment="Bottom" Width="75" Click="button1_Click" />
-        <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,76,25,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
-        <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,23,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
-        <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,282" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
+        <Button Content="save" Height="22" HorizontalAlignment="Right" Margin="0,0,25,344" Name="button1" VerticalAlignment="Bottom" Width="75" Click="button1_Click" />
+        <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,66,25,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
+        <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,112,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
+        <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,236" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
         <Grid Margin="10,10,166,76" Name="Chart">
             <Label Content="counts" Height="28" Margin="10,10,425,0" Name="theStepLabel" VerticalAlignment="Top" />
             <TextBox x:Name="POSITION" HorizontalAlignment="Left" Height="372" Margin="10,57,0,0" TextWrapping="Wrap" Text="POSITION  [start at (0,0)]:" VerticalAlignment="Top" Width="398" IsReadOnlyCaretVisible="True"/>
@@ -21,10 +21,11 @@
                 </Canvas.LayoutTransform>
             </Canvas>
         </Grid>
-        <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,25,327" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
+        <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,25,285" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
         <Button x:Name="button" Content="tensorFlowDEMO" HorizontalAlignment="Left" Margin="21,470,0,0" VerticalAlignment="Top" Width="373" Click="button_Click"/>
-        <Button x:Name="button5" Content="position" HorizontalAlignment="Left" Margin="927,267,0,0" VerticalAlignment="Top" Width="75" Click="button5_Click"/>
-        <Button x:Name="draw" Content="draw" HorizontalAlignment="Left" Margin="927,312,0,0" VerticalAlignment="Top" Width="75" Click="draw_Click"/>
-        <Button x:Name="button7" Content="createPic" HorizontalAlignment="Left" Margin="927,360,0,0" VerticalAlignment="Top" Width="75" Click="button7_Click"/>
+        <Button x:Name="button7" Content="createPic" HorizontalAlignment="Left" Margin="927,348,0,0" VerticalAlignment="Top" Width="75" Click="button7_Click"/>
+        <Label x:Name="Charts" Content="Charts" Margin="0,0,87,313" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="47"/>
+        <Label x:Name="Charts_Copy" Content="Tools" Margin="0,0,87,473" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="47"/>
+        <Label x:Name="Charts_Copy1" Content="Demos" Margin="0,0,87,184" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="57"/>
     </Grid>
 </Window>

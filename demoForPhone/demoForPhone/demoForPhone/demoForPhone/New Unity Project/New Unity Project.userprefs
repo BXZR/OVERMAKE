@@ -1,12 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\server.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\codes\controller.cs">
     <Files>
-      <File FileName="Assets\codes\systemValues.cs" Line="1" Column="1" />
-      <File FileName="Assets\informationGeter.cs" Line="21" Column="40" />
-      <File FileName="Assets\server.cs" Line="72" Column="1" />
-      <File FileName="Assets\informationShower.cs" Line="28" Column="66" />
-      <File FileName="Assets\controller.cs" Line="26" Column="48" />
+      <File FileName="Assets\codes\systemValues.cs" Line="8" Column="46" />
+      <File FileName="Assets\codes\informationShower.cs" Line="24" Column="27" />
+      <File FileName="Assets\codes\server.cs" Line="58" Column="30" />
+      <File FileName="Assets\codes\informationGeter.cs" Line="32" Column="41" />
+      <File FileName="Assets\codes\controller.cs" Line="52" Column="11" />
+      <File FileName="Assets\codes\REController.cs" Line="1" Column="1" />
+      <File FileName="Assets\codes\buttons.cs" Line="11" Column="25" />
+      <File FileName="Assets\codes\inputChange.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

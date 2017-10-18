@@ -64,7 +64,7 @@ namespace socketServer
             tm.Start();
         }
 
-        /*************************************************方法2（带缓冲）*************************************************************/
+        /*************************************************方法2（带缓冲，真正使用的）*************************************************************/
         //主要思路与方法1是差不多的，只不过是在一个比较长的时间之内判断多个波峰和波谷，
         //然后进行统一的计算
         //为此需要一个缓冲区
@@ -73,7 +73,7 @@ namespace socketServer
 
             List<double> theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
             List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
-            int stepCount = thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+            int stepcounts =  thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
             //根据下标获得需要的旋转角和步长
             //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
             List<double> theStepAngeUse = new List<double>();
@@ -84,13 +84,15 @@ namespace socketServer
                 theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
                 theStepLengthUse.Add(theStepLengthController.getStepLength());//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
             }
-            theStepLabel.Content = "(带缓存)一共走了" + PeackSearcher.TheStepCount + "/" + thePeackFinder.peackBuff.Count+"/"+SystemSave .stepCount + "步        绘制图像： "+SystemSave .pictureNumber +"  总数据量： " + theInformationController.accelerometerY.Count;
+            theStepLabel.Content = "(带缓存计步方法)\n原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
+            theStepLabel.Content += "    历史存储步数：" + SystemSave.stepCount + "步 \n绘制图像： " + SystemSave.pictureNumber;
+            theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目："+ SystemSave.getValuesCount( theInformationController.accelerometerY.Count);
             POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
             //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
             drawPositionLine();
 
             //如果数据足够多，就需要保存成一张图像
-            if (theInformationController.accelerometerY.Count > SystemSave.countUseX)
+            if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
             {
                 for (int i = 0; i < thePositionController.theTransformPosition.Count; i++)
                 {

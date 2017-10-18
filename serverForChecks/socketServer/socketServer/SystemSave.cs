@@ -10,12 +10,21 @@ namespace socketServer
     class SystemSave
     {
         public static int stepCount = 0;
-        public static int pictureNumber = 0;
+        public static int pictureNumber = 0;//生成图像数量，也表示产生的分组的数量
+
+        public static int buffCount = 400;//缓冲区大小
+        //需要注意的是缓冲区的大小需要跟countUseX相同（至少在当前图像生成策略中如此）
 
         //图像的长和宽，也是规定的每一个阶段的数据的数量
+        //此外，当前countUseX，countUseY还是根据数据生成图像的分辨率
         public static int countUseX = 400;//每400条数据做一张图片
         public static int countUseY = 300;//这个是重复的
+
         public static List<transForm> savedPositions = new List<transForm>();
 
+        public static int getValuesCount (int valueNow = 0)//传入的是未计入分组的数据信息
+        {
+            return pictureNumber * buffCount + valueNow;
+        }
     }
 }

@@ -8,8 +8,8 @@
         <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,112,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
         <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,236" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
         <Grid Margin="10,10,166,76" Name="Chart">
-            <Label Content="counts" Height="28" Margin="10,10,425,0" Name="theStepLabel" VerticalAlignment="Top" />
-            <TextBox x:Name="POSITION" HorizontalAlignment="Left" Height="372" Margin="10,57,0,0" TextWrapping="Wrap" Text="POSITION  [start at (0,0)]:" VerticalAlignment="Top" Width="398" IsReadOnlyCaretVisible="True"/>
+            <Label Content="counts" Height="60" Margin="10,10,425,0" Name="theStepLabel" VerticalAlignment="Top" />
+            <TextBox x:Name="POSITION" HorizontalAlignment="Left" Height="339" Margin="10,90,0,0" TextWrapping="Wrap" Text="POSITION  [start at (0,0)]:" VerticalAlignment="Top" Width="398" IsReadOnlyCaretVisible="True"/>
             <Canvas x:Name="theCanvas" Margin="431,10,-20,-49" Background="#FFF0FFFE" HorizontalAlignment="Center" VerticalAlignment="Center" Height="478" Width="440" RenderTransformOrigin="0.504,0.503">
                 <Canvas.LayoutTransform>
                     <TransformGroup>

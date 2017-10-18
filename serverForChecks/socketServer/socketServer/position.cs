@@ -38,6 +38,7 @@ namespace socketServer
             positionY = positionY + Math.Cos(angel) * stepLength;
         }
 
+        //获取到当前的坐标
         public string getPosition()
         {
             return " (" + positionX.ToString("f4") + " , " + positionY.ToString("f4") + ")"; 
@@ -54,6 +55,7 @@ namespace socketServer
         {
             if (SystemSave.savedPositions.Count > 0)
             {
+                //获得最后的一个坐标信息
                 int index = SystemSave.savedPositions.Count-1;
                 positionX = SystemSave.savedPositions[index].X;
                 positionY = SystemSave.savedPositions[index].Y;
@@ -66,7 +68,7 @@ namespace socketServer
             List<double> XSave = new List<double>();
             List<double> YSave = new List<double>();
 
-            string theInformation = "角度： 0.0000 步长： 0.9500 坐标： （0.0000,0.0000）\n";
+            string theInformation = "角度： 0.0000  步长： 0.9500  坐标： （0.0000,0.0000）\n";
             for (int i = 0; i < angels .Count; i++)
             {
                 double XAdd = Math.Sin(getRadianFromDegree(angels[i])) * stepLengths[i];
@@ -83,7 +85,7 @@ namespace socketServer
             for (int i = 0; i < XSave.Count; i++)
             {
                 theTransformPosition.Add(new transForm(XSave[i] , YSave[i]));
-                theInformation += "角度： " + angels[i].ToString("f4") + " 步长： "+stepLengths [i]+"坐标：  (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
+                theInformation += "角度： " + angels[i].ToString("f4") + "  步长： "+stepLengths [i]+"  坐标： (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
             }
             return theInformation;
         }

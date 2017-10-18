@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace socketServer
 {
@@ -21,6 +18,12 @@ namespace socketServer
         public static int countUseY = 300;//这个是重复的
 
         public static List<transForm> savedPositions = new List<transForm>();
+
+        //颜色设置
+        public static Color theOldColor = Colors.Magenta;//绘制颜色（之前的旧轨迹）
+        public static Color theNewColor = Colors.Black;//绘制颜色（当前的轨迹）
+        public static Color theNewColor2 = Colors.Orange;//绘制颜色（当前的轨迹  ，方法2的颜色）
+        //应该还有一个对比用的颜色，但是在这里先不写
 
         public static int getValuesCount (int valueNow = 0)//传入的是未计入分组的数据信息
         {

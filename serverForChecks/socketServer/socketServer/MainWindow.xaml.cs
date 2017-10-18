@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
-using System.IO;
 using System.Windows.Threading;
+
+
+
 
 namespace socketServer
 {
@@ -83,13 +75,32 @@ namespace socketServer
 
                 theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
                 theStepLengthUse.Add(theStepLengthController.getStepLength());//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+
             }
             theStepLabel.Content = "(带缓存计步方法)\n原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
             theStepLabel.Content += "    历史存储步数：" + SystemSave.stepCount + "步 \n绘制图像： " + SystemSave.pictureNumber;
             theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目："+ SystemSave.getValuesCount( theInformationController.accelerometerY.Count);
             POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
             //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
-            drawPositionLine();
+
+
+            //两种绘制方法也算是各有千秋，所以给一个选项自行选择吧
+            if (drawWithBufferCheck.IsChecked == true)
+            {
+                //实时绘制图像，重新绘制的方式
+                drawPositionLine();
+                Console.WriteLine("sdf");
+            }
+            else
+            {
+                //实时绘制图像，但是并不重新绘制
+                for (int u = savedIndex; u < thePositionController.theTransformPosition.Count; u++)
+                {
+                    savedIndex = thePositionController.theTransformPosition.Count - 1;
+                    drawPositionLineOnTime(thePositionController.theTransformPosition[u].X, thePositionController.theTransformPosition[u].Y);
+                }
+            }
+
 
             //如果数据足够多，就需要保存成一张图像
             if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
@@ -98,6 +109,8 @@ namespace socketServer
                 {
                     SystemSave.savedPositions.Add(thePositionController.theTransformPosition[i]);
                 }
+
+                savedIndex = 0;
 
                 thePictureMaker.createPictureFromData(theInformationController);
                 theInformationController.flashInformation();
@@ -233,7 +246,40 @@ namespace socketServer
 
 
 
-        //实时的动态绘制路线图
+        //这个方法辅助用的字段两个：
+        private double  X1Save = 0;
+        private double  Y1Save = 0;
+        private int savedIndex = 0;
+        //实时的动态绘制路线图 (方法2,单纯地累加，误差一定会有，但是相对可控性提高)
+        private void drawPositionLineOnTime(double X2 , double Y2)
+        {
+            //绘制圆心
+            var ellipse = new Ellipse()
+            {
+                Width = 10,
+                Height = 10,
+                Fill = new SolidColorBrush(Colors.Red)
+            };
+            Canvas.SetLeft(ellipse, theCanvas.Width / 2);
+            Canvas.SetTop(ellipse, theCanvas.Height / 2);
+            theCanvas.Children.Add(ellipse);
+
+            Line drawLine = new Line();
+            drawLine.X1 = theCanvas.Width / 2 + X1Save * 5;//怕跑出范围，所以就缩小了一些
+            drawLine.Y1 = theCanvas.Height / 2 + Y1Save * 5;//怕跑出范围，所以就缩小了一些
+            drawLine.X2 = theCanvas.Width / 2 + X2 * 5;//怕跑出范围，所以就缩小了一些
+            drawLine.Y2 = theCanvas.Height / 2 + Y2* 5;//怕跑出范围，所以就缩小了一些
+            //保存字段值
+            X1Save = X2;
+            Y1Save = Y2;
+            drawLine.Stroke = new SolidColorBrush(SystemSave.theNewColor2);
+            drawLine.StrokeThickness = 2;
+            theCanvas.Children.Add(drawLine);
+
+
+        }
+
+        //实时的动态绘制路线图 (方法1,每一次都重新绘制，所以会自带修正效果)
         private void drawPositionLine()
         {
             theCanvas.Children.Clear();
@@ -255,7 +301,7 @@ namespace socketServer
                 drawLine.Y1 = theCanvas.Height / 2 + SystemSave.savedPositions[u].Y * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.X2 = theCanvas.Width / 2 + SystemSave.savedPositions[u+1].X * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.Y2 = theCanvas.Height / 2 + SystemSave.savedPositions[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Stroke = new SolidColorBrush(Colors.Magenta);
+                drawLine.Stroke = new SolidColorBrush(SystemSave.theOldColor);
                 drawLine.StrokeThickness = 2;
                 theCanvas.Children.Add(drawLine);
             }
@@ -267,7 +313,7 @@ namespace socketServer
                 drawLine.Y1 = theCanvas.Height / 2 + thePositionController.theTransformPosition[u].Y * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.X2 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u+1].X * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.Y2 = theCanvas.Height / 2 + thePositionController.theTransformPosition[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Stroke = new SolidColorBrush(Colors.Black);
+                drawLine.Stroke = new SolidColorBrush(SystemSave.theNewColor);
                 drawLine.StrokeThickness = 2;
                 theCanvas.Children.Add(drawLine);
             }
@@ -330,10 +376,37 @@ namespace socketServer
             theCanvas.Children.Add(polygon2);
         }
 
+        //设置路径颜色的方法
+        Color SetColor()
+        {
+
+            System.Windows.Forms.ColorDialog MyDialog = new System.Windows.Forms.ColorDialog();
+            MyDialog.AllowFullOpen = true;
+            MyDialog.ShowHelp = true;
+
+            MyDialog.ShowDialog();
+            
+            //因为用到的是两个系统的Color，所以需要做一个转换
+            //说实话这个地方是有一点冗余....
+            Color newColor = new Color();
+            newColor.R = MyDialog.Color.R;
+            newColor.G = MyDialog.Color.G;
+            newColor.B = MyDialog.Color.B;
+            newColor.A = MyDialog.Color.A;
+            SystemSave.theOldColor = newColor;
+            SystemSave.theNewColor2 = newColor;
+            return newColor;
+        }
+
         private void button7_Click(object sender, RoutedEventArgs e)
         {
             thePictureMaker = new pictureMaker();
             thePictureMaker.createPictureFromData();
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            button5.Background = new SolidColorBrush(SetColor());
         }
     }
 }

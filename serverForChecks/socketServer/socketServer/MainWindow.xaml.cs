@@ -70,15 +70,20 @@ namespace socketServer
             //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
             List<double> theStepAngeUse = new List<double>();
             List<double> theStepLengthUse = new List<double>();
+            //计算移动的时候用的是去除不可能项的步数
             for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
             {
 
                 theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
-                theStepLengthUse.Add(theStepLengthController.getStepLength());//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
-
+                if(i>=1)
+                theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i-1],theStepAngeUse [i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                else
+                theStepLengthUse.Add(theStepLengthController.getStepLength());
             }
-            theStepLabel.Content = "(带缓存计步方法)\n原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
-            theStepLabel.Content += "    历史存储步数：" + SystemSave.stepCount + "步 \n绘制图像： " + SystemSave.pictureNumber;
+
+            SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
+            theStepLabel.Content = "(带缓存计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
+            theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount + "\n绘制图像： " + SystemSave.pictureNumber;
             theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目："+ SystemSave.getValuesCount( theInformationController.accelerometerY.Count);
             POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
             //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
@@ -89,7 +94,7 @@ namespace socketServer
             {
                 //实时绘制图像，重新绘制的方式
                 drawPositionLine();
-                Console.WriteLine("sdf");
+               // Console.WriteLine("sdf");
             }
             else
             {

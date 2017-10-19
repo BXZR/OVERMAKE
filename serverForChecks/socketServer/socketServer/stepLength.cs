@@ -9,9 +9,15 @@ namespace socketServer
     //这个类专门用来处理步长
     class stepLength
     {
-        public double getStepLength()
+        private double changeGate = 60;//转弯的阀值
+        //如果转弯且角度差异大于一个阀值，返回的步长信息恐怕需要调整
+        //为了保证以后传入多个参数进行判断的情况，请保持这种模式
+        public double getStepLength(double angelPast = 0 , double  angelNow = 0)
         {
-            return stepLength1();
+            if (Math.Abs(angelPast - angelNow) > changeGate)
+                return stepLength1() / 2;
+            else
+                return stepLength1();
         }
 
         //微软研究得到的平均步长

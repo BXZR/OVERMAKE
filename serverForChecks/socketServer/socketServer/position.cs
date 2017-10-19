@@ -85,7 +85,7 @@ namespace socketServer
             for (int i = 0; i < XSave.Count; i++)
             {
                 theTransformPosition.Add(new transForm(XSave[i] , YSave[i]));
-                theInformation += "角度： " + angels[i].ToString("f4") + "  步长： "+stepLengths [i]+"  坐标： (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
+                theInformation += "角度： " + angels[i].ToString("f4") + "  步长： "+stepLengths [i].ToString("f4")+"  坐标： (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
             }
             return theInformation;
         }

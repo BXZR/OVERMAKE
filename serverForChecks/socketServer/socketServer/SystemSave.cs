@@ -6,7 +6,8 @@ namespace socketServer
     //这个类专门用来记录
     class SystemSave
     {
-        public static int stepCount = 0;
+        public static int stepCount = 0;//被保存下来的前几个阶段的步数
+        public static int allStepCount = 0;//总步数，去除了不可能项之后的总步数
         public static int pictureNumber = 0;//生成图像数量，也表示产生的分组的数量
 
         public static int buffCount = 400;//缓冲区大小

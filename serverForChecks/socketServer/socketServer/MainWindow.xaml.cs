@@ -31,6 +31,7 @@ namespace socketServer
         stepLength theStepLengthController;//用来确定步长的控制单元
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
+        stepDetection stepExtra;//额外的判断走了一步的方法集合
         float stepTimer = 1f;//间隔多长时间进行一次计算
 
         public MainWindow()
@@ -62,25 +63,47 @@ namespace socketServer
         //为此需要一个缓冲区
         void withSavedData(object sender, EventArgs e)
         {
-
+            //-----------------------------------------------获取计算用数据-----------------------------------------------//
             List<double> theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
             List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
-            int stepcounts =  thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
-            //根据下标获得需要的旋转角和步长
-            //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
+
+            //-----------------------------------------------判断走了一步的方法（可替换，但是默认的方法是波峰波谷判定方法）-----------------------------------------------//
+            //方法1：波峰波谷大法，我个人推荐的方法
+            //int stepcounts =  thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+            ////根据下标获得需要的旋转角和步长
+            ////当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
+            //List<double> theStepAngeUse = new List<double>();
+            //List<double> theStepLengthUse = new List<double>();
+            ////计算移动的时候用的是去除不可能项的步数
+            //for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
+            //{
+
+            //    theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
+            //    if(i>=1)
+            //    theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i-1],theStepAngeUse [i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+            //    else
+            //    theStepLengthUse.Add(theStepLengthController.getStepLength());
+            //}
+            //方法2：重复性判断方法，阀值确定是一个很麻烦的事
+             stepExtra.stepDetectionExtra1(theFilteredAZ);
+
+            int stepcounts = stepExtra.peackBuff.Count;
             List<double> theStepAngeUse = new List<double>();
             List<double> theStepLengthUse = new List<double>();
             //计算移动的时候用的是去除不可能项的步数
-            for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
+            for (int i = 0; i < stepExtra.peackBuff.Count; i++)
             {
 
-                theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
-                if(i>=1)
-                theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i-1],theStepAngeUse [i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                theStepAngeUse.Add(theFilteredD[stepExtra.peackBuff[i]]);
+                if (i >= 1)
+                    theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                 else
-                theStepLengthUse.Add(theStepLengthController.getStepLength());
+                    theStepLengthUse.Add(theStepLengthController.getStepLength());
             }
 
+
+
+            //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
             SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
             theStepLabel.Content = "(带缓存计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
             theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount + "\n绘制图像： " + SystemSave.pictureNumber;
@@ -121,6 +144,8 @@ namespace socketServer
                 theInformationController.flashInformation();
                 SystemSave.stepCount += thePeackFinder.peackBuff.Count;
 
+                //额外的刷新方法
+                stepExtra .makeFlash();
             }
         }
         /*************************************************方法1（比较原始）*************************************************************/
@@ -175,6 +200,7 @@ namespace socketServer
             theStepLengthController = new stepLength();
             thePictureMaker = new pictureMaker(); 
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
+            stepExtra = new stepDetection();
             //相关工程更新
             makeFlashController();
 

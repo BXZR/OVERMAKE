@@ -99,6 +99,7 @@
     <Compile Include="pictureMaker.cs" />
     <Compile Include="position.cs" />
     <Compile Include="rotationAngel.cs" />
+    <Compile Include="stepDetection.cs" />
     <Compile Include="stepLength.cs" />
     <Compile Include="SystemSave.cs" />
     <Compile Include="tensorflowUse.cs" />

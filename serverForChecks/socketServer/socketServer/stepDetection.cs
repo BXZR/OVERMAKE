@@ -30,11 +30,10 @@ namespace socketServer
 
         private void makeSample(List<double> wave)
         {
-            
-            sample = new List<double>();
-            if (wave.Count < dataDropCount)
+            if (wave.Count < dataDropCount || isSampled )
                 return; //前几个数据不要了，会有很大的误差
 
+            sample = new List<double>();
             int stepNumber = 0;
             int direction = wave[dataDropCount] > 0 ? -1 : 1;
             for (int i = dataDropCount ; i < wave.Count - 1; i++)
@@ -55,6 +54,7 @@ namespace socketServer
                         stepNumber++;
                         if (stepNumber == 1)
                         {
+                            sample.Add(wave[i]);//初始波峰的下标也需要记录下来
                             indexForSTART = i;//重新纪录抛弃项目，这也是后续计算的开始位置
                         }
                         //判断出来一个波峰+波谷就认为结束了
@@ -66,10 +66,11 @@ namespace socketServer
                             for (int y = 0; y < sample.Count; y++)
                                 Console.WriteLine("采样结果" + sample[y]);
 
-                            ChartWindow sampleShow = new socketServer.ChartWindow();
-                            sampleShow.Show();
-                            sampleShow.CreateChartSpline(UseDataType.accelerometerZ, sample);
-                            Console.WriteLine("countBetweenTwoStep: " + countBetweenTwoStep);
+                            //采样图像显示
+                            //ChartWindow sampleShow = new socketServer.ChartWindow();
+                            //sampleShow.Show();
+                            //sampleShow.CreateChartSpline(UseDataType.accelerometerZ, sample);
+                            //Console.WriteLine("countBetweenTwoStep: " + countBetweenTwoStep);
                             isSampled = true;
                             break;
                         }
@@ -166,7 +167,7 @@ namespace socketServer
             0.0-0.2     极弱相关或无相关 
          */
 
-        private int showPWindowCount = 5;//匹配成功显示的曲线窗口数量
+        private int showPWindowCount = 2;//匹配成功显示的曲线窗口数量
         bool contrast2(List<double> data1, List<double> data2)
         {
 
@@ -195,21 +196,21 @@ namespace socketServer
                 data2Down += (data2[i] - dataAverage2) * (data2[i] - dataAverage2);
             }
             double down = Math .Sqrt(  data1Down * data2Down);
-            Console.WriteLine("data1Down = "+ data1Down);
-            if (down == 0 ||  ( data1Down/data1 .Count) < 0.2 )//不可比较的话统统返回false
+            Console.WriteLine("data1Down = "+ data1Down / data1.Count);
+            if (down == 0 ||  ( data1Down/data1 .Count) < 0.07 )//不可比较的话统统返回false
                 return false;
 
             double pearsonValue = up / down;
             Console.WriteLine("pearsonValue = " + pearsonValue);
-            if (Math.Abs( pearsonValue)  > 0.75)//一个折中的小数值（数值要求并不是很严格）
+            if (Math.Abs( pearsonValue)  > 0.65)//一个折中的小数值（数值要求并不是很严格）
             {
-                if (showPWindowCount >0 )
-                {
-                    ChartWindow show = new socketServer.ChartWindow();
-                    show.Show();
-                    show.CreateChartSpline2(UseDataType.accelerometerZ, data1, sample);
-                    showPWindowCount--;
-                }
+                //if (showPWindowCount >0 )
+                //{
+                //    ChartWindow show = new socketServer.ChartWindow();
+                //    show.Show();
+                //    show.CreateChartSpline2(UseDataType.accelerometerZ, data1, sample);
+                //    showPWindowCount--;
+                //}
                 return true;
             }
             return false;

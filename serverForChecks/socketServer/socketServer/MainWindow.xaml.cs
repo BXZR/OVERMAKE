@@ -66,52 +66,59 @@ namespace socketServer
             //-----------------------------------------------获取计算用数据-----------------------------------------------//
             List<double> theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
             List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
-
+          
             //-----------------------------------------------判断走了一步的方法（可替换，但是默认的方法是波峰波谷判定方法）-----------------------------------------------//
-            //方法1：波峰波谷大法，我个人推荐的方法
-            //int stepcounts =  thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
-            ////根据下标获得需要的旋转角和步长
-            ////当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
-            //List<double> theStepAngeUse = new List<double>();
-            //List<double> theStepLengthUse = new List<double>();
-            ////计算移动的时候用的是去除不可能项的步数
-            //for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
-            //{
-
-            //    theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
-            //    if(i>=1)
-            //    theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i-1],theStepAngeUse [i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
-            //    else
-            //    theStepLengthUse.Add(theStepLengthController.getStepLength());
-            //}
-            //方法2：重复性判断方法，阀值确定是一个很麻烦的事
-             stepExtra.stepDetectionExtra1(theFilteredAZ);
-
-            int stepcounts = stepExtra.peackBuff.Count;
+            //公有的存储空间
             List<double> theStepAngeUse = new List<double>();
             List<double> theStepLengthUse = new List<double>();
-            //计算移动的时候用的是去除不可能项的步数
-            for (int i = 0; i < stepExtra.peackBuff.Count; i++)
+            if (stepCheckMethod1.IsChecked == true)
             {
+                /////////////////////////////////////////////////////////////////////////////////////////////////////
+                //方法1：波峰波谷大法，我个人推荐的方法
+                int stepcounts = thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+                                                                                   //根据下标获得需要的旋转角和步长
+                                                                                   //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
+                                                                                   //计算移动的时候用的是去除不可能项的步数
+                for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
+                {
 
-                theStepAngeUse.Add(theFilteredD[stepExtra.peackBuff[i]]);
-                if (i >= 1)
-                    theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
-                else
-                    theStepLengthUse.Add(theStepLengthController.getStepLength());
+                    theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength());
+                }
+                //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
+                SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
+                theStepLabel.Content = "(带缓存波峰波谷计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
+                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount + "\n绘制图像： " + SystemSave.pictureNumber;
+                theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+                POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
+                //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
+                /////////////////////////////////////////////////////////////////////////////////////////////////////
             }
+            else if (stepCheckMethod2.IsChecked == true)
+            {
+                //方法2：重复性判断方法，相对比较严格
+                stepExtra.stepDetectionExtra1(theFilteredAZ);
+                int stepcounts2 = stepExtra.peackBuff.Count;
+                //计算移动的时候用的是去除不可能项的步数
+                for (int i = 0; i < stepExtra.peackBuff.Count; i++)
+                {
 
-
-
-            //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
-            SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
-            theStepLabel.Content = "(带缓存计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
-            theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount + "\n绘制图像： " + SystemSave.pictureNumber;
-            theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目："+ SystemSave.getValuesCount( theInformationController.accelerometerY.Count);
-            POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
-            //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
-
-
+                    theStepAngeUse.Add(theFilteredD[stepExtra.peackBuff[i]]);
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength());
+                }
+                //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
+                theStepLabel.Content = "(采样匹配计步方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" +( SystemSave.stepCount2 + stepcounts2);
+                theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
+                theStepLabel.Content += "\n当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+                POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
+                /////////////////////////////////////////////////////////////////////////////////////////////////////
+            }
             //两种绘制方法也算是各有千秋，所以给一个选项自行选择吧
             if (drawWithBufferCheck.IsChecked == true)
             {
@@ -137,14 +144,13 @@ namespace socketServer
                 {
                     SystemSave.savedPositions.Add(thePositionController.theTransformPosition[i]);
                 }
-
+                //方法1的刷新和存储
                 savedIndex = 0;
-
                 thePictureMaker.createPictureFromData(theInformationController);
                 theInformationController.flashInformation();
                 SystemSave.stepCount += thePeackFinder.peackBuff.Count;
-
-                //额外的刷新方法
+                //方法2的刷新和存储
+                SystemSave.stepCount2 += stepExtra.peackBuff.Count;
                 stepExtra .makeFlash();
             }
         }
@@ -179,6 +185,8 @@ namespace socketServer
         //保存数据控制的按钮
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            if (theFileSaver == null)
+                return;
             string saveStringUse = "";
             for (int i = 0; i < SystemSave.savedPositions.Count; i++)
                 saveStringUse += SystemSave.savedPositions[i].toString() + "\n";

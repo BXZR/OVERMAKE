@@ -64,7 +64,27 @@ namespace socketServer
         void withSavedData(object sender, EventArgs e)
         {
             //-----------------------------------------------获取计算用数据-----------------------------------------------//
-            List<double> theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+
+            List<double> theFilteredAZ = new List<double>();
+            switch(stepCheckAxisUse.SelectedIndex)//选择不同的轴向
+            {
+                case 0:
+                   //基础方法:用Z轴加速度来做
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    break;
+                case 1:
+                    //实验用方法：X轴向
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    break;
+                case 2:
+                    //实验用方法：X轴向
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    break;
+                case 3:
+                    //基础方法:用三个轴的加速度平方和开根号得到
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.getOperatedValues());
+                    break;
+            }
             List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
           
             //-----------------------------------------------判断走了一步的方法（可替换，但是默认的方法是波峰波谷判定方法）-----------------------------------------------//
@@ -155,6 +175,7 @@ namespace socketServer
             }
         }
         /*************************************************方法1（比较原始）*************************************************************/
+        /*************************************************这个方法不再扩展也不会使用，放在这里是为了保留一个简单的架构*************************************************************/
         //判断一步依赖于一个假说：
         //人0.4秒内只能走一步
         //设定时间要比 tm.Interval = TimeSpan.FromSeconds(0.4);
@@ -259,7 +280,7 @@ namespace socketServer
             MessageBox.Show("一共" + stepCount + "步");
         }
 
-        //处理旋转方向的按钮逻辑
+        //处理移动朝向方向的按钮逻辑
         private void button6_Click(object sender, RoutedEventArgs e)
         {
             //为了保证数据干净，要做一次滤波
@@ -358,7 +379,39 @@ namespace socketServer
             }
         }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //设置路径颜色的方法
+        Color SetColor()
+        {
+
+            System.Windows.Forms.ColorDialog MyDialog = new System.Windows.Forms.ColorDialog();
+            MyDialog.AllowFullOpen = true;
+            MyDialog.ShowHelp = true;
+
+            MyDialog.ShowDialog();
+
+            //因为用到的是两个系统的Color，所以需要做一个转换
+            //说实话这个地方是有一点冗余....
+            Color newColor = new Color();
+            newColor.R = MyDialog.Color.R;
+            newColor.G = MyDialog.Color.G;
+            newColor.B = MyDialog.Color.B;
+            newColor.A = MyDialog.Color.A;
+            SystemSave.theOldColor = newColor;
+            SystemSave.theNewColor2 = newColor;
+            return newColor;
+        }
+
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            thePictureMaker = new pictureMaker();
+            thePictureMaker.createPictureFromData();
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            button5.Background = new SolidColorBrush(SetColor());
+        }
+        //////////////////////////下面是一些示例用的方法///////////////////////////////////////////////////////////
 
         void drawEclipse()
         {
@@ -415,38 +468,6 @@ namespace socketServer
             theCanvas.Children.Add(polygon2);
         }
 
-        //设置路径颜色的方法
-        Color SetColor()
-        {
-
-            System.Windows.Forms.ColorDialog MyDialog = new System.Windows.Forms.ColorDialog();
-            MyDialog.AllowFullOpen = true;
-            MyDialog.ShowHelp = true;
-
-            MyDialog.ShowDialog();
-            
-            //因为用到的是两个系统的Color，所以需要做一个转换
-            //说实话这个地方是有一点冗余....
-            Color newColor = new Color();
-            newColor.R = MyDialog.Color.R;
-            newColor.G = MyDialog.Color.G;
-            newColor.B = MyDialog.Color.B;
-            newColor.A = MyDialog.Color.A;
-            SystemSave.theOldColor = newColor;
-            SystemSave.theNewColor2 = newColor;
-            return newColor;
-        }
-
-        private void button7_Click(object sender, RoutedEventArgs e)
-        {
-            thePictureMaker = new pictureMaker();
-            thePictureMaker.createPictureFromData();
-        }
-
-        private void button5_Click(object sender, RoutedEventArgs e)
-        {
-            button5.Background = new SolidColorBrush(SetColor());
-        }
     }
 }
 

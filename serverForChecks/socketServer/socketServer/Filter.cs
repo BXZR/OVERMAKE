@@ -10,8 +10,7 @@ namespace socketServer
     class Filter
     {
  
-
-     //唯一对外平滑方法
+     //对外平滑方法
     public List <double> theFilerWork(List<double> IN , float  theValueUse = 0.4f)
     {
             List<double> outList = new List<double>();

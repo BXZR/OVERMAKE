@@ -34,6 +34,11 @@ namespace socketServer
         stepDetection stepExtra;//额外的判断走了一步的方法集合
         float stepTimer = 1f;//间隔多长时间进行一次计算
 
+        //公有的存储空间
+        List<double> theStepAngeUse = new List<double>();
+        List<double> theStepLengthUse = new List<double>();
+        List<double> theFilteredD = new List<double>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -85,13 +90,13 @@ namespace socketServer
                     theFilteredAZ = theFilter.theFilerWork(theInformationController.getOperatedValues());
                     break;
             }
-            List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
+            theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
           
             //-----------------------------------------------判断走了一步的方法（可替换，但是默认的方法是波峰波谷判定方法）-----------------------------------------------//
             //公有的存储空间
-            List<double> theStepAngeUse = new List<double>();
-            List<double> theStepLengthUse = new List<double>();
-            if (stepCheckMethod1.IsChecked == true)
+             theStepAngeUse = new List<double>();
+             theStepLengthUse = new List<double>();
+            if (stepCheckMethod.SelectedIndex == 0)
             {
                 /////////////////////////////////////////////////////////////////////////////////////////////////////
                 //方法1：波峰波谷大法，我个人推荐的方法
@@ -99,15 +104,8 @@ namespace socketServer
                                                                                    //根据下标获得需要的旋转角和步长
                                                                                    //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
                                                                                    //计算移动的时候用的是去除不可能项的步数
-                for (int i = 0; i < thePeackFinder.peackBuff.Count; i++)
-                {
-
-                    theStepAngeUse.Add(theFilteredD[thePeackFinder.peackBuff[i]]);
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength());
-                }
+                //-----------------------------------------------计算步长-----------------------------------------------//
+                stepLengthGet(thePeackFinder.peackBuff , theFilteredAZ);
                 //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
                 SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
                 theStepLabel.Content = "(带缓存波峰波谷计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
@@ -117,21 +115,14 @@ namespace socketServer
                 //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
                 /////////////////////////////////////////////////////////////////////////////////////////////////////
             }
-            else if (stepCheckMethod2.IsChecked == true)
+            else if (stepCheckMethod.SelectedIndex == 1)
             {
                 //方法2：重复性判断方法，相对比较严格
                 stepExtra.stepDetectionExtra1(theFilteredAZ);
                 int stepcounts2 = stepExtra.peackBuff.Count;
                 //计算移动的时候用的是去除不可能项的步数
-                for (int i = 0; i < stepExtra.peackBuff.Count; i++)
-                {
-
-                    theStepAngeUse.Add(theFilteredD[stepExtra.peackBuff[i]]);
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength());
-                }
+                //-----------------------------------------------计算步长-----------------------------------------------//
+                stepLengthGet(stepExtra.peackBuff , theFilteredAZ);
                 //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
                 theStepLabel.Content = "(采样匹配计步方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" +( SystemSave.stepCount2 + stepcounts2);
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
@@ -174,6 +165,40 @@ namespace socketServer
                 stepExtra .makeFlash();
             }
         }
+
+
+        //获取步长的方法
+        //这个方法在多个整体方法中是共用的
+        //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
+        void stepLengthGet(List<int> indexBuff , List<double> AZUse)
+        {
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                theStepAngeUse.Add(theFilteredD[indexBuff[i]]);
+
+                //方法1
+                if (StepLengthMethod.SelectedIndex == 0)
+                {
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength());
+                }
+                //方法2
+                else if( StepLengthMethod .SelectedIndex == 1)
+                {
+                    if (i >= 1)
+                    {
+                        double stepLength = theStepLengthController.getStepLength(indexBuff [i-1] , indexBuff [i] ,AZUse , theInformationController.timeStep );
+                        theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    }
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength());
+                }
+            }
+        }
+
+
         /*************************************************方法1（比较原始）*************************************************************/
         /*************************************************这个方法不再扩展也不会使用，放在这里是为了保留一个简单的架构*************************************************************/
         //判断一步依赖于一个假说：

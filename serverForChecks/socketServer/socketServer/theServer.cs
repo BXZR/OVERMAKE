@@ -141,6 +141,7 @@ namespace socketServer
                     //以bye作为区分，如果是bye就认为客户端断开连接
                     if (information != "bye")
                     {
+                        //其实这个方法有非常冗余的封装，但是为了保证可扩展性可读性，暂时先不改了
                         //获取了消息information,处理过程需要新一层的封装了
                         //把信息存入到缓存里面去
                         //要保存多个数据，这里就需要做一下切分，也就是所谓的协议
@@ -150,28 +151,30 @@ namespace socketServer
                         string[] theSplited = information.Split(';');
                         for (int i = 0; i < theSplited.Length; i++)
                         {
+                            theInformationController.addInformation(UseDataType.timeStamp);//时间戳还是一定要记录的
+                            //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
                             switch (i)
                             {
                                 case 0:
                                     {
                                         //第一大项： Y轴加速度
-                                        theInformationController.addInformation(theSplited[0], UseDataType.accelerometerY);
+                                        theInformationController.addInformation( UseDataType.accelerometerY , theSplited[0]);
                                     }break;
                                 case 1:
                                     {
                                         //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
-                                        theInformationController.addInformation(theSplited[1], UseDataType.compassDegree);//正北0度
+                                        theInformationController.addInformation( UseDataType.compassDegree , theSplited[1]);//正北0度
                                     }break;
                                 case 2:
                                     {
                                         //第三大项： X轴加速度
-                                        theInformationController.addInformation(theSplited[2], UseDataType.accelerometerX); 
+                                        theInformationController.addInformation(UseDataType.accelerometerX , theSplited[2]); 
                                     }
                                     break;
                                 case 3:
                                     {
                                         //第三大项： Z轴加速度
-                                        theInformationController.addInformation(theSplited[3], UseDataType.accelerometerZ);
+                                        theInformationController.addInformation(UseDataType.accelerometerZ , theSplited[3]);
                                     }
                                     break;
                             }

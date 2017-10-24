@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PDR  with smartphone" Height="555" Width="1086" Closed="Window_Closed" ResizeMode="NoResize">
-    <Grid Margin="0,0,-8,0">
+    <Grid Margin="0,0,-8,0" RenderTransformOrigin="0.992,0.996">
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -11,8 +11,8 @@
         <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,41,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
         <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,46" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
         <Grid Margin="10,13,203,76" Name="Chart">
-            <Label Content="counts" Height="75" Margin="10,10,0,0" Name="theStepLabel" VerticalAlignment="Top" HorizontalAlignment="Left" Width="416" />
-            <TextBox x:Name="POSITION" Margin="10,90,467,10" TextWrapping="Wrap" Text="POSITION  [start at (0,0)]:" IsReadOnlyCaretVisible="True"/>
+            <Label Content="Data Tip" Height="75" Margin="10,32,467,0" Name="theStepLabel" VerticalAlignment="Top" />
+            <TextBox x:Name="POSITION" Margin="10,112,467,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True"/>
             <Canvas x:Name="theCanvas" Margin="0,32,16,-52" Background="#FFF0FFFE" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="442" Height="458" VerticalAlignment="Top">
                 <Canvas.LayoutTransform>
                     <TransformGroup>
@@ -60,5 +60,7 @@
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,13,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Image x:Name="image" HorizontalAlignment="Left" Height="69" Margin="426,44,0,0" VerticalAlignment="Top" Width="84" Source="pictures/compass.png" RenderTransformOrigin="0.345,0.464"/>
+        <Label x:Name="stepSlopLabel" Content="StepSlop : 0" Margin="0,328,29,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
+        <Label x:Name="Charts_Copy6" Content="Tips" Margin="0,13,984,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
     </Grid>
 </Window>

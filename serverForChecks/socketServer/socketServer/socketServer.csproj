@@ -101,6 +101,7 @@
     <Compile Include="rotationAngel.cs" />
     <Compile Include="stepDetection.cs" />
     <Compile Include="stepLength.cs" />
+    <Compile Include="stepModeCheck.cs" />
     <Compile Include="SystemSave.cs" />
     <Compile Include="tensorflowUse.cs" />
     <Compile Include="theServer.cs" />

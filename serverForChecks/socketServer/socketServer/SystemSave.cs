@@ -27,6 +27,8 @@ namespace socketServer
         public static Color theNewColor2 = Colors.Orange;//绘制颜色（当前的轨迹  ，方法2的颜色）
         //应该还有一个对比用的颜色，但是在这里先不写
 
+
+
         public static int getValuesCount (int valueNow = 0)//传入的是未计入分组的数据信息
         {
             return pictureNumber * buffCount + valueNow;

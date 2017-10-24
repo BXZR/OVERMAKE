@@ -32,6 +32,7 @@ namespace socketServer
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
         stepDetection stepExtra;//额外的判断走了一步的方法集合
+        stepModeCheck theStepModeCheckController;//推断行走状态：战力，行走，奔跑用 的控制单元
         float stepTimer = 1f;//间隔多长时间进行一次计算
 
         //公有的存储空间
@@ -71,10 +72,10 @@ namespace socketServer
             //-----------------------------------------------获取计算用数据-----------------------------------------------//
 
             List<double> theFilteredAZ = new List<double>();
-            switch(stepCheckAxisUse.SelectedIndex)//选择不同的轴向
+            switch (stepCheckAxisUse.SelectedIndex)//选择不同的轴向
             {
                 case 0:
-                   //基础方法:用Z轴加速度来做
+                    //基础方法:用Z轴加速度来做
                     theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
                     break;
                 case 1:
@@ -90,12 +91,12 @@ namespace socketServer
                     theFilteredAZ = theFilter.theFilerWork(theInformationController.getOperatedValues());
                     break;
             }
-            theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree,0.1f);
-          
+            theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree, 0.1f);
+
             //-----------------------------------------------判断走了一步的方法（可替换，但是默认的方法是波峰波谷判定方法）-----------------------------------------------//
             //公有的存储空间
-             theStepAngeUse = new List<double>();
-             theStepLengthUse = new List<double>();
+            theStepAngeUse = new List<double>();
+            theStepLengthUse = new List<double>();
             if (stepCheckMethod.SelectedIndex == 0)
             {
                 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,8 +105,9 @@ namespace socketServer
                                                                                    //根据下标获得需要的旋转角和步长
                                                                                    //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
                                                                                    //计算移动的时候用的是去除不可能项的步数
-                //-----------------------------------------------计算步长-----------------------------------------------//
-                stepLengthGet(thePeackFinder.peackBuff , theFilteredAZ);
+     //-----------------------------------------------计算步长-----------------------------------------------//
+                stepLengthGet(thePeackFinder.peackBuff, theFilteredAZ);
+                stepModeCheck(thePeackFinder.peackBuff);//更新slope的数值
                 //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
                 SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
                 theStepLabel.Content = "(带缓存波峰波谷计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
@@ -122,9 +124,10 @@ namespace socketServer
                 int stepcounts2 = stepExtra.peackBuff.Count;
                 //计算移动的时候用的是去除不可能项的步数
                 //-----------------------------------------------计算步长-----------------------------------------------//
-                stepLengthGet(stepExtra.peackBuff , theFilteredAZ);
+                stepLengthGet(stepExtra.peackBuff, theFilteredAZ);
+                stepModeCheck(stepExtra.peackBuff);//更新slope的数值
                 //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
-                theStepLabel.Content = "(采样匹配计步方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" +( SystemSave.stepCount2 + stepcounts2);
+                theStepLabel.Content = "(采样匹配计步方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "\n当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
                 POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
@@ -135,7 +138,7 @@ namespace socketServer
             {
                 //实时绘制图像，重新绘制的方式
                 drawPositionLine();
-               // Console.WriteLine("sdf");
+                // Console.WriteLine("sdf");
             }
             else
             {
@@ -162,7 +165,7 @@ namespace socketServer
                 SystemSave.stepCount += thePeackFinder.peackBuff.Count;
                 //方法2的刷新和存储
                 SystemSave.stepCount2 += stepExtra.peackBuff.Count;
-                stepExtra .makeFlash();
+                stepExtra.makeFlash();
             }
         }
 
@@ -170,7 +173,7 @@ namespace socketServer
         //获取步长的方法
         //这个方法在多个整体方法中是共用的
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
-        void stepLengthGet(List<int> indexBuff , List<double> AZUse)
+        void stepLengthGet(List<int> indexBuff, List<double> AZUse)
         {
             for (int i = 0; i < indexBuff.Count; i++)
             {
@@ -180,16 +183,18 @@ namespace socketServer
                 if (StepLengthMethod.SelectedIndex == 0)
                 {
                     if (i >= 1)
+                    {
                         theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    }
                     else
                         theStepLengthUse.Add(theStepLengthController.getStepLength());
                 }
                 //方法2
-                else if( StepLengthMethod .SelectedIndex == 1)
+                else if (StepLengthMethod.SelectedIndex == 1)
                 {
                     if (i >= 1)
                     {
-                        double stepLength = theStepLengthController.getStepLength(indexBuff [i-1] , indexBuff [i] ,AZUse , theInformationController.timeStep );
+                        double stepLength = theStepLengthController.getStepLength(indexBuff[i - 1], indexBuff[i], AZUse, theInformationController.timeStep);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
                     else
@@ -198,6 +203,27 @@ namespace socketServer
             }
         }
 
+        //获得走路的最新的slope数值使用
+        //可以在后面用来判断行走姿态，算是为后面做的一个简单的准备工作，留下接口
+        //实际上这个也分为两种
+        //一种是每出现一个周期检查一下这个周期的slope的数值
+        //一种是钉死窗口滑动，检查这个窗口的数值
+        void stepModeCheck(List<int> indexBuff)
+        {
+            if (indexBuff.Count > 1)
+            {
+                List<double> X = theFilter.theFilerWork(theInformationController.accelerometerX);
+                List<double> Y = theFilter.theFilerWork(theInformationController.accelerometerY);
+                List<double> Z = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                double slopeWithPeack =  theStepModeCheckController.getModeCheckWithPeack
+                    (
+                      X, Y ,Z ,
+                    indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count-1]
+                    );
+                double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
+                stepSlopLabel.Content = "Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
+            }
+        }
 
         /*************************************************方法1（比较原始）*************************************************************/
         /*************************************************这个方法不再扩展也不会使用，放在这里是为了保留一个简单的架构*************************************************************/
@@ -255,6 +281,7 @@ namespace socketServer
             thePictureMaker = new pictureMaker(); 
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
             stepExtra = new stepDetection();
+            theStepModeCheckController = new stepModeCheck();
             //相关工程更新
             makeFlashController();
 

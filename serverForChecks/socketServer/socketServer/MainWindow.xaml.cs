@@ -268,6 +268,21 @@ namespace socketServer
         //startServer按钮控制单元
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+           string information = makeStart();
+            MessageBox.Show(information);
+        }
+
+        //closeServer按钮控制单元
+        private void button3_Click_1(object sender, RoutedEventArgs e)
+        {
+            string information = makeClose();
+            MessageBox.Show(information);
+        }
+
+
+        //开启封装方法
+        public string  makeStart()
+        {
             //全世界的初始化都在这里完成
             theInformationController = new information();
             theServerController = new theServer(theInformationController);
@@ -278,7 +293,7 @@ namespace socketServer
             tm = new DispatcherTimer();
             thePositionController = new position();
             theStepLengthController = new stepLength();
-            thePictureMaker = new pictureMaker(); 
+            thePictureMaker = new pictureMaker();
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
             stepExtra = new stepDetection();
             theStepModeCheckController = new stepModeCheck();
@@ -287,15 +302,13 @@ namespace socketServer
 
             //正式开始
             string showInformation = theServerController.startTheServer();
-            MessageBox.Show(showInformation);
+            return showInformation;
         }
-
-
-        //closeServer按钮控制单元
-        private void button3_Click_1(object sender, RoutedEventArgs e)
+        //关闭分装方法
+        public string makeClose()
         {
             string showInformation = theServerController.closeServer();
-            MessageBox.Show(showInformation);
+            return showInformation;
         }
 
 
@@ -463,6 +476,23 @@ namespace socketServer
         {
             button5.Background = new SolidColorBrush(SetColor());
         }
+        private void button8_Click(object sender, RoutedEventArgs e)
+        {
+            Settings theSettingWindow = new socketServer.Settings();
+            theSettingWindow.startSet(this);
+            theSettingWindow.Show();
+        }
+
+        //查询状态的方法
+        //检查server是不是已经开启了
+        public bool isServerStarted()
+        {
+            if (this.theServerController == null)
+                return false;
+            if (this.theServerController.Opened == false)
+                return false ;
+            return true;
+        }
         //////////////////////////下面是一些示例用的方法///////////////////////////////////////////////////////////
 
         void drawEclipse()
@@ -520,6 +550,9 @@ namespace socketServer
             theCanvas.Children.Add(polygon2);
         }
 
+
+
+       
     }
 }
 

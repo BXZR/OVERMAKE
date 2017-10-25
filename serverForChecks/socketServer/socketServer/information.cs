@@ -11,7 +11,7 @@ namespace socketServer
     //此外，所有查看信息的方法都应该只在这一个类中出现
     
     //事实上，这个才是一个真正用于操作的类，server操作只是为了填充这个类，其他的类用于处理这个类
-    class information
+   public partial class information
     {
         //所有的内容实际上都在这个类里面做一下缓存，存好之后处理
 

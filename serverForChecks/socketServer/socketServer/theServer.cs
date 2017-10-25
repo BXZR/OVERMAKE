@@ -9,11 +9,10 @@ using System.Threading;
 namespace socketServer
 {
     //这个类用于控制sock的发送和接受信息的过程
-    class theServer
+   public  partial class theServer
     {
 
         private string IP = "219.216.73.162";//默认IP地址，可以换
-
 
         private static int myProt = 8886;   //端口  
 
@@ -32,17 +31,29 @@ namespace socketServer
         information theInformationController = null; //信息处理控制单元，必须要有，这个才是核心
 
         //构造方法，用于建立服务器的对象，但是并不是立即开启
-        public theServer( information theInformationControllerIn ,  string theIPUse = "219.216.73.162", int port = 8886)
+        public theServer( information theInformationControllerIn ,  string theIPUse = "", int port = 8886)
         {
             try
             {
                 theInformationController = theInformationControllerIn;
-                IP = theIPUse;
-                myProt = port;
-                IPAddress ip = IPAddress.Parse(IP);
-                serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
-                serverSocket.Listen(10);    //设定最多10个排队连接请求  
+                //设定IP地址的策略
+                //首先看传入的IPUse是不是空，如果不是就用IPUse
+                //如果IPUse为空，就是用SystemSave的IP，并且这个可以在设置面板设置
+                //实际上SystemSave的IP在是真正需要使用的IP，theIPUse 只是一个扩展的功能
+                if(string .IsNullOrEmpty (theIPUse) == false)
+                { 
+                    IP = theIPUse;
+                    myProt = port;
+                }
+                else
+                {
+                    IP = SystemSave.serverIP;
+                    myProt = SystemSave .serverPort;
+                }
+                //IPAddress ip = IPAddress.Parse(IP);
+               // serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+               // serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
+               // serverSocket.Listen(10);    //设定最多10个排队连接请求  
                 // MessageBox.Show("启动监听" + serverSocket.LocalEndPoint.ToString() + "成功" + "\ntype: server");
                 //通过Clientsoket发送数据  
             }
@@ -56,14 +67,25 @@ namespace socketServer
         //开启服务器的接收内容，实际上是开启上层的消息接收内容
         //专门开一个新的线程用于管理这些信息的接收
         //此外，由于消息内容推送的速度问题，有一些灵活的存储方法似乎不能使用
-        public string startTheServer()
+        public string startTheServer(bool useSystemSave = false)
        {
            //如果socket没有建立，或者没有总控单元，那么所有工作都不会开始
-           if (serverSocket == null || theInformationController == null)
+           if ( theInformationController == null)
                 return "服务器无法开启，可能是初始化没有做好";
-          theServerThread = new Thread(ListenClientConnect);//新建服务器主要线程
-          theServerThread .Start();//真正开启服务器
-          opened = true;//标记，用与表示开启
+
+            if (useSystemSave)
+            {
+                IP = SystemSave.serverIP;
+                myProt = SystemSave.serverPort;
+            }
+            IPAddress ip = IPAddress.Parse(IP);
+            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
+            serverSocket.Listen(10);    //设定最多10个排队连接请求  
+
+            theServerThread = new Thread(ListenClientConnect);//新建服务器主要线程
+            theServerThread .Start();//真正开启服务器
+            opened = true;//标记，用与表示开启
             return "服务器正式启动\n端口:"+myProt +"  IP:"+IP;
         }
 
@@ -91,7 +113,6 @@ namespace socketServer
              //关掉服务器线程和socket
             serverSocket.Close();
             theServerThread.Abort();
-
             opened = false;
             return "服务器socket关闭成功";
         }

@@ -6,6 +6,13 @@ namespace socketServer
     //这个类专门用来记录
     class SystemSave
     {
+
+        //系统设置的相关参数
+        public static string serverIP = "219.216.73.162";//程序服务器的IP
+        public static int serverPort = 8886;//程序服务器的端口
+
+
+
         public static int stepCount = 0;//被保存下来的前几个阶段的步数
         public static int stepCount2 = 0;//被保存下来的前几个阶段的步数
         public static int allStepCount = 0;//总步数，去除了不可能项之后的总步数

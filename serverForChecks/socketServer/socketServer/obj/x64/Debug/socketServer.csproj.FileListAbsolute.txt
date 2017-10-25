@@ -18,3 +18,5 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\soc
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\ChartWindow.g.cs
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer_MarkupCompile.lref
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\ChartWindow.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Settings.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Settings.baml

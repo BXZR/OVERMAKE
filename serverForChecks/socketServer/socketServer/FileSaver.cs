@@ -26,7 +26,7 @@ namespace socketServer
             string saveString= "";
             for (int i = 0; i < theList.Count; i++)
             {
-                Console.WriteLine(theList[i]);
+              //  Console.WriteLine(theList[i]);
                 saveString += theList[i] + "\n";
             }
             saveInformation(saveString, fileName);

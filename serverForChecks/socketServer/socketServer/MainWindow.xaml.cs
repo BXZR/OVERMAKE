@@ -160,26 +160,51 @@ namespace socketServer
             {
                 //---------------------------------保存训练用的数据---------------------------------------------//
                 List<string> theTrainBase = new List<string> ();
+                List<double> FilteredX = theFilter.theFilerWork(theInformationController.GPSPositionX);
+                List<double> FilteredY = theFilter.theFilerWork(theInformationController.GPSPositionY);
                 //Console.WriteLine("V = "+indexBuff.Count);
-                //for (int ee = 0; ee < theFilteredAZ.Count; ee++)
-                //    Console.WriteLine("AZ-" + theFilteredAZ[ee]);
-
+                //for (int ee = 0; ee < FilteredX.Count; ee++)
+                //{ 
+                    //Console.WriteLine("GPSX - " + FilteredX[ee]);
+                    //Console.WriteLine("GPSY - " + FilteredY[ee]);
+               // }
 
                 for (int i = 1; i < indexBuff.Count; i++)
                 {
                     theTrainBase.Add(
                     theTrainFileMake.getSaveTrainFile(
                        indexBuff[ i -1 ] , indexBuff [ i ] ,
-                        theFilteredAZ ,theInformationController .GPSPositionX , theInformationController.GPSPositionY ,
-                         theInformationController.timeStep
+                        theFilteredAZ, FilteredX,  FilteredY,
+                        theInformationController.timeStep
                         )
                        
                     );
                 }
-                if(theTrainBase != null && theTrainBase .Count >= 1)
+
+                if (theTrainBase != null && theTrainBase .Count >= 1)
                 {
                 theFileSaver.saveInformation(theTrainBase , "TrainBase/TrainBase-" + DateTime .Now.ToString("yyyy-MM-dd-hh-mm-ss")+".txt");
                 }
+
+                //生成假数据//////////////////////////////////
+                theTrainBase.Clear();
+                for (int i = 1; i < indexBuff.Count; i++)
+                {
+                    theTrainBase.Add(
+                    theTrainFileMake.getSaveTrainFileFake(
+                       indexBuff[i - 1], indexBuff[i],
+                        theFilteredAZ, FilteredX, FilteredY,
+                        theInformationController.timeStep
+                        )
+
+                    );
+                }
+                if (theTrainBase != null && theTrainBase.Count >= 1)
+                {
+                    theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+                }
+                //生成假数据//////////////////////////////////
+
                 //------------------------------------------------------------------------------------------//
                 for (int i = 0; i < thePositionController.theTransformPosition.Count; i++)
                 {

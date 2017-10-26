@@ -60,7 +60,7 @@
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,13,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Image x:Name="image" HorizontalAlignment="Left" Height="69" Margin="426,44,0,0" VerticalAlignment="Top" Width="84" Source="pictures/compass.png" RenderTransformOrigin="0.345,0.464"/>
-        <Label x:Name="stepSlopLabel" Content="StepSlop : 0" Margin="0,385,29,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
+        <Label x:Name="stepSlopLabel" Content="StepSlop : 0 / 0" Margin="0,385,29,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="Tips" Margin="0,13,984,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Button x:Name="button8" Content="Settings" Margin="0,162,122,0" VerticalAlignment="Top" Click="button8_Click" HorizontalAlignment="Right" Width="76"/>
     </Grid>

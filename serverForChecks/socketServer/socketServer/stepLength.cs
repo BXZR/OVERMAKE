@@ -51,8 +51,8 @@ namespace socketServer
                     return 0;//万金油
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                double stepLength = 0.2 * VK + 0.3 * FK + 0.4;
-               // Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
+                double stepLength = 0.1 * VK + 0.1 * FK + 0.2;
+                //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油
                 else

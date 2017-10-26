@@ -23,7 +23,10 @@ namespace socketServer
         return outList;
     }
         //对外平滑方法
-        public List<long> theFilerWork(List<long> IN, float theValueUse = 0.4f ,bool isSimple = false)
+        //countForCheck使用其它队列匹配使用（可选）
+        //因为网络数据包传输的问题，有时候没有办法得到完整的包，所以时间戳的数量不够
+        //这个问题出现的原因因该是阻塞，所以  outList = theFliterMethod2(outList,4); 运行的次数不会太多，算是应急处理
+        public List<long> theFilerWork(List<long> IN, float theValueUse = 0.4f ,bool isSimple = false , int  countForCheck = -1)
         {
             if (isSimple == false)
                 return theFilerWork(IN, theValueUse);
@@ -31,11 +34,18 @@ namespace socketServer
             //对于时间戳这种做个简单的平均就可以了
             else
             { 
+            //为了保护数据，完全新建
             List<long> outList = new List<long>();
             for (int i = 0; i < IN.Count; i++)
                 outList.Add(IN[i]);
-            outList = theFliterMethod2(outList,4); //之所以这样设计是因为存在网络丢包的问题，发现数据包B(包含时间戳)的数据量要比前面的数据包A要少，也就是数据丢失了
-            return outList;
+                //做普匹配的检查
+                //之所以这样设计是因为存在网络丢包的问题，发现数据包B(包含时间戳)的数据量要比前面的数据包A要少，也就是数据丢失了
+                //算是一个简单的容错自动替换策略（待优化）
+                if (countForCheck > 0 && countForCheck  > outList.Count)
+                    outList = theFliterMethod2(outList,4); 
+               else
+                    outList = theFliterMethod2(outList, 5);
+                return outList;
             }
         }
 

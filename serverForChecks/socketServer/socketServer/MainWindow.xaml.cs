@@ -188,7 +188,8 @@ namespace socketServer
 
                 //生成假数据//////////////////////////////////
                 theTrainBase.Clear();
-                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true);
+                //对时间戳（或者其他数据包B的数据）进行滤波来匹配数据
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true,theInformationController .accelerometerZ.Count);
                 for (int i = 1; i < indexBuff.Count; i++)
                 {
                     theTrainBase.Add(
@@ -251,7 +252,7 @@ namespace socketServer
                         // for (int v = 0; v < theInformationController.timeStep.Count; v++)
                         //    Console.WriteLine(theInformationController.timeStep[v]);
 
-                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep,0.4f, true);
+                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep,0.4f, true, theInformationController.accelerometerZ.Count);
                         double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }

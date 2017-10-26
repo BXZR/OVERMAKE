@@ -71,6 +71,8 @@ public class controller : MonoBehaviour {
 			return;
 		string sendString = theGeter.getSendInformation ();
 		theServer.send (sendString);
+		sendString = theGeter.getSendInformation2 ();
+		theServer.send (sendString);
 	}
 	void Update () 
 	{

@@ -10,7 +10,6 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\soc
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\libtensorflow.dll
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\socketServer.exe
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\socketServer.pdb
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\TensorFlowSharp.dll
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\TensorFlowSharp.pdb
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\TensorFlowSharp.xml
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer.exe

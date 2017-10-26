@@ -45,13 +45,13 @@ namespace socketServer
             
             stepLengthSlop = Math.Sqrt((maxAX - minAX) * (maxAX - minAX) + (maxAY - minAY) * (maxAY - minAY) + (maxAZ - minAZ) * (maxAZ - minAZ));
 
-            // Console.WriteLine("maxAX = " + maxAX);
-            // Console.WriteLine("minAX = " + minAX);
-            // Console.WriteLine("maxAY = " + maxAY);
-            // Console.WriteLine("minAY = " + minAY);
-            // Console.WriteLine("maxAZ = " + maxAZ);
-            // Console.WriteLine("minAZ = " + minAZ);
-            // Console.WriteLine("stepLengthSlop = " + stepLengthSlop);
+            //Console.WriteLine("maxAX = " + maxAX);
+            //Console.WriteLine("minAX = " + minAX);
+            //Console.WriteLine("maxAY = " + maxAY);
+            //Console.WriteLine("minAY = " + minAY);
+            //Console.WriteLine("maxAZ = " + maxAZ);
+            //Console.WriteLine("minAZ = " + minAZ);
+            //Console.WriteLine("stepLengthSlop = " + stepLengthSlop);
             return   stepLengthSlop ;
         }
      

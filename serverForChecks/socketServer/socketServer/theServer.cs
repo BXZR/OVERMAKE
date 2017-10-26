@@ -162,6 +162,7 @@ namespace socketServer
                     //以bye作为区分，如果是bye就认为客户端断开连接
                     if (information != "bye")
                     {
+                        //Console.WriteLine("\n------------------\n"+information+ "\n------------------\n");
                         //其实这个方法有非常冗余的封装，但是为了保证可扩展性可读性，暂时先不改了
                         //获取了消息information,处理过程需要新一层的封装了
                         //把信息存入到缓存里面去
@@ -170,34 +171,63 @@ namespace socketServer
                         //传输内容的大项目用';'切分
                         //传输内容的小项目用','切分
                         string[] theSplited = information.Split(';');
-                        for (int i = 0; i < theSplited.Length; i++)
+                        //因为信息的第一项是用来做报头了
+                        if (theSplited[0] == "A")
                         {
-                            theInformationController.addInformation(UseDataType.timeStamp);//时间戳还是一定要记录的
-                            //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
-                            switch (i)
+                            for (int i = 1; i < theSplited.Length; i++)
                             {
-                                case 0:
-                                    {
-                                        //第一大项： Y轴加速度
-                                        theInformationController.addInformation( UseDataType.accelerometerY , theSplited[0]);
-                                    }break;
-                                case 1:
-                                    {
-                                        //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
-                                        theInformationController.addInformation( UseDataType.compassDegree , theSplited[1]);//正北0度
-                                    }break;
-                                case 2:
-                                    {
-                                        //第三大项： X轴加速度
-                                        theInformationController.addInformation(UseDataType.accelerometerX , theSplited[2]); 
-                                    }
-                                    break;
-                                case 3:
-                                    {
-                                        //第三大项： Z轴加速度
-                                        theInformationController.addInformation(UseDataType.accelerometerZ , theSplited[3]);
-                                    }
-                                    break;
+                                //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
+                                switch (i)
+                                {
+                                    case 1:
+                                        {
+                                            //第一大项： Y轴加速度
+                                            theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]);
+                                        }
+                                        break;
+                                    case 2:
+                                        {
+                                            //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
+                                            theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]);//正北0度
+                                        }
+                                        break;
+                                    case 3:
+                                        {
+                                            //第三大项： X轴加速度
+                                            theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]);
+                                        }
+                                        break;
+                                    case 4:
+                                        {
+                                            //第四大项： Z轴加速度
+                                            theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]);
+                                        }
+                                        break;
+                                    case 5:
+                                        {
+                                            //第五大项： GPS坐标
+                                            theInformationController.addInformation(UseDataType.GPS, theSplited[5]);
+                                        }
+                                        break;
+
+                                }
+                            }
+                        }
+                        else if (theSplited[0] == "B")
+                        {
+                               for (int i = 1; i < theSplited.Length; i++)
+                             {
+                                //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
+                                switch (i)
+                                {
+                                    case 1:
+                                        {
+                                            //第五大项： 时间戳
+                                            theInformationController.addInformation(UseDataType.timeStamp, theSplited[1]);
+                                        }
+                                        break;
+
+                                }
                             }
                         }
                         //第三大项： 陀螺仪的X轴

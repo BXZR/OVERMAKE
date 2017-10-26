@@ -25,7 +25,10 @@ namespace socketServer
 
             string saveString= "";
             for (int i = 0; i < theList.Count; i++)
+            {
+                Console.WriteLine(theList[i]);
                 saveString += theList[i] + "\n";
+            }
             saveInformation(saveString, fileName);
         }
 
@@ -34,9 +37,10 @@ namespace socketServer
         {
             if (string.IsNullOrEmpty(fileName))
                 fileName = makeFileName();//如果没有指定就用默认的
-            Console.WriteLine(fileName +"---");
+            //Console.WriteLine(fileName +"---");
             FileStream aFile = new FileStream( fileName , FileMode.Append);
             StreamWriter sw = new StreamWriter(aFile);
+            //Console.WriteLine(information);
             sw.Write(information);
             sw.Close();
             sw.Dispose();
@@ -54,5 +58,6 @@ namespace socketServer
             sw.Close();
             sw.Dispose();
         }
+
     }
 }

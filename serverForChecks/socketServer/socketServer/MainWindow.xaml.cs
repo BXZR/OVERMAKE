@@ -33,13 +33,14 @@ namespace socketServer
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
         stepDetection stepExtra;//额外的判断走了一步的方法集合
         stepModeCheck theStepModeCheckController;//推断行走状态：战力，行走，奔跑用 的控制单元
+        TrainFileMaker theTrainFileMake;//制作数据集的控制单元
         float stepTimer = 1f;//间隔多长时间进行一次计算
 
         //公有的存储空间
         List<double> theStepAngeUse = new List<double>();
         List<double> theStepLengthUse = new List<double>();
         List<double> theFilteredD = new List<double>();
-
+        List<int> indexBuff = new List<int>();//确认一步的下标存储
         public MainWindow()
         {
             InitializeComponent();
@@ -105,9 +106,10 @@ namespace socketServer
                                                                                    //根据下标获得需要的旋转角和步长
                                                                                    //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
                                                                                    //计算移动的时候用的是去除不可能项的步数
+                indexBuff = thePeackFinder.peackBuff;
      //-----------------------------------------------计算步长-----------------------------------------------//
-                stepLengthGet(thePeackFinder.peackBuff, theFilteredAZ);
-                stepModeCheck(thePeackFinder.peackBuff);//更新slope的数值
+                stepLengthGet(indexBuff, theFilteredAZ);
+                stepModeCheck(indexBuff);//更新slope的数值
                 //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
                 SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
                 theStepLabel.Content = "(带缓存波峰波谷计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
@@ -122,10 +124,11 @@ namespace socketServer
                 //方法2：重复性判断方法，相对比较严格
                 stepExtra.stepDetectionExtra1(theFilteredAZ);
                 int stepcounts2 = stepExtra.peackBuff.Count;
+                indexBuff = stepExtra.peackBuff;
                 //计算移动的时候用的是去除不可能项的步数
                 //-----------------------------------------------计算步长-----------------------------------------------//
-                stepLengthGet(stepExtra.peackBuff, theFilteredAZ);
-                stepModeCheck(stepExtra.peackBuff);//更新slope的数值
+                stepLengthGet(indexBuff, theFilteredAZ);
+                stepModeCheck(indexBuff);//更新slope的数值
                 //-----------------------------------------------制作输出显示的内容-----------------------------------------------//
                 theStepLabel.Content = "(采样匹配计步方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
@@ -152,8 +155,32 @@ namespace socketServer
 
 
             //如果数据足够多，就需要保存成一张图像
+            //同时就是做刷新处理
             if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
             {
+                //---------------------------------保存训练用的数据---------------------------------------------//
+                List<string> theTrainBase = new List<string> ();
+                //Console.WriteLine("V = "+indexBuff.Count);
+                //for (int ee = 0; ee < theFilteredAZ.Count; ee++)
+                //    Console.WriteLine("AZ-" + theFilteredAZ[ee]);
+
+
+                for (int i = 1; i < indexBuff.Count; i++)
+                {
+                    theTrainBase.Add(
+                    theTrainFileMake.getSaveTrainFile(
+                       indexBuff[ i -1 ] , indexBuff [ i ] ,
+                        theFilteredAZ ,theInformationController .GPSPositionX , theInformationController.GPSPositionY ,
+                         theInformationController.timeStep
+                        )
+                       
+                    );
+                }
+                if(theTrainBase != null && theTrainBase .Count >= 1)
+                {
+                theFileSaver.saveInformation(theTrainBase , "TrainBase/TrainBase-" + DateTime .Now.ToString("yyyy-MM-dd-hh-mm-ss")+".txt");
+                }
+                //------------------------------------------------------------------------------------------//
                 for (int i = 0; i < thePositionController.theTransformPosition.Count; i++)
                 {
                     SystemSave.savedPositions.Add(thePositionController.theTransformPosition[i]);
@@ -184,21 +211,23 @@ namespace socketServer
                 {
                     if (i >= 1)
                     {
-                        theStepLengthUse.Add(theStepLengthController.getStepLength(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
                     else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength());
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法2
                 else if (StepLengthMethod.SelectedIndex == 1)
                 {
                     if (i >= 1)
                     {
-                        double stepLength = theStepLengthController.getStepLength(indexBuff[i - 1], indexBuff[i], AZUse, theInformationController.timeStep);
+                       // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                        //    Console.WriteLine(theInformationController.timeStep[v]);
+                        double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, theInformationController.timeStep);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
                     else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength());
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
             }
         }
@@ -245,7 +274,7 @@ namespace socketServer
                 theStepLabel.Content = "（不带缓存）一共走了" + PeackSearcher.TheStepCount + "/" + PeackSearcher.changeCount + "步";
                 //判断出了走了步，所以需要进行定位了
                 List<double> theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree);
-                double theStepLength = theStepLengthController.getStepLength();
+                double theStepLength = theStepLengthController.getStepLength1();
                 double theDegree = theAngelController.getAngelNow(theFilteredD);
                 thePositionController.calculationPosition(theDegree, theStepLength);
                 POSITION.Text += "\n角度： " + theDegree.ToString("f4") + " 步长： " + theStepLength.ToString("f4") + " 坐标： " + thePositionController.getPosition();
@@ -297,6 +326,7 @@ namespace socketServer
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
             stepExtra = new stepDetection();
             theStepModeCheckController = new stepModeCheck();
+            theTrainFileMake = new TrainFileMaker();
             //相关工程更新
             makeFlashController();
 
@@ -366,7 +396,8 @@ namespace socketServer
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(demoForTensorFlow.DEMO());
+            // MessageBox.Show(demoForTensorFlow.DEMO());
+            demoForTensorFlow.lineNear();
         }
 
 

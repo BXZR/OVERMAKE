@@ -54,6 +54,7 @@
      <Compile Include="Assets\codes\inputChange.cs" />
      <Compile Include="Assets\codes\server.cs" />
      <Compile Include="Assets\codes\systemValues.cs" />
+     <Compile Include="Assets\demoCode\GPSGSP.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity3D 5.6.1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

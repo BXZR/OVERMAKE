@@ -7,7 +7,7 @@ public class informationGeter : MonoBehaviour {
 
     //这个类专门用来处理手机传感器信息
 	private  string information = "";//用于显示的信息缓存
-
+	private string GPSState = "";
 	public string Information//对外只读
 	{
 		get{ return information;}
@@ -17,8 +17,11 @@ public class informationGeter : MonoBehaviour {
 	string informationForAZ = "";
 	string informationForAX = "";
 	string informationForGyroDegree = ""; 
-
-
+	string informationForGPSPosition= "";
+	string informationForTimer = "";
+	//一些用于计算的私有参数
+	DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(2017, 10, 1)); //这个是用于计算时间戳用的基础时间
+	//格林威治时间
 
 	public void makeStart()
 	{
@@ -26,7 +29,8 @@ public class informationGeter : MonoBehaviour {
 		Input.gyro.enabled = true; 
 		Input.gyro.updateInterval = 0.05f;  
 		Input.compass.enabled = true;
-		Input.location .Start(10,10);
+		Input.location .Start(0.75f,0.75f);
+		//StartCoroutine(StartGPS());
         //开启数据收集
 
 		//InvokeRepeating ("flash", 0.5f, 2f);
@@ -34,14 +38,27 @@ public class informationGeter : MonoBehaviour {
 
 	public string  getSendInformation()
 	{
-		
+		//注意：发送的信息大项目以";"作为分隔符
+		//大项目内部以“，"作为分隔符
 		string sendString = informationForAY +";" + informationForGyroDegree +";" + informationForAX +";" + informationForAZ;
+		sendString += ";" + informationForGPSPosition ;
+		informationForGPSPosition= "";
 		informationForAY = "";
 		informationForGyroDegree = "";
 		informationForAX = "";
 		informationForAZ = "";
-		return sendString;
+		return "A;"+sendString;
 	}
+	//同时传太多会丢包
+	public string getSendInformation2()
+	{
+		//注意：发送的信息大项目以";"作为分隔符
+		//大项目内部以“，"作为分隔符
+		string sendString = informationForTimer;
+		informationForTimer = "";
+		return "B;"+sendString;
+	}
+
 
 	void flash()
 	{
@@ -57,10 +74,10 @@ public class informationGeter : MonoBehaviour {
 			systemValues.showValueCountNow = 0;
 			information = "";
 		}
-		systemValues .GPSUSELabel = "GPS可用";
-		if(Input .location .isEnabledByUser == false)
-			systemValues .GPSUSELabel = "GPS不可用";
-		
+
+		systemValues.GPSUSELabel = "GPS状态：" + Input.location.status.ToString ();//+" "+GPSState  ;
+
+
 		string theInformationNow = "";
 		System.DateTime now = System.DateTime.Now;
 
@@ -89,6 +106,9 @@ public class informationGeter : MonoBehaviour {
 			informationForGyroDegree += Input .compass.trueHeading.ToString("f4")+",";
 			informationForAX  += (Input .acceleration .x).ToString("f4")+",";
 			informationForAZ  += (Input .acceleration .z).ToString("f4")+",";
+			informationForGPSPosition += Input.location .lastData.longitude +","+Input .location .lastData .latitude+",";
+			long timeStamp = (long)(DateTime.Now - startTime).TotalMilliseconds; // 相差毫秒数
+			informationForTimer +=  timeStamp +",";
 		}
 		catch(Exception d)
 		{
@@ -108,41 +128,46 @@ public class informationGeter : MonoBehaviour {
 		（6） verticalAccuracy -- 垂直精度  
 	*/
 	//获取GPS信息作为基准量
-	private LocationServiceStatus locationServerStatus;  
-	IEnumerator  startGPS()
-	{
-		locationServerStatus = Input.location.status; //返回设备服务状态  
-		if (!Input.location.isEnabledByUser) {  
-			//this.gps_info = "isEnabledByUser value is:"+Input.location.isEnabledByUser.ToString()+" Please turn on the GPS";   
-			yield	return false;  
+	/*
+	IEnumerator StartGPS()  
+	{  
+		// Input.location 用于访问设备的位置属性（手持设备）, 静态的LocationService位置    
+		// LocationService.isEnabledByUser 用户设置里的定位服务是否启用    
+		if (!Input.location.isEnabledByUser)  
+		{  
+			GetGps = "isEnabledByUser value is:" + Input.location.isEnabledByUser.ToString() + " Please turn on the GPS";  
+			yield return false;  
 		}  
 
-		//LocationService.Start();// 启动位置服务的更新,最后一个位置坐标会被使用  
+		// LocationService.Start() 启动位置服务的更新,最后一个位置坐标会被使用    
 		Input.location.Start(10.0f, 10.0f);  
 
 		int maxWait = 20;  
-		while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0) {  
-			// 暂停协同程序的执行(1秒)  
+		while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)  
+		{  
+			// 暂停协同程序的执行(1秒)    
 			yield return new WaitForSeconds(1);  
 			maxWait--;  
 		}  
 
-		if (maxWait < 1) {  
-			//this.gps_info = "Init GPS service time out";  
+		if (maxWait < 1)  
+		{  
+			GetGps = "Init GPS service time out";  
 			yield return false;  
 		}  
 
-		if (Input.location.status == LocationServiceStatus.Failed) {  
-			//this.gps_info = "Unable to determine device location";  
+		if (Input.location.status == LocationServiceStatus.Failed)  
+		{  
+			GetGps = "Unable to determine device location";  
 			yield return false;  
-		}   
-		else {  
-			print ("GPS is OK");
-			//this.gps_info = "N:" + Input.location.lastData.latitude + " E:"+Input.location.lastData.longitude;  
-			//this.gps_info = this.gps_info + " Time:" + Input.location.lastData.timestamp;  
-			//yield return new WaitForSeconds(100);  
-			//其实开启之后就可以自由取用了
+		}  
+		else  
+		{  
+			GetGps = "N:" + Input.location.lastData.latitude + " E:" + Input.location.lastData.longitude;  
+			GetGps = GetGps + " Time:" + Input.location.lastData.timestamp;  
+			yield return new WaitForSeconds(100);  
 		}  
 	}
+   */
 		
 }

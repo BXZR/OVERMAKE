@@ -13,14 +13,15 @@ namespace socketServer
         //如果转弯且角度差异大于一个阀值，返回的步长信息恐怕需要调整
 
         //外部方法1，必须对应methodType方法0，这个在mainWindow处会有判断
-        public double getStepLength(double angelPast = 0, double angelNow = 0 )
+        public double getStepLength1(double angelPast = 0, double angelNow = 0 )
         {
               return StepLengthMethod1(angelPast, angelNow);
         }
 
+        //外部方法2，用重载做出的区分
         //不论应用的是哪一个轴向，至少需要传入一个用来计算的轴向
         //indexPre 和 indexNow 指的是传入的theA的下标，需要算theA的方差，而这这两个下标就是范围
-        public double getStepLength(int indexPre , int indexNow , List<double> theA , List<long> timeUse = null )
+        public double getStepLength2(int indexPre , int indexNow , List<double> theA , List<long> timeUse = null )
         {
             if ( indexNow <= indexPre || timeUse == null  )//也就是说传入的数值是错误的，或者数据不够
                 return stepLengthBasic();//万金油
@@ -36,9 +37,13 @@ namespace socketServer
                 double VK = 0;
                 for (int i = indexPre; i < indexNow; i++)
                 {
-                    VK += (theA[i] - average) * (theA[i] - average);
+                    double minus = (theA[i] - average) * (theA[i] - average);
+                    VK += minus;
+                   
                 }
+                //Console.WriteLine("VK = " + VK);
                 VK /= (indexNow - indexPre);
+                //Console.WriteLine("VK = " + VK);
 
                 double timestep = timeUse[indexNow] - timeUse[indexPre];
                 //有除零异常说明时间非常短，可以认为根本就没走
@@ -54,6 +59,15 @@ namespace socketServer
                     return stepLength;
             }
         }
+
+
+        //外部方法3，用于构建和使用训练用的结果
+        //这是最基本的一种方法，使用tensorflow在做线性拟合
+        //保存训练用的参数，给tensorflowUse或者外部的python脚本使用
+        //在采集数据的时候返回方法2得到的步长信息
+        //预计是在每一次刷新缓存的时候调用
+        
+
 
         //为了保证以后传入多个参数进行判断的情况，请保持这种模式
         private double StepLengthMethod1(double angelPast = 0 , double  angelNow = 0)

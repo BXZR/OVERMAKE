@@ -1,4 +1,5 @@
 ﻿
+ 
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,39 +14,45 @@ namespace socketServer
     public class demoForTensorFlow
     {
 
-        public static string DEMO2()
+
+        //基础方法，线性回归
+        public static void lineNear()
         {
-            /*
-            using (var session = new TFSession())
-            {
-                var graph = session.Graph;
-                Console.WriteLine(TFCore.Version);
-                var a = graph.Const(2);
-                var b = graph.Const(3);
-                Console.WriteLine("a=2 b=3");
-
-                // 两常量加
-                var addingResults = session.GetRunner().Run(graph.Add(a, b));
-                var addingResultValue = addingResults[0].GetValue();
-               // Console.WriteLine("a+b={0}", addingResultValue);
-
-                // 两常量乘
-                var multiplyResults = session.GetRunner().Run(graph.Mul(a, b));
-                var multiplyResultValue = multiplyResults[0].GetValue();
-               // Console.WriteLine("a*b={0}", multiplyResultValue);
-                var tft = new TFTensor(Encoding.UTF8.GetBytes($"Hello TensorFlow Version {TFCore.Version}! LineZero"));
-                var hello = graph.Const(tft);
-                var helloResults = session.GetRunner().Run(hello);
-                return (Encoding.UTF8.GetString((byte[])helloResults[0].GetValue()));
-            }
-            */
-            return "";
+             
         }
 
 
+        //这是一个不能跑通的例子，放在这里是为了看套路
+        //public static string DEMO2()
+        //{ 
+        //    using (var session = new TFSession())
+        //    {
+        //        var graph = session.Graph;
+        //        Console.WriteLine(TFCore.Version);
+        //        var a = graph.Const(2);
+        //        var b = graph.Const(3);
+        //        Console.WriteLine("a=2 b=3");
+
+        //        // 两常量加
+        //        var addingResults = session.GetRunner().Run(graph.Add(a, b));
+        //        var addingResultValue = addingResults[0].GetValue();
+        //       // Console.WriteLine("a+b={0}", addingResultValue);
+
+        //        // 两常量乘
+        //        var multiplyResults = session.GetRunner().Run(graph.Mul(a, b));
+        //        var multiplyResultValue = multiplyResults[0].GetValue();
+        //       // Console.WriteLine("a*b={0}", multiplyResultValue);
+        //        var tft = new TFTensor(Encoding.UTF8.GetBytes($"Hello TensorFlow Version {TFCore.Version}! LineZero"));
+        //        var hello = graph.Const(tft);
+        //        var helloResults = session.GetRunner().Run(hello);
+        //        return (Encoding.UTF8.GetString((byte[])helloResults[0].GetValue()));
+        //    }
+             
+        //    return "";
+        //}
 
 
-
+        //这是一个CNN的例子
         static string dir, modelFile, labelsFile;
         public static string  DEMO()
         {

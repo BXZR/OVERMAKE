@@ -9,7 +9,7 @@ public class systemValues : MonoBehaviour {
 	public static  int stepCountAll = 0;//总步数，这个是从服务器传过来的
 	public static string titleLabel = "";//在titleLabel面板中显示的内容字符串
 	public static string linkServerLabel = "服务器未连接";
-	public static string GPSUSELabel = "GPS可用";
+	public static string GPSUSELabel = "GPS--";
 	public static string  stepCountShow = "----";
 
 	public static float showValuesCountMax = 50f;//显示50条数据之后刷新

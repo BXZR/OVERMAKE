@@ -23,10 +23,12 @@ namespace socketServer
         //indexPre 和 indexNow 指的是传入的theA的下标，需要算theA的方差，而这这两个下标就是范围
         public double getStepLength2(int indexPre , int indexNow , List<double> theA , List<long> timeUse = null )
         {
-            if ( indexNow <= indexPre || timeUse == null  )//也就是说传入的数值是错误的，或者数据不够
+            if (indexNow >= theA .Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null  )//也就是说传入的数值是错误的，或者数据不够
                 return stepLengthBasic();//万金油
             else
             {
+                Console.WriteLine("timeUseCount = "+ timeUse.Count);
+                Console.WriteLine("theACount = " + theA.Count);
                 double average = 0;
                 for (int i = indexPre; i < indexNow; i++)
                 {
@@ -45,13 +47,13 @@ namespace socketServer
                 VK /= (indexNow - indexPre);
                 //Console.WriteLine("VK = " + VK);
 
-                double timestep = timeUse[indexNow] - timeUse[indexPre];
+                long timestep = timeUse[indexNow] - timeUse[indexPre];
                 //有除零异常说明时间非常短，可以认为根本就没走
                 if(timestep  ==0)
                     return 0;//万金油
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                double stepLength = 0.1 * VK + 0.1 * FK + 0.2;
+                double stepLength = 0.4 * VK + 0.4 * FK + 0.3;
                 //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油

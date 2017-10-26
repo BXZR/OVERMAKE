@@ -23,7 +23,7 @@ namespace socketServer
         information theInformationController;//信息总控单元，必须要有
         theServer theServerController;//网络服务控制单元，必须有
         FileSaver theFileSaver;//保存到文件中的控制器
-        DispatcherTimer tm;//刷新控制单元
+        DispatcherTimer tm;//刷新控制单元这是一个组件，是针对时间的刷新
         PeackSearcher thePeackFinder;//寻找峰谷的控制单元，用于步态分析
         Filter theFilter;//专门用于滤波的控制单元
         rotationAngel theAngelController;//角度控制单元
@@ -188,15 +188,15 @@ namespace socketServer
 
                 //生成假数据//////////////////////////////////
                 theTrainBase.Clear();
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true);
                 for (int i = 1; i < indexBuff.Count; i++)
                 {
                     theTrainBase.Add(
                     theTrainFileMake.getSaveTrainFileFake(
                        indexBuff[i - 1], indexBuff[i],
                         theFilteredAZ, FilteredX, FilteredY,
-                        theInformationController.timeStep
+                        timeUse
                         )
-
                     );
                 }
                 if (theTrainBase != null && theTrainBase.Count >= 1)
@@ -212,7 +212,9 @@ namespace socketServer
                 }
                 //方法1的刷新和存储
                 savedIndex = 0;
+                //制作信息图像
                 thePictureMaker.createPictureFromData(theInformationController);
+               // thePictureMaker.createPictureFromDataComplex(theInformationController);//暂时先不必要用特别复杂的图像生成方法，会卡
                 theInformationController.flashInformation();
                 SystemSave.stepCount += thePeackFinder.peackBuff.Count;
                 //方法2的刷新和存储
@@ -246,9 +248,11 @@ namespace socketServer
                 {
                     if (i >= 1)
                     {
-                       // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
                         //    Console.WriteLine(theInformationController.timeStep[v]);
-                        double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, theInformationController.timeStep);
+
+                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep,0.4f, true);
+                        double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
                     else

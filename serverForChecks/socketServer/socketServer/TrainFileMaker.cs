@@ -44,7 +44,6 @@ namespace socketServer
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 //这个是最基本的模型，当然会改但是架构就是这样了
-                //double stepLength = 0.2 * VK + 0.3 * FK + 0.4;
                 //存储训练用的参数
                 double x1 = theGPSX[indexPre];
                 double y1 = theGPSY[indexPre];
@@ -54,7 +53,7 @@ namespace socketServer
                 double stepLength = Distance(x1, y1, x2, y2);
 
 
-                double fakeStepLength = 0.1 * VK + 0.1 * FK + 0.2;
+                double fakeStepLength = 0.4 * VK + 0.4 * FK + 0.3;
                 string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + fakeStepLength.ToString("f3");
                 Console.WriteLine(saveStringItem);
                 return saveStringItem;

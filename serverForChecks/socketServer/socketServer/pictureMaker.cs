@@ -19,7 +19,7 @@ namespace socketServer
         //一共重复300行
 
         //真正用的方法
-        //angle输入的是角度值
+        //输入的是整体控制集合，
         public void createPictureFromData(information theInformationController, string path = @"img/")
         {
             if (theInformationController.accelerometerX.Count < SystemSave. countUseX)
@@ -42,7 +42,6 @@ namespace socketServer
                         255 ,
                         //(int)theInformationController.compassDegree[j]* 255 / 360,
                         ((int)theInformationController.accelerometerX[j]+7) * 10,
-
                         ((int)theInformationController.accelerometerY[j]+7)* 10,
                         ((int)theInformationController.accelerometerZ[j]+7)* 10
                          
@@ -56,6 +55,60 @@ namespace socketServer
             imgSave.Save(savePath, System.Drawing.Imaging.ImageFormat.Jpeg);//指定图片格式   
             imgSave.Dispose();
         }
+
+
+
+        //真正用的方法
+        //输入的是整体控制集合，这可能是以后会用到的更加复杂的方法
+        //需要考虑数据排布
+        public void createPictureFromDataComplex(information theInformationController, string path = @"img/")
+        {
+            if (theInformationController.accelerometerX.Count < SystemSave.countUseX)
+                return;//数据不足就不处理
+
+            string pictureName = "dataPictureComplex" + SystemSave.pictureNumber + ".jpeg";
+            SystemSave.pictureNumber++;
+
+            //千万注意读写路径问题
+            //此外在这里需要深拷贝，否则会报错（GDI+）
+            Bitmap bmp = new Bitmap(SystemSave.countUseX, SystemSave.countUseY);
+            //以后可以用这种套路做扩展
+            for (int i = 0; i < bmp.Height; i += 2)
+            {
+                for (int j = 0; j < bmp.Width; j++)
+                {
+                    Color c = Color.FromArgb
+                     (
+                        255,
+                        //(int)theInformationController.compassDegree[j]* 255 / 360,
+                        ((int)theInformationController.accelerometerX[j] + 7) * 10,
+                        ((int)theInformationController.accelerometerY[j] + 7) * 10,
+                        ((int)theInformationController.accelerometerZ[j] + 7) * 10
+                      );
+                    // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");
+                    bmp.SetPixel(j, i, c);
+                }
+                //for (int j = 0; j < bmp.Width; j++)
+                //{
+                //    Color c = Color.FromArgb
+                //     (
+                //        255,
+                //        //(int)theInformationController.compassDegree[j]* 255 / 360,
+                //        (int)(theInformationController.compassDegree[j] * 200f / 360f),
+                //        (int)(theInformationController.compassDegree[j] * 200f/360f),
+                //        255
+                //      );
+                //    // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");
+                //    bmp.SetPixel(j, i+1, c);
+                //}
+            }
+            Bitmap imgSave = new Bitmap(bmp);
+            string savePath = path + pictureName;
+            imgSave.Save(savePath, System.Drawing.Imaging.ImageFormat.Jpeg);//指定图片格式   
+            imgSave.Dispose();
+        }
+
+
 
         //概念性的方法，当然需要优化
         //angle输入的是角度值

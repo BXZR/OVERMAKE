@@ -19,6 +19,14 @@ public class informationGeter : MonoBehaviour {
 	string informationForGyroDegree = ""; 
 	string informationForGPSPosition= "";
 	string informationForTimer = "";
+	//加速计
+	string informationForGY = "";
+	string informationForGZ = "";
+	string informationForGX = "";
+	//磁力计
+	string informationForMY = "";
+	string informationForMZ = "";
+	string informationForMX = "";
 	//一些用于计算的私有参数
 	DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(2017, 10, 1)); //这个是用于计算时间戳用的基础时间
 	//格林威治时间
@@ -41,12 +49,21 @@ public class informationGeter : MonoBehaviour {
 		//注意：发送的信息大项目以";"作为分隔符
 		//大项目内部以“，"作为分隔符
 		string sendString = informationForAY +";" + informationForGyroDegree +";" + informationForAX +";" + informationForAZ;
-		sendString += ";" + informationForGPSPosition ;
-		informationForGPSPosition= "";
+		sendString += ";" + informationForGX + ";" + informationForGY + ";" + informationForGZ  ;
+		sendString += ";" + informationForMX + ";" + informationForMY + ";" + informationForMZ;
+
+
 		informationForAY = "";
 		informationForGyroDegree = "";
 		informationForAX = "";
 		informationForAZ = "";
+		informationForGX = "";
+		informationForGY = "";
+		informationForGZ = "";
+		informationForMX = "";
+		informationForMY = "";
+		informationForMZ = "";
+
 		return "A;"+sendString;
 	}
 	//同时传太多会丢包
@@ -54,7 +71,9 @@ public class informationGeter : MonoBehaviour {
 	{
 		//注意：发送的信息大项目以";"作为分隔符
 		//大项目内部以“，"作为分隔符
-		string sendString = informationForTimer;
+		string sendString = informationForGPSPosition +";" +informationForTimer;
+
+		informationForGPSPosition= "";
 		informationForTimer = "";
 		return "B;"+sendString;
 	}
@@ -106,6 +125,15 @@ public class informationGeter : MonoBehaviour {
 			informationForGyroDegree += Input .compass.trueHeading.ToString("f4")+",";
 			informationForAX  += (Input .acceleration .x).ToString("f4")+",";
 			informationForAZ  += (Input .acceleration .z).ToString("f4")+",";
+
+			informationForGX += Input  .gyro .rotationRateUnbiased.x.ToString("f4")+",";
+			informationForGY += Input  .gyro .rotationRateUnbiased.y.ToString("f4")+",";
+			informationForGZ += Input  .gyro .rotationRateUnbiased.z.ToString("f4")+",";
+
+			informationForMX += Input .compass.rawVector .x.ToString("f4")+",";
+			informationForMY += Input .compass.rawVector .y.ToString("f4")+",";
+			informationForMZ += Input .compass.rawVector .z.ToString("f4")+",";
+
 			informationForGPSPosition += Input.location .lastData.longitude +","+Input .location .lastData .latitude+",";
 			long timeStamp = (long)(DateTime.Now - startTime).TotalMilliseconds; // 相差毫秒数
 			informationForTimer +=  timeStamp +",";

@@ -18,7 +18,23 @@ namespace socketServer
         //基础方法，线性回归
         public static void lineNear()
         {
-             
+            TFGraph tf = new TFGraph();
+            var x =  tf.Placeholder(TFDataType.Float);
+            var y =  tf.Placeholder(TFDataType.Float);
+
+            var sl = tf.Placeholder(TFDataType.Float);
+
+            TFShape shape = new TFShape(0);
+            var A = tf.Variable(shape,TFDataType.Float);
+            var B = tf.Variable(shape, TFDataType.Float);
+            var C = tf.Variable(shape, TFDataType.Float);
+
+            var SL =  tf.Add( tf.Add( tf.Mul(A,x)   , tf.Mul(B, y)) , C);
+
+            var lost = tf.ReduceMean(tf.Square(tf.Sub(SL, sl)));
+           
+            TFSession d = new TFSession();
+            
         }
 
 

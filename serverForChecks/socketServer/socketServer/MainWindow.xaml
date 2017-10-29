@@ -6,9 +6,9 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Content="save" HorizontalAlignment="Right" Margin="0,100,123,0" Name="button1" Width="75" Click="button1_Click" Height="22" VerticalAlignment="Top" />
-        <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,64,123,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
-        <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,64,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
+        <Button Content="save" HorizontalAlignment="Right" Margin="0,82,123,0" Name="button1" Width="75" Click="button1_Click" Height="22" VerticalAlignment="Top" />
+        <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,46,123,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
+        <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,46,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
         <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,33" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
         <Grid Margin="10,13,203,76" Name="Chart">
             <Label Content="Data Tip" Height="75" Margin="10,32,467,0" Name="theStepLabel" VerticalAlignment="Top" />
@@ -28,9 +28,9 @@
         <Button x:Name="button" Content="tensorFlowDEMO" HorizontalAlignment="Left" Margin="249,0,0,37" Width="145" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
         <Button x:Name="button7" Content="createPic" HorizontalAlignment="Right" Margin="0,0,861,37" VerticalAlignment="Bottom" Width="145" Click="button7_Click" Height="22"/>
         <Label x:Name="Charts" Content="Charts" Margin="0,0,38,61" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="169" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Label x:Name="Charts_Copy" Content="Normal" Margin="0,28,123,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Label x:Name="Charts_Copy" Content="Normal" Margin="0,10,123,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy1" Content="Demos" Margin="0,0,1011,35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="57" Foreground="#FF4600FF" FontWeight="Bold" Height="26"/>
-        <Button x:Name="button5" Content="color" Margin="0,100,25,0" HorizontalAlignment="Right" Width="75" Click="button5_Click" Height="22" VerticalAlignment="Top">
+        <Button x:Name="button5" Content="color" Margin="0,82,25,0" HorizontalAlignment="Right" Width="75" Click="button5_Click" Height="22" VerticalAlignment="Top">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -40,28 +40,34 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <CheckBox x:Name="drawWithBufferCheck" Content="drawWithBuffer" HorizontalAlignment="Right" Margin="0,136,91,0" IsChecked="True" Height="16" VerticalAlignment="Top" Width="107"/>
-        <Label x:Name="Charts_Copy2" Content="StepCheckMethod" Margin="0,262,38,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="stepCheckAxisUse" Margin="0,228,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
+        <CheckBox x:Name="drawWithBufferCheck" Content="drawWithBuffer" HorizontalAlignment="Right" Margin="0,118,91,0" IsChecked="True" Height="16" VerticalAlignment="Top" Width="107"/>
+        <Label x:Name="Charts_Copy2" Content="StepCheckMethod" Margin="0,236,38,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="stepCheckAxisUse" Margin="0,206,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="DirectZ"/>
             <ComboBoxItem Content="DirecX"/>
             <ComboBoxItem Content="DirecY"/>
             <ComboBoxItem Content="AbsoluteXYZ"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,197,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="stepCheckMethod" Margin="0,293,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
+        <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,175,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="stepCheckMethod" Margin="0,267,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="Peack"/>
             <ComboBoxItem Content="Sample"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,327,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,358,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
+        <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,299,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,330,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
             <ComboBoxItem Content="ImmediateValue"/>
             <ComboBoxItem Content="CommonMethod"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,13,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Image x:Name="image" HorizontalAlignment="Left" Height="69" Margin="426,44,0,0" VerticalAlignment="Top" Width="84" Source="pictures/compass.png" RenderTransformOrigin="0.345,0.464"/>
-        <Label x:Name="stepSlopLabel" Content="StepSlop : 0 / 0" Margin="0,385,29,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
+        <Label x:Name="stepSlopLabel" Content="StepSlop : 0 / 0" Margin="0,144,29,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="Tips" Margin="0,13,984,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Button x:Name="button8" Content="Settings" Margin="0,162,122,0" VerticalAlignment="Top" Click="button8_Click" HorizontalAlignment="Right" Width="76"/>
+        <Button x:Name="button8" Content="Settings" Margin="0,112,25,0" VerticalAlignment="Top" Click="button8_Click" HorizontalAlignment="Right" Width="59"/>
+        <Label x:Name="Charts_Copy7" Content="HeadingMethod" Margin="0,363,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,394,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
+            <ComboBoxItem Content="CompassRead"/>
+            <ComboBoxItem Content="MSBasedCompass"/>
+            <ComboBoxItem Content="AHRS"/>
+        </ComboBox>
     </Grid>
 </Window>

@@ -28,7 +28,7 @@ public class controller : MonoBehaviour {
 		theGeter.makeStart();
 		Invoke ("showTitle" , 0.7f);
 		InvokeRepeating ("makeInformation", 0.5f, 0.05f);
-		InvokeRepeating ("sendInformation" , 0.5f , 1f);
+		InvokeRepeating ("sendInformation" , 0.5f , 0.5f);
 		InvokeRepeating ("showInformation" , 0.5f , 0.1f);//显示时间会比手机的时间间隔长一点，算是一个简单的优化
 		InvokeRepeating ("showStepCount", 0.5f, 0.05f);
 	}

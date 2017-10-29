@@ -27,8 +27,8 @@ namespace socketServer
                 return stepLengthBasic();//万金油
             else
             {
-                Console.WriteLine("timeUseCount = "+ timeUse.Count);
-                Console.WriteLine("theACount = " + theA.Count);
+                //Console.WriteLine("timeUseCount = "+ timeUse.Count);
+               // Console.WriteLine("theACount = " + theA.Count);
                 double average = 0;
                 for (int i = indexPre; i < indexNow; i++)
                 {

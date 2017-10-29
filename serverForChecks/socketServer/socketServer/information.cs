@@ -24,6 +24,14 @@ namespace socketServer
        public List<double> accelerometerY = new List<double>();//专门用于记录加速计Y轴的数据的数组
        public List<double> accelerometerZ = new List<double>();//专门用于记录加速计Z轴的数据的数组
        public List<double> accelerometerX = new List<double>();//专门用于记录加速计X轴的数据的数组
+
+       public List<double> gyroX = new List<double>();//专门用于记录陀螺仪X轴的数据的数组
+       public List<double> gyroY = new List<double>();//专门用于记录陀螺仪y轴的数据的数组
+       public List<double> gyroZ = new List<double>();//专门用于记录陀螺仪z轴的数据的数组
+       public List<double> magnetometerX = new List<double>();//专门用于记录磁力计X轴的数据的数组
+       public List<double> magnetometerY = new List<double>();//专门用于记录磁力计Y轴的数据的数组
+       public List<double> magnetometerZ = new List<double>();//专门用于记录磁力计Z轴的数据的数组
+
        public List<double> compassDegree = new List<double> ();//专门用于记录磁力计辅助数据的数组
        public List<double> GPSPositionX = new List<double>();//专门用于记录这个点的GPS信息X（用于训练）
        public List<double> GPSPositionY = new List<double>();//专门用于记录这个点的GPS信息Y（用于训练）
@@ -50,30 +58,18 @@ namespace socketServer
         public void addInformation( UseDataType theType , string information = "0")
         {
             //不同类别的数据保存的的方式不一定相同，所以要分开处理
-            if (theType == UseDataType.accelerometerY)
-            {
-                saveAY(information);
-            }
-            if (theType == UseDataType.accelerometerX)
-            {
-               saveAX(information);
-            }
-            if (theType == UseDataType.accelerometerZ)
-            {
-                saveAZ(information);
-            }
-            if (theType == UseDataType.compassDegree)
-            {
-                saveCD(information);
-            }
-            if(theType == UseDataType.timeStamp)
-            {
-                saveTimeStamp(information);
-            }
-            if (theType == UseDataType.GPS)
-            {
-                saveGPSPosition(information);
-            } 
+            if (theType == UseDataType.accelerometerY) {  saveAY(information); }
+            if (theType == UseDataType.accelerometerX) { saveAX(information); }
+            if (theType == UseDataType.accelerometerZ) { saveAZ(information); }
+            if (theType == UseDataType.compassDegree) { saveCD(information); }
+            if (theType == UseDataType.timeStamp) { saveTimeStamp(information); }
+            if (theType == UseDataType.GPS) { saveGPSPosition(information); }
+            if (theType == UseDataType.gyroX) { saveGyros(information , 0); }
+            if (theType == UseDataType.gyroY) { saveGyros(information, 1); }
+            if (theType == UseDataType.gyroZ) { saveGyros(information, 2); }
+            if (theType == UseDataType.magnetometerX) { saveMagnetometers(information, 0); }
+            if (theType == UseDataType.magnetometerY) { saveMagnetometers(information, 1); }
+            if (theType == UseDataType.magnetometerZ) { saveMagnetometers(information, 2); }
         }
 
         //唯一对外开放的清理方法
@@ -84,6 +80,12 @@ namespace socketServer
             accelerometerY.Clear();
             accelerometerZ.Clear();
             accelerometerX.Clear();
+            gyroX.Clear();
+            gyroY.Clear();
+            gyroZ.Clear();
+            magnetometerX.Clear();
+            magnetometerY.Clear();
+            magnetometerZ.Clear();
             compassDegree.Clear();
             theOperatedValue.Clear();
             GPSPositionX.Clear();
@@ -91,7 +93,69 @@ namespace socketServer
             timeStep.Clear();
         }
 
+        //----------------------------------------------------------------------------------------------------------------------------//
 
+        //各种分量的存储小方法,私有，绝对要私有
+        private void saveMagnetometers(string information, int type = 0)
+        {
+            string[] splitInformation = information.Split(',');
+            double theMagnetometerData = 0;
+            for (int i = 0; i < splitInformation.Length; i++)
+            {
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+                        theMagnetometerData = Convert.ToDouble(splitInformation[i]);
+                    }
+                    catch
+                    {
+                        theMagnetometerData = 0;
+                    }
+                    switch (type)
+                    {
+                        case 0: { magnetometerX.Add(theMagnetometerData); } break;
+                        case 1: { magnetometerY.Add(theMagnetometerData); } break;
+                        case 2: { magnetometerZ.Add(theMagnetometerData); } break;
+                    }
+                }
+            }
+        }
+
+        //各种分量的存储小方法,私有，绝对要私有
+        private void saveGyros(string information , int type = 0)
+        {
+            string[] splitInformation = information.Split(',');
+            double theGYROData = 0;
+            for (int i = 0; i < splitInformation.Length; i++)
+            {
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+                        theGYROData = Convert.ToDouble(splitInformation[i]);
+                    }
+                    catch
+                    {
+                        theGYROData = 0;
+                    }
+                    switch (type)
+                    {
+                        case 0: { gyroX.Add(theGYROData); } break;
+                        case 1: { gyroY.Add(theGYROData); } break;
+                        case 2: { gyroZ.Add(theGYROData); } break;
+                    }
+                }
+            }
+        }
 
         //各种分量的存储小方法,私有，绝对要私有
         private void saveTimeStamp(string information)

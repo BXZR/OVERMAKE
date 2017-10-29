@@ -179,37 +179,26 @@ namespace socketServer
                                 //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
                                 switch (i)
                                 {
-                                    case 1:
-                                        {
-                                            //第一大项： Y轴加速度
-                                            theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]);
-                                        }
-                                        break;
-                                    case 2:
-                                        {
-                                            //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
-                                            theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]);//正北0度
-                                        }
-                                        break;
-                                    case 3:
-                                        {
-                                            //第三大项： X轴加速度
-                                            theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]);
-                                        }
-                                        break;
-                                    case 4:
-                                        {
-                                            //第四大项： Z轴加速度
-                                            theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]);
-                                        }
-                                        break;
-                                    case 5:
-                                        {
-                                            //第五大项： GPS坐标
-                                            theInformationController.addInformation(UseDataType.GPS, theSplited[5]);
-                                        }
-                                        break;
-
+                                    //第一大项： Y轴加速度
+                                    case 1: { theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]); } break;
+                                    //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
+                                    case 2: { theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]); } break;//正北0度 
+                                    //第三大项： X轴加速度
+                                    case 3: { theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]); } break;
+                                    //第四大项： Z轴加速度
+                                    case 4: { theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]); } break;
+                                    //第五大项： X轴陀螺仪
+                                    case 5:{ theInformationController.addInformation(UseDataType.gyroX, theSplited[5]); }break;
+                                    //第六大项： Y轴陀螺仪
+                                    case 6:  {theInformationController.addInformation(UseDataType.gyroY, theSplited[6]); }break;
+                                    //第七大项： Z轴陀螺仪
+                                    case 7: { theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]);}break;
+                                    //第八大项： X轴磁力计
+                                    case 8: { theInformationController.addInformation(UseDataType.magnetometerX, theSplited[8]); } break;
+                                    //第九大项： y轴磁力计
+                                    case 9: { theInformationController.addInformation(UseDataType.magnetometerY, theSplited[9]); } break;
+                                    //第十大项： z轴磁力计
+                                    case 10: { theInformationController.addInformation(UseDataType.magnetometerZ, theSplited[10]); } break;
                                 }
                             }
                         }
@@ -220,19 +209,15 @@ namespace socketServer
                                 //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
                                 switch (i)
                                 {
-                                    case 1:
-                                        {
-                                            //第五大项： 时间戳
-                                            theInformationController.addInformation(UseDataType.timeStamp, theSplited[1]);
-                                        }
-                                        break;
+                                    //GPS
+                                    case 1: { theInformationController.addInformation(UseDataType.GPS, theSplited[1]); } break;
+                                    //时间戳
+                                    case 2:{ theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]);} break;
 
                                 }
                             }
                         }
-                        //第三大项： 陀螺仪的X轴
-                        //第四大项： 陀螺仪的Y轴
-                        //第五大项： 陀螺仪的Z轴
+
                         myClientSocket.Send(Encoding.UTF8.GetBytes(SystemSave.allStepCount.ToString()));//发送一个步数信息
                     }
                     else//客户端请求关闭连接

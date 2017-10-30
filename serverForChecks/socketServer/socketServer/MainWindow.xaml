@@ -67,7 +67,9 @@
         <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,394,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
             <ComboBoxItem Content="CompassRead"/>
             <ComboBoxItem Content="MSBasedCompass"/>
-            <ComboBoxItem Content="AHRS"/>
+            <ComboBoxItem Content="AHRS(client)"/>
+            <ComboBoxItem Content="AHRS(server)"/>
+            <ComboBoxItem Content="IMU(client)"/>
         </ComboBox>
     </Grid>
 </Window>

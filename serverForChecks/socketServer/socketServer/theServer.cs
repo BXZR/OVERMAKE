@@ -213,6 +213,8 @@ namespace socketServer
                                     case 1: { theInformationController.addInformation(UseDataType.GPS, theSplited[1]); } break;
                                     //时间戳
                                     case 2:{ theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]);} break;
+                                    //AHRSZ信息
+                                    case 3: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[3]); } break;
 
                                 }
                             }

@@ -10,7 +10,7 @@ namespace socketServer
     { accelerometerX, accelerometerY, accelerometerZ,
         gyroX, gyroY, gyroZ, magnetometerX,
         magnetometerY, magnetometerZ, compassDegree  ,
-        timeStamp , GPS
+        timeStamp , GPS, AHRSZ
     }
     //这个类用于预处理、缓存保存从客户端得到信息
     //此外，所有查看信息的方法都应该只在这一个类中出现
@@ -35,6 +35,8 @@ namespace socketServer
        public List<double> compassDegree = new List<double> ();//专门用于记录磁力计辅助数据的数组
        public List<double> GPSPositionX = new List<double>();//专门用于记录这个点的GPS信息X（用于训练）
        public List<double> GPSPositionY = new List<double>();//专门用于记录这个点的GPS信息Y（用于训练）
+       public List<double> AHRSZ = new List<double>();//从客户端拿到的AHRS的Z轴信息，偏航角
+
        public List<long> timeStep = new List<long>();//每一组数据的时间戳 （时间戳的位数还是有点长），以毫秒作为单位
        private List<double> theOperatedValue = new List<double>();//记录处理之后的数据，这是一个综合的加速度
                                                                   //引用放在这里是为了优化
@@ -70,6 +72,7 @@ namespace socketServer
             if (theType == UseDataType.magnetometerX) { saveMagnetometers(information, 0); }
             if (theType == UseDataType.magnetometerY) { saveMagnetometers(information, 1); }
             if (theType == UseDataType.magnetometerZ) { saveMagnetometers(information, 2); }
+            if (theType == UseDataType.AHRSZ) { saveAHRSZ(information); }
         }
 
         //唯一对外开放的清理方法
@@ -91,10 +94,36 @@ namespace socketServer
             GPSPositionX.Clear();
             GPSPositionY.Clear();
             timeStep.Clear();
+            AHRSZ.Clear();
         }
 
         //----------------------------------------------------------------------------------------------------------------------------//
 
+        private void saveAHRSZ(string information)
+        {
+            string[] splitInformation = information.Split(',');
+            double AZ = 0;
+            for (int i = 0; i < splitInformation.Length; i++)
+            {
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+                        AZ = Convert.ToDouble(splitInformation[i]);
+                    }
+                    catch
+                    {
+                        AZ = 0;
+                    }
+
+                     AHRSZ.Add(AZ);
+                }
+            }
+        }
         //各种分量的存储小方法,私有，绝对要私有
         private void saveMagnetometers(string information, int type = 0)
         {
@@ -210,7 +239,7 @@ namespace socketServer
                         theCDData = 0;
                     }
                 }
-                compassDegree.Add(theCDData +90);//这个是我用别人的手机指南针软件搞出来的角度与这个角度的差异，中间相差90度
+                compassDegree.Add(theCDData );//这个是我用别人的手机指南针软件搞出来的角度与这个角度的差异，中间相差90度
             }
         }
 

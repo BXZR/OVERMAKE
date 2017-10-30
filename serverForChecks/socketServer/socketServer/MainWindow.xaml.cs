@@ -40,6 +40,7 @@ namespace socketServer
         List<double> theStepAngeUse = new List<double>();
         List<double> theStepLengthUse = new List<double>();
         List<double> theFilteredD = new List<double>();
+
         List<int> indexBuff = new List<int>();//确认一步的下标存储
         public MainWindow()
         {
@@ -126,7 +127,7 @@ namespace socketServer
             }
 
 
-            //如果数据足够多，就需要保存成一张图像
+            //如果数据足够多，就需要保存成一张图像----------------------------
             //同时就是做刷新处理
             if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
             {
@@ -147,6 +148,7 @@ namespace socketServer
                 //方法2的刷新和存储
                 SystemSave.stepCount2 += stepExtra.peackBuff.Count;
                 stepExtra.makeFlash();
+                SystemSave.makeFlash();
             }
         }
 
@@ -208,8 +210,6 @@ namespace socketServer
         {
             for (int i = 0; i < indexBuff.Count; i++)
             {
-
-
                 //方法1
                 if (StepLengthMethod.SelectedIndex == 0)
                 {
@@ -276,6 +276,14 @@ namespace socketServer
             }
             else if (HeadingMehtod.SelectedIndex == 2)
             {
+                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZ , 0.1f);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    theStepAngeUse.Add(AHRSZ[indexBuff[i]]);
+                }
+            }
+            else if (HeadingMehtod.SelectedIndex == 3)
+            {
                 //方法3，AHRS方法
                 List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
                 List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
@@ -286,23 +294,59 @@ namespace socketServer
                 List<double> MX = theFilter.theFilerWork(theInformationController.magnetometerX);
                 List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
                 List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
+                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0, mx = 0, my = 0, mz = 0;
+                // Console.WriteLine(AX.Count +"-------------");
 
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     double degree = 0;
-                    double ax = AX[indexBuff[i]];
-                    double ay = AY[indexBuff[i]];
-                    double az = AZ[indexBuff[i]];
-                    double gx = GX[indexBuff[i]];
-                    double gy = GY[indexBuff[i]];
-                    double gz = GZ[indexBuff[i]];
-                    double mx = MX[indexBuff[i]];
-                    double my = MY[indexBuff[i]];
-                    double mz = MZ[indexBuff[i]];
-                    degree = theAngelController.AHRSupdate( gx, gy, gz, ax, ay, az, mx, my, mz);
+                    ax = AX[indexBuff[i]];
+                    ay = AY[indexBuff[i]];
+                    az = AZ[indexBuff[i]];
+                    gx = GX[indexBuff[i]];
+                    gy = GY[indexBuff[i]];
+                    gz = GZ[indexBuff[i]];
+                    mx = MX[indexBuff[i]];
+                    my = MY[indexBuff[i]];
+                    mz = MZ[indexBuff[i]];
+                    degree = theAngelController.AHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz);
                     theStepAngeUse.Add(degree);
                 }
+               // theAngelController.makeMehtod3Clear();
             }
+            else if(HeadingMehtod.SelectedIndex == 4)
+            {
+                //方法3，IMU方法
+                List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+                List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+                List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+                List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+                List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+                //List<double> MX = theFilter.theFilerWork(theInformationController.magnetometerX);
+                //List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
+                //List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
+                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0;//, mx = 0, my = 0, mz = 0;
+                // Console.WriteLine(AX.Count +"-------------");
+
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    double degree = 0;
+                    ax = AX[indexBuff[i]];
+                    ay = AY[indexBuff[i]];
+                    az = AZ[indexBuff[i]];
+                    gx = GX[indexBuff[i]];
+                    gy = GY[indexBuff[i]];
+                    gz = GZ[indexBuff[i]];
+                    //mx = MX[indexBuff[i]];
+                    //my = MY[indexBuff[i]];
+                    //mz = MZ[indexBuff[i]];
+                    degree = theAngelController.IMUupdate(gx,gy,gz,ax,ay,az);
+                    theStepAngeUse.Add(degree);
+                }
+               // theAngelController.makeMehtod3Clear();
+            }
+
         }
 
 
@@ -546,9 +590,9 @@ namespace socketServer
 
             Line drawLine = new Line();
             drawLine.X1 = theCanvas.Width / 2 + X1Save * 5;//怕跑出范围，所以就缩小了一些
-            drawLine.Y1 = theCanvas.Height / 2 + Y1Save * 5;//怕跑出范围，所以就缩小了一些
+            drawLine.Y1 = theCanvas.Height / 2 - Y1Save * 5;//怕跑出范围，所以就缩小了一些
             drawLine.X2 = theCanvas.Width / 2 + X2 * 5;//怕跑出范围，所以就缩小了一些
-            drawLine.Y2 = theCanvas.Height / 2 + Y2* 5;//怕跑出范围，所以就缩小了一些
+            drawLine.Y2 = theCanvas.Height / 2 - Y2* 5;//怕跑出范围，所以就缩小了一些
             //保存字段值
             X1Save = X2;
             Y1Save = Y2;
@@ -578,9 +622,9 @@ namespace socketServer
             {
                 Line drawLine = new Line();
                 drawLine.X1 = theCanvas.Width / 2 + SystemSave.savedPositions[u].X * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y1 = theCanvas.Height / 2 + SystemSave.savedPositions[u].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y1 = theCanvas.Height / 2 - SystemSave.savedPositions[u].Y * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.X2 = theCanvas.Width / 2 + SystemSave.savedPositions[u+1].X * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y2 = theCanvas.Height / 2 + SystemSave.savedPositions[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y2 = theCanvas.Height / 2 - SystemSave.savedPositions[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.Stroke = new SolidColorBrush(SystemSave.theOldColor);
                 drawLine.StrokeThickness = 2;
                 theCanvas.Children.Add(drawLine);
@@ -590,9 +634,9 @@ namespace socketServer
             {
                 Line drawLine = new Line();
                 drawLine.X1 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u].X *5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y1 = theCanvas.Height / 2 + thePositionController.theTransformPosition[u].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y1 = theCanvas.Height / 2 - thePositionController.theTransformPosition[u].Y * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.X2 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u+1].X * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y2 = theCanvas.Height / 2 + thePositionController.theTransformPosition[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.Y2 = theCanvas.Height / 2 - thePositionController.theTransformPosition[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
                 drawLine.Stroke = new SolidColorBrush(SystemSave.theNewColor);
                 drawLine.StrokeThickness = 2;
                 theCanvas.Children.Add(drawLine);

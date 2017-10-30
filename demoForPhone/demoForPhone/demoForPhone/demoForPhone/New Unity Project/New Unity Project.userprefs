@@ -4,9 +4,9 @@
     <Files>
       <File FileName="Assets\codes\systemValues.cs" Line="1" Column="1" />
       <File FileName="Assets\codes\informationShower.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\server.cs" Line="7" Column="19" />
-      <File FileName="Assets\codes\informationGeter.cs" Line="65" Column="25" />
-      <File FileName="Assets\codes\controller.cs" Line="28" Column="24" />
+      <File FileName="Assets\codes\server.cs" Line="1" Column="1" />
+      <File FileName="Assets\codes\informationGeter.cs" Line="87" Column="3" />
+      <File FileName="Assets\codes\controller.cs" Line="1" Column="1" />
       <File FileName="Assets\codes\REController.cs" Line="1" Column="1" />
       <File FileName="Assets\codes\buttons.cs" Line="1" Column="1" />
       <File FileName="Assets\codes\inputChange.cs" Line="1" Column="1" />

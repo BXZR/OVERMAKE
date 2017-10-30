@@ -32,13 +32,18 @@ namespace socketServer
         public static Color theOldColor = Colors.Magenta;//绘制颜色（之前的旧轨迹）
         public static Color theNewColor = Colors.Black;//绘制颜色（当前的轨迹）
         public static Color theNewColor2 = Colors.Orange;//绘制颜色（当前的轨迹  ，方法2的颜色）
-        //应该还有一个对比用的颜色，但是在这里先不写
-
+                                                         //应该还有一个对比用的颜色，但是在这里先不写
 
 
         public static int getValuesCount (int valueNow = 0)//传入的是未计入分组的数据信息
         {
             return pictureNumber * buffCount + valueNow;
+        }
+
+        //每一个阶段的数据收集，系统面板也会有一些东西需要刷新的
+        public static void makeFlash()
+        {
+           
         }
     }
 }

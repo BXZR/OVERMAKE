@@ -276,13 +276,26 @@ namespace socketServer
             }
             else if (HeadingMehtod.SelectedIndex == 2)
             {
-                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZ , 0.1f);
+                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     theStepAngeUse.Add(AHRSZ[indexBuff[i]]);
                 }
             }
             else if (HeadingMehtod.SelectedIndex == 3)
+            {
+                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
+                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
+
+                Console.WriteLine("--------" + AHRSZ.Count + "--------" + IMUZ.Count);
+
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    Console.WriteLine("--------" + AHRSZ[indexBuff[i]] + "--------" + IMUZ[indexBuff[i]]);
+                    theStepAngeUse.Add(IMUZ[indexBuff[i]]);
+                }
+            }
+            else if (HeadingMehtod.SelectedIndex == 4)
             {
                 //方法3，AHRS方法
                 List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
@@ -314,7 +327,7 @@ namespace socketServer
                 }
                // theAngelController.makeMehtod3Clear();
             }
-            else if(HeadingMehtod.SelectedIndex == 4)
+            else if(HeadingMehtod.SelectedIndex == 5)
             {
                 //方法3，IMU方法
                 List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);

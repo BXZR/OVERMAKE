@@ -41,6 +41,7 @@ namespace socketServer
             return theAngelNow;
         }
 
+//--------------------------------------------------实际上这两种方法应该方法客户端来做，在服务器中采样不充分所以出错写在这里只是为了做一个对比--------------------------------------------------------------------------------------//
 
         //方法3  AHRS算法代码：磁力计+加计+陀螺版（来自网络有待进一步弄一波）
 
@@ -49,13 +50,9 @@ namespace socketServer
         double halfT = 0.025;                //必须设置为采样频率的一半
         double q0 = 1, q1 = 0, q2 = 0, q3 = 0;        // quaternion elements representing the estimated orientation
         double exInt = 0, eyInt = 0, ezInt = 0;        // scaled integral error
-
-
-
         ////这个方法不可以每一次计算都会修改全局的数值，所以调用次数需要慎用
         public double AHRSupdate(double gx, double gy, double gz, double ax, double ay, double az, double mx, double my, double mz)
         {
-
             //Console.WriteLine(string .Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}" , gx,gy,gz,ax,ay,az,mx,my,mz));
             double norm;
             double hx, hy, hz, bx, bz;
@@ -218,8 +215,6 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
             double X = Math.Atan2(2 * (q1 * q2 + q3 * q0), q3 * q3 - q0 * q0 - q1 * q1 + q2 * q2) / 3.14 * 180;
             double Y = Math.Asin(-2 * (q0 * q2 - q3 * q1))/3.14 * 180;
             double Z = Math.Atan2(2 * (q0 * q1 + q3 * q2), q3 * q3 + q0 * q0 - q1 * q1 - q2 * q2) / 3.14 * 180;
-
-
 
             Console.WriteLine("Z = " + -Z);
             return Z;

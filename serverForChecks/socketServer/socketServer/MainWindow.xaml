@@ -68,8 +68,9 @@
             <ComboBoxItem Content="CompassRead"/>
             <ComboBoxItem Content="MSBasedCompass"/>
             <ComboBoxItem Content="AHRS(client)"/>
-            <ComboBoxItem Content="AHRS(server)"/>
             <ComboBoxItem Content="IMU(client)"/>
+            <ComboBoxItem Content="AHRS(server)"/>
+            <ComboBoxItem Content="IMU(server)"/>
         </ComboBox>
     </Grid>
 </Window>

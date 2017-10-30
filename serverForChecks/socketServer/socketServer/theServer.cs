@@ -215,6 +215,8 @@ namespace socketServer
                                     case 2:{ theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]);} break;
                                     //AHRSZ信息
                                     case 3: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[3]); } break;
+                                    //IMU信息
+                                    case 4: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[4]); } break;
 
                                 }
                             }

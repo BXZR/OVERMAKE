@@ -52,6 +52,8 @@
      <Compile Include="Assets\codes\informationGeter.cs" />
      <Compile Include="Assets\codes\informationShower.cs" />
      <Compile Include="Assets\codes\inputChange.cs" />
+     <Compile Include="Assets\codes\methods\AHRS.cs" />
+     <Compile Include="Assets\codes\methods\IMU.cs" />
      <Compile Include="Assets\codes\server.cs" />
      <Compile Include="Assets\codes\systemValues.cs" />
      <Compile Include="Assets\demoCode\GPSGSP.cs" />

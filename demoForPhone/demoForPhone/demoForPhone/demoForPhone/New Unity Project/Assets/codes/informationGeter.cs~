@@ -162,7 +162,7 @@ public class informationGeter : MonoBehaviour {
 			double IMUZUse = theIMUController.IMUupdate
 				(
 					Input.gyro.rotationRateUnbiased.x, Input.gyro.rotationRateUnbiased.y,Input.gyro.rotationRateUnbiased.z, 
-					Input .acceleration .x, Input .acceleration .y, Input .acceleration .z , Input .compass.trueHeading
+					Input .acceleration .x, Input .acceleration .y, Input .acceleration .z , Input .compass.trueHeading , Input .acceleration
 				);
 			IMUZ += IMUZUse.ToString("f4")+",";
 		}

@@ -5,6 +5,7 @@ using System;
 
 public class IMU  {
 
+
 	double Kp = 2.0;                     // proportional gain governs rate of convergence to accelerometer/magnetometer
 	double Ki = 0.005;                // integral gain governs rate of convergence of gyroscope biases
 	double halfT = 0.025;                //必须设置为采样频率的一半
@@ -104,14 +105,29 @@ public class IMU  {
 	}
 //-------------------------------------------------------------------------------------------------------------------------//
 
-	public double IMUupdate(double gx, double gy, double gz, double ax, double ay, double az , double heading ) 
+	void makeInitQ(Vector3 acca ,double heading)
+	{
+		double X =  Math.Atan2 (acca.y, acca.z);
+		double Y = - Math.Asin(acca.x / 9.81);
+		double Z = heading;
+		//注意到这里的heading与Unity里面的heading是不一样的
+		//这里应该是存在一层隐式转换
+		Quaternion S = Quaternion.Euler (new  Vector3((float)X,(float)Y,(float)Z ));
+		q0 = S.x;
+		q1 = S.y;
+		q2 = S.z;
+		q3 = S.w;
+
+	}
+
+	public double IMUupdate(double gx, double gy, double gz, double ax, double ay, double az , double heading , Vector3 acca ) 
 	{
 
 		if (inited == false) 
 		{
-			yawNow = heading;
+			makeInitQ(acca ,heading);
 			inited = true;
-			return yawNow;
+			return heading;
 		}
 
 		double norm;
@@ -134,8 +150,7 @@ public class IMU  {
 		//这是把四元数换算成《方向余弦矩阵》中的第三列的三个元素。
 		//根据余弦矩阵和欧拉角的定义，地理坐标系的重力向量，转到机体坐标系，正好是这三个元素。
 		//所以这里的vx\y\z，其实就是当前的欧拉角（即四元数）的机体坐标参照系上，换算出来的重力单位向量。
-
-
+	
 		// error is sum of cross product between reference direction of field and direction measured by sensor
 		ex = (ay*vz - az*vy);
 		ey = (az*vx - ax*vz);
@@ -173,14 +188,10 @@ public class IMU  {
 		q3 = q3 / norm;
 		//四元数规范化
 
+	 
 		//四元数转换欧拉角
 		double roll = Math.Atan2(2.0f * (q0 * q1 + q2 * q3), 1 - 2.0f * (q1 * q1 + q2 * q2))* 57.3;
 		double pitch = Math.Asin(2.0f*(q0* q2 - q1* q3)) * 57.3;
-		//double yaw = Math.Atan2(2.0f * (q1 * q2 - q0 * q3), 2.0f * (q0 * q0 + q1 * q1) - 1) * 57.3;
-		//double yaw2 = Math.Atan2(2.0 * q1* q2 + 2 * q0 * q3, -2.0 * q2*q2 - 2 * q3 * q3+ 1)*  57.3; // yaw
-	//double yaw=  Math.Atan2 (2.0f * (q0 * q1 + q2 * q3), q0*q0 - q1*q1 - q2*q2 + q3*q3 )*57.3;
-
-
 		//一个非常鬼畜的问题就是imu修正的算法其实对于yaw也就是偏航角是没有修正的
 		//得到的偏航角实际上只有在长时间内才会保持一个不错的精度
 		//没有结合地磁，方向的变化趋势是对的，但是效果还是不太好
@@ -189,10 +200,15 @@ public class IMU  {
 			yaw -= 360;
 		if (yaw < 0)
 			yaw += 360;
-		//下面这个方法其实是从网上查到的一个算是比较通用的做法，引测对于短时间内的数据精确度不好
-		//长时间的数据也不是很理想，相对于AHRS来说暂时效果较弱
-		yawNow += gz * gyroG * 0.002f;
-		return yaw; //返回偏航角
-		//return yawNow; //返回偏航角
+		yaw   = Math.Atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3; 
+
+		return yaw+180 ; //返回偏航角
+	 
+
+		//特别注意这里不能用四元数转欧拉角的做法来处理
+		//unity内部和这里使用的坐标轴不同，亲测效果并不正确
+		//应该是Unity内部有自己的转换方式
+		//想一想也知道，惯性导航那里使用的是Z轴向上，而Unity里面是Y轴向上
+		//但是尝试使用Unity中的YZ都并不正确，也许后期会有好方法....
 	}
 }

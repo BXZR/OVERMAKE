@@ -76,6 +76,8 @@ public class informationGeter : MonoBehaviour {
 
 		return "A;"+sendString;
 	}
+
+
 	//同时传太多会丢包
 	public string getSendInformation2()
 	{
@@ -160,9 +162,8 @@ public class informationGeter : MonoBehaviour {
 			double IMUZUse = theIMUController.IMUupdate
 				(
 					Input.gyro.rotationRateUnbiased.x, Input.gyro.rotationRateUnbiased.y,Input.gyro.rotationRateUnbiased.z, 
-					Input .acceleration .x, Input .acceleration .y, Input .acceleration .z
+					Input .acceleration .x, Input .acceleration .y, Input .acceleration .z , Input .compass.trueHeading
 				);
-			IMUZUse += 180;
 			IMUZ += IMUZUse.ToString("f4")+",";
 		}
 		catch(Exception d)

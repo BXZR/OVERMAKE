@@ -284,15 +284,22 @@ namespace socketServer
             }
             else if (HeadingMehtod.SelectedIndex == 3)
             {
-                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
-
-                Console.WriteLine("--------" + AHRSZ.Count + "--------" + IMUZ.Count);
-
-                for (int i = 0; i < indexBuff.Count; i++)
+               try
                 {
-                    Console.WriteLine("--------" + AHRSZ[indexBuff[i]] + "--------" + IMUZ[indexBuff[i]]);
-                    theStepAngeUse.Add(IMUZ[indexBuff[i]]);
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        theStepAngeUse.Add(theFilteredD[indexBuff[i]]);
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("imuMethod crashed using compass reading");
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        //Console.WriteLine("--------" + AHRSZ[indexBuff[i]] + "--------" + IMUZ[indexBuff[i]]);
+                        theStepAngeUse.Add(IMUZ[indexBuff[i]]);
+                    }
                 }
             }
             else if (HeadingMehtod.SelectedIndex == 4)
@@ -762,9 +769,6 @@ namespace socketServer
             theCanvas.Children.Add(polygon2);
         }
 
-
-
-       
     }
 }
 

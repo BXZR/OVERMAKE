@@ -55,7 +55,7 @@ namespace socketServer
 
                 double fakeStepLength = 0.4 * VK + 0.4 * FK + 0.3;
                 string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + fakeStepLength.ToString("f3");
-                Console.WriteLine(saveStringItem);
+                //Console.WriteLine(saveStringItem);
                 return saveStringItem;
             }
         }
@@ -96,16 +96,24 @@ namespace socketServer
                 //这个是最基本的模型，当然会改但是架构就是这样了
                 //double stepLength = 0.2 * VK + 0.3 * FK + 0.4;
                 //存储训练用的参数
-                double x1 = theGPSX[indexPre];
-                double y1 = theGPSY[indexPre];
-                double x2 = theGPSX[indexNow];
-                double y2 = theGPSY[indexNow];
-               // Console.WriteLine(string.Format("x1 = {0} , y1 = {1} , x2 = {2} , y2 = {3}" , x1,y1,x2,y2));
-                double stepLength = Distance(x1,y1,x2,y2);
+                try
+                {
+                    double x1 = theGPSX[indexPre];
+                    double y1 = theGPSY[indexPre];
+                    double x2 = theGPSX[indexNow];
+                    double y2 = theGPSY[indexNow];
+                    // Console.WriteLine(string.Format("x1 = {0} , y1 = {1} , x2 = {2} , y2 = {3}" , x1,y1,x2,y2));
+                    double stepLength = Distance(x1, y1, x2, y2);
 
-                string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + stepLength.ToString("f3");
-               // Console.WriteLine(saveStringItem);
-                return saveStringItem;
+                    string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + stepLength.ToString("f3");
+                    return saveStringItem;
+                    // Console.WriteLine(saveStringItem);
+                }
+                catch
+                {
+                    return "";
+                } 
+              
             }
         }
 

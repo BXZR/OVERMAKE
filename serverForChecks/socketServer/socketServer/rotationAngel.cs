@@ -129,7 +129,7 @@ namespace socketServer
             double roll = Math.Atan2(2.0f * (q0 * q1 + q2 * q3), 1 - 2.0f * (q1 * q1 + q2 * q2))* 57.3;
             double pitch = Math.Asin(2.0f*(q0* q2 - q1* q3)) * 57.3;
             double yaw = Math.Atan2(2.0f * (q1 * q2 - q0 * q3), 2.0f * (q0 * q0 + q1 * q1) - 1) * 57.3;
-            Console.WriteLine("yaw = " + (yaw));
+            //Console.WriteLine("yaw = " + (yaw));
             return (yaw); //返回偏航角
         }
 
@@ -216,7 +216,7 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
             double Y = Math.Asin(-2 * (q0 * q2 - q3 * q1))/3.14 * 180;
             double Z = Math.Atan2(2 * (q0 * q1 + q3 * q2), q3 * q3 + q0 * q0 - q1 * q1 - q2 * q2) / 3.14 * 180;
 
-            Console.WriteLine("Z = " + -Z);
+            //Console.WriteLine("Z = " + -Z);
             return Z;
         }
 

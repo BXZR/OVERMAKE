@@ -71,6 +71,7 @@
             <ComboBoxItem Content="IMU(client)"/>
             <ComboBoxItem Content="AHRS(server)"/>
             <ComboBoxItem Content="IMU(server)"/>
+            <ComboBoxItem Content="compassInPocket"/>
         </ComboBox>
     </Grid>
 </Window>

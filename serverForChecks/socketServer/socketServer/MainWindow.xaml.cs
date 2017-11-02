@@ -285,7 +285,7 @@ namespace socketServer
             else if (HeadingMehtod.SelectedIndex == 3)
             {
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
-               try
+                try
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -333,9 +333,9 @@ namespace socketServer
                     degree = theAngelController.AHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz);
                     theStepAngeUse.Add(degree);
                 }
-               // theAngelController.makeMehtod3Clear();
+                // theAngelController.makeMehtod3Clear();
             }
-            else if(HeadingMehtod.SelectedIndex == 5)
+            else if (HeadingMehtod.SelectedIndex == 5)
             {
                 //方法3，IMU方法
                 List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
@@ -362,13 +362,22 @@ namespace socketServer
                     //mx = MX[indexBuff[i]];
                     //my = MY[indexBuff[i]];
                     //mz = MZ[indexBuff[i]];
-                    degree = theAngelController.IMUupdate(gx,gy,gz,ax,ay,az);
+                    degree = theAngelController.IMUupdate(gx, gy, gz, ax, ay, az);
                     theStepAngeUse.Add(degree);
                 }
-               // theAngelController.makeMehtod3Clear();
+                // theAngelController.makeMehtod3Clear();
+            }
+            else if (HeadingMehtod.SelectedIndex == 6)
+            {
+                //方法1在的情况下手机的读书加上在口袋中的偏差值
+                Console.WriteLine("---" + indexBuff.Count);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    theStepAngeUse.Add(theFilteredD[indexBuff[i]] + SystemSave.angleInPackackOffset);
+                }
             }
 
-        }
+      }
 
 
         //更换使用的判断走看了一步的轴的方法

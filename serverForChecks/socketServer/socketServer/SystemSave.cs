@@ -45,5 +45,8 @@ namespace socketServer
         {
            
         }
+
+        //手机在口袋中的时候的偏差值
+        public static int angleInPackackOffset = 130;
     }
 }

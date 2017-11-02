@@ -45,6 +45,7 @@ namespace socketServer
             {
                 SystemSave.serverIP = ServerIPText.Text;
                 SystemSave.serverPort = Convert.ToInt32(ServerPortText.Text);
+                SystemSave.angleInPackackOffset = Convert.ToInt32(packageOffset.Text);
                 this.Close();
             }
             catch
@@ -59,7 +60,7 @@ namespace socketServer
             {
                 SystemSave.serverIP = ServerIPText.Text;
                 SystemSave.serverPort = Convert.ToInt32(ServerPortText.Text);
-
+                SystemSave.angleInPackackOffset = Convert.ToInt32(packageOffset.Text);
                string information =  theMainWindow.makeClose();
                information += "\n-----------------------\n"+theMainWindow.makeStart();
                 this.Close();
@@ -76,6 +77,7 @@ namespace socketServer
         {
             ServerIPText.Text = SystemSave.serverIP;
             ServerPortText.Text = SystemSave.serverPort.ToString();
+            packageOffset.Text = SystemSave.angleInPackackOffset.ToString();
         }
     }
 }

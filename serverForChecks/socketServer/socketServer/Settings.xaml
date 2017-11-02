@@ -7,13 +7,15 @@
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="300">
     <Grid>
-        <Label x:Name="label" Content="ServerIP" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ServerIPText" HorizontalAlignment="Left" Height="23" Margin="88,56,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="180"/>
-        <Label x:Name="label_Copy" Content="ServerPort" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ServerPortText" HorizontalAlignment="Left" Height="23" Margin="88,86,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="180"/>
+        <Label x:Name="label" Content="ServerIP" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ServerIPText" Height="23" Margin="88,49,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy" Content="ServerPort" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ServerPortText" Height="23" Margin="88,79,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
         <Button x:Name="saveQuit" Content="save and quit" HorizontalAlignment="Left" Margin="20,227,0,0" VerticalAlignment="Top" Width="107" Click="button_Click_1"/>
         <Button x:Name="saveRestart" Content="save and restart" HorizontalAlignment="Left" Margin="161,227,0,0" VerticalAlignment="Top" Width="107" Click="button_Copy_Click" Loaded="saveRestart_Loaded"/>
-        <Label x:Name="Tip" Content="" Margin="20,10,24,0" VerticalAlignment="Top" Background="White" Foreground="Red"/>
+        <Label x:Name="Tip" Margin="20,10,24,0" VerticalAlignment="Top" Background="White" Foreground="Red" Height="24"/>
+        <Label x:Name="label_Copy1" Content="PocketOffset" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="packageOffset" Height="23" Margin="99,111,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

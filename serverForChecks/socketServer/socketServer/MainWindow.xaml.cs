@@ -236,6 +236,9 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
             }
+            //记录最新的移动步长
+            if(theStepLengthUse.Count>0)
+            SystemSave.stepLengthNow = theStepLengthUse[theStepLengthUse.Count - 1];
         }
 
 
@@ -249,6 +252,7 @@ namespace socketServer
                 {
                     theStepAngeUse.Add(theFilteredD[indexBuff[i]]);
                 }
+
             }
             else if (HeadingMehtod.SelectedIndex == 1)
             {
@@ -376,8 +380,11 @@ namespace socketServer
                     theStepAngeUse.Add(theFilteredD[indexBuff[i]] + SystemSave.angleInPackackOffset);
                 }
             }
+            //记录最新的移动方向
+            if (theStepAngeUse.Count >0)
+            SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
 
-      }
+        }
 
 
         //更换使用的判断走看了一步的轴的方法

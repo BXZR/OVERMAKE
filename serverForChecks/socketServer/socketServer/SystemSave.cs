@@ -27,7 +27,8 @@ namespace socketServer
         public static int countUseY = 300;//这个是重复的
 
         public static List<transForm> savedPositions = new List<transForm>();
-
+        public static double stepAngleNow = 0;//记录最新的移动方向
+        public static double stepLengthNow = 9.5f;//记录最新的移动步长
         //颜色设置
         public static Color theOldColor = Colors.Magenta;//绘制颜色（之前的旧轨迹）
         public static Color theNewColor = Colors.Black;//绘制颜色（当前的轨迹）

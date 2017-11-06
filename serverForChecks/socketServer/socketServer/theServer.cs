@@ -160,7 +160,7 @@ namespace socketServer
                     //手机和PC的编码方法需要一样，否则诡异的乱码可能会出现
                     string information = Encoding.UTF8.GetString(result, 0, receiveNumber).ToString();
                     //以bye作为区分，如果是bye就认为客户端断开连接
-                    if (information != "bye")
+                    if (information != "bye" && information != "get")
                     {
                         //Console.WriteLine("\n------------------\n"+information+ "\n------------------\n");
                         //其实这个方法有非常冗余的封装，但是为了保证可扩展性可读性，暂时先不改了
@@ -188,11 +188,11 @@ namespace socketServer
                                     //第四大项： Z轴加速度
                                     case 4: { theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]); } break;
                                     //第五大项： X轴陀螺仪
-                                    case 5:{ theInformationController.addInformation(UseDataType.gyroX, theSplited[5]); }break;
+                                    case 5: { theInformationController.addInformation(UseDataType.gyroX, theSplited[5]); } break;
                                     //第六大项： Y轴陀螺仪
-                                    case 6:  {theInformationController.addInformation(UseDataType.gyroY, theSplited[6]); }break;
+                                    case 6: { theInformationController.addInformation(UseDataType.gyroY, theSplited[6]); } break;
                                     //第七大项： Z轴陀螺仪
-                                    case 7: { theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]);}break;
+                                    case 7: { theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]); } break;
                                     //第八大项： X轴磁力计
                                     case 8: { theInformationController.addInformation(UseDataType.magnetometerX, theSplited[8]); } break;
                                     //第九大项： y轴磁力计
@@ -204,15 +204,15 @@ namespace socketServer
                         }
                         else if (theSplited[0] == "B")
                         {
-                               for (int i = 1; i < theSplited.Length; i++)
-                             {
+                            for (int i = 1; i < theSplited.Length; i++)
+                            {
                                 //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
                                 switch (i)
                                 {
                                     //GPS
                                     case 1: { theInformationController.addInformation(UseDataType.GPS, theSplited[1]); } break;
                                     //时间戳
-                                    case 2:{ theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]);} break;
+                                    case 2: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]); } break;
                                     //AHRSZ信息
                                     case 3: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[3]); } break;
                                     //IMU信息
@@ -221,8 +221,17 @@ namespace socketServer
                                 }
                             }
                         }
-
-                        myClientSocket.Send(Encoding.UTF8.GetBytes(SystemSave.allStepCount.ToString()));//发送一个步数信息
+                        string sendString = SystemSave.allStepCount.ToString();
+                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2") ;
+                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2") ;
+                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
+                    }
+                    else if (information == "get")
+                    {
+                        string sendString = SystemSave.allStepCount.ToString();
+                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
+                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
+                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else//客户端请求关闭连接
                     {

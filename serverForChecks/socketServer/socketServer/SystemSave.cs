@@ -10,7 +10,7 @@ namespace socketServer
         //系统设置的相关参数
         public static string serverIP = "219.216.73.162";//程序服务器的IP
         public static int serverPort = 8886;//程序服务器的端口
-
+        public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
 
 
         public static int stepCount = 0;//被保存下来的前几个阶段的步数
@@ -18,7 +18,7 @@ namespace socketServer
         public static int allStepCount = 0;//总步数，去除了不可能项之后的总步数
         public static int pictureNumber = 0;//生成图像数量，也表示产生的分组的数量
 
-        public static int buffCount = 400;//缓冲区大小
+        public static int buffCount = 400;//缓冲区大小(程序中信息缓冲区，并不是socket的缓冲区)
         //需要注意的是缓冲区的大小需要跟countUseX相同（至少在当前图像生成策略中如此）
 
         //图像的长和宽，也是规定的每一个阶段的数据的数量
@@ -29,6 +29,7 @@ namespace socketServer
         public static List<transForm> savedPositions = new List<transForm>();
         public static double stepAngleNow = 0;//记录最新的移动方向
         public static double stepLengthNow = 9.5f;//记录最新的移动步长
+        public static double slopNow = 0.00;//当前记录的最新的slop
         //颜色设置
         public static Color theOldColor = Colors.Magenta;//绘制颜色（之前的旧轨迹）
         public static Color theNewColor = Colors.Black;//绘制颜色（当前的轨迹）

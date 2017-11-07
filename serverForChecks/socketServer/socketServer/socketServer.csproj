@@ -81,6 +81,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WPFVisifire.Charts, Version=5.1.2.0, Culture=neutral, PublicKeyToken=0cd785983078370b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\WPFVisifire.Charts.dll</HintPath>
@@ -97,6 +98,9 @@
     <Compile Include="FileSaver.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="information.cs" />
+    <Compile Include="insectUnityPlay.xaml.cs">
+      <DependentUpon>insectUnityPlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="pictureMaker.cs" />
     <Compile Include="position.cs" />
     <Compile Include="rotationAngel.cs" />
@@ -109,8 +113,18 @@
     <Compile Include="SystemSave.cs" />
     <Compile Include="tensorflowUse.cs" />
     <Compile Include="theServer.cs" />
+    <Compile Include="theUnityUse.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="theUnityUse.Designer.cs">
+      <DependentUpon>theUnityUse.cs</DependentUpon>
+    </Compile>
     <Compile Include="TrainFileMaker.cs" />
     <Page Include="ChartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="insectUnityPlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,7 +164,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="theUnityUse.resx">
+      <DependentUpon>theUnityUse.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

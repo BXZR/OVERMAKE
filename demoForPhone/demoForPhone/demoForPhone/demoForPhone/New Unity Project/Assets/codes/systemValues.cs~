@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class systemValues : MonoBehaviour {
+
+	//--------------------------------Data显示发送与获取部分-------------------------------------//
   //这个类专门用来记录一些传过来用于显示的内容
 	public static bool isSystemStarted = false;//程序只可以开启一次
 	public static bool isPaused = false;//是否已经暂停
@@ -22,5 +24,11 @@ public class systemValues : MonoBehaviour {
 		stepCountAll = 0;
 	}
 
- 
+	//--------------------------------游戏部分-------------------------------------//
+	//简单记录一下信息
+	public static int stepCountNow = 0;//记录走过多少步
+	public static double stepLengthNow  = 0; //当前步长
+	public static  double stepAngle = 0;//当前角度
+	public static double slopNow = 0;//当前姿态的一个小小的推断，如果比较大就认为是在奔跑
+	public static bool canFlashPosition = false;//是否可以更新人物坐标
 }

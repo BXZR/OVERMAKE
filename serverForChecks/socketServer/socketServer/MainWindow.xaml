@@ -9,7 +9,7 @@
         <Button Content="save" HorizontalAlignment="Right" Margin="0,82,123,0" Name="button1" Width="75" Click="button1_Click" Height="22" VerticalAlignment="Top" />
         <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,46,123,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
         <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,46,25,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click_1" />
-        <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,33" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
+        <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,0,25,27" Name="button4" VerticalAlignment="Bottom" Width="75" Click="button4_Click" />
         <Grid Margin="10,13,203,76" Name="Chart">
             <Label Content="Data Tip" Height="75" Margin="10,32,467,0" Name="theStepLabel" VerticalAlignment="Top" />
             <TextBox x:Name="POSITION" Margin="10,112,467,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True"/>
@@ -24,10 +24,10 @@
                 </Canvas.LayoutTransform>
             </Canvas>
         </Grid>
-        <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,123,33" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
+        <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,123,27" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
         <Button x:Name="button" Content="tensorFlowDEMO" HorizontalAlignment="Left" Margin="249,0,0,37" Width="145" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
         <Button x:Name="button7" Content="createPic" HorizontalAlignment="Right" Margin="0,0,861,37" VerticalAlignment="Bottom" Width="145" Click="button7_Click" Height="22"/>
-        <Label x:Name="Charts" Content="Charts" Margin="0,0,38,61" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="169" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Label x:Name="Charts" Content="Shows" Margin="0,0,38,61" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="169" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy" Content="Normal" Margin="0,10,123,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy1" Content="Demos" Margin="0,0,1011,35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="57" Foreground="#FF4600FF" FontWeight="Bold" Height="26"/>
         <Button x:Name="button5" Content="color" Margin="0,82,25,0" HorizontalAlignment="Right" Width="75" Click="button5_Click" Height="22" VerticalAlignment="Top">
@@ -73,5 +73,6 @@
             <ComboBoxItem Content="IMU(server)"/>
             <ComboBoxItem Content="compassInPocket"/>
         </ComboBox>
+        <Button x:Name="button9" Content="3DView" Margin="0,0,25,65" VerticalAlignment="Bottom" Click="button9_Click" HorizontalAlignment="Right" Width="75"/>
     </Grid>
 </Window>

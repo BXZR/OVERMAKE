@@ -1,17 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\codes\methods\IMU.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\codes\CameraChoice.cs">
     <Files>
-      <File FileName="Assets\codes\systemValues.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\server.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\informationGeter.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\controller.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\REController.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\buttons.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\inputChange.cs" Line="1" Column="1" />
       <File FileName="Assets\demoCode\GPSGSP.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\methods\AHRS.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\methods\IMU.cs" Line="212" Column="35" />
+      <File FileName="Assets\codes\ForPlay\Player\playerMoceWithWeb.cs" Line="25" Column="73" />
+      <File FileName="Assets\codes\systemValues.cs" Line="1" Column="1" />
+      <File FileName="Assets\codes\ForData\server.cs" Line="83" Column="57" />
+      <File FileName="Assets\codes\ForData\controller.cs" Line="31" Column="25" />
+      <File FileName="Assets\codes\CameraChoice.cs" Line="23" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -149,7 +149,7 @@ namespace socketServer
             Socket myClientSocket = (Socket)clientSocket;
             //用于接收的内容的缓冲
             //每个线程分配一个缓冲区，主要是怕冲突问题
-             byte[] result = new byte[1024];
+             byte[] result = new byte[SystemSave.lengthForBuffer];
             while (true)
             {
                 try
@@ -199,11 +199,22 @@ namespace socketServer
                                     case 9: { theInformationController.addInformation(UseDataType.magnetometerY, theSplited[9]); } break;
                                     //第十大项： z轴磁力计
                                     case 10: { theInformationController.addInformation(UseDataType.magnetometerZ, theSplited[10]); } break;
+                                    //GPS
+                                    case 11: { theInformationController.addInformation(UseDataType.GPS, theSplited[11]); } break;
+                                    //时间戳
+                                    case 12: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]); } break;
+                                    //AHRSZ信息
+                                    case 13: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); } break;
+                                    //IMU信息
+                                    case 14: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); } break;
                                 }
                             }
                         }
                         else if (theSplited[0] == "B")
                         {
+                            //如果网络带宽实在是不行，就考虑用这种分片的方法分着发送。
+                            //这一点在客户端上也留有接口
+                            /*
                             for (int i = 1; i < theSplited.Length; i++)
                             {
                                 //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
@@ -220,10 +231,16 @@ namespace socketServer
 
                                 }
                             }
+                            */
                         }
+                        //string sendString = SystemSave.allStepCount.ToString();
+                        //sendString += ";" + SystemSave.stepLengthNow.ToString("f2") ;
+                        //sendString += ";" + SystemSave.stepAngleNow.ToString("f2") ;
+                        //myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                         string sendString = SystemSave.allStepCount.ToString();
-                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2") ;
-                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2") ;
+                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
+                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
+                        sendString += ";" + SystemSave.slopNow.ToString("f2");
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else if (information == "get")
@@ -231,6 +248,7 @@ namespace socketServer
                         string sendString = SystemSave.allStepCount.ToString();
                         sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
                         sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
+                        sendString += ";" + SystemSave.slopNow.ToString("f2");
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else//客户端请求关闭连接

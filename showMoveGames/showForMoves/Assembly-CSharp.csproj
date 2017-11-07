@@ -48,11 +48,11 @@
   <ItemGroup>
      <Compile Include="Assets\codes\UI\ServerIPText.cs" />
      <Compile Include="Assets\codes\UI\ShowLabels.cs" />
-     <Compile Include="Assets\codes\controller.cs" />
+     <Compile Include="Assets\codes\controllerForPlayer.cs" />
      <Compile Include="Assets\codes\player\moveByKey.cs" />
      <Compile Include="Assets\codes\player\playerMoveWithWeb.cs" />
-     <Compile Include="Assets\codes\socket\moveWithSocket.cs" />
-     <Compile Include="Assets\codes\systemValues.cs" />
+     <Compile Include="Assets\codes\socket\playerMoveWithSocket.cs" />
+     <Compile Include="Assets\codes\systemValuesForPlayer.cs" />
      <None Include="Assets\TaichiCharacterPack\Readme.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity3D 5.6.1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

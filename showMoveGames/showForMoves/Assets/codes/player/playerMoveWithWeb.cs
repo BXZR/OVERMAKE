@@ -9,6 +9,8 @@ public class playerMoveWithWeb : MonoBehaviour {
 	float speed= 2f;//这才是在游戏中真正移动的速度
 	Animator theAnimator;//动画控制单元
 	//传过来的速度作为移动的步长而存在
+
+	public float speedScale = 3f;//在场景中适当放大效果
 	void Start () 
 	{
 		theAnimator = this.GetComponent <Animator> ();
@@ -26,10 +28,10 @@ public class playerMoveWithWeb : MonoBehaviour {
 //			if (systemValues.stepAngle > 90 && systemValues.stepAngle < 270)
 //				valueADD = -1;
 			
-			Vector3 aimPositionNow = this.transform.root.position + this.transform .forward *(float)systemValues.stepLengthNow;
+			Vector3 aimPositionNow = this.transform.root.position + this.transform .forward *(float)systemValues.stepLengthNow* speedScale ;//最后秤上的一点加成是因为真实世界和游戏世界的坐标没有加矫正
 			if(aimPosition != aimPositionNow)//如果来了一个新的目标
 			{
-				if (Vector3.Distance (aimPosition, this.transform.root.transform.position) < 0.01f)
+				if (Vector3.Distance (aimPosition, this.transform.root.transform.position) < 0.02f)
 				{
 					aimPosition = aimPositionNow;
 				}
@@ -45,13 +47,17 @@ public class playerMoveWithWeb : MonoBehaviour {
 
 	private  void animationControl()
 	{
-		if (Vector3.Distance (aimPosition, this.transform.root.transform.position) < 0.01f)
+		if (Vector3.Distance (aimPosition, this.transform.root.transform.position) < 0.1f) 
 		{
 			theAnimator.Play ("idle");
 		} 
+		else if (systemValues.slopNow <= 0.8f) 
+		{
+			theAnimator.Play ("walk");
+		} 
 		else
 		{
-			theAnimator.Play("walk");
+			theAnimator.Play ("run");
 		}
 	}
 	void Update () 

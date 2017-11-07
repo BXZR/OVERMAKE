@@ -74,6 +74,13 @@ public class informationGeter : MonoBehaviour {
 		informationForMY = "";
 		informationForMZ = "";
 
+		sendString += ";" +informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ;
+
+		informationForGPSPosition= "";
+		informationForTimer = "";
+		AHRSZ = "";
+		IMUZ = "";
+
 		return "A;"+sendString;
 	}
 

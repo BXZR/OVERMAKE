@@ -454,6 +454,7 @@ namespace socketServer
                       X, Y ,Z ,
                     indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count-1]
                     );
+                SystemSave.slopNow = slopeWithPeack;
                 double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
                 stepSlopLabel.Content = "Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
             }
@@ -786,6 +787,10 @@ namespace socketServer
             theCanvas.Children.Add(polygon2);
         }
 
+        private void button9_Click(object sender, RoutedEventArgs e)
+        {
+            new insectUnityPlay().Show();
+        }
     }
 }
 

@@ -19,3 +19,7 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\soc
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\ChartWindow.baml
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Settings.g.cs
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Settings.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\insectUnityPlay.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\insectUnityPlay.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer.theUnityUse.resources
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\GeneratedInternalTypeHelper.g.cs

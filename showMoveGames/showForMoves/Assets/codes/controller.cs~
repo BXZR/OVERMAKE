@@ -10,7 +10,7 @@ public class controller : MonoBehaviour {
 	{
 		theServer = this.GetComponent <moveWithSocket> ();
 		theServer.clientMain ();
-		InvokeRepeating ("send" , 0.3f,0.3f);
+		InvokeRepeating ("send" , 0.3f,0.1f);
 		InvokeRepeating ("flashPosition", 0.3f, 0.1f);//更新快一点，更加灵敏
 	}
 

@@ -208,7 +208,7 @@ namespace socketServer
                     }
                     catch
                     {
-                        Console.WriteLine("信息不完整：" + splitInformation[i]);
+                        Console.WriteLine("信息不完整（timeStep）：" + splitInformation[i]);
                         theTime = 0;
                     }
                 }
@@ -237,7 +237,7 @@ namespace socketServer
                     }
                     catch
                     {
-                        Console.WriteLine("信息不完整：" + splitInformation[i]);
+                        Console.WriteLine("信息不完整（timeCD）：" + splitInformation[i]);
                         theCDData = 0;
                     }
                 }

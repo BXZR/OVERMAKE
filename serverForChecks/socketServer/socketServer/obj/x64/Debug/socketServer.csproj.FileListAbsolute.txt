@@ -1,5 +1,3 @@
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\MainWindow.baml
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\MainWindow.g.cs
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\App.g.cs
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer_MarkupCompile.cache
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer.g.resources
@@ -14,12 +12,14 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Ten
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\TensorFlowSharp.xml
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer.exe
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer.pdb
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\ChartWindow.g.cs
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer_MarkupCompile.lref
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\ChartWindow.baml
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Settings.g.cs
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Settings.baml
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\insectUnityPlay.g.cs
-D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\insectUnityPlay.baml
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\socketServer.theUnityUse.resources
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\GeneratedInternalTypeHelper.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\MainWindow.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\ChartWindow.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\insectUnityPlay.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\MainWindow.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\Settings.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\ChartWindow.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\insectUnityPlay.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\Settings.baml

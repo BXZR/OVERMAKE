@@ -19,10 +19,10 @@ public class playerMoceWithWeb : MonoBehaviour {
 	}
 	public void flashPosition()
 	{
+		this.transform.rotation= Quaternion.Euler(0, (float)systemValues.stepAngle, 0);
+
 		if (systemValues.canFlashPosition) 
 		{
-			
-			this.transform.rotation= Quaternion.Euler(0, (float)systemValues.stepAngle, 0);
 			//			int valueADD = 1;//正负号标记
 			//			//如果角度是0——— 90或者 270 ——360就是1
 			//			//如果是 90 ——270 就是-1

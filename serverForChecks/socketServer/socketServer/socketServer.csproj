@@ -92,43 +92,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ChartWindow.xaml.cs">
+    <Compile Include="Windows\ChartWindow.xaml.cs">
       <DependentUpon>ChartWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FileSaver.cs" />
-    <Compile Include="Filter.cs" />
-    <Compile Include="information.cs" />
-    <Compile Include="insectUnityPlay.xaml.cs">
+    <Compile Include="Codes\FileSaver.cs" />
+    <Compile Include="Codes\Filter.cs" />
+    <Compile Include="Codes\information.cs" />
+    <Compile Include="Windows\insectUnityPlay.xaml.cs">
       <DependentUpon>insectUnityPlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="pictureMaker.cs" />
-    <Compile Include="position.cs" />
-    <Compile Include="rotationAngel.cs" />
-    <Compile Include="Settings.xaml.cs">
+    <Compile Include="Codes\pictureMaker.cs" />
+    <Compile Include="Codes\position.cs" />
+    <Compile Include="Codes\rotationAngel.cs" />
+    <Compile Include="Windows\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="stepDetection.cs" />
-    <Compile Include="stepLength.cs" />
-    <Compile Include="stepModeCheck.cs" />
-    <Compile Include="SystemSave.cs" />
-    <Compile Include="tensorflowUse.cs" />
-    <Compile Include="theServer.cs" />
-    <Compile Include="theUnityUse.cs">
+    <Compile Include="Codes\stepDetection.cs" />
+    <Compile Include="Codes\stepLength.cs" />
+    <Compile Include="Codes\stepModeCheck.cs" />
+    <Compile Include="Codes\SystemSave.cs" />
+    <Compile Include="Codes\tensorflowUse.cs" />
+    <Compile Include="Codes\theServer.cs" />
+    <Compile Include="Windows\theUnityUse.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="theUnityUse.Designer.cs">
+    <Compile Include="Windows\theUnityUse.Designer.cs">
       <DependentUpon>theUnityUse.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrainFileMaker.cs" />
-    <Page Include="ChartWindow.xaml">
+    <Compile Include="Codes\TrainFileMaker.cs" />
+    <Page Include="Windows\ChartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="insectUnityPlay.xaml">
+    <Page Include="Windows\insectUnityPlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -136,17 +136,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Settings.xaml">
+    <Page Include="Windows\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PeackSearcher.cs" />
+    <Compile Include="Codes\PeackSearcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -164,7 +164,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="theUnityUse.resx">
+    <EmbeddedResource Include="Windows\theUnityUse.resx">
       <DependentUpon>theUnityUse.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />

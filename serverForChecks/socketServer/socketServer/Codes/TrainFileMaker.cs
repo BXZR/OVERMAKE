@@ -10,7 +10,47 @@ namespace socketServer
     class TrainFileMaker
     {
         Random theRandom = new Random();
+        Filter theFilter = new Filter();
+
+        //保存每一步所有的数据，这个是目前为止最通用的方法（不包含GPS）
+        //算是线管数据的全存储，训练的饿的时候挑出来自己用的就好
+        public List<string> getSaveTrainFile(List<int> indexBuff, information theInformationController)
+        {
+            //在这里用list是为了和fileSave做配合，没有必要每一次都设计格式
+            //传入一个list使用统一的格式比较好
+            List<string> informationToSave = new List<string>();
+            //开销很大...慎用....
+            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+            List<double> MX = theFilter.theFilerWork(theInformationController.magnetometerX);
+            List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
+            List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
+            List<double> compass = theFilter.theFilerWork(theInformationController.compassDegree);
+            List<double> AHRS = theFilter.theFilerWork(theInformationController.AHRSZFromClient);
+            List<double> IMU = theFilter.theFilerWork(theInformationController.IMUZFromClient);
+
+            //加工成字符串
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                string informationUse = "";
+                informationUse += AX[indexBuff[i]].ToString("f3") + "," + AY[indexBuff[i]].ToString("f3") + "," + AZ[indexBuff[i]].ToString("f3") + ",";
+                informationUse += GX[indexBuff[i]].ToString("f3") + "," + GY[indexBuff[i]].ToString("f3") + "," + GY[indexBuff[i]].ToString("f3") + ",";
+                informationUse += MX[indexBuff[i]].ToString("f3") + "," + MY[indexBuff[i]].ToString("f3") + "," + MY[indexBuff[i]].ToString("f3") + ",";
+                informationUse += compass[indexBuff[i]].ToString("f3") + "," + AHRS[indexBuff[i]].ToString("f3") + "," + IMU[indexBuff[i]].ToString("f3");
+                if (i < indexBuff.Count - 1)
+                    informationUse += ",";
+                informationToSave.Add(informationUse);
+            }
+            return informationToSave;
+        }
+
+
         //生成假数据的方法
+        //但是适合使用GPS的情况
         public string getSaveTrainFileFake(int indexPre, int indexNow,
            List<double> theA, List<double> theGPSX, List<double> theGPSY, List<long> timeUse = null)
         {
@@ -61,6 +101,7 @@ namespace socketServer
         }
 
         //以后真正需要使用的生成数据集合的方法
+        //但是适合使用GPS的情况
         public string getSaveTrainFile(int indexPre, int indexNow,
             List<double> theA, List<double> theGPSX, List<double> theGPSY, List<long> timeUse = null)
         {
@@ -104,7 +145,7 @@ namespace socketServer
                     double y2 = theGPSY[indexNow];
                     // Console.WriteLine(string.Format("x1 = {0} , y1 = {1} , x2 = {2} , y2 = {3}" , x1,y1,x2,y2));
                     double stepLength = Distance(x1, y1, x2, y2);
-
+                    //这是根据希望得到的公式而做的
                     string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + stepLength.ToString("f3");
                     return saveStringItem;
                     // Console.WriteLine(saveStringItem);

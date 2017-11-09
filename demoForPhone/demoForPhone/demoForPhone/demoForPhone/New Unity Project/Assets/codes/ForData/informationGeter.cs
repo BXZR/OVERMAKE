@@ -30,6 +30,7 @@ public class informationGeter : MonoBehaviour {
 
 	//AHRS算法1的结果
 	string AHRSZ = "";
+	string AHRSZ2 = "";
 	//IMU算法的结果
 	string IMUZ = "";
 
@@ -80,7 +81,6 @@ public class informationGeter : MonoBehaviour {
 		informationForTimer = "";
 		AHRSZ = "";
 		IMUZ = "";
-
 		return "A;"+sendString;
 	}
 
@@ -159,11 +159,11 @@ public class informationGeter : MonoBehaviour {
 			long timeStamp = (long)(DateTime.Now - startTime).TotalMilliseconds; // 相差毫秒数
 			informationForTimer +=  timeStamp +",";
 
-			double SZUse =   theAHRSController .AHRSupdate
+			double SZUse =   theAHRSController .AHRSupdate2
 				(Input.gyro.rotationRateUnbiased.x, Input.gyro.rotationRateUnbiased.y,Input.gyro.rotationRateUnbiased.z, 
 					Input .acceleration .x, Input .acceleration .y, Input .acceleration .z, 
 					Input .compass.rawVector .x, Input .compass.rawVector .y, Input .compass.rawVector .z
-				) + 180;
+				) ;
 			AHRSZ  +=  SZUse .ToString("f4")+",";
 
 			double IMUZUse = theIMUController.IMUupdate

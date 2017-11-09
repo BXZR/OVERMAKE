@@ -164,43 +164,38 @@ namespace socketServer
             //Console.WriteLine("GPSX - " + FilteredX[ee]);
             //Console.WriteLine("GPSY - " + FilteredY[ee]);
             // }
-
+            //生成真数据（GPS）------------------------------------------------------------------------------------------------
             for (int i = 1; i < indexBuff.Count; i++)
             {
                 theTrainBase.Add(
-                theTrainFileMake.getSaveTrainFile(
-                   indexBuff[i - 1], indexBuff[i],
-                    theFilteredAZ, FilteredX, FilteredY,
-                    theInformationController.timeStep
-                    )
-
+                theTrainFileMake.getSaveTrainFile(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, theInformationController.timeStep )
                 );
             }
-
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
             }
 
-            //生成假数据//////////////////////////////////
+            //生成假数据（GPS）------------------------------------------------------------------------------------------------
             theTrainBase.Clear();
             //对时间戳（或者其他数据包B的数据）进行滤波来匹配数据
             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
             for (int i = 1; i < indexBuff.Count; i++)
             {
                 theTrainBase.Add(
-                theTrainFileMake.getSaveTrainFileFake(
-                   indexBuff[i - 1], indexBuff[i],
-                    theFilteredAZ, FilteredX, FilteredY,
-                    timeUse
-                    )
+                theTrainFileMake.getSaveTrainFileFake(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, timeUse )
                 );
             }
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
             }
-            //生成假数据//////////////////////////////////
+            //生成通用的数据--------------------------------------------------------------------------------------------------
+            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff,theInformationController);
+            if (theTrainBase != null && theTrainBase.Count >= 1)
+            {
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+            }
         }
 
         //获取步长的方法

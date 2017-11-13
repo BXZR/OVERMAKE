@@ -5,17 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="300">
+        Title="Settings" Height="338.623" Width="392.515" Background="#FFF3F3F3">
     <Grid>
         <Label x:Name="label" Content="ServerIP" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="ServerIPText" Height="23" Margin="88,49,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
         <Label x:Name="label_Copy" Content="ServerPort" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="ServerPortText" Height="23" Margin="88,79,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-        <Button x:Name="saveQuit" Content="save and quit" HorizontalAlignment="Left" Margin="20,227,0,0" VerticalAlignment="Top" Width="107" Click="button_Click_1"/>
-        <Button x:Name="saveRestart" Content="save and restart" HorizontalAlignment="Left" Margin="161,227,0,0" VerticalAlignment="Top" Width="107" Click="button_Copy_Click" Loaded="saveRestart_Loaded"/>
-        <Label x:Name="Tip" Margin="20,10,24,0" VerticalAlignment="Top" Background="White" Foreground="Red" Height="24"/>
+        <Button x:Name="saveQuit" Content="save and quit" HorizontalAlignment="Left" Margin="139,0,0,19" Width="107" Click="button_Click_1" Height="22" VerticalAlignment="Bottom"/>
+        <Button x:Name="saveRestart" Content="save and restart" Margin="0,0,24,19" Click="button_Copy_Click" Loaded="saveRestart_Loaded" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="107"/>
+        <Label x:Name="Tip" Margin="20,10,24,0" VerticalAlignment="Top" Background="#FFF3F3F3" Foreground="Red" Height="24"/>
         <Label x:Name="label_Copy1" Content="HeadingOffset" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="packageOffset" Height="23" Margin="104,111,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy2" Content="ZeroCross StepDection's ZeroLine" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ZeroLine" Height="23" Margin="20,170,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Flash" HorizontalAlignment="Left" Margin="20,0,0,19" Width="108" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

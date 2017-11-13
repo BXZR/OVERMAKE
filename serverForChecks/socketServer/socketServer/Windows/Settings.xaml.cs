@@ -26,6 +26,8 @@ namespace socketServer
             InitializeComponent();
         }
 
+
+
         public void startSet(MainWindow theIN)
         {
             theMainWindow = theIN;
@@ -46,6 +48,7 @@ namespace socketServer
                 SystemSave.serverIP = ServerIPText.Text;
                 SystemSave.serverPort = Convert.ToInt32(ServerPortText.Text);
                 SystemSave.angleOffset = Convert.ToInt32(packageOffset.Text);
+                SystemSave.zeroCrossOffset = Convert.ToDouble(ZeroLine.Text);
                 this.Close();
             }
             catch
@@ -61,8 +64,9 @@ namespace socketServer
                 SystemSave.serverIP = ServerIPText.Text;
                 SystemSave.serverPort = Convert.ToInt32(ServerPortText.Text);
                 SystemSave.angleOffset = Convert.ToInt32(packageOffset.Text);
-               string information =  theMainWindow.makeClose();
-               information += "\n-----------------------\n"+theMainWindow.makeStart();
+                SystemSave.zeroCrossOffset = Convert.ToDouble(ZeroLine.Text);
+                string information =  theMainWindow.makeClose();
+                information += "\n-----------------------\n"+theMainWindow.makeStart();
                 this.Close();
                 MessageBox.Show(information);
                
@@ -78,6 +82,40 @@ namespace socketServer
             ServerIPText.Text = SystemSave.serverIP;
             ServerPortText.Text = SystemSave.serverPort.ToString();
             packageOffset.Text = SystemSave.angleOffset.ToString();
+            ZeroLine.Text  = SystemSave.zeroCrossOffset.ToString();
+            getStartValue();
+        }
+
+        //第一次打开窗口的时候记录默认数值
+        private static bool hasBasicValue = false;
+        private static string ValueServerIPText;
+        private static string ValueServerPortText;
+        private static string ValuepackageOffset;
+        private static string ValueZeroLine;
+        void getStartValue()
+        {
+            if (hasBasicValue == false)
+            {
+              ValueServerIPText = SystemSave.serverIP;
+              ValueServerPortText = SystemSave.serverPort.ToString();
+              ValuepackageOffset = SystemSave.angleOffset.ToString();
+              ValueZeroLine = SystemSave.zeroCrossOffset.ToString();
+              hasBasicValue = true;//最初数值只会被记录一次
+           }
+        }
+
+        //获取最初的数值
+        void setStartValue()
+        {
+            ServerIPText.Text = ValueServerIPText ;
+            ServerPortText.Text = ValueServerPortText ;
+            packageOffset.Text = ValuepackageOffset ;
+            ZeroLine.Text = ValueZeroLine ;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            setStartValue();
         }
     }
 }

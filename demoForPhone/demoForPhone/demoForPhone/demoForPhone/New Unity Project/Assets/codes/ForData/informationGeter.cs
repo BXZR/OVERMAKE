@@ -142,7 +142,7 @@ public class informationGeter : MonoBehaviour {
 			if(systemValues .valueCount > systemValues .valueCountMax)
 				CancelInvoke();
 			
-			informationForAY += (Input .acceleration .y  ).ToString("f4")+",";
+			informationForAY += (Input .acceleration.y  ).ToString("f4")+",";
 			informationForGyroDegree += Input .compass.trueHeading.ToString("f4")+",";
 			informationForAX  += (Input .acceleration .x).ToString("f4")+",";
 			informationForAZ  += (Input .acceleration .z).ToString("f4")+",";

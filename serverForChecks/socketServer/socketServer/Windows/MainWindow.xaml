@@ -1,7 +1,7 @@
 ﻿<Window x:Class="socketServer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PDR  with smartphone" Height="563" Width="1092" Closed="Window_Closed" ResizeMode="NoResize">
+        Title="PDR  with smartphone" Height="563" Width="1092" Closed="Window_Closed" ResizeMode="NoResize" Background="#FFF3F3F3">
     <Grid Margin="0,0,-8,0" RenderTransformOrigin="0.992,0.996">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -13,7 +13,10 @@
         <Grid Margin="10,12,203,77" Name="Chart">
             <Label Content="Data Tip" Height="75" Margin="10,32,467,0" Name="theStepLabel" VerticalAlignment="Top" />
             <TextBox x:Name="POSITION" Margin="10,112,467,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True"/>
-            <Canvas x:Name="theCanvas" Margin="0,32,16,-52" Background="#FFF0FFFE" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="442" Height="458" VerticalAlignment="Top">
+            <Canvas x:Name="theCanvas" Margin="0,32,16,-52" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="442" Height="458" VerticalAlignment="Top" UseLayoutRounding="False">
+                <Canvas.Background>
+                    <ImageBrush ImageSource="/socketServer;component/pictures/B2.png" Stretch="UniformToFill"/>
+                </Canvas.Background>
                 <Canvas.LayoutTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -52,6 +55,7 @@
         <ComboBox x:Name="stepCheckMethod" Margin="0,261,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="Peack"/>
             <ComboBoxItem Content="Sample"/>
+            <ComboBoxItem Content="ZeroCross"/>
         </ComboBox>
         <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,293,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,324,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">

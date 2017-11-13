@@ -50,5 +50,7 @@ namespace socketServer
 
         //手机在口袋中的时候的偏差值
         public static int angleOffset = 130;
+        //使用零点交叉方法判断走一步的时候的初始零点（因为不同手机有不同的零点偏差，我的手机就是-1）
+        public static double zeroCrossOffset = -0.75;
     }
 }

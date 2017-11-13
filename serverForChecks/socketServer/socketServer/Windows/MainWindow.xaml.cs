@@ -40,8 +40,9 @@ namespace socketServer
         List<double> theStepAngeUse = new List<double>();
         List<double> theStepLengthUse = new List<double>();
         List<double> theFilteredD = new List<double>();
-
+        int stepcounts = 0;//当前阶段的步数
         List<int> indexBuff = new List<int>();//确认一步的下标存储
+        List<double> theFilteredAZ = new List<double>();//当前使用的轴
         public MainWindow()
         {
             InitializeComponent();
@@ -72,43 +73,61 @@ namespace socketServer
         void withSavedData(object sender, EventArgs e)
         {
             //-----------------------------------------------获取计算用数据-----------------------------------------------//
-
-            List<double> theFilteredAZ = stepCheckAxis();
+            //刷新存储空间
+            theFilteredAZ = stepCheckAxis();
             theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree, 0.1f);
-
-            //-----------------------------------------------判断走了一步的方法（可替换，但是默认的方法是波峰波谷判定方法）-----------------------------------------------//
-            //公有的存储空间
             theStepAngeUse = new List<double>();
             theStepLengthUse = new List<double>();
+            stepcounts = 0;
+            //判断走了一步并更新到缓存
+            stepDectionUse();
+            //当前移动的步数
+            stepcounts = indexBuff.Count;
+            //获得移动方向
+            headingAngleGet();
+            //计算步长
+            stepLengthGet(indexBuff, theFilteredAZ);
+            //计算坐标并获得显示的文本
+            POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
+            //更新slope的数值
+            stepModeCheck(indexBuff);
+            //制作输出显示的内容
+            makeLabelMehtod(stepcounts);
+            //绘制路线图
+            drawPicturesShow();
+            //如果数据足够多，就需要保存成一张图像,同时做刷新处理
+            if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
+            makeFlash();
+        }
 
-            if (stepCheckMethod.SelectedIndex == 0)
+
+        //刷新操作////////////////////////////////////////////////////////////////////////////////////
+        void makeFlash()
+        {
+            //---------------------------------保存训练用的数据---------------------------------------------//
+            saveTrainBase(theFilteredAZ);
+            //------------------------------------------------------------------------------------------//
+            for (int i = 0; i < thePositionController.theTransformPosition.Count; i++)
             {
-                //方法1：波峰波谷大法，我个人推荐的方法
-                int stepcounts = thePeackFinder.countStepWithStatic(theFilteredAZ);//必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
-                                                                                   //根据下标获得需要的旋转角和步长
-                                                                                   //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
-                                                                                   //计算移动的时候用的是去除不可能项的步数
-                indexBuff = thePeackFinder.peackBuff;
-                headingAngleGet();//获得移动方向
-                stepLengthGet(indexBuff, theFilteredAZ);//计算步长
-                POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);//计算坐标并显示文本
-                stepModeCheck(indexBuff);//更新slope的数值
-                makeLabelMehtod();//制作输出显示的内容
+                SystemSave.savedPositions.Add(thePositionController.theTransformPosition[i]);
             }
-            else if (stepCheckMethod.SelectedIndex == 1)
-            {
-                //方法2：重复性判断方法，相对比较严格
-                stepExtra.stepDetectionExtra1(theFilteredAZ);
-                int stepcounts2 = stepExtra.peackBuff.Count;
-                indexBuff = stepExtra.peackBuff;
-                //计算移动的时候用的是去除不可能项的步数
-                headingAngleGet();//获得移动方向
-                stepLengthGet(indexBuff, theFilteredAZ);//计算步长
-                POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);//计算坐标并显示文本
-                stepModeCheck(indexBuff);//更新slope的数值
-                makeLabelMehtod(stepcounts2); //制作输出显示的内容
-            }
-            
+            //方法1的刷新和存储
+            savedIndex = 0;
+            //制作信息图像
+            thePictureMaker.createPictureFromData(theInformationController);
+            // thePictureMaker.createPictureFromDataComplex(theInformationController);//暂时先不必要用特别复杂的图像生成方法，会卡
+            theInformationController.flashInformation();
+            SystemSave.stepCount += thePeackFinder.peackBuff.Count;
+            //方法2的刷新和存储
+            SystemSave.stepCount2 += stepExtra.peackBuff.Count;
+            stepExtra.makeFlash();
+            SystemSave.makeFlash();
+        }
+
+
+        //绘制路线图/////////////////////////////////////////////////////////////////////////////////
+        void drawPicturesShow()
+        {
             //两种绘制方法也算是各有千秋，所以给一个选项自行选择吧
             if (drawWithBufferCheck.IsChecked == true)
             {
@@ -125,80 +144,60 @@ namespace socketServer
                     drawPositionLineOnTime(thePositionController.theTransformPosition[u].X, thePositionController.theTransformPosition[u].Y);
                 }
             }
-
-
-            //如果数据足够多，就需要保存成一张图像----------------------------
-            //同时就是做刷新处理
-            if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
-            {
-                //---------------------------------保存训练用的数据---------------------------------------------//
-                saveTrainBase(theFilteredAZ);
-                //------------------------------------------------------------------------------------------//
-                for (int i = 0; i < thePositionController.theTransformPosition.Count; i++)
-                {
-                    SystemSave.savedPositions.Add(thePositionController.theTransformPosition[i]);
-                }
-                //方法1的刷新和存储
-                savedIndex = 0;
-                //制作信息图像
-                thePictureMaker.createPictureFromData(theInformationController);
-               // thePictureMaker.createPictureFromDataComplex(theInformationController);//暂时先不必要用特别复杂的图像生成方法，会卡
-                theInformationController.flashInformation();
-                SystemSave.stepCount += thePeackFinder.peackBuff.Count;
-                //方法2的刷新和存储
-                SystemSave.stepCount2 += stepExtra.peackBuff.Count;
-                stepExtra.makeFlash();
-                SystemSave.makeFlash();
-            }
         }
 
-
-        void saveTrainBase(List<double> theFilteredAZ)
+        //更换使用的判断走看了一步的轴的方法///////////////////////////////////////////////////////////
+        List<double> stepCheckAxis()
         {
-            List<string> theTrainBase = new List<string>();
-            List<double> FilteredX = theFilter.theFilerWork(theInformationController.GPSPositionX);
-            List<double> FilteredY = theFilter.theFilerWork(theInformationController.GPSPositionY);
-            //Console.WriteLine("V = "+indexBuff.Count);
-            //for (int ee = 0; ee < FilteredX.Count; ee++)
-            //{ 
-            //Console.WriteLine("GPSX - " + FilteredX[ee]);
-            //Console.WriteLine("GPSY - " + FilteredY[ee]);
-            // }
-            //生成真数据（GPS）------------------------------------------------------------------------------------------------
-            for (int i = 1; i < indexBuff.Count; i++)
+            List<double> theFilteredAZ = new List<double>();
+            switch (stepCheckAxisUse.SelectedIndex)//选择不同的轴向
             {
-                theTrainBase.Add(
-                theTrainFileMake.getSaveTrainFile(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, theInformationController.timeStep )
-                );
+                case 0:
+                    //基础方法:用Z轴加速度来做
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    break;
+                case 1:
+                    //实验用方法：X轴向
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    break;
+                case 2:
+                    //实验用方法：X轴向
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    break;
+                case 3:
+                    //基础方法:用三个轴的加速度平方和开根号得到
+                    theFilteredAZ = theFilter.theFilerWork(theInformationController.getOperatedValues());
+                    break;
             }
-            if (theTrainBase != null && theTrainBase.Count >= 1)
-            {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
-            }
+            return theFilteredAZ;
+        }
 
-            //生成假数据（GPS）------------------------------------------------------------------------------------------------
-            theTrainBase.Clear();
-            //对时间戳（或者其他数据包B的数据）进行滤波来匹配数据
-            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-            for (int i = 1; i < indexBuff.Count; i++)
+        //判断走了一步的方法///////////////////////////////////////////////////////////
+        void stepDectionUse()
+        {
+            if (stepCheckMethod.SelectedIndex == 0)
             {
-                theTrainBase.Add(
-                theTrainFileMake.getSaveTrainFileFake(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, timeUse )
-                );
+                //方法1：波峰波谷大法，我个人推荐的方法
+                //必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+                //根据下标获得需要的旋转角和步长
+                //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
+                //计算移动的时候用的是去除不可能项的步数
+                indexBuff = stepExtra.stepDectionExtration0(theFilteredAZ, thePeackFinder);
+
             }
-            if (theTrainBase != null && theTrainBase.Count >= 1)
+            else if (stepCheckMethod.SelectedIndex == 1)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+                //方法2：重复性判断方法，相对比较严格（感觉不是人能用的）
+                indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
             }
-            //生成通用的数据--------------------------------------------------------------------------------------------------
-            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff,theInformationController);
-            if (theTrainBase != null && theTrainBase.Count >= 1)
+            else if (stepCheckMethod.SelectedIndex == 2)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+                //方法3零点交叉
+                indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
             }
         }
 
-        //获取步长的方法
+        //获取步长的方法//////////////////////////////////////////////////////////////////////////
         //这个方法在多个整体方法中是共用的
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
         void stepLengthGet(List<int> indexBuff, List<double> AZUse)
@@ -227,7 +226,7 @@ namespace socketServer
                     {
                         // for (int v = 0; v < theInformationController.timeStep.Count; v++)
                         //    Console.WriteLine(theInformationController.timeStep[v]);
-                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep,0.4f, true, theInformationController.accelerometerZ.Count);
+                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
                         double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
@@ -236,12 +235,11 @@ namespace socketServer
                 }
             }
             //记录最新的移动步长
-            if(theStepLengthUse.Count>0)
-            SystemSave.stepLengthNow = theStepLengthUse[theStepLengthUse.Count - 1];
+            if (theStepLengthUse.Count > 0)
+                SystemSave.stepLengthNow = theStepLengthUse[theStepLengthUse.Count - 1];
         }
 
-
-        //获取移动方向的方法
+        //获取移动方向的方法/////////////////////////////////////////////////////
         void headingAngleGet()
         {
             if (HeadingMehtod.SelectedIndex == 0)
@@ -395,44 +393,64 @@ namespace socketServer
                 // theAngelController.makeMehtod3Clear();
             }
             //记录最新的移动方向
-            if (theStepAngeUse.Count >0)
-            SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
+            if (theStepAngeUse.Count > 0)
+                SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
 
         }
 
-
-        //更换使用的判断走看了一步的轴的方法
-        List<double> stepCheckAxis()
+        //保存训练用的数据////////////////////////////////////////////////////////////////////////////////////
+        void saveTrainBase(List<double> theFilteredAZ)
         {
-            List<double> theFilteredAZ = new List<double>();
-            switch (stepCheckAxisUse.SelectedIndex)//选择不同的轴向
+            List<string> theTrainBase = new List<string>();
+            List<double> FilteredX = theFilter.theFilerWork(theInformationController.GPSPositionX);
+            List<double> FilteredY = theFilter.theFilerWork(theInformationController.GPSPositionY);
+            //Console.WriteLine("V = "+indexBuff.Count);
+            //for (int ee = 0; ee < FilteredX.Count; ee++)
+            //{ 
+            //Console.WriteLine("GPSX - " + FilteredX[ee]);
+            //Console.WriteLine("GPSY - " + FilteredY[ee]);
+            // }
+            //生成真数据（GPS）------------------------------------------------------------------------------------------------
+            for (int i = 1; i < indexBuff.Count; i++)
             {
-                case 0:
-                    //基础方法:用Z轴加速度来做
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                    break;
-                case 1:
-                    //实验用方法：X轴向
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerX);
-                    break;
-                case 2:
-                    //实验用方法：X轴向
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerY);
-                    break;
-                case 3:
-                    //基础方法:用三个轴的加速度平方和开根号得到
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.getOperatedValues());
-                    break;
+                theTrainBase.Add(
+                theTrainFileMake.getSaveTrainFile(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, theInformationController.timeStep )
+                );
             }
-            return theFilteredAZ;
+            if (theTrainBase != null && theTrainBase.Count >= 1)
+            {
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+            }
+
+            //生成假数据（GPS）------------------------------------------------------------------------------------------------
+            theTrainBase.Clear();
+            //对时间戳（或者其他数据包B的数据）进行滤波来匹配数据
+            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+            for (int i = 1; i < indexBuff.Count; i++)
+            {
+                theTrainBase.Add(
+                theTrainFileMake.getSaveTrainFileFake(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, timeUse )
+                );
+            }
+            if (theTrainBase != null && theTrainBase.Count >= 1)
+            {
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+            }
+            //生成通用的数据--------------------------------------------------------------------------------------------------
+            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff,theInformationController);
+            if (theTrainBase != null && theTrainBase.Count >= 1)
+            {
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+            }
         }
 
-
+        //生成输出在tips里面的显示信息
         void makeLabelMehtod(int stepcounts2 = 0)
         {
+            SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
+
             if (stepCheckMethod.SelectedIndex == 0)
             {
-                SystemSave.allStepCount = SystemSave.stepCount + thePeackFinder.peackBuff.Count;
                 theStepLabel.Content = "(带缓存波峰波谷计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
                 theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount + "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
@@ -444,9 +462,11 @@ namespace socketServer
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "\n当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
             }
-            else
+            else if (stepCheckMethod.SelectedIndex == 2)
             {
-                theStepLabel.Content = " --- ";
+                theStepLabel.Content = "(零点交叉方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
+                theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
+                theStepLabel.Content += "\n当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
             }
 
         }
@@ -619,8 +639,6 @@ namespace socketServer
             // MessageBox.Show(demoForTensorFlow.DEMO());
             demoForTensorFlow.lineNear();
         }
-
-
 
         //这个方法辅助用的字段两个：
         private double  X1Save = 0;

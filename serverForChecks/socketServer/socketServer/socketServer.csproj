@@ -180,6 +180,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="pictures\B2.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="pictures\compass.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

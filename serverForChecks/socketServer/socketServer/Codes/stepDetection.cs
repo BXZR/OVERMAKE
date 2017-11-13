@@ -86,13 +86,20 @@ namespace socketServer
            
        }
 
-        public  void  stepDetectionExtra1(List<double> AZValues)
+        //最基本的波峰波谷的方法
+        public List<int> stepDectionExtration0(List<double> AZValues, PeackSearcher PK)
+        {
+            int stepCount = PK.countStepWithStatic(AZValues);
+            return PK.peackBuff;
+        }
+        //采样波峰波谷的方法（说实话这是一种非常理想方法但是实际中使用还需要花很长时间磨合）
+        public  List<int> stepDetectionExtra1(List<double> AZValues)
         {
 
             if (isSampled == false)
             {
                 makeSample(AZValues);
-               
+                return new List<int>();
             }
             else
             {
@@ -119,14 +126,48 @@ namespace socketServer
                         peackBuff.Add(i);  
                     }
                 }
+                return peackBuff;
             }
         }
 
-        bool showed = false;
+        //0cross方法，零点交叉
+        //SystemSave.zeroCrossOffset记录零点信息
+        //这个方法超级灵敏，可能会产生各种各样的额外步数
+        //可以考虑通过修改SystemSave.zeroCrossOffset把水平线数值修改，可以有不同的效果
+        public List<int> stepDetectionExtra2(List<double> AZValues)
+        {
+            List<int> buff = new List<int>();
+            int overCount = 0;//过零点的次数
+            Console.WriteLine("--------------------------------------");
+            //因为震荡的关系需要做一下间隔，一小段时间内只可能走一步
+            int savedIndex = -1;//及记录的当前下标
+            int steps = 3;//间隔这些数据才有可能被称为一步
 
+            for (int i = 1 ;i < AZValues.Count; i++)
+            {
+                Console.WriteLine(AZValues [i] +" is the AZValue");
+                double checkUseValue = (AZValues[i - 1] - SystemSave.zeroCrossOffset) * (AZValues[i] - SystemSave.zeroCrossOffset);
+                Console.WriteLine("checkUse is "+ checkUseValue);
+                if (checkUseValue < 0 )//变号就算是过零点
+                    overCount++;
+                if (overCount > 0 && overCount % 2 == 0)
+                {
+                    if ((i - savedIndex) > steps)
+                    {
+                        savedIndex = i;
+                        buff.Add(i);
+                    }
+                }
+                Console.WriteLine("OverCount: " + overCount);
+            }
+            return buff;
+        }
+
+
+        bool showed = false;
         //对比两个序列的相似程度方法1（最土鳖的数值方法）
         //返回真则认为两组数据差不多
-        bool contrast1(List<double> data1, List<double> data2)
+       private bool contrast1(List<double> data1, List<double> data2)
         {
             int sameCount = 0;
             for(int i = 0; i < data1.Count; i++)

@@ -45,10 +45,7 @@ namespace socketServer
         {
             try
             {
-                SystemSave.serverIP = ServerIPText.Text;
-                SystemSave.serverPort = Convert.ToInt32(ServerPortText.Text);
-                SystemSave.angleOffset = Convert.ToInt32(packageOffset.Text);
-                SystemSave.zeroCrossOffset = Convert.ToDouble(ZeroLine.Text);
+                setValues();
                 this.Close();
             }
             catch
@@ -61,20 +58,38 @@ namespace socketServer
         {
             try
             {
-                SystemSave.serverIP = ServerIPText.Text;
-                SystemSave.serverPort = Convert.ToInt32(ServerPortText.Text);
-                SystemSave.angleOffset = Convert.ToInt32(packageOffset.Text);
-                SystemSave.zeroCrossOffset = Convert.ToDouble(ZeroLine.Text);
-                string information =  theMainWindow.makeClose();
-                information += "\n-----------------------\n"+theMainWindow.makeStart();
+                setValues();
+                string information = theMainWindow.makeClose();
+                information += "\n-----------------------\n" + theMainWindow.makeStart();
                 this.Close();
                 MessageBox.Show(information);
-               
+
             }
             catch (Exception eee)
             {
-                MessageBox.Show("出错："+eee.Message);
+                MessageBox.Show("出错：" + eee.Message);
             }
+        }
+
+
+        private void setValues()
+        {
+            SystemSave.serverIP = ServerIPText.Text;
+            SystemSave.serverPort = Convert.ToInt32(ServerPortText.Text);
+            SystemSave.angleOffset = Convert.ToInt32(packageOffset.Text);
+            SystemSave.zeroCrossOffset = Convert.ToDouble(ZeroLine.Text);
+            SystemSave.Stature = Convert.ToDouble(Stature.Text);
+            SystemSave.WeightForFemale = Convert.ToDouble(FemailWeight.Text);
+            SystemSave.WeightForMale = Convert.ToDouble(MailWeight.Text) ;
+            SystemSave.stepLengthWeightForAMinus = Convert.ToDouble(Aminus.Text);
+            if (isMaleCheckc.IsChecked == true)
+                SystemSave.isMale = true;
+            else
+                SystemSave.isMale = false;
+            if (Draw_route_with_buffer.IsChecked == true)
+                SystemSave.drawWithBuffer = true;
+            else
+                SystemSave.drawWithBuffer = false;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -83,6 +98,21 @@ namespace socketServer
             ServerPortText.Text = SystemSave.serverPort.ToString();
             packageOffset.Text = SystemSave.angleOffset.ToString();
             ZeroLine.Text  = SystemSave.zeroCrossOffset.ToString();
+            Stature.Text = SystemSave.Stature.ToString();
+            FemailWeight.Text = SystemSave.WeightForFemale.ToString();
+            MailWeight.Text = SystemSave.WeightForMale.ToString();
+            Aminus.Text = SystemSave.stepLengthWeightForAMinus.ToString();
+
+            if (SystemSave.isMale)
+                isMaleCheckc.IsChecked = true;
+            else
+                isMaleCheckc.IsChecked = false;
+            if (SystemSave.drawWithBuffer)
+                Draw_route_with_buffer.IsChecked = true;
+            else
+                Draw_route_with_buffer.IsChecked = false;
+
+            //记录一次最初的数值
             getStartValue();
         }
 
@@ -92,6 +122,12 @@ namespace socketServer
         private static string ValueServerPortText;
         private static string ValuepackageOffset;
         private static string ValueZeroLine;
+        private static string ValueStature;
+        private static string ValueFemailWeight;
+        private static string ValueMailWeight;
+        private static bool ValueIsMale;
+        private static bool ValueDrawWithBuff;
+        private static string ValueAminus;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -100,6 +136,12 @@ namespace socketServer
               ValueServerPortText = SystemSave.serverPort.ToString();
               ValuepackageOffset = SystemSave.angleOffset.ToString();
               ValueZeroLine = SystemSave.zeroCrossOffset.ToString();
+              ValueStature = SystemSave.Stature.ToString();
+              ValueFemailWeight = SystemSave.WeightForFemale.ToString();
+              ValueMailWeight = SystemSave.WeightForMale.ToString();
+              ValueIsMale = SystemSave.isMale;
+              ValueDrawWithBuff = SystemSave.drawWithBuffer;
+              ValueAminus = SystemSave.stepLengthWeightForAMinus.ToString();
               hasBasicValue = true;//最初数值只会被记录一次
            }
         }
@@ -111,11 +153,29 @@ namespace socketServer
             ServerPortText.Text = ValueServerPortText ;
             packageOffset.Text = ValuepackageOffset ;
             ZeroLine.Text = ValueZeroLine ;
+            Stature.Text = ValueStature;
+            FemailWeight.Text = ValueFemailWeight;
+            MailWeight.Text = ValueMailWeight;
+            Aminus.Text = ValueAminus;
+            if (ValueIsMale)
+                isMaleCheckc.IsChecked = true;
+            else
+                isMaleCheckc.IsChecked = false;
+            if (ValueDrawWithBuff)
+                Draw_route_with_buffer.IsChecked = true;
+            else
+                Draw_route_with_buffer.IsChecked = false;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             setStartValue();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            //取消引用，可以开启下一个设定窗口
+            SystemSave.theSettingWindow = null;
         }
     }
 }

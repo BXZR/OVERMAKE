@@ -129,7 +129,7 @@ namespace socketServer
         void drawPicturesShow()
         {
             //两种绘制方法也算是各有千秋，所以给一个选项自行选择吧
-            if (drawWithBufferCheck.IsChecked == true)
+            if (SystemSave.drawWithBuffer)
             {
                 //实时绘制图像，重新绘制的方式
                 drawPositionLine();
@@ -219,7 +219,7 @@ namespace socketServer
                     else
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
-                //方法2
+                //方法2，一般公式
                 else if (StepLengthMethod.SelectedIndex == 2)
                 {
                     if (i >= 1)
@@ -230,6 +230,19 @@ namespace socketServer
                         double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+                //方法3，身高相关
+                else if (StepLengthMethod.SelectedIndex == 3)
+                {
+                    theStepLengthUse.Add(theStepLengthController.getStepLength3());
+                }
+                //方法4，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
+                else if (StepLengthMethod.SelectedIndex == 4)
+                {
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
                     else
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
@@ -539,6 +552,9 @@ namespace socketServer
         {
            string information = makeStart();
             MessageBox.Show(information);
+            //为了防止多次开启
+            theStartButton.IsEnabled = false;
+            theStopButton.IsEnabled = true;
         }
 
         //closeServer按钮控制单元
@@ -546,6 +562,9 @@ namespace socketServer
         {
             string information = makeClose();
             MessageBox.Show(information);
+            //为了防止多次开启
+            theStartButton.IsEnabled = true;
+            theStopButton.IsEnabled = false;
         }
 
 
@@ -742,11 +761,17 @@ namespace socketServer
         {
             button5.Background = new SolidColorBrush(SetColor());
         }
+        
         private void button8_Click(object sender, RoutedEventArgs e)
         {
-            Settings theSettingWindow = new socketServer.Settings();
-            theSettingWindow.startSet(this);
-            theSettingWindow.Show();
+            //为了防止出现同步设定的问题，这里使用了简单的单例模式的思想
+            if (SystemSave. theSettingWindow == null)
+            {
+                SystemSave.theSettingWindow = new socketServer.Settings();
+                SystemSave.theSettingWindow.startSet(this);
+                SystemSave.theSettingWindow.Show();
+            }
+
         }
 
         //查询状态的方法
@@ -820,6 +845,8 @@ namespace socketServer
         {
             new insectUnityPlay().Show();
         }
+
+ 
     }
 }
 

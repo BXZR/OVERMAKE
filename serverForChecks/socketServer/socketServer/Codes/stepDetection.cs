@@ -145,9 +145,9 @@ namespace socketServer
 
             for (int i = 1 ;i < AZValues.Count; i++)
             {
-                Console.WriteLine(AZValues [i] +" is the AZValue");
+                //Console.WriteLine(AZValues [i] +" is the AZValue");
                 double checkUseValue = (AZValues[i - 1] - SystemSave.zeroCrossOffset) * (AZValues[i] - SystemSave.zeroCrossOffset);
-                Console.WriteLine("checkUse is "+ checkUseValue);
+                //Console.WriteLine("checkUse is "+ checkUseValue);
                 if (checkUseValue < 0 )//变号就算是过零点
                     overCount++;
                 if (overCount > 0 && overCount % 2 == 0)
@@ -158,7 +158,7 @@ namespace socketServer
                         buff.Add(i);
                     }
                 }
-                Console.WriteLine("OverCount: " + overCount);
+                //Console.WriteLine("OverCount: " + overCount);
             }
             return buff;
         }
@@ -178,8 +178,8 @@ namespace socketServer
 
                     double checkUp = Math.Abs(data1[i] - data2[i]) ;
                     double checkValue = Math.Abs(checkUp / (Math.Abs(data2[i])));
-                    Console.WriteLine("Value --- "+data1[i] +" --- "+ data2[i] +" --- ");
-                    Console.WriteLine("checkValue = " + checkValue);
+                   // Console.WriteLine("Value --- "+data1[i] +" --- "+ data2[i] +" --- ");
+                   // Console.WriteLine("checkValue = " + checkValue);
                     if (checkValue > minusGate)
                     sameCount++;
             }

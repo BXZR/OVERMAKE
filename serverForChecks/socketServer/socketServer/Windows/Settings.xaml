@@ -5,20 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer"
         mc:Ignorable="d"
-        Title="Settings" Height="338.623" Width="392.515" Background="#FFF3F3F3">
-    <Grid>
-        <Label x:Name="label" Content="ServerIP" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ServerIPText" Height="23" Margin="88,49,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-        <Label x:Name="label_Copy" Content="ServerPort" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ServerPortText" Height="23" Margin="88,79,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-        <Button x:Name="saveQuit" Content="save and quit" HorizontalAlignment="Left" Margin="139,0,0,19" Width="107" Click="button_Click_1" Height="22" VerticalAlignment="Bottom"/>
-        <Button x:Name="saveRestart" Content="save and restart" Margin="0,0,24,19" Click="button_Copy_Click" Loaded="saveRestart_Loaded" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="107"/>
-        <Label x:Name="Tip" Margin="20,10,24,0" VerticalAlignment="Top" Background="#FFF3F3F3" Foreground="Red" Height="24"/>
-        <Label x:Name="label_Copy1" Content="HeadingOffset" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="packageOffset" Height="23" Margin="104,111,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-        <Label x:Name="label_Copy2" Content="ZeroCross StepDection's ZeroLine" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ZeroLine" Height="23" Margin="20,170,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        Title="Settings" Height="428.293" Width="406.653" Background="#FFF3F3F3" ResizeMode="NoResize" Closed="Window_Closed">
+    <Grid x:Name="StatureText" Margin="0,0,4,6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="label" Content="ServerIP" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
+        <TextBox x:Name="ServerIPText" Height="23" Margin="88,49,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy" Content="ServerPort" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" Height="26" Width="70"/>
+        <TextBox x:Name="ServerPortText" Height="23" Margin="88,79,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <Button x:Name="saveQuit" Content="save and quit" HorizontalAlignment="Left" Margin="140,0,0,19" Width="107" Click="button_Click_1" Height="22" VerticalAlignment="Bottom"/>
+        <Button x:Name="saveRestart" Content="save and restart" Margin="259,0,0,19" Click="button_Copy_Click" Loaded="saveRestart_Loaded" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="107"/>
+        <Label x:Name="Tip" Margin="20,10,2,0" VerticalAlignment="Top" Background="#FFF3F3F3" Foreground="Red" Height="24"/>
+        <Label x:Name="label_Copy1" Content="HeadingOffset" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Height="26" Width="94"/>
+        <TextBox x:Name="packageOffset" Height="23" Margin="104,111,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy2" Content="ZeroCross StepDection's ZeroLine" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top" Height="26" Width="204"/>
+        <TextBox x:Name="ZeroLine" Height="23" Margin="219,142,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
         <Button x:Name="button" Content="Flash" HorizontalAlignment="Left" Margin="20,0,0,19" Width="108" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
+        <Label x:Name="label_Copy3" Content="Stature for people" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Height="26" Width="115"/>
+        <TextBox x:Name="Stature" Height="23" Margin="139,174,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy4" Content="Weight for male" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top" Height="26" Width="103"/>
+        <Label x:Name="label_Copy5" Content="Weight for female" HorizontalAlignment="Left" Margin="10,231,0,0" VerticalAlignment="Top" Height="26" Width="114"/>
+        <CheckBox x:Name="Draw_route_with_buffer" Content="Draw route with buffer" HorizontalAlignment="Left" Margin="10,316,0,0" VerticalAlignment="Top" IsChecked="True" Height="16" Width="148"/>
+        <TextBox x:Name="MailWeight" Height="23" Margin="139,204,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <TextBox x:Name="FemailWeight" Height="23" Margin="139,234,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <CheckBox x:Name="isMaleCheckc" Content="IsMale" HorizontalAlignment="Left" Margin="201,316,0,0" VerticalAlignment="Top" Width="165" IsChecked="True" Height="16"/>
+        <Label x:Name="AminusWeight" Content="Step Length Weight For AMinus" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" Width="356" Height="26"/>
+        <TextBox x:Name="Aminus" Height="23" Margin="219,262,2,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

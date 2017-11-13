@@ -11,7 +11,7 @@ namespace socketServer
         public static string serverIP = "219.216.73.162";//程序服务器的IP
         public static int serverPort = 8886;//程序服务器的端口
         public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
-
+        public static Settings theSettingWindow = null;//全局唯一设定窗口
 
         public static int stepCount = 0;//被保存下来的前几个阶段的步数
         public static int stepCount2 = 0;//被保存下来的前几个阶段的步数
@@ -52,5 +52,18 @@ namespace socketServer
         public static int angleOffset = 130;
         //使用零点交叉方法判断走一步的时候的初始零点（因为不同手机有不同的零点偏差，我的手机就是-1）
         public static double zeroCrossOffset = -0.75;
+        //是否使用buffer绘制路线图
+        public static bool drawWithBuffer = true;
+        //默认行人身高
+        public static double Stature = 1.7234;
+        //男性步长身高加权值
+        public static double WeightForMale = 0.415;
+        //女性步长身高加权值
+        public static double WeightForFemale = 0.413;
+        //是否是男人
+        public static bool isMale = true;
+        //最大加速度和最小加速度的差开四次根号的步长计算方法的参数K
+        public static double stepLengthWeightForAMinus = 0.71;//注意论文中是0.41但是这个参数不太适合本题目
+
     }
 }

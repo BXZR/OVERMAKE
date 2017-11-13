@@ -68,7 +68,7 @@ namespace socketServer
             List<double> XSave = new List<double>();
             List<double> YSave = new List<double>();
 
-            string theInformation = "角度： 0.0000  步长： 0.9500  坐标： （0.0000,0.0000）\n";
+            string theInformation = "角度： 0.0000  步长： 0.6000  坐标： （0.0000,0.0000）\n";
             for (int i = 0; i < angels .Count; i++)
             {
                 double XAdd = Math.Sin(getRadianFromDegree(angels[i])) * stepLengths[i];

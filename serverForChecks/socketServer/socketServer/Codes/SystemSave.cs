@@ -36,7 +36,8 @@ namespace socketServer
         public static Color theNewColor2 = Colors.Orange;//绘制颜色（当前的轨迹  ，方法2的颜色）
                                                          //应该还有一个对比用的颜色，但是在这里先不写
 
-
+        //是不是增加角度偏移量
+        public static bool UseHeadingOffset = false;
         public static int getValuesCount (int valueNow = 0)//传入的是未计入分组的数据信息
         {
             return pictureNumber * buffCount + valueNow;
@@ -63,7 +64,12 @@ namespace socketServer
         //是否是男人
         public static bool isMale = true;
         //最大加速度和最小加速度的差开四次根号的步长计算方法的参数K
-        public static double stepLengthWeightForAMinus = 0.71;//注意论文中是0.41但是这个参数不太适合本题目
+        public static double stepLengthWeightForAMinus = 0.71;//注意论文中是0.41但是这个参数不太适合本工程
+        //Scarlet步长估计方法的参数
+        public static double stepLengthWeightForScarlet = 1.1;//注意论文中是0.81但是这个参数似乎不太适合与本工程
+        //kim步长计算方法
+        public static double stepLengthWeightForKim = 0.55;//论文中的是0.55
+
 
     }
 }

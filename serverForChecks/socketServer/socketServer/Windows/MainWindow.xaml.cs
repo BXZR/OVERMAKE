@@ -204,7 +204,7 @@ namespace socketServer
         {
             for (int i = 0; i < indexBuff.Count; i++)
             {
-                //方法0，最土鳖的方法
+                //方法0，最土鳖的方法直接就是立即数
                 if (StepLengthMethod.SelectedIndex == 0)
                 {
                     theStepLengthUse.Add(theStepLengthController.getStepLength1());
@@ -246,6 +246,22 @@ namespace socketServer
                     else
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
+                //方法5 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
+                else if (StepLengthMethod.SelectedIndex == 5)
+                {
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+                //方法6，加速度平均开三次根号的做法
+                else if (StepLengthMethod.SelectedIndex == 6)
+                {
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
             }
             //记录最新的移动步长
             if (theStepLengthUse.Count > 0)
@@ -261,7 +277,7 @@ namespace socketServer
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     double degree = theFilteredD[indexBuff[i]];
-                    if (UseHeadingOffset.IsChecked == true)
+                    if (SystemSave.UseHeadingOffset)
                         degree += SystemSave.angleOffset;
                     theStepAngeUse.Add(degree);
                 }
@@ -275,7 +291,7 @@ namespace socketServer
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         double degree = theFilteredD[indexBuff[i]];
-                        if (UseHeadingOffset.IsChecked == true)
+                        if (SystemSave.UseHeadingOffset)
                             degree += SystemSave.angleOffset;
                         theStepAngeUse.Add(degree);
                     }
@@ -292,7 +308,7 @@ namespace socketServer
                             checkUse.Add(theFilteredD[i]);
 
                         double degree = theAngelController.getAngelNow(checkUse);
-                        if (UseHeadingOffset.IsChecked == true)
+                        if (SystemSave.UseHeadingOffset)
                             degree += SystemSave.angleOffset;
                         theStepAngeUse.Add(degree);
                     }
@@ -304,7 +320,7 @@ namespace socketServer
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     double degree = AHRSZ[indexBuff[i]];
-                    if (UseHeadingOffset.IsChecked == true)
+                    if (SystemSave.UseHeadingOffset)
                         degree += SystemSave.angleOffset;
                     theStepAngeUse.Add(degree);
                 }
@@ -318,7 +334,7 @@ namespace socketServer
                     {
                         //Console.WriteLine("--------" + AHRSZ[indexBuff[i]] + "--------" + IMUZ[indexBuff[i]]);
                         double degree = IMUZ[indexBuff[i]];
-                        if (UseHeadingOffset.IsChecked == true)
+                        if (SystemSave.UseHeadingOffset)
                             degree += SystemSave.angleOffset;
                         theStepAngeUse.Add(degree);
                     }
@@ -330,7 +346,7 @@ namespace socketServer
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         double degree = theFilteredD[indexBuff[i]];
-                        if (UseHeadingOffset.IsChecked == true)
+                        if (SystemSave.UseHeadingOffset)
                             degree += SystemSave.angleOffset;
 
                         theStepAngeUse.Add(degree);
@@ -365,7 +381,7 @@ namespace socketServer
                     my = MY[indexBuff[i]];
                     mz = MZ[indexBuff[i]];
                     degree = theAngelController.AHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz);
-                    if (UseHeadingOffset.IsChecked == true)
+                    if (SystemSave.UseHeadingOffset)
                         degree += SystemSave.angleOffset;
                     theStepAngeUse.Add(degree);
                 }
@@ -399,7 +415,7 @@ namespace socketServer
                     //my = MY[indexBuff[i]];
                     //mz = MZ[indexBuff[i]];
                     degree = theAngelController.IMUupdate(gx, gy, gz, ax, ay, az);
-                    if (UseHeadingOffset.IsChecked == true)
+                    if (SystemSave.UseHeadingOffset)
                         degree += SystemSave.angleOffset;
                     theStepAngeUse.Add(degree);
                 }

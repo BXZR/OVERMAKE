@@ -74,7 +74,7 @@ namespace socketServer
             return SystemSave.WeightForFemale* SystemSave.Stature;
         }
 
-
+        //方法4，纵向加速度差值开四次根号的方法
         public double getStepLength4(int indexPre, int indexNow, List<double> theA)
         {
             double stepLength = 0;
@@ -97,13 +97,53 @@ namespace socketServer
             return stepLength;
         }
 
-        //外部方法3，用于构建和使用训练用的结果
-        //这是最基本的一种方法，使用tensorflow在做线性拟合
-        //保存训练用的参数，给tensorflowUse或者外部的python脚本使用
-        //在采集数据的时候返回方法2得到的步长信息
-        //预计是在每一次刷新缓存的时候调用
+        //方法5，对加速度做平均然后除以阶段加速度的极差的做法
+        public double getStepLength5(int indexPre, int indexNow, List<double> theA)
+        {
+            //为了预防除零异常
+            if (indexPre >= indexNow)
+                return StepLengthMethod1();
+            double stepLength = 0;
+            double aMax = -9999;
+            double aMin = 9999;
+            double aAverage = 0;
+            for (int i = indexPre; i < indexNow; i++)
+            {
+                aAverage += theA[i];
+                if (aMax < theA[i])
+                    aMax = theA[i];
+                if (aMin > theA[i])
+                    aMin = theA[i];
+                //这个公式的思路是是aMax - aMin，结果开四次根号最后乘以参数K  
+            }
+            //为了防止除零异常和负数步长
+            if(aMin >= aMax)
+                return StepLengthMethod1();
 
+            //scarlet步长计算公式
+            aAverage /= (indexNow-indexPre);
+            stepLength = SystemSave.stepLengthWeightForScarlet * (aAverage - aMin) / (aMax - aMin);
+            return stepLength;
 
+        }
+        //方法6 算法也是一种加速度和步长的关系的算法，单纯的加速度平均开三次根号的做法
+        public double getStepLength6(int indexPre, int indexNow, List<double> theA)
+        {
+            //为了预防除零异常
+            if (indexPre >= indexNow)
+                return StepLengthMethod1();
+            double stepLength = 0;
+            double aAverage = 0;
+            for (int i = indexPre; i < indexNow; i++)
+            {
+                aAverage += Math.Abs( theA[i]);
+            }
+            aAverage /= (indexNow - indexPre);
+            stepLength = SystemSave.stepLengthWeightForKim  * Math.Pow(aAverage, 0.33);
+           // Console.WriteLine("Kim average = " + aAverage);
+           // Console.WriteLine("Kim = " + stepLength);
+            return stepLength;
+        }
 
         //为了保证以后传入多个参数进行判断的情况，请保持这种模式
         private double StepLengthMethod1(double angelPast = 0 , double  angelNow = 0)

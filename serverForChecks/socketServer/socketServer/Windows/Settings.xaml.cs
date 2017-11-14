@@ -33,7 +33,7 @@ namespace socketServer
             theMainWindow = theIN;
             if (theMainWindow.isServerStarted() == false)
             {
-                saveRestart.IsEnabled = false;//没有开启服务器就没必要重启
+                saveRestartButton.IsEnabled = false;//没有开启服务器就没必要重启
             }
             else
             {
@@ -82,6 +82,8 @@ namespace socketServer
             SystemSave.WeightForFemale = Convert.ToDouble(FemailWeight.Text);
             SystemSave.WeightForMale = Convert.ToDouble(MailWeight.Text) ;
             SystemSave.stepLengthWeightForAMinus = Convert.ToDouble(Aminus.Text);
+            SystemSave.stepLengthWeightForScarlet = Convert.ToDouble(Scarlet.Text );
+            SystemSave.stepLengthWeightForKim = Convert.ToDouble(Kim.Text);
             if (isMaleCheckc.IsChecked == true)
                 SystemSave.isMale = true;
             else
@@ -90,6 +92,10 @@ namespace socketServer
                 SystemSave.drawWithBuffer = true;
             else
                 SystemSave.drawWithBuffer = false;
+            if (UseOffSet.IsChecked == true)
+                SystemSave.UseHeadingOffset = true;
+            else
+                SystemSave.UseHeadingOffset = false;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -102,16 +108,22 @@ namespace socketServer
             FemailWeight.Text = SystemSave.WeightForFemale.ToString();
             MailWeight.Text = SystemSave.WeightForMale.ToString();
             Aminus.Text = SystemSave.stepLengthWeightForAMinus.ToString();
-
+            Scarlet.Text = SystemSave.stepLengthWeightForScarlet.ToString();
+            Kim.Text = SystemSave.stepLengthWeightForKim.ToString() ;
             if (SystemSave.isMale)
                 isMaleCheckc.IsChecked = true;
             else
                 isMaleCheckc.IsChecked = false;
+
             if (SystemSave.drawWithBuffer)
                 Draw_route_with_buffer.IsChecked = true;
             else
                 Draw_route_with_buffer.IsChecked = false;
 
+            if (SystemSave.UseHeadingOffset == true)
+                UseOffSet.IsChecked = true;
+            else
+                UseOffSet.IsChecked = false;
             //记录一次最初的数值
             getStartValue();
         }
@@ -127,7 +139,10 @@ namespace socketServer
         private static string ValueMailWeight;
         private static bool ValueIsMale;
         private static bool ValueDrawWithBuff;
+        private static bool ValueUseHeadOffset;
         private static string ValueAminus;
+        private static string ValueScarlet;
+        private static string ValuesKim;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -142,7 +157,10 @@ namespace socketServer
               ValueIsMale = SystemSave.isMale;
               ValueDrawWithBuff = SystemSave.drawWithBuffer;
               ValueAminus = SystemSave.stepLengthWeightForAMinus.ToString();
-              hasBasicValue = true;//最初数值只会被记录一次
+              ValueScarlet = SystemSave.stepLengthWeightForScarlet.ToString();
+              ValuesKim = SystemSave.stepLengthWeightForKim.ToString();
+              ValueUseHeadOffset = SystemSave.UseHeadingOffset;
+             hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -157,6 +175,8 @@ namespace socketServer
             FemailWeight.Text = ValueFemailWeight;
             MailWeight.Text = ValueMailWeight;
             Aminus.Text = ValueAminus;
+            Scarlet.Text = ValueScarlet;
+            Kim.Text = ValuesKim;
             if (ValueIsMale)
                 isMaleCheckc.IsChecked = true;
             else
@@ -165,6 +185,10 @@ namespace socketServer
                 Draw_route_with_buffer.IsChecked = true;
             else
                 Draw_route_with_buffer.IsChecked = false;
+            if(ValueUseHeadOffset)
+                UseOffSet.IsChecked = true;
+            else
+                UseOffSet.IsChecked = false;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

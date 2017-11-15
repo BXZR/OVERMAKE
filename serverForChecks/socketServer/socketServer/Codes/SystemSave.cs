@@ -48,7 +48,8 @@ namespace socketServer
         {
            
         }
-
+        //波峰波谷判断走一步的方法中，间隔一定的数据量才能够判别唯一不，这个就是数据间隔量（高度滤波之后的）
+        public static int peackThresholdForStepDetection = 2;
         //手机在口袋中的时候的偏差值
         public static int angleOffset = 130;
         //使用零点交叉方法判断走一步的时候的初始零点（因为不同手机有不同的零点偏差，我的手机就是-1）
@@ -68,7 +69,7 @@ namespace socketServer
         //Scarlet步长估计方法的参数
         public static double stepLengthWeightForScarlet = 1.1;//注意论文中是0.81但是这个参数似乎不太适合与本工程
         //kim步长计算方法
-        public static double stepLengthWeightForKim = 0.55;//论文中的是0.55
+        public static double stepLengthWeightForKim = 0.65;//论文中的是0.55
 
 
     }

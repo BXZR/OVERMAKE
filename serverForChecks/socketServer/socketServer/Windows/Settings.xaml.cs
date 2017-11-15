@@ -84,6 +84,7 @@ namespace socketServer
             SystemSave.stepLengthWeightForAMinus = Convert.ToDouble(Aminus.Text);
             SystemSave.stepLengthWeightForScarlet = Convert.ToDouble(Scarlet.Text );
             SystemSave.stepLengthWeightForKim = Convert.ToDouble(Kim.Text);
+            SystemSave.peackThresholdForStepDetection = Convert.ToInt32( PeackStepthreshold.Text );
             if (isMaleCheckc.IsChecked == true)
                 SystemSave.isMale = true;
             else
@@ -110,6 +111,7 @@ namespace socketServer
             Aminus.Text = SystemSave.stepLengthWeightForAMinus.ToString();
             Scarlet.Text = SystemSave.stepLengthWeightForScarlet.ToString();
             Kim.Text = SystemSave.stepLengthWeightForKim.ToString() ;
+            PeackStepthreshold.Text = SystemSave.peackThresholdForStepDetection.ToString();
             if (SystemSave.isMale)
                 isMaleCheckc.IsChecked = true;
             else
@@ -143,6 +145,7 @@ namespace socketServer
         private static string ValueAminus;
         private static string ValueScarlet;
         private static string ValuesKim;
+        private static string ValueStepPeackThreshold;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -160,6 +163,7 @@ namespace socketServer
               ValueScarlet = SystemSave.stepLengthWeightForScarlet.ToString();
               ValuesKim = SystemSave.stepLengthWeightForKim.ToString();
               ValueUseHeadOffset = SystemSave.UseHeadingOffset;
+              ValueStepPeackThreshold = SystemSave.peackThresholdForStepDetection.ToString();
              hasBasicValue = true;//最初数值只会被记录一次
            }
         }
@@ -177,6 +181,7 @@ namespace socketServer
             Aminus.Text = ValueAminus;
             Scarlet.Text = ValueScarlet;
             Kim.Text = ValuesKim;
+            PeackStepthreshold.Text = ValueStepPeackThreshold;
             if (ValueIsMale)
                 isMaleCheckc.IsChecked = true;
             else

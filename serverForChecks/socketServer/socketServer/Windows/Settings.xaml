@@ -31,8 +31,10 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="label_Copy2" Content="ZeroCross StepDection's ZeroLine" HorizontalAlignment="Left" Margin="9,38,0,0" VerticalAlignment="Top" Height="26" Width="207"/>
-                    <TextBox x:Name="ZeroLine" Height="23" Margin="233,38,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy2" Content="ZeroCross StepDection's ZeroLine" HorizontalAlignment="Left" Margin="9,86,0,0" VerticalAlignment="Top" Height="26" Width="207"/>
+                    <TextBox x:Name="ZeroLine" Height="23" Margin="233,86,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy" Content="ZeroCross StepDection's ZeroLine" HorizontalAlignment="Left" Margin="9,44,0,0" VerticalAlignment="Top" Height="26" Width="207"/>
+                    <TextBox x:Name="PeackStepthreshold" Height="23" Margin="233,44,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Heading">

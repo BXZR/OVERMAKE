@@ -862,7 +862,12 @@ namespace socketServer
             new insectUnityPlay().Show();
         }
 
- 
+        private void button2_Click_1(object sender, RoutedEventArgs e)
+        {
+            string theFileName = "route" + DateTime.Now.ToString("yyyy - MM - dd - hh - mm - ss") + ".png";
+            new pictureMaker(). saveCanvasPicture(theCanvas , @"routeMap/"+theFileName );
+            MessageBox.Show("路线图已经保存在routeMap文件夹中\n文件名："+theFileName);
+        }
     }
 }
 

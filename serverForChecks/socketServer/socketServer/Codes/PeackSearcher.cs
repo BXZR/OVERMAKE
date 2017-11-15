@@ -85,6 +85,7 @@ namespace socketServer
         //基础方法，可以通过这个方法来修改共有变量
         //返回步数
         //传入的是加速度传感器的Y轴的数值
+        //这个方法被应用于peack step detection里面中
         public int countStepWithStatic(List <double> wave)
         {
            peackBuff.Clear();//每一次都重新计算，这个方法整体可以考虑大优化
@@ -107,7 +108,9 @@ namespace socketServer
                     {
                         theCount++;
                         //"波峰"
-                        if ( peackBuff.Count < 3 || ( i- peackBuff[peackBuff .Count -1] ) > 2 )
+                        //在一定时间间隔之内只有可能有一步
+                        // SystemSave. peackThresholdForStepDetection掌管这个数据间隔量
+                        if ( peackBuff.Count < 3 || ( i- peackBuff[peackBuff .Count -1] ) > SystemSave.peackThresholdForStepDetection)
                         peackBuff.Add(i);
                     }
                     else

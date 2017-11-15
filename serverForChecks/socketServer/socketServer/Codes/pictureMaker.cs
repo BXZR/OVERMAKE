@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace socketServer
 {
@@ -129,6 +130,31 @@ namespace socketServer
                 imgSave.Save(savePath, System.Drawing.Imaging.ImageFormat.Bmp );//指定图片格式   
                 imgSave.Dispose();
 
+        }
+
+        //此外保存canvas的方法也是保存在这里的
+        public void saveCanvasPicture(System.Windows.Controls.Canvas theCanvas , String fileName)
+        {
+             System.Windows.Size theSize = new System.Windows.Size((int)theCanvas.ActualWidth, (int)theCanvas.ActualHeight);
+             theCanvas.Measure(theSize);
+             theCanvas.Arrange(new System.Windows.Rect(theSize));
+            var rtb = new RenderTargetBitmap
+                (
+                (int)(theSize.Width*1.0), //width
+                (int)(theSize.Height*1.2), //height
+                (int) 100,
+                (int) 100,
+                System.Windows.Media.PixelFormats.Pbgra32 // pixelformat
+                );
+            rtb.Render(theCanvas);
+
+            var enc = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            enc.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(rtb));
+
+            using (var stm = System.IO.File.Create(fileName))
+            {
+                enc.Save(stm);
+            }
         }
 
  

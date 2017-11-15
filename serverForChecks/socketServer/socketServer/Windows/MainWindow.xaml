@@ -13,7 +13,7 @@
         <Grid Margin="10,12,203,77" Name="Chart">
             <Label Content="Data Tip" Height="75" Margin="10,32,467,0" Name="theStepLabel" VerticalAlignment="Top" />
             <TextBox x:Name="POSITION" Margin="10,112,467,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True"/>
-            <Canvas x:Name="theCanvas" Margin="0,32,16,-52" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="442" Height="458" VerticalAlignment="Top" UseLayoutRounding="False">
+            <Canvas x:Name="theCanvas" Margin="0,32,20,-39" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="442" Height="458" VerticalAlignment="Top" UseLayoutRounding="False">
                 <Canvas.Background>
                     <ImageBrush ImageSource="/socketServer;component/pictures/back3.png"/>
                 </Canvas.Background>
@@ -26,6 +26,8 @@
                     </TransformGroup>
                 </Canvas.LayoutTransform>
             </Canvas>
+            <Button x:Name="button2" Content="Save Route Map" Margin="518,5,237,0" VerticalAlignment="Top" Click="button2_Click_1"/>
+            <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="418,32,0,0"/>
         </Grid>
         <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,123,68" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
         <Button x:Name="button" Content="tensorFlowDEMO" HorizontalAlignment="Left" Margin="249,0,0,37" Width="145" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
@@ -67,7 +69,6 @@
             <ComboBoxItem Content="Kim approach"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,13,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Image x:Name="image" HorizontalAlignment="Left" Height="69" Margin="428,46,0,0" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.345,0.464" Source="/socketServer;component/pictures/compass.png"/>
         <Label x:Name="stepSlopLabel" Content="StepSlop : 0 / 0" Margin="0,113,29,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="Tips" Margin="0,13,984,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Button x:Name="button8" Content="Settings" Margin="0,0,25,30" Click="button8_Click" HorizontalAlignment="Right" Width="75" Height="26" VerticalAlignment="Bottom"/>

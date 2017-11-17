@@ -70,7 +70,12 @@ namespace socketServer
         public static double stepLengthWeightForScarlet = 1.1;//注意论文中是0.81但是这个参数似乎不太适合与本工程
         //kim步长计算方法
         public static double stepLengthWeightForKim = 0.65;//论文中的是0.55
-
+        //peack判步方法2需要在设定一些参数
+        public static double maxAForStart = -0.85;
+        public static double minAForStart = -1.15;
+        public static double Dertshold = 0.2;
+        public static double uperGateForStart = -0.85;
+        public static double downGateForStart = -1.15;
 
     }
 }

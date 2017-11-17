@@ -92,6 +92,13 @@ namespace socketServer
             int stepCount = PK.countStepWithStatic(AZValues);
             return PK.peackBuff;
         }
+
+        public List<int> stepDectionExtration3(List<double> AZValues, PeackSearcher PK)
+        {
+            int stepCount = PK.coutStepWithStatic2(AZValues);
+            return PK.peackBuff;
+        }
+
         //采样波峰波谷的方法（说实话这是一种非常理想方法但是实际中使用还需要花很长时间磨合）
         public  List<int> stepDetectionExtra1(List<double> AZValues)
         {

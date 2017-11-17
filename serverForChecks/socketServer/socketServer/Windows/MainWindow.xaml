@@ -54,7 +54,8 @@
         </ComboBox>
         <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,141,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <ComboBox x:Name="stepCheckMethod" Margin="0,231,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
-            <ComboBoxItem Content="Peack"/>
+            <ComboBoxItem Content="Peack(Trend)"/>
+            <ComboBoxItem Content="Peack(Threshold)"/>
             <ComboBoxItem Content="Sample"/>
             <ComboBoxItem Content="ZeroCross"/>
         </ComboBox>

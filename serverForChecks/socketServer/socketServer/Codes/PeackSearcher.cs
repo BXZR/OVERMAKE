@@ -81,6 +81,85 @@ namespace socketServer
             return  CS1;
         }
 
+
+
+        //判断走一步的方法中波峰波谷的方法2
+        //这是另外一种波峰波谷判断走一步的方法
+        //思想是设定上限和下限范围，分别两次经过上限和下限范围就算是走过一步
+        //作为简化，在本程序中使用进过两次上限的方法来作为判断走了一步的方法
+        //另外，这个方法的特征在于上限和下限是动态计算的，这有可能会对判断走了一步对不不同的人的适应有点帮助
+        //但也因此，有一些特殊的参数在设定的时候需要非常小心
+        //因为不同手机的传感器可能有不同的初始偏差值
+        double maxA;
+        double minA ;
+        double Dertshold;
+        double uperGate;
+        double downGate;
+
+        public int coutStepWithStatic2(List<double> wave)
+        {
+            if (wave.Count < 1)
+                return 0;
+
+            peackBuff.Clear();//每一次都重新计算，这个方法整体可以考虑大优化
+            int theCountChecked = 0;//走步数
+
+            bool isUpThanGate = false;//正在波峰门限之上
+            bool isDownThanGate = false;//正在波谷门线之下
+
+            int changeCount = 0;//变化的次数，变大后变小，连续两次变化才会被认为是走了一步
+            //每一次计算这些数值应该从头开始
+            maxA = SystemSave.maxAForStart;
+            minA = SystemSave.minAForStart;
+            uperGate = SystemSave.uperGateForStart;
+            downGate = SystemSave.downGateForStart;
+            Dertshold = SystemSave.Dertshold;
+
+            for (int i = 0; i < wave.Count; i++)
+            {
+                //刷新门限
+                uperGate = minA + Dertshold;
+                downGate = maxA - Dertshold;
+                //因为抖动可能会出现上限居然比下限小的情况，这个适合策略是交换一下
+                if (uperGate < downGate)
+                {
+                    double temp = uperGate;
+                    uperGate = downGate;
+                    downGate = temp;
+                }
+               // Console.WriteLine("step with - > " + changeCount + " uperGate = " + uperGate + " downGate = " + downGate);
+               // Console.WriteLine("maxA = " + maxA + " minA  = " + minA + " ANow = " + wave[i]);
+                if (wave[i] > uperGate)
+                {
+                    maxA = wave[i];
+                    isUpThanGate = true;
+                }
+               else  if (isUpThanGate && wave[i] < uperGate)
+                {
+                    maxA = wave[i];//这个波峰实际上是最后一个大于门限的数值
+                    isUpThanGate = false;
+                    //这是一个需要记录的“波峰”，也就是一步/////////////////////////////////////////////
+                    changeCount++; //计入一步
+                    peackBuff.Add(i);
+
+
+                }
+
+                if (wave[i] < downGate)
+                {
+                    minA = wave[i];
+                    isDownThanGate = true;
+                }
+               else if (isDownThanGate = true && wave[i] > downGate)
+                {
+                    minA = wave[i];
+                    isDownThanGate = false;
+                }
+            }
+            return theCountChecked;
+
+        }
+
         //附带缓冲区记录
         //基础方法，可以通过这个方法来修改共有变量
         //返回步数

@@ -85,6 +85,13 @@ namespace socketServer
             SystemSave.stepLengthWeightForScarlet = Convert.ToDouble(Scarlet.Text );
             SystemSave.stepLengthWeightForKim = Convert.ToDouble(Kim.Text);
             SystemSave.peackThresholdForStepDetection = Convert.ToInt32( PeackStepthreshold.Text );
+
+            SystemSave.maxAForStart = Convert.ToDouble(MaxAForStart.Text);
+            SystemSave.minAForStart = Convert.ToDouble(MinAForStart.Text);
+            SystemSave.Dertshold = Convert.ToDouble(ChangeValue.Text);
+            SystemSave.uperGateForStart = Convert.ToDouble(UpForStart.Text);
+            SystemSave.downGateForStart = Convert.ToDouble(DownForStart.Text);
+
             if (isMaleCheckc.IsChecked == true)
                 SystemSave.isMale = true;
             else
@@ -112,6 +119,13 @@ namespace socketServer
             Scarlet.Text = SystemSave.stepLengthWeightForScarlet.ToString();
             Kim.Text = SystemSave.stepLengthWeightForKim.ToString() ;
             PeackStepthreshold.Text = SystemSave.peackThresholdForStepDetection.ToString();
+
+            MaxAForStart.Text = SystemSave.maxAForStart.ToString();
+            MinAForStart.Text = SystemSave.minAForStart.ToString();
+            ChangeValue.Text = SystemSave.Dertshold.ToString();
+            UpForStart.Text = SystemSave.uperGateForStart.ToString();
+            DownForStart.Text = SystemSave.downGateForStart.ToString();
+
             if (SystemSave.isMale)
                 isMaleCheckc.IsChecked = true;
             else
@@ -146,6 +160,13 @@ namespace socketServer
         private static string ValueScarlet;
         private static string ValuesKim;
         private static string ValueStepPeackThreshold;
+
+        private static string ValueMaxAForStart;
+        private static string ValueMinAForStart;
+        private static string ValueDertshold;
+        private static string ValueUperGateForStart;
+        private static string ValueDownGateForStart;
+
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -164,7 +185,14 @@ namespace socketServer
               ValuesKim = SystemSave.stepLengthWeightForKim.ToString();
               ValueUseHeadOffset = SystemSave.UseHeadingOffset;
               ValueStepPeackThreshold = SystemSave.peackThresholdForStepDetection.ToString();
-             hasBasicValue = true;//最初数值只会被记录一次
+
+              ValueMaxAForStart = SystemSave.maxAForStart.ToString();
+              ValueMinAForStart = SystemSave.minAForStart.ToString();
+              ValueDertshold = SystemSave.Dertshold.ToString();
+              ValueUperGateForStart = SystemSave.uperGateForStart.ToString();
+              ValueDownGateForStart = SystemSave.downGateForStart.ToString();
+
+                hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -182,6 +210,13 @@ namespace socketServer
             Scarlet.Text = ValueScarlet;
             Kim.Text = ValuesKim;
             PeackStepthreshold.Text = ValueStepPeackThreshold;
+
+            MaxAForStart.Text = ValueMaxAForStart;
+            MinAForStart.Text = ValueMinAForStart;
+            ChangeValue.Text = ValueDertshold;
+            UpForStart.Text = ValueUperGateForStart;
+            DownForStart.Text = ValueDownGateForStart;
+
             if (ValueIsMale)
                 isMaleCheckc.IsChecked = true;
             else

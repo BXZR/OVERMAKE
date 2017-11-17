@@ -187,12 +187,16 @@ namespace socketServer
             }
             else if (stepCheckMethod.SelectedIndex == 1)
             {
-                //方法2：重复性判断方法，相对比较严格（感觉不是人能用的）
-                indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
+                indexBuff = stepExtra.stepDectionExtration3(theFilteredAZ, thePeackFinder);
             }
             else if (stepCheckMethod.SelectedIndex == 2)
             {
-                //方法3零点交叉
+                //方法3：重复性判断方法，相对比较严格（感觉不是人能用的）
+                indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
+            }
+            else if (stepCheckMethod.SelectedIndex == 3)
+            {
+                //方法4零点交叉
                 indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes.stages;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +36,7 @@ namespace socketServer
         stepModeCheck theStepModeCheckController;//推断行走状态：战力，行走，奔跑用 的控制单元
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
         float stepTimer = 1f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
+        FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
 
         //公有的存储空间
         List<double> theStepAngeUse = new List<double>();
@@ -95,15 +97,38 @@ namespace socketServer
             makeLabelMehtod(stepcounts);
             //绘制路线图
             drawPicturesShow();
-            //如果数据足够多，就需要保存成一张图像,同时做刷新处理
+
+            //如果数据足够多，就需要保存成一张图像,同时做刷新处理和一些额外的补充计算
             if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
             makeFlash();
+        }
+
+        //额外补充计算////////////////////////////////////////////////////////////////////////////////////
+        public void canculateExtra()
+        {
+            //使用动态零线方法
+            if (SystemSave.isDynamicallyZeroLineForStepDection)
+            {
+                //预防除零异常
+                if (indexBuff.Count == 0)
+                    return;
+
+                double ZeroAverage = 0;
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    ZeroAverage += theFilteredAZ[indexBuff[i]];
+                }
+                ZeroAverage /= indexBuff.Count;
+                SystemSave.zeroCrossOffset = ZeroAverage;
+            }
         }
 
 
         //刷新操作////////////////////////////////////////////////////////////////////////////////////
         void makeFlash()
         {
+            //额外补充计算
+            canculateExtra();
             //---------------------------------保存训练用的数据---------------------------------------------//
             saveTrainBase(theFilteredAZ);
             //------------------------------------------------------------------------------------------//
@@ -346,7 +371,7 @@ namespace socketServer
                 }
                 catch
                 {
-                    Console.WriteLine("imuMethod crashed using compass reading");
+                   // Console.WriteLine("imuMethod crashed using compass reading");
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         double degree = theFilteredD[indexBuff[i]];
@@ -523,7 +548,12 @@ namespace socketServer
                     );
                 SystemSave.slopNow = slopeWithPeack;
                 double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
-                stepSlopLabel.Content = "Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
+                theStage = theStage.ChangeState(slopeWithwindow);
+                stepSlopLabel.Content ="[" +theStage.getInformation() +"]" + "\nSlop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
+            }
+            else
+            { 
+               stepSlopLabel.Content  = "[" + theStage.getInformation() + "]" + "\nSlop： 0/0";
             }
         }
 

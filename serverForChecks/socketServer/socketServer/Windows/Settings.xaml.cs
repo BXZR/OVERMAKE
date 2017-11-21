@@ -91,6 +91,7 @@ namespace socketServer
             SystemSave.Dertshold = Convert.ToDouble(ChangeValue.Text);
             SystemSave.uperGateForStart = Convert.ToDouble(UpForStart.Text);
             SystemSave.downGateForStart = Convert.ToDouble(DownForStart.Text);
+            
 
             if (isMaleCheckc.IsChecked == true)
                 SystemSave.isMale = true;
@@ -104,6 +105,10 @@ namespace socketServer
                 SystemSave.UseHeadingOffset = true;
             else
                 SystemSave.UseHeadingOffset = false;
+            if (DynamicallyZeroLine.IsChecked == true)
+                SystemSave.isDynamicallyZeroLineForStepDection = true;
+            else
+                SystemSave.isDynamicallyZeroLineForStepDection = false;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -140,6 +145,12 @@ namespace socketServer
                 UseOffSet.IsChecked = true;
             else
                 UseOffSet.IsChecked = false;
+
+            if (SystemSave.isDynamicallyZeroLineForStepDection )
+                DynamicallyZeroLine.IsChecked = true;
+            else
+                DynamicallyZeroLine.IsChecked = false;
+
             //记录一次最初的数值
             getStartValue();
         }
@@ -166,7 +177,7 @@ namespace socketServer
         private static string ValueDertshold;
         private static string ValueUperGateForStart;
         private static string ValueDownGateForStart;
-
+        private static bool ValueIsDynamicallyZeroLine;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -191,6 +202,7 @@ namespace socketServer
               ValueDertshold = SystemSave.Dertshold.ToString();
               ValueUperGateForStart = SystemSave.uperGateForStart.ToString();
               ValueDownGateForStart = SystemSave.downGateForStart.ToString();
+              ValueIsDynamicallyZeroLine = SystemSave.isDynamicallyZeroLineForStepDection;
 
                 hasBasicValue = true;//最初数值只会被记录一次
            }
@@ -229,6 +241,11 @@ namespace socketServer
                 UseOffSet.IsChecked = true;
             else
                 UseOffSet.IsChecked = false;
+
+            if (ValueIsDynamicallyZeroLine)
+                DynamicallyZeroLine.IsChecked = true;
+            else
+                DynamicallyZeroLine.IsChecked = false;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

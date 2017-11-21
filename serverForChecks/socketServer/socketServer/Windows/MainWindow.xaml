@@ -45,22 +45,22 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Label x:Name="Charts_Copy2" Content="StepCheckMethod" Margin="0,200,38,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="stepCheckAxisUse" Margin="0,172,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
+        <Label x:Name="Charts_Copy2" Content="StepCheckMethod" Margin="0,215,38,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="stepCheckAxisUse" Margin="0,187,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="DirectZ"/>
             <ComboBoxItem Content="DirecX"/>
             <ComboBoxItem Content="DirecY"/>
             <ComboBoxItem Content="AbsoluteXYZ"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,141,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="stepCheckMethod" Margin="0,231,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
+        <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,156,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="stepCheckMethod" Margin="0,246,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="Peack(Trend)"/>
             <ComboBoxItem Content="Peack(Threshold)"/>
             <ComboBoxItem Content="Sample"/>
             <ComboBoxItem Content="ZeroCross"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,260,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,291,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
+        <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,275,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,306,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
             <ComboBoxItem Content="ImmediateValue"/>
             <ComboBoxItem Content="ImmediateValue2"/>
             <ComboBoxItem Content="Common formula"/>
@@ -70,11 +70,11 @@
             <ComboBoxItem Content="Kim approach"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,13,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Label x:Name="stepSlopLabel" Content="StepSlop : 0 / 0" Margin="0,113,29,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
+        <Label x:Name="stepSlopLabel" Content="[动作信息推断]" Margin="0,113,29,0" HorizontalAlignment="Right" Width="169" Height="43" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="Tips" Margin="0,13,984,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Button x:Name="button8" Content="Settings" Margin="0,0,25,30" Click="button8_Click" HorizontalAlignment="Right" Width="75" Height="26" VerticalAlignment="Bottom"/>
-        <Label x:Name="Charts_Copy7" Content="HeadingMethod" Margin="0,321,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,352,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
+        <Label x:Name="Charts_Copy7" Content="HeadingMethod" Margin="0,336,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,367,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
             <ComboBoxItem Content="CompassRead"/>
             <ComboBoxItem Content="MSBasedCompass"/>
             <ComboBoxItem Content="AHRS(client)"/>

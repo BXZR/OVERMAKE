@@ -77,5 +77,9 @@ namespace socketServer
         public static double uperGateForStart = -0.85;
         public static double downGateForStart = -1.15;
 
+        //是否使用动态零线（这个领先就是判步方法中zerrocross的方法）
+        //但是使用这个方法可能会造成没什么必要的额外计算
+        public static bool isDynamicallyZeroLineForStepDection = false;
+
     }
 }

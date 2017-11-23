@@ -92,6 +92,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Codes\DecisionTree\theDecisionTree.cs" />
+    <Compile Include="Codes\DecisionTree\theDecisionTreeNode.cs" />
     <Compile Include="Codes\stages\FSMBasic.cs" />
     <Compile Include="Codes\stages\StageRun.cs" />
     <Compile Include="Codes\stages\StageStance.cs" />

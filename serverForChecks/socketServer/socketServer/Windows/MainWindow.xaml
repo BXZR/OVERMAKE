@@ -30,8 +30,8 @@
             <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="418,32,0,0"/>
         </Grid>
         <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,0,123,68" Name="button6" VerticalAlignment="Bottom" Width="75" Click="button6_Click" />
-        <Button x:Name="button" Content="tensorFlowDEMO" HorizontalAlignment="Left" Margin="249,0,0,37" Width="145" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
-        <Button x:Name="button7" Content="createPic" HorizontalAlignment="Right" Margin="0,0,861,37" VerticalAlignment="Bottom" Width="145" Click="button7_Click" Height="22"/>
+        <Button x:Name="button" Content="tensorFlowDEMO" HorizontalAlignment="Left" Margin="200,0,0,37" Width="145" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
+        <Button x:Name="button7" Content="createPic" HorizontalAlignment="Right" Margin="0,0,907,37" VerticalAlignment="Bottom" Width="99" Click="button7_Click" Height="22"/>
         <Label x:Name="Charts" Content="ImageDisplay" Margin="0,0,105,102" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy" Content="Normal" Margin="0,10,123,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy1" Content="Demos" Margin="0,0,1011,35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="57" Foreground="#FF4600FF" FontWeight="Bold" Height="26"/>
@@ -84,5 +84,6 @@
         </ComboBox>
         <Button x:Name="button9" Content="3DView" Margin="0,0,25,102" Click="button9_Click" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Bottom"/>
         <Label x:Name="Charts_Copy8" Content="SystemControl" Margin="0,0,105,30" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Button x:Name="button3" Content="Tree" HorizontalAlignment="Left" Margin="350,481,0,0" VerticalAlignment="Top" Width="75" Click="button3_Click"/>
     </Grid>
 </Window>

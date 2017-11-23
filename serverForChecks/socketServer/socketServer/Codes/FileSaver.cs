@@ -58,6 +58,25 @@ namespace socketServer
             sw.Close();
             sw.Dispose();
         }
+        public string readInformation(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                fileName = "";//如果没有指定就用默认的
+
+            string information;
+            try
+            {
+                StreamReader sw = new StreamReader(fileName, true);
+                information = sw.ReadToEnd();
+                sw.Close();
+                sw.Dispose();
+            }
+            catch
+            {
+                information = "";
+            }
+            return information;
+        }
 
     }
 }

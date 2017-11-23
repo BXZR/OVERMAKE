@@ -25,6 +25,7 @@ namespace socketServer
         //论文公式方法
         public double getStepLength2(int indexPre , int indexNow , List<double> theA , List<long> timeUse = null )
         {
+           // Console.WriteLine("method");
             if (indexNow >= theA .Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null  )//也就是说传入的数值是错误的，或者数据不够
                 return stepLengthBasic();//万金油
             else
@@ -53,6 +54,7 @@ namespace socketServer
                 //有除零异常说明时间非常短，可以认为根本就没走
                 if(timestep  ==0)
                     return 0;//万金油
+               // Console.WriteLine("timeStep is "+ timestep);
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 double stepLength = 0.9 * VK + 0.4 * FK + 0.3;
@@ -160,6 +162,14 @@ namespace socketServer
         private double stepLengthBasic()
         {
             return 0.6;
+        }
+        
+        //返回训练用的真实步长，用来构建决策树
+        public double getRandomStepLength()
+        {
+            //测试用的真实的步长还没有办法拿到，所以用了一个随机数处理
+
+            return 0.5 + new Random(DateTime.Now .Millisecond).NextDouble()*0.6 -0.3;
         }
     }
 }

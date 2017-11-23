@@ -12,6 +12,34 @@ namespace socketServer
         Random theRandom = new Random();
         Filter theFilter = new Filter();
 
+
+
+        public List<string> getSaveTrainFileForTreeDemo(List<int> indexBuff, information theInformationController , stepLength theStepLengthController)
+        {
+            //在这里用list是为了和fileSave做配合，没有必要每一次都设计格式
+            //传入一个list使用统一的格式比较好
+            List<string> informationToSave = new List<string>();
+            //开销很大...慎用....
+            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+            //加工成字符串
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                string informationUse = "";
+                informationUse += AX[indexBuff[i]].ToString("f3") + "," + AY[indexBuff[i]].ToString("f3") + "," + AZ[indexBuff[i]].ToString("f3") + ",";
+                informationUse += GX[indexBuff[i]].ToString("f3") + "," + GY[indexBuff[i]].ToString("f3") + "," + GY[indexBuff[i]].ToString("f3") + ",";
+                informationUse += theStepLengthController.getRandomStepLength().ToString("f3");
+                if (i < indexBuff.Count - 1)
+                    informationUse += ",";
+                informationToSave.Add(informationUse);
+            }
+            return informationToSave;
+        }
+
         //保存每一步所有的数据，这个是目前为止最通用的方法（不包含GPS）
         //算是线管数据的全存储，训练的饿的时候挑出来自己用的就好
         public List<string> getSaveTrainFile(List<int> indexBuff, information theInformationController)

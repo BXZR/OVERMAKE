@@ -147,6 +147,7 @@ namespace socketServer
             SystemSave.stepCount2 += stepExtra.peackBuff.Count;
             stepExtra.makeFlash();
             SystemSave.makeFlash();
+  
         }
 
 
@@ -239,7 +240,7 @@ namespace socketServer
                     theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法1
-                if (StepLengthMethod.SelectedIndex == 1)
+                else if (StepLengthMethod.SelectedIndex == 1)
                 {
                     if (i >= 1)
                     {
@@ -251,11 +252,13 @@ namespace socketServer
                 //方法2，一般公式
                 else if (StepLengthMethod.SelectedIndex == 2)
                 {
+                   
                     if (i >= 1)
                     {
                         // for (int v = 0; v < theInformationController.timeStep.Count; v++)
                         //    Console.WriteLine(theInformationController.timeStep[v]);
                         List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+                       
                         double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
@@ -469,36 +472,42 @@ namespace socketServer
             //Console.WriteLine("GPSY - " + FilteredY[ee]);
             // }
             //生成真数据（GPS）------------------------------------------------------------------------------------------------
-            for (int i = 1; i < indexBuff.Count; i++)
-            {
-                theTrainBase.Add(
-                theTrainFileMake.getSaveTrainFile(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, theInformationController.timeStep )
-                );
-            }
-            if (theTrainBase != null && theTrainBase.Count >= 1)
-            {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
-            }
+            //for (int i = 1; i < indexBuff.Count; i++)
+            //{
+            //    theTrainBase.Add(
+            //    theTrainFileMake.getSaveTrainFile(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, theInformationController.timeStep )
+            //    );
+            //}
+            //if (theTrainBase != null && theTrainBase.Count >= 1)
+            //{
+            //    theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+            //}
 
             //生成假数据（GPS）------------------------------------------------------------------------------------------------
-            theTrainBase.Clear();
-            //对时间戳（或者其他数据包B的数据）进行滤波来匹配数据
-            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-            for (int i = 1; i < indexBuff.Count; i++)
-            {
-                theTrainBase.Add(
-                theTrainFileMake.getSaveTrainFileFake(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, timeUse )
-                );
-            }
-            if (theTrainBase != null && theTrainBase.Count >= 1)
-            {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
-            }
+            //theTrainBase.Clear();
+            ////对时间戳（或者其他数据包B的数据）进行滤波来匹配数据
+            //List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+            //for (int i = 1; i < indexBuff.Count; i++)
+            //{
+            //    theTrainBase.Add(
+            //    theTrainFileMake.getSaveTrainFileFake(indexBuff[i - 1], indexBuff[i], theFilteredAZ, FilteredX, FilteredY, timeUse )
+            //    );
+            //}
+            //if (theTrainBase != null && theTrainBase.Count >= 1)
+            //{
+            //    theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+            //}
             //生成通用的数据--------------------------------------------------------------------------------------------------
-            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff,theInformationController);
+            //theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theInformationController);
+            //if (theTrainBase != null && theTrainBase.Count >= 1)
+            //{
+            //    theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+            //}
+            //生成决策树数据
+            theTrainBase = theTrainFileMake.getSaveTrainFileForTreeDemo(indexBuff, theInformationController,theStepLengthController);
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseTree.txt");
             }
         }
 
@@ -901,6 +910,12 @@ namespace socketServer
             string theFileName = "route" + DateTime.Now.ToString("yyyy - MM - dd - hh - mm - ss") + ".png";
             new pictureMaker(). saveCanvasPicture(theCanvas , @"routeMap/"+theFileName );
             MessageBox.Show("路线图已经保存在routeMap文件夹中\n文件名："+theFileName);
+        }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+            Codes.DecisionTree.theDecisionTree ATree = new Codes.DecisionTree.theDecisionTree();
+            ATree.BuildTheTree("TrainBase/TrainBaseTree.txt");
         }
     }
 }

@@ -81,5 +81,10 @@ namespace socketServer
         //但是使用这个方法可能会造成没什么必要的额外计算
         public static bool isDynamicallyZeroLineForStepDection = false;
 
+        //构建决策树所需要的文件路径
+        public static string DecrsionTreeBasedFile = "TrainBase/TrainBaseTree.txt";
+        //决策树算法类型 0:IC3  1:C4.5
+        public static int DecisionTreeMethodID = 0;
+
     }
 }

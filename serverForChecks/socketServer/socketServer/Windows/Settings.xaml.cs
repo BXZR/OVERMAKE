@@ -91,7 +91,7 @@ namespace socketServer
             SystemSave.Dertshold = Convert.ToDouble(ChangeValue.Text);
             SystemSave.uperGateForStart = Convert.ToDouble(UpForStart.Text);
             SystemSave.downGateForStart = Convert.ToDouble(DownForStart.Text);
-            
+            SystemSave.DecrsionTreeBasedFile = DecisionTreePathText.Text;
 
             if (isMaleCheckc.IsChecked == true)
                 SystemSave.isMale = true;
@@ -109,6 +109,8 @@ namespace socketServer
                 SystemSave.isDynamicallyZeroLineForStepDection = true;
             else
                 SystemSave.isDynamicallyZeroLineForStepDection = false;
+
+            SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -130,6 +132,8 @@ namespace socketServer
             ChangeValue.Text = SystemSave.Dertshold.ToString();
             UpForStart.Text = SystemSave.uperGateForStart.ToString();
             DownForStart.Text = SystemSave.downGateForStart.ToString();
+            DecisionTreePathText.Text = SystemSave.DecrsionTreeBasedFile;
+            TreeMethod.SelectedIndex = SystemSave.DecisionTreeMethodID;
 
             if (SystemSave.isMale)
                 isMaleCheckc.IsChecked = true;
@@ -178,6 +182,8 @@ namespace socketServer
         private static string ValueUperGateForStart;
         private static string ValueDownGateForStart;
         private static bool ValueIsDynamicallyZeroLine;
+        private static string ValueDecisionTreePath;
+        private static int ValueTreeMethod;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -203,8 +209,10 @@ namespace socketServer
               ValueUperGateForStart = SystemSave.uperGateForStart.ToString();
               ValueDownGateForStart = SystemSave.downGateForStart.ToString();
               ValueIsDynamicallyZeroLine = SystemSave.isDynamicallyZeroLineForStepDection;
+              ValueDecisionTreePath = SystemSave.DecrsionTreeBasedFile;
+              ValueTreeMethod = SystemSave.DecisionTreeMethodID;
 
-                hasBasicValue = true;//最初数值只会被记录一次
+              hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -228,6 +236,7 @@ namespace socketServer
             ChangeValue.Text = ValueDertshold;
             UpForStart.Text = ValueUperGateForStart;
             DownForStart.Text = ValueDownGateForStart;
+            DecisionTreePathText.Text = ValueDecisionTreePath;
 
             if (ValueIsMale)
                 isMaleCheckc.IsChecked = true;
@@ -246,6 +255,7 @@ namespace socketServer
                 DynamicallyZeroLine.IsChecked = true;
             else
                 DynamicallyZeroLine.IsChecked = false;
+            TreeMethod.SelectedIndex =  ValueTreeMethod;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -257,6 +267,16 @@ namespace socketServer
         {
             //取消引用，可以开启下一个设定窗口
             SystemSave.theSettingWindow = null;
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.ATree = new Codes.DecisionTree.theDecisionTree();
+            MainWindow.ATree.BuildTheTree("TrainBase/TrainBaseTree.txt");
+            string informationS = "根据文件"+ DecisionTreePathText.Text+"内容已经建立决策树\n";
+            informationS += "决策树的节点个数： " + MainWindow.ATree.getNodeCount()+"\n";
+            informationS += "决策树的深度： " + MainWindow.ATree.getDepth();
+            MessageBox.Show(informationS);
         }
     }
 }

@@ -60,7 +60,7 @@
             <ComboBoxItem Content="ZeroCross"/>
         </ComboBox>
         <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,275,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,306,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0">
+        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,306,29,0" VerticalAlignment="Top" Width="169" SelectedIndex="0" SelectionChanged="StepLengthMethod_SelectionChanged">
             <ComboBoxItem Content="ImmediateValue"/>
             <ComboBoxItem Content="ImmediateValue2"/>
             <ComboBoxItem Content="Common formula"/>
@@ -68,6 +68,7 @@
             <ComboBoxItem Content="Weinberg approach"/>
             <ComboBoxItem Content="Scarlet approach"/>
             <ComboBoxItem Content="Kim approach"/>
+            <ComboBoxItem Content="Common formula with Dection Tree"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,13,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="stepSlopLabel" Content="[动作信息推断]" Margin="0,113,29,0" HorizontalAlignment="Right" Width="169" Height="43" VerticalAlignment="Top" Foreground="#FFE66901" FontWeight="Bold"/>

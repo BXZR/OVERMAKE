@@ -147,6 +147,57 @@ namespace socketServer
             return stepLength;
         }
 
+        //论文公式方法
+        //使用决策树选择出来模式，使用这一套模式的参数来做
+        private double []  afas = { 0.7 , 0.8, 0.9, 1.0 };
+        private double[] betas = { 0.3, 0.4, 0.5, 0.6 };
+        private double[] gamas = { 0.1, 0.2, 0.3, 0.4 };
+        public double getStepLength2WithDecisionTree(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null, int modeUse = 1)
+        {
+            int indexUse = 0;
+            // Console.WriteLine("method");
+            if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
+                return stepLengthBasic();//万金油
+            else
+            {
+                //Console.WriteLine("timeUseCount = "+ timeUse.Count);
+                // Console.WriteLine("theACount = " + theA.Count);
+                double average = 0;
+                for (int i = indexPre; i < indexNow; i++)
+                {
+                    average += theA[i];
+                }
+                average /= (indexNow - indexPre);
+                //公式需要使用的参数 (为了保证清晰，分成多个循环来写)
+                double VK = 0;
+                for (int i = indexPre; i < indexNow; i++)
+                {
+                    double minus = (theA[i] - average) * (theA[i] - average);
+                    VK += minus;
+
+                }
+                //Console.WriteLine("VK = " + VK);
+                VK /= (indexNow - indexPre);
+                //Console.WriteLine("VK = " + VK);
+
+                long timestep = timeUse[indexNow] - timeUse[indexPre];
+                //有除零异常说明时间非常短，可以认为根本就没走
+                if (timestep == 0)
+                    return 0;//万金油
+                             // Console.WriteLine("timeStep is "+ timestep);
+                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+
+                double stepLength =afas[indexUse] * VK + betas [indexUse]* FK + gamas[indexUse];
+                //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
+                if (stepLength > 2)//一步走两米，几乎不可能
+                    return stepLengthBasic();//万金油
+                else
+                    return stepLength;
+            }
+        }
+
+
+
         //为了保证以后传入多个参数进行判断的情况，请保持这种模式
         private double StepLengthMethod1(double angelPast = 0 , double  angelNow = 0)
         {

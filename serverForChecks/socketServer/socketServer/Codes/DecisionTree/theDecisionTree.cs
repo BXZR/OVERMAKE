@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace socketServer.Codes.DecisionTree
 {
-    class theDecisionTree
+    public class theDecisionTree
     {
 
         //保存各个属性的数值
@@ -26,7 +26,7 @@ namespace socketServer.Codes.DecisionTree
         private List<int> GYMode = new List<int>();
         private List<int> GZMode = new List<int>();
         private List<int> SLMode = new List<int>();
-       
+
         //这个是属性的集合，方便每一个属性被剥离出去
         private List<List<int>> MAP = new List<List<int>>();
 
@@ -35,23 +35,56 @@ namespace socketServer.Codes.DecisionTree
         List<double> inforValues = new List<double>();//计算用的影响值
         List<string> titles = new List<string>();//标题集合
         theDecisionTreeNode theRoot;//数根节点，这个是递归的根节点
- 
+        private bool isStarted = false;//是否构建的标志
+        public bool IsStarted { get { return isStarted; } }//只读标记
+        private double inforSL = 0;//用来选择的目标基准值
 
-        private  double inforSL = 0;//用来选择的目标基准值
+
+        //传入需要的参数
+        //通过决策树选择出来当前的移动的模式
+        public int searchModeWithTree(double ax, double ay, double az, double gx, double gy, double gz)
+        {
+            int mode = 1;
+            if (isStarted)
+            {
+                //这个顺序都是AX AY AZ GX GY GZ 顺序不可以打乱
+                //量化成为类型或者说模式
+                int axUse = getTypeIndex(ax);
+                int ayUse = getTypeIndex(ay);
+                int azUse = getTypeIndex(az);
+                int gxUse = getTypeIndex(gx);
+                int gyUse = getTypeIndex(gy);
+                int gzUse = getTypeIndex(gz);
+                List<int> VAL = new List<int>();
+                VAL.Add(axUse);
+                VAL.Add(ayUse);
+                VAL.Add(azUse);
+                VAL.Add(gxUse);
+                VAL.Add(gyUse);
+                VAL.Add(gzUse);
+                mode = theRoot.searchLeafMode(VAL, titles);
+            }
+            return mode;
+        }
+
 
         //根据数据集做一棵决策树然后处理
         //外部构建这个树的方法
         public void BuildTheTree(string path = "")
         {
-            makeTitles();//建立titles集合
-            initMap(path);//读数据
-            makePartValues();//建立分类数据
-            makeDictionary();//创建“字典”
-            makeBasicValue();//计算基础数值
-            theRoot = new theDecisionTreeNode("Root",-1);
-            makeEffectValues();
-            theRoot.makeValues(MAP , inforValues , titles  , - 1);
-            makePoint(theRoot);
+            if (isStarted == false)
+            {
+                makeTitles();//建立titles集合
+                initMap(path);//读数据
+                makePartValues();//建立分类数据
+                makeDictionary();//创建“字典”
+                makeBasicValue();//计算基础数值
+                theRoot = new theDecisionTreeNode("Root", -1);
+                makeEffectValues();
+                theRoot.makeValues(MAP, inforValues, titles, -1,0);
+                makePoint(theRoot);
+                isStarted = true;
+            }
         }
 
         private void makeTitles()
@@ -79,7 +112,7 @@ namespace socketServer.Codes.DecisionTree
                 if (string.IsNullOrEmpty(line[i]))
                     continue;
 
-               // Console.WriteLine(rows[0] + "------" + i);
+                // Console.WriteLine(rows[0] + "------" + i);
                 AX.Add(Convert.ToDouble(rows[0]));
                 AY.Add(Convert.ToDouble(rows[1]));
                 AZ.Add(Convert.ToDouble(rows[2]));
@@ -99,7 +132,7 @@ namespace socketServer.Codes.DecisionTree
             MAP.Add(GXMode);
             MAP.Add(GYMode);
             MAP.Add(GZMode);
-            Console.WriteLine("Map built");
+            // Console.WriteLine("Map built");
         }
 
         //基础数据转化为分类数据
@@ -115,7 +148,7 @@ namespace socketServer.Codes.DecisionTree
                 GZMode.Add(getTypeIndex(GZ[i]));
                 SLMode.Add(getTypeIndex(SL[i]));
             }
-            Console.WriteLine("Part get");
+            //Console.WriteLine("Part get");
         }
 
         //目标的infor参见公式
@@ -135,8 +168,8 @@ namespace socketServer.Codes.DecisionTree
                     countOfTypesForAll.Add(0);
                 }
             }
-           // Console.WriteLine("get type count = " + typesForAll.Count);
-           // Console.WriteLine("countOfTypesForAll = " + countOfTypesForAll.Count);
+            // Console.WriteLine("get type count = " + typesForAll.Count);
+            // Console.WriteLine("countOfTypesForAll = " + countOfTypesForAll.Count);
 
             for (int i = 0; i < SLMode.Count; i++)
             {
@@ -149,17 +182,17 @@ namespace socketServer.Codes.DecisionTree
                 }
             }
 
-           //for (int i = 0; i < countOfTypesForAll.Count; i++)
-                //Console.WriteLine("countOfTypesForAll"+i+"  "+ countOfTypesForAll[i]);
+            //for (int i = 0; i < countOfTypesForAll.Count; i++)
+            //Console.WriteLine("countOfTypesForAll"+i+"  "+ countOfTypesForAll[i]);
 
             // Math.Log(125, 5);//以5为底，125的对数
             for (int i = 0; i < typesForAll.Count; i++)
             {
-                double counts =(double) countOfTypesForAll[i];//做一下隐式转换
+                double counts = (double)countOfTypesForAll[i];//做一下隐式转换
                 double P = counts / (double)SLMode.Count;//频率当概率使用
                 inforSL += -P * Math.Log(P, 2);
             }
-            Console.WriteLine("Basic Value = " + inforSL);
+            // Console.WriteLine("Basic Value = " + inforSL);
         }
 
         //--------------------------------------------------------------------------------------------------------------------------//
@@ -173,7 +206,7 @@ namespace socketServer.Codes.DecisionTree
             {
                 List<int> types = new List<int>();//有多少种类型
                 List<int> countOfTypes = new List<int>();//每一种类型有多少
-                
+
                 for (int i = 0; i < MAP[mapIndex].Count; i++)
                 {
                     if (types.Contains(MAP[mapIndex][i]) == false)
@@ -186,10 +219,10 @@ namespace socketServer.Codes.DecisionTree
                 //   Console.WriteLine("branceType = "+ types[i]);
 
                 for (int i = 0; i < types.Count; i++)
-                    for(int j = 0; j < typesForAll.Count; j++)//因为要记录每一种的小项目中，针对大项目的数量，需要做百分比
-                    countOfTypes.Add(0);
+                    for (int j = 0; j < typesForAll.Count; j++)//因为要记录每一种的小项目中，针对大项目的数量，需要做百分比
+                        countOfTypes.Add(0);
 
-                Console.WriteLine("countOfTypes: " + countOfTypes.Count);
+                // Console.WriteLine("countOfTypes: " + countOfTypes.Count);
 
                 int startIndex = -1;
                 int offsetIndex = -1;
@@ -199,11 +232,11 @@ namespace socketServer.Codes.DecisionTree
                     for (int i = 0; i < types.Count; i++)
                     {
                         //对于每一个数据多需要做处理
-                        if(MAP[mapIndex][k] == types[i])//如果当前数据由某一个类型
+                        if (MAP[mapIndex][k] == types[i])//如果当前数据由某一个类型
                         {
                             startIndex = i;//基础index
-                           //找到这个该数据在本小类中的类型
-                            //Console.WriteLine("theType of this :" + types[i]);
+                                           //找到这个该数据在本小类中的类型
+                                           //Console.WriteLine("theType of this :" + types[i]);
                         }
                     }
                     //计算偏移量
@@ -225,23 +258,32 @@ namespace socketServer.Codes.DecisionTree
                 //for (int i = 0; i < countOfTypes.Count; i++)
                 //    Console.WriteLine("countOfTypes[" + i + "] = " + countOfTypes[i]);
                 //每一种小的类型对于大的类型有多少
-                //并开始套用公式
+                //并开始套用公式/////////////////////////////////////////////////////////////////////////////////////
                 double inforValue = 0;
                 for (int i = 0; i < types.Count; i++)
                 {
                     double allcountForThisType = 0;
                     for (int j = 0; j < typesForAll.Count; j++)
                     {
-                        allcountForThisType += (double)countOfTypes[i+j];//做一下隐式转换
+                        allcountForThisType += (double)countOfTypes[i + j];//做一下隐式转换
                     }
                     double P1 = allcountForThisType / MAP[mapIndex].Count;
-                    for (int j = 0; j< typesForAll.Count; j++)
+                    for (int j = 0; j < typesForAll.Count; j++)
                     {
 
                         double P2 = (double)countOfTypes[i + j] / allcountForThisType;//频率当概率使用
-                        inforValue += -P1*P2 * Math.Log(P2, 2);
+                        inforValue += -P1 * P2 * Math.Log(P2, 2);
                     }
                 }
+                inforValue = inforSL - inforValue;
+
+                //如果使用的是C4.5的方法就需要加上一步
+                //，这个是目前看博客学到的公式方法，希望是对的....
+                if (SystemSave.DecisionTreeMethodID == 1)
+                { 
+                    inforValue /= inforSL;
+                }
+
                 inforValues.Add(inforValue);
                 //Console.WriteLine("mapIndex = " + mapIndex);
                 //Console.WriteLine("inforVAlues: " + inforValue);
@@ -275,8 +317,8 @@ namespace socketServer.Codes.DecisionTree
                 }
             }
             Console.WriteLine("------------------------------------------------");
-            Console.WriteLine("Father is "+ theFatherPoint.name+"-"+theFatherPoint.effectValue );
-            for (int i = 0;i < types.Count; i++)
+            Console.WriteLine("Father is "+ theFatherPoint.name);
+            for (int i = 0; i < types.Count; i++)
             {
                 Console.WriteLine("Child is " + theFatherPoint.Titles[index] +"-"+types[i]);
                 theDecisionTreeNode thePoint = new DecisionTree.theDecisionTreeNode(theFatherPoint.Titles[index], types[i]);
@@ -284,20 +326,32 @@ namespace socketServer.Codes.DecisionTree
                 //将选取出的数据最大（影响最大的）从MAP中删除
                 //并为这一项建立节点（每一个type都是一个节点）
                 //材料用掉，这个最大的影响力的节点属性已经不会被这个属性的子节点使用了
-                thePoint.makeValues(theFatherPoint.MAP, theFatherPoint.inforValues, theFatherPoint.Titles ,index);
+                thePoint.makeValues(theFatherPoint, index);
             }
             for (int i = 0; i < theFatherPoint.childs.Count; i++)
             {
-              //递归创建决策树
-               makePoint(theFatherPoint.childs[i]);
+                //递归创建决策树
+                theDecisionTreeNode .nodeCountAll++;
+                makePoint(theFatherPoint.childs[i]);
             }
+
         }
 
 
-
+        //额外补充的小小方法
+        //共多少个节点
+        public int getNodeCount()
+        {
+            return theDecisionTreeNode.nodeCountAll;
+        }
+        //一共多少层
+        public int getDepth()
+        {
+            return theDecisionTreeNode.maxDepth;
+        }
 
         //数据分成四类
-        private int getTypeIndex(double Value = 0)
+       public static  int getTypeIndex(double Value = 0)
         {
             if (Value < 0.25)
                 return 1;

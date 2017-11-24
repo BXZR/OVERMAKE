@@ -1,4 +1,5 @@
-﻿using socketServer.Codes.stages;
+﻿using socketServer.Codes.DecisionTree;
+using socketServer.Codes.stages;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -37,6 +38,7 @@ namespace socketServer
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
         float stepTimer = 1f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
+        public static theDecisionTree ATree = null;//步长方法中的决策树
 
         //公有的存储空间
         List<double> theStepAngeUse = new List<double>();
@@ -232,6 +234,14 @@ namespace socketServer
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
         void stepLengthGet(List<int> indexBuff, List<double> AZUse)
         {
+            //这些数据在一些复杂的方法中会用到，因此计算出来备用
+            List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
             for (int i = 0; i < indexBuff.Count; i++)
             {
                 //方法0，最土鳖的方法直接就是立即数
@@ -293,6 +303,31 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
                     else
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+                //方法7，决策树选择公式参数的方法
+                else if (StepLengthMethod.SelectedIndex == 7)
+                {
+                    if (i >= 1)
+                    {
+                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                        //    Console.WriteLine(theInformationController.timeStep[v]);
+                        if (ATree == null || ATree.IsStarted == false)
+                        {
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                        }
+                        else
+                        {
+                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+                            int mode = ATree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                            Console.WriteLine("modeNow = " + mode);
+                            double stepLength = theStepLengthController.getStepLength2WithDecisionTree(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
+                            theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                    }
+                    else
+                    {
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
                 }
             }
             //记录最新的移动步长
@@ -498,17 +533,17 @@ namespace socketServer
             //    theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
             //}
             //生成通用的数据--------------------------------------------------------------------------------------------------
-            //theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theInformationController);
-            //if (theTrainBase != null && theTrainBase.Count >= 1)
-            //{
-            //    theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
-            //}
-            //生成决策树数据
-            theTrainBase = theTrainFileMake.getSaveTrainFileForTreeDemo(indexBuff, theInformationController,theStepLengthController);
+            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theInformationController);
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseTree.txt");
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
             }
+            //生成决策树数据
+            //theTrainBase = theTrainFileMake.getSaveTrainFileForTreeDemo(indexBuff, theInformationController,theStepLengthController);
+            //if (theTrainBase != null && theTrainBase.Count >= 1)
+            //{
+            //    theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseTree.txt");
+            //}
         }
 
         //生成输出在tips里面的显示信息
@@ -914,8 +949,19 @@ namespace socketServer
 
         private void button3_Click(object sender, RoutedEventArgs e)
         {
-            Codes.DecisionTree.theDecisionTree ATree = new Codes.DecisionTree.theDecisionTree();
-            ATree.BuildTheTree("TrainBase/TrainBaseTree.txt");
+           
+        }
+
+        private void StepLengthMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (StepLengthMethod.SelectedIndex == 7 && MainWindow.ATree == null)
+            {
+                string informationS = "使用决策树进行模式判断需要首先建立一棵决策树。\n";
+                informationS += "为了减少计算量本程序决策树的设定只有一次。\n";
+                informationS += "建立决策树的过程如下：\nsettings ——> StepLength ——> Build Decision Tree\n";
+                informationS += "如果没有创建决策树，步长估计方法为立即数";
+                MessageBox.Show(informationS);
+            }
         }
     }
 }

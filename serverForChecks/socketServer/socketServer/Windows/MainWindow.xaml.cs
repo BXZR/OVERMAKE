@@ -37,6 +37,7 @@ namespace socketServer
         stepModeCheck theStepModeCheckController;//推断行走状态：战力，行走，奔跑用 的控制单元
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
         float stepTimer = 1f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
+        stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         public static theDecisionTree ATree = null;//步长方法中的决策树
 
@@ -182,19 +183,19 @@ namespace socketServer
             {
                 case 0:
                     //基础方法:用Z轴加速度来做
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    theFilteredAZ = theStepAxis.AZ(theInformationController , theFilter);  
                     break;
                 case 1:
                     //实验用方法：X轴向
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    theFilteredAZ = theStepAxis.AX(theInformationController, theFilter);
                     break;
                 case 2:
                     //实验用方法：X轴向
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    theFilteredAZ = theStepAxis.AY(theInformationController, theFilter);
                     break;
                 case 3:
                     //基础方法:用三个轴的加速度平方和开根号得到
-                    theFilteredAZ = theFilter.theFilerWork(theInformationController.getOperatedValues());
+                    theFilteredAZ = theStepAxis.ABXYZ(theInformationController, theFilter);
                     break;
             }
             return theFilteredAZ;
@@ -539,38 +540,47 @@ namespace socketServer
                 theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
             }
             //生成决策树数据
-            //theTrainBase = theTrainFileMake.getSaveTrainFileForTreeDemo(indexBuff, theInformationController,theStepLengthController);
-            //if (theTrainBase != null && theTrainBase.Count >= 1)
-            //{
-            //    theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseTree.txt");
-            //}
+            theTrainBase = theTrainFileMake.getSaveTrainFileForTreeDemo(indexBuff, theInformationController, theStepLengthController);
+            if (theTrainBase != null && theTrainBase.Count >= 1)
+            {
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseTree.txt");
+            }
         }
 
         //生成输出在tips里面的显示信息
         void makeLabelMehtod(int stepcounts2 = 0)
         {
             SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
-
             if (stepCheckMethod.SelectedIndex == 0)
             {
-                theStepLabel.Content = "(带缓存波峰波谷计步方法)\n（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
-                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount + "\n绘制图像： " + SystemSave.pictureNumber;
-                theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+                theStepLabel.Content = "（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
+                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount ;
                 //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
             }
             else if (stepCheckMethod.SelectedIndex == 1)
             {
-                theStepLabel.Content = "(采样匹配计步方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
-                theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
-                theStepLabel.Content += "\n当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+                theStepLabel.Content = "（当前分组）"+"  上界： "+ SystemSave.uperGateForShow.ToString("f2") +"  下界： "+ SystemSave.downGateForShow.ToString("f2")+ "  总步数： " + thePeackFinder.peackBuff.Count ;
+                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount;
             }
             else if (stepCheckMethod.SelectedIndex == 2)
             {
-                theStepLabel.Content = "(零点交叉方法)\n当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
-                theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
-                theStepLabel.Content += "\n当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
             }
-
+            else if (stepCheckMethod.SelectedIndex == 3)
+            {
+                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
+            }
+            theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
+            theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+            theStepLabel.Content += "\n-----------------------------------------------------------------------------";
+            theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
+            theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
+            theStepLabel.Content += "\n\n" + stepCheckMethod.SelectionBoxItem;
+            theStepLabel.Content += "\n思想： "+stepExtra.getMoreInformation(stepCheckMethod.SelectedIndex);
+            theStepLabel.Content += "\n\n步长计算方法：" + StepLengthMethod.SelectionBoxItem;
+            theStepLabel.Content += "\n思想： " + theStepLengthController.getMoreInformation(StepLengthMethod.SelectedIndex);
+            theStepLabel.Content += "\n\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
+            theStepLabel.Content += "\n思想： " + theAngelController .getMoreInformation(HeadingMehtod.SelectedIndex);
         }
 
         //获得走路的最新的slope数值使用
@@ -680,6 +690,7 @@ namespace socketServer
             stepExtra = new stepDetection();
             theStepModeCheckController = new stepModeCheck();
             theTrainFileMake = new TrainFileMaker();
+            theStepAxis = new stepAxis();
             //相关工程更新
             makeFlashController();
 
@@ -945,11 +956,6 @@ namespace socketServer
             string theFileName = "route" + DateTime.Now.ToString("yyyy - MM - dd - hh - mm - ss") + ".png";
             new pictureMaker(). saveCanvasPicture(theCanvas , @"routeMap/"+theFileName );
             MessageBox.Show("路线图已经保存在routeMap文件夹中\n文件名："+theFileName);
-        }
-
-        private void button3_Click(object sender, RoutedEventArgs e)
-        {
-           
         }
 
         private void StepLengthMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)

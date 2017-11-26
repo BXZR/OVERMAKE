@@ -28,6 +28,15 @@ namespace socketServer
         private int dataDropCount = 1;//前几个数据不要了
         private int indexForSTART= 0;//记录的初始的波峰的下标
 
+        //每一种方法的简短说明信息
+        private string[] methodInformations =
+        {
+            "一段时间内出现唯一的波峰意味着一步的发生",
+            "在一个峰值的限定内两次经过峰值判断走出一步",
+            "对第一步进行采样，从而对后续数据进行匹配",
+            "根据数据连续两次的经过零点来判断走出一步",
+        };
+
         private void makeSample(List<double> wave)
         {
             if (wave.Count < dataDropCount || isSampled )
@@ -288,6 +297,12 @@ namespace socketServer
         public  void makeFlash()
         {
             peackBuff.Clear();
+        }
+
+        //返回对这种方法的说明
+        public string getMoreInformation(int index)
+        {
+            return methodInformations[index];
         }
 
     }

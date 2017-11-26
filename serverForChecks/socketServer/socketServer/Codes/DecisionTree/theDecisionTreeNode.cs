@@ -9,7 +9,9 @@ namespace socketServer.Codes.DecisionTree
    public  class theDecisionTreeNode
     {
         public string name = "";
-        public int  Mode = 0;//这个节点所代表的模式
+        public int  Mode = 0;//这个节点所代表的模式，对应的属性Mode
+        //这个节点所代表的步长的模式，因为可能有抖动导致SLMode未必唯一，所以使用list存储
+        public List<int> stepLengthMode = new List<int> ();
         public List<theDecisionTreeNode> childs = new List<theDecisionTreeNode> ();
         public List<List<int>> MAP = new List<List<int>>();
         public List<double> inforValues = new List<double>();
@@ -18,12 +20,13 @@ namespace socketServer.Codes.DecisionTree
         private string thePart = "";//表现为AXAYAZGXGYGZ 用来在搜索的时候作为标记出现
         public  static int maxDepth = 0;//最深的层数是？
         public static int nodeCountAll = 0;//总共的节点个数
-        public int searchLeafMode(List<int> values , List<string> titles)
+
+        public int searchLeafMode(List<int> values , List<string> titles )
         {
             int theModeReturn = 0;
             if (this.childs.Count == 0)
             {
-                theModeReturn = Mode;
+                theModeReturn = this.stepLengthMode[0];
                 return theModeReturn;
             }
             else
@@ -51,8 +54,6 @@ namespace socketServer.Codes.DecisionTree
                 }
                 return theModeReturn;
             }
-
-    
         }
 
         public theDecisionTreeNode(string nameIn ,int   ModeIn )
@@ -62,7 +63,8 @@ namespace socketServer.Codes.DecisionTree
             name = nameIn+"-"+ Mode;
         }
 
-        public void makeValues(theDecisionTreeNode father , int indexNotUse)
+        //modesForCheck是这个节点对应的属性的mode集合
+        public void makeValues(theDecisionTreeNode father , int indexNotUse , List<int> stepLengthMode)
         {
             MAP = new List<List<int>>();
             inforValues = new List<double>();
@@ -82,6 +84,30 @@ namespace socketServer.Codes.DecisionTree
                 if (i != indexNotUse)
                     Titles.Add(father.Titles[i]);
             }
+
+            //从自身代表的属性的mode找到所有father中有的steoLengthMode，这些对应的就是这个节点对应的steoLengthMode
+            for (int i = 0; i < father.MAP[indexNotUse].Count; i++)
+            {
+                if(father.MAP[indexNotUse][i] == this.Mode && father.stepLengthMode.Contains(stepLengthMode[i]))
+                {
+                    if(this.stepLengthMode.Contains(stepLengthMode[i]) == false)
+                    this.stepLengthMode.Add(stepLengthMode[i]);
+                }
+            }
+            //如果出现矛盾的情况就放宽要求
+            if (this.stepLengthMode.Count == 0)
+            {
+                Console.WriteLine(this.name+"出现矛盾项");
+                for (int i = 0; i < father.MAP[indexNotUse].Count; i++)
+                {
+                    if (father.MAP[indexNotUse][i] == this.Mode)
+                    {
+                        if (this.stepLengthMode.Contains(stepLengthMode[i]) == false)
+                            this.stepLengthMode.Add(stepLengthMode[i]);
+                    }
+                }
+            }
+
             this.depth = father.depth + 1;
             if (this.depth > maxDepth)
                 maxDepth = depth;
@@ -91,7 +117,10 @@ namespace socketServer.Codes.DecisionTree
         //这是一个简单的方法，实际上更通用
         //放在这里是为了更容易理解
         //目前这个方法仅用于树根的初始化使用
-        public void makeValues(List<List<int>> MAPIn , List<double> inforValuesIn , List<string > titlesIn,int indexNotUse , int depth )
+        //theModesOfThis是选定属性的属性mode集合
+        //stepLengthMode时候对应数据全部的stepLength的mode集合
+        //fatherStepLengthMode是来自father的stepLengthMode
+        public void makeValues(List<List<int>> MAPIn , List<double> inforValuesIn , List<string > titlesIn,int indexNotUse , int depth, List<int> theModesOfThis, List<int> stepLengthMode , List<int> fatherStepLengthMode)
         {
             MAP = new List<List<int>>();
             inforValues = new List<double>();
@@ -110,6 +139,42 @@ namespace socketServer.Codes.DecisionTree
             {
                 if (i != indexNotUse)
                     Titles.Add(titlesIn[i]);
+            }
+
+            //从自身代表的属性的mode找到所有father中有的steoLengthMode，这些对应的就是这个节点对应的stepLengthMode
+            //theModesOfThis 如果为空，就说明是root节点，还没有选定属性，所以没有theModesOfThis
+            //但是跟节点包含所有的信息
+            if (theModesOfThis != null)
+            {
+                for (int i = 0; i < theModesOfThis.Count; i++)
+                {
+                    if (theModesOfThis[i] == this.Mode && fatherStepLengthMode.Contains(stepLengthMode[i]))
+                    {
+                        //保证不重复
+                        if (this.stepLengthMode.Contains(stepLengthMode[i]) == false)
+                          this.stepLengthMode.Add(stepLengthMode[i]);
+                    }
+                }
+                //如果出现矛盾的情况就放宽要求
+                if (this.stepLengthMode.Count == 0)
+                {
+                    for (int i = 0; i < theModesOfThis.Count; i++)
+                    {
+                        if (theModesOfThis[i] == this.Mode)
+                        {
+                            if (this.stepLengthMode.Contains(stepLengthMode[i]) == false)
+                                this.stepLengthMode.Add(stepLengthMode[i]);
+                        }
+                    }
+                }
+            }
+            else // 如果传入空，说明这个真的是最根本的根节点了，这个节点一定有所有的信息
+            {
+                  for(int i =0; i < fatherStepLengthMode.Count; i++)
+                    {
+                       if (this.stepLengthMode.Contains(fatherStepLengthMode[i]) == false)
+                        this.stepLengthMode.Add(fatherStepLengthMode[i]);
+                    }
             }
             this.depth = depth+1;
             if (this.depth > maxDepth)

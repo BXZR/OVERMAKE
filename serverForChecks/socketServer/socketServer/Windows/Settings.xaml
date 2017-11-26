@@ -93,7 +93,7 @@
                         Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy" Margin="0,194,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Kim Method"/>
                     <TextBox
                         Text="TextBox" TextWrapping="Wrap" x:Name="Kim" Margin="192,197,10,0" Height="23" VerticalAlignment="Top"/>
-                    <Button x:Name="button1" Content="Build Decision Tree" Margin="293,286,10,0" VerticalAlignment="Top" Click="button1_Click"/>
+                    <Button x:Name="button1" Content="Build Decision Tree" Margin="137,327,166,0" VerticalAlignment="Top" Click="button1_Click"/>
                     <TextBox x:Name="DecisionTreePathText" HorizontalAlignment="Left" Height="23" Margin="137,256,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="324"/>
                     <Label
                         Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="0,225,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method"/>
@@ -105,6 +105,7 @@
                         <ComboBoxItem Content="IC3"/>
                         <ComboBoxItem Content="C4.5"/>
                     </ComboBox>
+                    <CheckBox x:Name="isPruning" Content="Pruning" HorizontalAlignment="Left" Margin="288,290,0,0" VerticalAlignment="Top" Width="173"/>
                 </Grid>
             </TabItem>
         </TabControl>

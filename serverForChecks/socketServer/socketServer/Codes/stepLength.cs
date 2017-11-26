@@ -9,6 +9,21 @@ namespace socketServer
     //这个类专门用来处理步长
     class stepLength
     {
+
+        //每一种方法的简短说明信息
+        private string[] methodInformations =
+        {
+            "步长设定为固定的数值",
+            "步长设定为固定的数值，大幅度转向的时候步长减半",
+            "根据步频和加速度方差计算的一般性公式",
+            "根据男女身高进行比例计算得到步长",
+            "纵向加速度差值开四次根号的方法",
+            "加速度做平均然后除以阶段加速度的极差的做法",
+            "加速度平均开三次根号的方法",
+            "准备多种一般性公式的参数，使用决策树选择参数计算"
+        };
+
+
         private double changeGate = 60;//转弯的阀值
         //如果转弯且角度差异大于一个阀值，返回的步长信息恐怕需要调整
 
@@ -221,6 +236,13 @@ namespace socketServer
             //测试用的真实的步长还没有办法拿到，所以用了一个随机数处理
 
             return 0.5 + new Random(DateTime.Now .Millisecond).NextDouble()*0.6 -0.3;
+        }
+
+
+        //返回对这种方法的说明
+        public string getMoreInformation(int index)
+        {
+            return methodInformations[index];
         }
     }
 }

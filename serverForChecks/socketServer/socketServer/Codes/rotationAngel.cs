@@ -12,6 +12,18 @@ namespace socketServer
         private double theAngelNow = 0;//总记录的角度
         private double changeGate = 5;//如果变化超过这个数目就认为改变了
 
+        //每一种方法的简短说明信息
+        private string[] methodInformations =
+        {
+            "直接读取电子罗盘角度的方法",
+            "无视短时间内的较小的方向偏移，方向更平滑",
+            "在客户端实现的加速计、陀螺仪、磁力计融合算法",
+            "在客户端实现的加速计、陀螺仪融合算法",
+            "在服务端实现的加速计、陀螺仪、磁力计融合算法(并不正确)",
+            "在服务端实现的加速计、陀螺仪融合算法(并不正确)"
+        };
+
+
         //判断变化，超过阀值就认为有所改变了
         public  double getAngelNow(double angelIn)
         {
@@ -218,6 +230,13 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
 
             //Console.WriteLine("Z = " + -Z);
             return Z;
+        }
+
+
+        //返回对这种方法的说明
+        public string getMoreInformation(int index)
+        {
+            return methodInformations[index];
         }
 
     }

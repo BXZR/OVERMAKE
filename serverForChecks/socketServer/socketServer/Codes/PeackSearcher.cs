@@ -126,6 +126,8 @@ namespace socketServer
                     double temp = uperGate;
                     uperGate = downGate;
                     downGate = temp;
+                    SystemSave.uperGateForShow = uperGate;
+                    SystemSave.downGateForShow = downGate;
                 }
                // Console.WriteLine("step with - > " + changeCount + " uperGate = " + uperGate + " downGate = " + downGate);
                // Console.WriteLine("maxA = " + maxA + " minA  = " + minA + " ANow = " + wave[i]);

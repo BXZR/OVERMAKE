@@ -98,6 +98,7 @@
     <Compile Include="Codes\stages\StageRun.cs" />
     <Compile Include="Codes\stages\StageStance.cs" />
     <Compile Include="Codes\stages\StageWalk.cs" />
+    <Compile Include="Codes\stages\stepAxis.cs" />
     <Compile Include="Windows\ChartWindow.xaml.cs">
       <DependentUpon>ChartWindow.xaml</DependentUpon>
     </Compile>

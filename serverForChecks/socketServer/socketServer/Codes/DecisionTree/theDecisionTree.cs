@@ -81,7 +81,8 @@ namespace socketServer.Codes.DecisionTree
                 makeBasicValue();//计算基础数值
                 theRoot = new theDecisionTreeNode("Root", -1);
                 makeEffectValues();
-                theRoot.makeValues(MAP, inforValues, titles, -1,0);
+                //全局根节点的做法有一点特殊
+                theRoot.makeValues(MAP, inforValues, titles, -1,0,null , SLMode , SLMode);
                 makePoint(theRoot);
                 isStarted = true;
             }
@@ -294,8 +295,19 @@ namespace socketServer.Codes.DecisionTree
         private void makePoint(theDecisionTreeNode theFatherPoint = null)
         {
             if (theFatherPoint.MAP.Count == 0)
+            {
+               // Console.WriteLine("--------------------------------------------------");
+               // for(int i =0; i< theFatherPoint.stepLengthMode.Count; i++ )
+               // Console.WriteLine("SLMode for "+theFatherPoint.name +" is "+ theFatherPoint.stepLengthMode[i]);
                 return;//全部拆分出去了就意味着书已经完成了（材料用光）
-
+            }
+            //如果已经是一种确定的了（分到这个节点的时候已经只会有一种情况了）
+            //那么这一分支或许可以剪枝
+            if (theFatherPoint.stepLengthMode.Count == 1 && SystemSave.isCutForDecisionTree)
+            {
+                Console.WriteLine("在" + theFatherPoint.name + "处剪枝");
+                return;
+            }
             double max = -9999;
             int index = 0;
             for (int i = 0; i < theFatherPoint.inforValues.Count; i++)
@@ -316,17 +328,17 @@ namespace socketServer.Codes.DecisionTree
                     types.Add(theFatherPoint.MAP[index][i]);
                 }
             }
-            Console.WriteLine("------------------------------------------------");
-            Console.WriteLine("Father is "+ theFatherPoint.name);
+            //Console.WriteLine("------------------------------------------------");
+            //Console.WriteLine("Father is "+ theFatherPoint.name);
             for (int i = 0; i < types.Count; i++)
             {
-                Console.WriteLine("Child is " + theFatherPoint.Titles[index] +"-"+types[i]);
+                //Console.WriteLine("Child is " + theFatherPoint.Titles[index] +"-"+types[i]);
                 theDecisionTreeNode thePoint = new DecisionTree.theDecisionTreeNode(theFatherPoint.Titles[index], types[i]);
                 theFatherPoint.childs.Add(thePoint);
                 //将选取出的数据最大（影响最大的）从MAP中删除
                 //并为这一项建立节点（每一个type都是一个节点）
                 //材料用掉，这个最大的影响力的节点属性已经不会被这个属性的子节点使用了
-                thePoint.makeValues(theFatherPoint, index);
+                thePoint.makeValues(theFatherPoint, index , SLMode);
             }
             for (int i = 0; i < theFatherPoint.childs.Count; i++)
             {

@@ -76,7 +76,8 @@ namespace socketServer
         public static double Dertshold = 0.2;
         public static double uperGateForStart = -0.85;
         public static double downGateForStart = -1.15;
-
+        public static double uperGateForShow= -0.85;//记录后来的数值用以显示
+        public static double downGateForShow= -1.15;//记录后来的数值用以显示
         //是否使用动态零线（这个领先就是判步方法中zerrocross的方法）
         //但是使用这个方法可能会造成没什么必要的额外计算
         public static bool isDynamicallyZeroLineForStepDection = false;
@@ -85,6 +86,7 @@ namespace socketServer
         public static string DecrsionTreeBasedFile = "TrainBase/TrainBaseTree.txt";
         //决策树算法类型 0:IC3  1:C4.5
         public static int DecisionTreeMethodID = 0;
+        public static bool isCutForDecisionTree = false;//决策树是不是要剪枝？默认不剪枝，用来对比
 
     }
 }

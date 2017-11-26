@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes.DecisionTree;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -110,6 +111,11 @@ namespace socketServer
             else
                 SystemSave.isDynamicallyZeroLineForStepDection = false;
 
+            if (isPruning.IsChecked == true)
+                SystemSave.isCutForDecisionTree = true;
+            else
+                SystemSave.isCutForDecisionTree = false;
+
             SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
         }
 
@@ -155,6 +161,11 @@ namespace socketServer
             else
                 DynamicallyZeroLine.IsChecked = false;
 
+            if (SystemSave.isCutForDecisionTree == true)
+                isPruning.IsChecked = true;
+            else
+                isPruning.IsChecked  = false;
+
             //记录一次最初的数值
             getStartValue();
         }
@@ -184,6 +195,8 @@ namespace socketServer
         private static bool ValueIsDynamicallyZeroLine;
         private static string ValueDecisionTreePath;
         private static int ValueTreeMethod;
+
+        private static bool ValueIsCuttingDectionTree;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -211,6 +224,8 @@ namespace socketServer
               ValueIsDynamicallyZeroLine = SystemSave.isDynamicallyZeroLineForStepDection;
               ValueDecisionTreePath = SystemSave.DecrsionTreeBasedFile;
               ValueTreeMethod = SystemSave.DecisionTreeMethodID;
+
+              ValueIsCuttingDectionTree = SystemSave.isCutForDecisionTree;
 
               hasBasicValue = true;//最初数值只会被记录一次
            }
@@ -255,6 +270,11 @@ namespace socketServer
                 DynamicallyZeroLine.IsChecked = true;
             else
                 DynamicallyZeroLine.IsChecked = false;
+
+            if (ValueIsCuttingDectionTree)
+                isPruning.IsChecked = true;
+            else
+                isPruning.IsChecked = false;
             TreeMethod.SelectedIndex =  ValueTreeMethod;
         }
 
@@ -271,9 +291,15 @@ namespace socketServer
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            theDecisionTreeNode.nodeCountAll = 0;
+            theDecisionTreeNode.maxDepth = 0;
             MainWindow.ATree = new Codes.DecisionTree.theDecisionTree();
             MainWindow.ATree.BuildTheTree("TrainBase/TrainBaseTree.txt");
             string informationS = "根据文件"+ DecisionTreePathText.Text+"内容已经建立决策树\n";
+            if (isPruning.IsChecked == true)
+                informationS += "(使用了一些剪枝策略)\n";
+            else
+                informationS += "(未使用剪枝策略)\n";
             informationS += "决策树的节点个数： " + MainWindow.ATree.getNodeCount()+"\n";
             informationS += "决策树的深度： " + MainWindow.ATree.getDepth();
             MessageBox.Show(informationS);

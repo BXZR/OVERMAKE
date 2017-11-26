@@ -36,7 +36,7 @@ namespace socketServer
         stepDetection stepExtra;//额外的判断走了一步的方法集合
         stepModeCheck theStepModeCheckController;//推断行走状态：战力，行走，奔跑用 的控制单元
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
-        float stepTimer = 1f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
+        float stepTimer = 0.5f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         public static theDecisionTree ATree = null;//步长方法中的决策树
@@ -170,8 +170,14 @@ namespace socketServer
                 for (int u = savedIndex; u < thePositionController.theTransformPosition.Count; u++)
                 {
                     savedIndex = thePositionController.theTransformPosition.Count - 1;
-                    drawPositionLineOnTime(thePositionController.theTransformPosition[u].X, thePositionController.theTransformPosition[u].Y);
+                    drawPositionLineOnTime(
+                        thePositionController.theTransformPosition[u].X, 
+                        thePositionController.theTransformPosition[u].Y,
+                        thePositionController.theTransformPosition[u].heading
+                        );
                 }
+                //修正箭头位置和方向
+                flashHeadingPicture(thePositionController.theTransformPosition);
             }
         }
 
@@ -769,7 +775,7 @@ namespace socketServer
         private double  Y1Save = 0;
         private int savedIndex = 0;
         //实时的动态绘制路线图 (方法2,单纯地累加，误差一定会有，但是相对可控性提高)
-        private void drawPositionLineOnTime(double X2 , double Y2)
+        private void drawPositionLineOnTime(double X2 , double Y2,double heading)
         {
             //绘制圆心
             var ellipse = new Ellipse()
@@ -794,12 +800,12 @@ namespace socketServer
             drawLine.StrokeThickness = 2;
             theCanvas.Children.Add(drawLine);
 
-
         }
 
         //实时的动态绘制路线图 (方法1,每一次都重新绘制，所以会自带修正效果)
         private void drawPositionLine()
         {
+            theCanvas.Children.Remove(HeadingImage);
             theCanvas.Children.Clear();
             var ellipse = new Ellipse()
             {
@@ -835,8 +841,33 @@ namespace socketServer
                 drawLine.StrokeThickness = 2;
                 theCanvas.Children.Add(drawLine);
             }
+
+ 
+            flashHeadingPicture(thePositionController.theTransformPosition);
         }
 
+
+        //修正显示当前方向的箭头的坐标和朝向
+        private void flashHeadingPicture(List<transForm> trransForm)
+        {
+            if (trransForm.Count == 0)
+                return;
+            int indexForLast = thePositionController.theTransformPosition.Count - 1;
+            //进行移动
+            double imagePositionX =  theCanvas.Width / 2 + thePositionController.theTransformPosition[indexForLast].X * 5;//怕跑出范围，所以就缩小了一些
+            double imagePositionY = theCanvas.Height / 2 - thePositionController.theTransformPosition[indexForLast].Y * 5;//怕跑出范围，所以就缩小了一些
+            imagePositionX -= HeadingImage.Width / 2;
+            imagePositionY -= HeadingImage.Height / 2;
+            Canvas.SetLeft(HeadingImage, imagePositionX);
+            Canvas.SetTop(HeadingImage, imagePositionY);
+            theCanvas.Children.Add(HeadingImage);
+
+            //设定旋转角
+            double headingAngel = thePositionController.theTransformPosition[indexForLast].heading;
+            double width = HeadingImage.ActualWidth;
+            double height = HeadingImage.ActualHeight;
+            HeadingImage.RenderTransform = new RotateTransform(headingAngel);
+        }
         //设置路径颜色的方法
         Color SetColor()
         {

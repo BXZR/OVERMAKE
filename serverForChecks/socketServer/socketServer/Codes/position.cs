@@ -12,14 +12,20 @@ namespace socketServer
     {
         public double X;
         public double Y;
-        public transForm(double XIn, double YIn)
+        public double heading;
+        public transForm(double XIn, double YIn , double headingIn)
         {
             X = XIn;
-            Y = YIn; 
+            Y = YIn;
+            heading = headingIn;
         }
         public string toString()
         {
             return ("X = " + X + " Y = " + Y);
+        }
+        public string toStringWithHeading()
+        {
+            return ("X = " + X + " Y = " + Y +" heading = "+ heading);
         }
     }
 
@@ -67,7 +73,7 @@ namespace socketServer
             }
             List<double> XSave = new List<double>();
             List<double> YSave = new List<double>();
-
+            List<double> headingSave = new List<double>();
             string theInformation = "角度： 0.0000  步长： 0.6000  坐标： （0.0000,0.0000）\n";
             for (int i = 0; i < angels .Count; i++)
             {
@@ -79,12 +85,13 @@ namespace socketServer
                 positionY += YAdd;
                 XSave.Add(positionX);
                 YSave.Add(positionY);
+                headingSave.Add(angels[i]);
             }
 
             theTransformPosition.Clear();
             for (int i = 0; i < XSave.Count; i++)
             {
-                theTransformPosition.Add(new transForm(XSave[i] , YSave[i]));
+                theTransformPosition.Add(new transForm(XSave[i] , YSave[i], headingSave[i]));
                 theInformation += "角度： " + angels[i].ToString("f4") + "  步长： "+stepLengths [i].ToString("f4")+"  坐标： (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + ") \n";
             }
             return theInformation;

@@ -18,6 +18,7 @@ namespace socketServer.Codes.DecisionTree
         private List<double> GY = new List<double>();
         private List<double> GZ = new List<double>();
         private List<double> SL = new List<double>();
+
         //因为是针对“程度”的分类，所以其实真正参与到计算的不是确切的数值，而是“分类”
         private List<int> AXMode = new List<int>();
         private List<int> AYMode = new List<int>();
@@ -26,7 +27,7 @@ namespace socketServer.Codes.DecisionTree
         private List<int> GYMode = new List<int>();
         private List<int> GZMode = new List<int>();
         private List<int> SLMode = new List<int>();
-
+        private List<int> StairMode = new List<int>();
         //这个是属性的集合，方便每一个属性被剥离出去
         private List<List<int>> MAP = new List<List<int>>();
 
@@ -38,7 +39,8 @@ namespace socketServer.Codes.DecisionTree
         private bool isStarted = false;//是否构建的标志
         public bool IsStarted { get { return isStarted; } }//只读标记
         private double inforSL = 0;//用来选择的目标基准值
-
+        //用来选择的目标mode(可以使 SLMode , StairMode 。。。。。)
+        private List<int> aimMode = new List<int>();
 
         //传入需要的参数
         //通过决策树选择出来当前的移动的模式
@@ -70,10 +72,13 @@ namespace socketServer.Codes.DecisionTree
 
         //根据数据集做一棵决策树然后处理
         //外部构建这个树的方法
-        public void BuildTheTree(string path = "")
+        //treeType是作为目标list
+        //设定treeType : 0 stepLength 1 StairMode 
+        public void BuildTheTree(string path = "" , int treeType =0)
         {
             if (isStarted == false)
             {
+                makeTreeType(treeType);//设定决策树的type或者说根节点的目标
                 makeTitles();//建立titles集合
                 initMap(path);//读数据
                 makePartValues();//建立分类数据
@@ -82,10 +87,20 @@ namespace socketServer.Codes.DecisionTree
                 theRoot = new theDecisionTreeNode("Root", -1);
                 makeEffectValues();
                 //全局根节点的做法有一点特殊
-                theRoot.makeValues(MAP, inforValues, titles, -1,0,null , SLMode , SLMode);
+                theRoot.makeValues(MAP, inforValues, titles, -1,0,null , aimMode , aimMode);
                 makePoint(theRoot);
                 isStarted = true;
             }
+        }
+
+
+        private void makeTreeType(int treeType = 0)
+        {
+            //设定决策树的type
+            if (treeType == 0)
+                aimMode = SLMode;
+            else if (treeType == 1)
+                aimMode = StairMode;
         }
 
         private void makeTitles()
@@ -121,8 +136,9 @@ namespace socketServer.Codes.DecisionTree
                 GY.Add(Convert.ToDouble(rows[4]));
                 GZ.Add(Convert.ToDouble(rows[5]));
                 SL.Add(Convert.ToDouble(rows[6]));
+                StairMode.Add(Convert.ToInt32(rows[7]));
             }
-            Console.WriteLine("Data loaded");
+            Console.WriteLine("Data loaded for tree");
         }
         //建立属性集合，用来拆分和标记
         private void makeDictionary()
@@ -160,23 +176,23 @@ namespace socketServer.Codes.DecisionTree
             //为了表达简单，用的方法相当土鳖
 
             //SLMode是目标，所以用这个来计算
-            for (int i = 0; i < SLMode.Count; i++)
+            for (int i = 0; i < aimMode.Count; i++)
             {
-                if (typesForAll.Contains(SLMode[i]) == false)
+                if (typesForAll.Contains(aimMode[i]) == false)
                 {
                     //Console.WriteLine("SLMode =" + SLMode[i]);
-                    typesForAll.Add(SLMode[i]);
+                    typesForAll.Add(aimMode[i]);
                     countOfTypesForAll.Add(0);
                 }
             }
             // Console.WriteLine("get type count = " + typesForAll.Count);
             // Console.WriteLine("countOfTypesForAll = " + countOfTypesForAll.Count);
 
-            for (int i = 0; i < SLMode.Count; i++)
+            for (int i = 0; i < aimMode.Count; i++)
             {
                 for (int j = 0; j < typesForAll.Count; j++)
                 {
-                    if (typesForAll[j] == SLMode[i])
+                    if (typesForAll[j] == aimMode[i])
                     {
                         countOfTypesForAll[j]++;
                     }
@@ -190,7 +206,7 @@ namespace socketServer.Codes.DecisionTree
             for (int i = 0; i < typesForAll.Count; i++)
             {
                 double counts = (double)countOfTypesForAll[i];//做一下隐式转换
-                double P = counts / (double)SLMode.Count;//频率当概率使用
+                double P = counts / (double)aimMode.Count;//频率当概率使用
                 inforSL += -P * Math.Log(P, 2);
             }
             // Console.WriteLine("Basic Value = " + inforSL);
@@ -245,7 +261,7 @@ namespace socketServer.Codes.DecisionTree
                     for (int j = 0; j < typesForAll.Count; j++)
                     {
                         //横向处理
-                        if (SLMode[k] == typesForAll[j])
+                        if (aimMode[k] == typesForAll[j])
                         {
                             offsetIndex = j;
                             //找到这个该数据在本小类中的类型
@@ -303,7 +319,7 @@ namespace socketServer.Codes.DecisionTree
             }
             //如果已经是一种确定的了（分到这个节点的时候已经只会有一种情况了）
             //那么这一分支或许可以剪枝
-            if (theFatherPoint.stepLengthMode.Count == 1 && SystemSave.isCutForDecisionTree)
+            if (theFatherPoint.aimMode.Count == 1 && SystemSave.isCutForDecisionTree)
             {
                 Console.WriteLine("在" + theFatherPoint.name + "处剪枝");
                 return;
@@ -338,7 +354,7 @@ namespace socketServer.Codes.DecisionTree
                 //将选取出的数据最大（影响最大的）从MAP中删除
                 //并为这一项建立节点（每一个type都是一个节点）
                 //材料用掉，这个最大的影响力的节点属性已经不会被这个属性的子节点使用了
-                thePoint.makeValues(theFatherPoint, index , SLMode);
+                thePoint.makeValues(theFatherPoint, index , aimMode);
             }
             for (int i = 0; i < theFatherPoint.childs.Count; i++)
             {

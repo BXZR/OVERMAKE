@@ -230,12 +230,19 @@ namespace socketServer
             return 0.6;
         }
         
-        //返回训练用的真实步长，用来构建决策树
+        //返回训练用的"真实步长"，用来构建决策树
         public double getRandomStepLength()
         {
             //测试用的真实的步长还没有办法拿到，所以用了一个随机数处理
 
             return 0.5 + new Random(DateTime.Now .Millisecond).NextDouble()*0.6 -0.3;
+        }
+        //返回训练用的“真实走楼梯的模式”
+        public int getRandomStairMode()
+        {
+            int stairMode = 1 - new Random(DateTime.Now.Millisecond).Next(0, 3);
+           // Console.WriteLine("Stair Mode Random is "+stairMode);
+            return stairMode ;
         }
 
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using socketServer.Codes.DecisionTree;
+using System.Collections.Generic;
 using System.Windows.Media;
 
 namespace socketServer
@@ -12,6 +13,10 @@ namespace socketServer
         public static int serverPort = 8886;//程序服务器的端口
         public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
         public static Settings theSettingWindow = null;//全局唯一设定窗口
+        //如果正在上楼梯，这个标记实际上需要根据数据得到
+        //这个标记的作用是开/关Z轴的计算
+        public static bool isStairsUp = false;
+        public static double StairHeight = 0.18;//每一阶台阶的高度
 
         public static int stepCount = 0;//被保存下来的前几个阶段的步数
         public static int stepCount2 = 0;//被保存下来的前几个阶段的步数
@@ -87,6 +92,7 @@ namespace socketServer
         //决策树算法类型 0:IC3  1:C4.5
         public static int DecisionTreeMethodID = 0;
         public static bool isCutForDecisionTree = false;//决策树是不是要剪枝？默认不剪枝，用来对比
-
+        public static theDecisionTree StepLengthTree = null;//步长方法中的决策树
+        public static theDecisionTree StairTree = null;//判断走楼梯的方向的决策树
     }
 }

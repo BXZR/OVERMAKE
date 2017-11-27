@@ -39,12 +39,14 @@ namespace socketServer
         float stepTimer = 0.5f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
-        public static theDecisionTree ATree = null;//步长方法中的决策树
+
 
         //公有的存储空间
         List<double> theStepAngeUse = new List<double>();
         List<double> theStepLengthUse = new List<double>();
         List<double> theFilteredD = new List<double>();
+        List<int> theStairMode = new List<int>();
+
         int stepcounts = 0;//当前阶段的步数
         List<int> indexBuff = new List<int>();//确认一步的下标存储
         List<double> theFilteredAZ = new List<double>();//当前使用的轴
@@ -83,6 +85,8 @@ namespace socketServer
             theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree, 0.1f);
             theStepAngeUse = new List<double>();
             theStepLengthUse = new List<double>();
+            //theStairMode = new List<int>();
+            //实现方法里面对这个list已经做出了相关操作，这里没必要做了
             stepcounts = 0;
             //判断走了一步并更新到缓存
             stepDectionUse();
@@ -92,8 +96,10 @@ namespace socketServer
             headingAngleGet();
             //计算步长
             stepLengthGet(indexBuff, theFilteredAZ);
+            //计算上下楼梯的模式
+            StairCheck(indexBuff);
             //计算坐标并获得显示的文本
-            POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse);
+            POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse , theStairMode);
             //更新slope的数值
             stepModeCheck(indexBuff);
             //制作输出显示的内容
@@ -236,6 +242,31 @@ namespace socketServer
             }
         }
 
+        //判断走楼梯的模式的方法
+        //开销很大...
+        void StairCheck(List<int> indexBuff)
+        {
+            if (SystemSave.isStairsUp == false)
+            {
+                theStairMode = null;
+                return;
+            }
+            theStairMode = new List<int>();
+            //这些数据在一些复杂的方法中会用到，因此计算出来备用
+            List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                int mode = SystemSave.StairTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                theStairMode.Add(mode);
+            }
+        }
+
+
         //获取步长的方法//////////////////////////////////////////////////////////////////////////
         //这个方法在多个整体方法中是共用的
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
@@ -318,14 +349,14 @@ namespace socketServer
                     {
                         // for (int v = 0; v < theInformationController.timeStep.Count; v++)
                         //    Console.WriteLine(theInformationController.timeStep[v]);
-                        if (ATree == null || ATree.IsStarted == false)
+                        if (SystemSave.StepLengthTree == null || SystemSave.StepLengthTree.IsStarted == false)
                         {
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
                         }
                         else
                         {
                             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-                            int mode = ATree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                            int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
                             Console.WriteLine("modeNow = " + mode);
                             double stepLength = theStepLengthController.getStepLength2WithDecisionTree(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
                             theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
@@ -991,7 +1022,7 @@ namespace socketServer
 
         private void StepLengthMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (StepLengthMethod.SelectedIndex == 7 && MainWindow.ATree == null)
+            if (StepLengthMethod.SelectedIndex == 7 && SystemSave.StepLengthTree== null)
             {
                 string informationS = "使用决策树进行模式判断需要首先建立一棵决策树。\n";
                 informationS += "为了减少计算量本程序决策树的设定只有一次。\n";

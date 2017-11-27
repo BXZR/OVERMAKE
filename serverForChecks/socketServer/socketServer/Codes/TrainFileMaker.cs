@@ -32,7 +32,7 @@ namespace socketServer
                 string informationUse = "";
                 informationUse += AX[indexBuff[i]].ToString("f3") + "," + AY[indexBuff[i]].ToString("f3") + "," + AZ[indexBuff[i]].ToString("f3") + ",";
                 informationUse += GX[indexBuff[i]].ToString("f3") + "," + GY[indexBuff[i]].ToString("f3") + "," + GY[indexBuff[i]].ToString("f3") + ",";
-                informationUse += theStepLengthController.getRandomStepLength().ToString("f3");
+                informationUse += theStepLengthController.getRandomStepLength().ToString("f3") +"," + theStepLengthController.getRandomStairMode();
                 if (i < indexBuff.Count - 1)
                     informationUse += ",";
                 informationToSave.Add(informationUse);

@@ -11,7 +11,7 @@ namespace socketServer.Codes.DecisionTree
         public string name = "";
         public int  Mode = 0;//这个节点所代表的模式，对应的属性Mode
         //这个节点所代表的步长的模式，因为可能有抖动导致SLMode未必唯一，所以使用list存储
-        public List<int> stepLengthMode = new List<int> ();
+        public List<int> aimMode = new List<int> ();
         public List<theDecisionTreeNode> childs = new List<theDecisionTreeNode> ();
         public List<List<int>> MAP = new List<List<int>>();
         public List<double> inforValues = new List<double>();
@@ -26,7 +26,7 @@ namespace socketServer.Codes.DecisionTree
             int theModeReturn = 0;
             if (this.childs.Count == 0)
             {
-                theModeReturn = this.stepLengthMode[0];
+                theModeReturn = this.aimMode[0];
                 return theModeReturn;
             }
             else
@@ -64,7 +64,7 @@ namespace socketServer.Codes.DecisionTree
         }
 
         //modesForCheck是这个节点对应的属性的mode集合
-        public void makeValues(theDecisionTreeNode father , int indexNotUse , List<int> stepLengthMode)
+        public void makeValues(theDecisionTreeNode father , int indexNotUse , List<int> aimMode)
         {
             MAP = new List<List<int>>();
             inforValues = new List<double>();
@@ -88,22 +88,22 @@ namespace socketServer.Codes.DecisionTree
             //从自身代表的属性的mode找到所有father中有的steoLengthMode，这些对应的就是这个节点对应的steoLengthMode
             for (int i = 0; i < father.MAP[indexNotUse].Count; i++)
             {
-                if(father.MAP[indexNotUse][i] == this.Mode && father.stepLengthMode.Contains(stepLengthMode[i]))
+                if(father.MAP[indexNotUse][i] == this.Mode && father.aimMode.Contains(aimMode[i]))
                 {
-                    if(this.stepLengthMode.Contains(stepLengthMode[i]) == false)
-                    this.stepLengthMode.Add(stepLengthMode[i]);
+                    if(this.aimMode.Contains(aimMode[i]) == false)
+                    this.aimMode.Add(aimMode[i]);
                 }
             }
             //如果出现矛盾的情况就放宽要求
-            if (this.stepLengthMode.Count == 0)
+            if (this.aimMode.Count == 0)
             {
                 Console.WriteLine(this.name+"出现矛盾项");
                 for (int i = 0; i < father.MAP[indexNotUse].Count; i++)
                 {
                     if (father.MAP[indexNotUse][i] == this.Mode)
                     {
-                        if (this.stepLengthMode.Contains(stepLengthMode[i]) == false)
-                            this.stepLengthMode.Add(stepLengthMode[i]);
+                        if (this.aimMode.Contains(aimMode[i]) == false)
+                            this.aimMode.Add(aimMode[i]);
                     }
                 }
             }
@@ -151,19 +151,19 @@ namespace socketServer.Codes.DecisionTree
                     if (theModesOfThis[i] == this.Mode && fatherStepLengthMode.Contains(stepLengthMode[i]))
                     {
                         //保证不重复
-                        if (this.stepLengthMode.Contains(stepLengthMode[i]) == false)
-                          this.stepLengthMode.Add(stepLengthMode[i]);
+                        if (this.aimMode.Contains(stepLengthMode[i]) == false)
+                          this.aimMode.Add(stepLengthMode[i]);
                     }
                 }
                 //如果出现矛盾的情况就放宽要求
-                if (this.stepLengthMode.Count == 0)
+                if (this.aimMode.Count == 0)
                 {
                     for (int i = 0; i < theModesOfThis.Count; i++)
                     {
                         if (theModesOfThis[i] == this.Mode)
                         {
-                            if (this.stepLengthMode.Contains(stepLengthMode[i]) == false)
-                                this.stepLengthMode.Add(stepLengthMode[i]);
+                            if (this.aimMode.Contains(stepLengthMode[i]) == false)
+                                this.aimMode.Add(stepLengthMode[i]);
                         }
                     }
                 }
@@ -172,8 +172,8 @@ namespace socketServer.Codes.DecisionTree
             {
                   for(int i =0; i < fatherStepLengthMode.Count; i++)
                     {
-                       if (this.stepLengthMode.Contains(fatherStepLengthMode[i]) == false)
-                        this.stepLengthMode.Add(fatherStepLengthMode[i]);
+                       if (this.aimMode.Contains(fatherStepLengthMode[i]) == false)
+                        this.aimMode.Add(fatherStepLengthMode[i]);
                     }
             }
             this.depth = depth+1;

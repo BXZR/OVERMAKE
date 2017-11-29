@@ -20,7 +20,8 @@ namespace socketServer
             "在客户端实现的加速计、陀螺仪、磁力计融合算法",
             "在客户端实现的加速计、陀螺仪融合算法",
             "在服务端实现的加速计、陀螺仪、磁力计融合算法(并不正确)",
-            "在服务端实现的加速计、陀螺仪融合算法(并不正确)"
+            "在服务端实现的加速计、陀螺仪融合算法(并不正确)",
+            "根据不同的情况切换使用AHRS和IMU的数值"
         };
 
 
@@ -233,6 +234,51 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
         }
 
 
+        //论文方法中一个选择的方法
+        //其实第一步是检查IGRF做偏差
+        //如果小于权值，直接用IMU
+        //如果大于权值，判断AHRS和IMU的差异值
+        //差异值大于权值用AHRS
+        //差异值小还是用AHRS
+        double IGRFGate = 0;
+        double EDYawGate = 3;
+        public double AHRSIMUSelect(int indexPre , int indexNow , List<double> AHRSValues , List<double> IMUValues)
+        {
+            double degreeNow = 0;
+            double AHRSAverage = 0;
+            double IMUAverage = 0;
+            if (indexNow <= indexPre)
+                return 0;//肯定发现除零异常，所以直接没有数据
+
+            for (int i = indexPre; i < indexNow; i++)
+            {
+                AHRSAverage +=  AHRSValues[i];
+                IMUAverage += IMUValues[i];
+            }
+            
+            int count = indexNow - indexPre;
+            AHRSAverage /= count;
+            IMUAverage /= count;
+            Console.WriteLine("Average1 = " + AHRSAverage);
+            Console.WriteLine("Average2 = " + IMUAverage);
+
+            double EDYaw = 0;
+            for (int i = indexPre; i < indexNow; i++)
+            {
+                double VL = (AHRSValues[i] - AHRSAverage) - (IMUValues[i] - IMUAverage);
+                EDYaw += VL * VL;
+            }
+            EDYaw = Math.Sqrt(EDYaw);
+            Console.WriteLine("EDYaw = " + EDYaw);
+            //返回数值
+            if (EDYaw > EDYawGate)
+            {
+                Console.WriteLine("Select AHRS");
+                return AHRSValues[indexNow];
+            }
+            Console.WriteLine("Select IMU");
+            return IMUValues[indexNow];
+        }
         //返回对这种方法的说明
         public string getMoreInformation(int index)
         {

@@ -373,7 +373,46 @@ namespace socketServer
                 SystemSave.stepLengthNow = theStepLengthUse[theStepLengthUse.Count - 1];
         }
 
+
+        //移动方向的“滤镜”
+        //如果选择了额外的heading计算的方案，可能需要额外的计算。
+        //这些计算统一在这里处理
+
+        private double headingOffsetExtraCanculate(double heading , bool Can = true)
+        {
+            //当然也可以选择不计算
+            if (Can == false)
+            {
+                return heading;
+            }
+
+
+            if (SystemSave.UseHeadingOffset)
+            {
+                heading += SystemSave.angleOffset;
+            }
+            if (SystemSave.CanculateHeadingMode ==1)
+            {
+                if (SystemSave.sampleTime > 0 && SystemSave.CHM1Sampled == false)
+                {
+                    SystemSave.headingOffsetFor3DHeading = get3DHeadingPffset();
+                    if (SystemSave.headingOffsetFor3DHeading > -1000)
+                    {
+                        SystemSave.sampleTime--;
+                        if (SystemSave.sampleTime < 0)
+                        {
+                            SystemSave.CHM1Sampled = true;
+                        }
+                    }
+                }
+                //Console.WriteLine("3D heading offset is Added");
+                return heading + SystemSave.headingOffsetFor3DHeading;
+            }
+            return heading;
+        }
+
         //获取移动方向的方法/////////////////////////////////////////////////////
+        //注意这里的if和for的顺序和steoLength结构不一样
         void headingAngleGet()
         {
             if (HeadingMehtod.SelectedIndex == 0)
@@ -382,8 +421,7 @@ namespace socketServer
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     double degree = theFilteredD[indexBuff[i]];
-                    if (SystemSave.UseHeadingOffset)
-                        degree += SystemSave.angleOffset;
+                    degree = headingOffsetExtraCanculate(degree);
                     theStepAngeUse.Add(degree);
                 }
 
@@ -396,8 +434,7 @@ namespace socketServer
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         double degree = theFilteredD[indexBuff[i]];
-                        if (SystemSave.UseHeadingOffset)
-                            degree += SystemSave.angleOffset;
+                        degree = headingOffsetExtraCanculate(degree);
                         theStepAngeUse.Add(degree);
                     }
                 }
@@ -413,8 +450,7 @@ namespace socketServer
                             checkUse.Add(theFilteredD[i]);
 
                         double degree = theAngelController.getAngelNow(checkUse);
-                        if (SystemSave.UseHeadingOffset)
-                            degree += SystemSave.angleOffset;
+                        degree = headingOffsetExtraCanculate(degree);
                         theStepAngeUse.Add(degree);
                     }
                 }
@@ -425,8 +461,7 @@ namespace socketServer
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     double degree = AHRSZ[indexBuff[i]];
-                    if (SystemSave.UseHeadingOffset)
-                        degree += SystemSave.angleOffset;
+                    degree = headingOffsetExtraCanculate(degree);
                     theStepAngeUse.Add(degree);
                 }
             }
@@ -439,21 +474,18 @@ namespace socketServer
                     {
                         //Console.WriteLine("--------" + AHRSZ[indexBuff[i]] + "--------" + IMUZ[indexBuff[i]]);
                         double degree = IMUZ[indexBuff[i]];
-                        if (SystemSave.UseHeadingOffset)
-                            degree += SystemSave.angleOffset;
+                        degree = headingOffsetExtraCanculate(degree);
                         theStepAngeUse.Add(degree);
                     }
 
                 }
                 catch
                 {
-                   // Console.WriteLine("imuMethod crashed using compass reading");
+                    // Console.WriteLine("imuMethod crashed using compass reading");
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         double degree = theFilteredD[indexBuff[i]];
-                        if (SystemSave.UseHeadingOffset)
-                            degree += SystemSave.angleOffset;
-
+                        degree = headingOffsetExtraCanculate(degree);
                         theStepAngeUse.Add(degree);
                     }
                 }
@@ -486,8 +518,7 @@ namespace socketServer
                     my = MY[indexBuff[i]];
                     mz = MZ[indexBuff[i]];
                     degree = theAngelController.AHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz);
-                    if (SystemSave.UseHeadingOffset)
-                        degree += SystemSave.angleOffset;
+                    degree = headingOffsetExtraCanculate(degree, false);
                     theStepAngeUse.Add(degree);
                 }
                 // theAngelController.makeMehtod3Clear();
@@ -520,15 +551,35 @@ namespace socketServer
                     //my = MY[indexBuff[i]];
                     //mz = MZ[indexBuff[i]];
                     degree = theAngelController.IMUupdate(gx, gy, gz, ax, ay, az);
-                    if (SystemSave.UseHeadingOffset)
-                        degree += SystemSave.angleOffset;
+                    degree = headingOffsetExtraCanculate(degree, false);
                     theStepAngeUse.Add(degree);
                 }
                 // theAngelController.makeMehtod3Clear();
             }
+            else if (HeadingMehtod.SelectedIndex == 6)
+            {
+                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
+                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
+                //记录移动的方向 （方法1直接读取电子罗盘的信息）
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i <= 1)
+                    {
+                        double degree = AHRSZ[indexBuff[i]];
+                        degree = headingOffsetExtraCanculate(degree, false);
+                        theStepAngeUse.Add(degree);
+                    }
+                    else
+                    {
+                        double degree = theAngelController.AHRSIMUSelect(indexBuff[i - 1], indexBuff[i], AHRSZ, IMUZ);
+                        degree = headingOffsetExtraCanculate(degree, false);
+                        theStepAngeUse.Add(degree);
+                    }
+                }
+            }
             //记录最新的移动方向
             if (theStepAngeUse.Count > 0)
-                SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
+            SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
 
         }
 
@@ -1018,6 +1069,28 @@ namespace socketServer
             string theFileName = "route" + DateTime.Now.ToString("yyyy - MM - dd - hh - mm - ss") + ".png";
             new pictureMaker(). saveCanvasPicture(theCanvas , @"routeMap/"+theFileName );
             MessageBox.Show("路线图已经保存在routeMap文件夹中\n文件名："+theFileName);
+        }
+
+        //获得信息处理单元
+        public double get3DHeadingPffset()
+        {
+            //如果没有数据就得不到最新的偏移量
+            if (theInformationController == null)
+                return -9999;
+            double count = theInformationController.compassDegree.Count;
+            if (count <= 0)
+                return -9999;
+
+            int indexForStep = indexBuff.Count - 1;
+            int index = indexBuff[indexForStep];
+            List<double> theFCompass = theFilter.theFilerWork(theInformationController.compassDegree);
+            List<double> theFAHRS = theFilter.theFilerWork(theInformationController.AHRSZFromClient);
+            if(HeadingMehtod.SelectedIndex == 0 || HeadingMehtod.SelectedIndex == 1)
+                return 0 - theFCompass[index];
+            else if(HeadingMehtod.SelectedIndex == 2)
+                return 0 - theFAHRS[index];
+
+            return 0;
         }
 
         private void StepLengthMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)

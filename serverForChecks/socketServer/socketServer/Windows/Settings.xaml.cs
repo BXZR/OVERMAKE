@@ -123,6 +123,7 @@ namespace socketServer
                 SystemSave.isStairsUp = false;
 
             SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
+            SystemSave.CanculateHeadingMode = HeadingCanculateMode.SelectedIndex;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -146,7 +147,7 @@ namespace socketServer
             DownForStart.Text = SystemSave.downGateForStart.ToString();
             DecisionTreePathText.Text = SystemSave.DecrsionTreeBasedFile;
             TreeMethod.SelectedIndex = SystemSave.DecisionTreeMethodID;
-
+            HeadingCanculateMode.SelectedIndex = SystemSave.CanculateHeadingMode;
             StairHeight.Text = SystemSave.StairHeight.ToString();
 
             if (SystemSave.isMale)
@@ -212,6 +213,7 @@ namespace socketServer
 
         private static bool ValueIsAllowZMove;
         private static bool ValueIsCuttingDectionTree;
+        private static int  ValueHeadingCanculateMode;
 
         void getStartValue()
         {
@@ -245,7 +247,7 @@ namespace socketServer
               ValueIsCuttingDectionTree = SystemSave.isCutForDecisionTree;
 
               ValueStairHeight = SystemSave.StairHeight.ToString();
-
+              ValueHeadingCanculateMode = SystemSave.CanculateHeadingMode;
               hasBasicValue = true;//最初数值只会被记录一次
            }
         }
@@ -302,6 +304,7 @@ namespace socketServer
                 CanculateZMove.IsChecked = false;
 
             TreeMethod.SelectedIndex =  ValueTreeMethod;
+            HeadingCanculateMode.SelectedIndex = ValueHeadingCanculateMode;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -353,6 +356,18 @@ namespace socketServer
             informationS += "决策树的节点个数： " + SystemSave.StairTree.getNodeCount() + "\n";
             informationS += "决策树的深度： " + SystemSave.StairTree.getDepth();
             MessageBox.Show(informationS);
+        }
+
+        private void HeadingCanculateMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (HeadingCanculateMode.SelectedIndex == 1)
+            {
+                string informationS = "有关3D判断当前移动方向的方法说明：\n";
+                informationS += "这种方法需要事先有一定的基础数据来计算偏移量\n";
+                informationS += "因此最开始的"+SystemSave.sampleTime+"步会因为采样而失效";
+                informationS += "此外这种方法只会对前三种方向判定算法生效";
+                TipsForHeading.Content += informationS;
+            }
         }
     }
 }

@@ -57,11 +57,18 @@
             </TabItem>
             <TabItem Header="Heading">
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,-1">
-                    <Label
-                        Width="94" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy21" Margin="20,26,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingOffset"/>
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="packageOffset" Margin="136,26,29,0" Height="23"/>
-                    <CheckBox x:Name="UseOffSet" Content="UseHeadingOffset" HorizontalAlignment="Left" Margin="20,72,0,0" VerticalAlignment="Top" Width="227"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="packageOffset" Margin="165,34,24,0" Height="23"/>
+                    <CheckBox x:Name="UseOffSet" Content="UseHeadingOffset" HorizontalAlignment="Left" Margin="25,72,0,0" VerticalAlignment="Top" Width="227"/>
+                    <Label
+                        Width="128" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy14" Margin="20,31,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingOffsetExtra"/>
+                    <ComboBox x:Name="HeadingCanculateMode" Margin="0,106,24,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="256" SelectionChanged="HeadingCanculateMode_SelectionChanged">
+                        <ComboBoxItem Content="Horizontal Plane"/>
+                        <ComboBoxItem Content="3D Free"/>
+                    </ComboBox>
+                    <Label
+                        Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="20,102,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
+                    <Label x:Name="TipsForHeading" Content="" Margin="0,128,0,0" VerticalAlignment="Top" Foreground="Red" Height="94" IsHitTestVisible="False"/>
                 </Grid>
             </TabItem>
             <TabItem Header="StepLength">
@@ -98,7 +105,7 @@
                     <TextBox
                         Text="TextBox" TextWrapping="Wrap" x:Name="Kim" Margin="192,197,10,0" Height="23" VerticalAlignment="Top"/>
                     <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="137,324,98,0" VerticalAlignment="Top" Click="button1_Click"/>
-                    <TextBox x:Name="DecisionTreePathText" HorizontalAlignment="Left" Height="23" Margin="137,256,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="324"/>
+                    <TextBox x:Name="DecisionTreePathText" Height="23" Margin="137,256,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
                         Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="0,225,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method"/>
                     <Label

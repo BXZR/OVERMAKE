@@ -94,5 +94,15 @@ namespace socketServer
         public static bool isCutForDecisionTree = false;//决策树是不是要剪枝？默认不剪枝，用来对比
         public static theDecisionTree StepLengthTree = null;//步长方法中的决策树
         public static theDecisionTree StairTree = null;//判断走楼梯的方向的决策树
+
+        //实验的时候手机的模式
+        //0 手机是平放的，上下平移没有摆动
+        //1 手机是随意按照一定规律摆动的
+        public static int CanculateHeadingMode = 0;
+        public static bool CHM1Sampled = false;
+        public static int sampleTime = 5;//采样保证正确性
+        //偏移量
+        //得到这个偏移量之后就可以摆动移动了
+        public static double headingOffsetFor3DHeading = 0;
     }
 }

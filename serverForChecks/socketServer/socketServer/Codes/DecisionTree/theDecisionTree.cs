@@ -136,6 +136,7 @@ namespace socketServer.Codes.DecisionTree
                 GY.Add(Convert.ToDouble(rows[4]));
                 GZ.Add(Convert.ToDouble(rows[5]));
                 SL.Add(Convert.ToDouble(rows[6]));
+                //Console.WriteLine("rows[7] = "+ rows[7]);
                 StairMode.Add(Convert.ToInt32(rows[7]));
             }
             Console.WriteLine("Data loaded for tree");

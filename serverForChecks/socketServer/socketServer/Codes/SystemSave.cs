@@ -101,6 +101,8 @@ namespace socketServer
         public static int CanculateHeadingMode = 0;
         public static bool CHM1Sampled = false;
         public static int sampleTime = 5;//采样保证正确性
+        public static double startAngleForCHM1 = 0;//起始的角度
+        //计算偏移量的时候总该有一个准确的当前方向，但是没有就只能输入了
         //偏移量
         //得到这个偏移量之后就可以摆动移动了
         public static double headingOffsetFor3DHeading = 0;

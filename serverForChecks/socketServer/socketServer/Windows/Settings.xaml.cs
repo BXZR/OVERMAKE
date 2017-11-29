@@ -94,7 +94,7 @@ namespace socketServer
             SystemSave.downGateForStart = Convert.ToDouble(DownForStart.Text);
             SystemSave.DecrsionTreeBasedFile = DecisionTreePathText.Text;
             SystemSave.StairHeight = Convert.ToDouble( StairHeight.Text );
-
+            SystemSave.startAngleForCHM1 = Convert.ToDouble(HCM1Start.Text);
             if (isMaleCheckc.IsChecked == true)
                 SystemSave.isMale = true;
             else
@@ -149,7 +149,7 @@ namespace socketServer
             TreeMethod.SelectedIndex = SystemSave.DecisionTreeMethodID;
             HeadingCanculateMode.SelectedIndex = SystemSave.CanculateHeadingMode;
             StairHeight.Text = SystemSave.StairHeight.ToString();
-
+            HCM1Start.Text = SystemSave.startAngleForCHM1.ToString();
             if (SystemSave.isMale)
                 isMaleCheckc.IsChecked = true;
             else
@@ -214,7 +214,7 @@ namespace socketServer
         private static bool ValueIsAllowZMove;
         private static bool ValueIsCuttingDectionTree;
         private static int  ValueHeadingCanculateMode;
-
+        private static string  ValueSystemStartAngleForCHM1;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -248,7 +248,8 @@ namespace socketServer
 
               ValueStairHeight = SystemSave.StairHeight.ToString();
               ValueHeadingCanculateMode = SystemSave.CanculateHeadingMode;
-              hasBasicValue = true;//最初数值只会被记录一次
+              ValueSystemStartAngleForCHM1 = SystemSave.startAngleForCHM1.ToString();
+               hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -275,6 +276,7 @@ namespace socketServer
             DecisionTreePathText.Text = ValueDecisionTreePath;
             StairHeight.Text = ValueStairHeight;
 
+            HCM1Start.Text = ValueSystemStartAngleForCHM1;
             if (ValueIsMale)
                 isMaleCheckc.IsChecked = true;
             else

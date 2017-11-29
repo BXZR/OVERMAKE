@@ -68,7 +68,10 @@
                     </ComboBox>
                     <Label
                         Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="20,102,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
-                    <Label x:Name="TipsForHeading" Content="" Margin="0,128,0,0" VerticalAlignment="Top" Foreground="Red" Height="94" IsHitTestVisible="False"/>
+                    <Label x:Name="TipsForHeading" Content="" Margin="0,170,0,0" VerticalAlignment="Top" Foreground="Red" Height="94" IsHitTestVisible="False"/>
+                    <Label
+                        Width="254" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy16" Margin="20,139,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode(3D) StartAngle"/>
+                    <TextBox x:Name="HCM1Start" Height="23" Margin="279,139,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="StepLength">

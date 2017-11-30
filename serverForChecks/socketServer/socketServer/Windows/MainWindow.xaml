@@ -82,9 +82,10 @@
             <ComboBoxItem Content="MSBasedCompass"/>
             <ComboBoxItem Content="AHRS(client)"/>
             <ComboBoxItem Content="IMU(client)"/>
+            <ComboBoxItem Content="AHRSIMUSelect(Client)"/>
+            <ComboBoxItem Content="CompensateCompass"/>
             <ComboBoxItem Content="AHRS(server)"/>
             <ComboBoxItem Content="IMU(server)"/>
-            <ComboBoxItem Content="AHRS IMU Select"/>
         </ComboBox>
         <Button x:Name="button9" Content="3DView" Margin="0,416,25,0" Click="button9_Click" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Top"/>
         <Label x:Name="Charts_Copy8" Content="SystemControl" Margin="0,484,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>

@@ -415,6 +415,16 @@ namespace socketServer
         //注意这里的if和for的顺序和steoLength结构不一样
         void headingAngleGet()
         {
+            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+            List<double> MX = theFilter.theFilerWork(theInformationController.magnetometerX);
+            List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
+            List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
+
             if (HeadingMehtod.SelectedIndex == 0)
             {
                 //记录移动的方向 （方法1直接读取电子罗盘的信息）
@@ -492,16 +502,42 @@ namespace socketServer
             }
             else if (HeadingMehtod.SelectedIndex == 4)
             {
+                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
+                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
+                //记录移动的方向
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i <= 1)
+                    {
+                        double degree = AHRSZ[indexBuff[i]];
+                        degree = headingOffsetExtraCanculate(degree, false);
+                        theStepAngeUse.Add(degree);
+                    }
+                    else
+                    {
+                        double degree = theAngelController.AHRSIMUSelect(indexBuff[i - 1], indexBuff[i], AHRSZ, IMUZ);
+                        degree = headingOffsetExtraCanculate(degree, false);
+                        theStepAngeUse.Add(degree);
+                    }
+                }
+            }
+
+            else if (HeadingMehtod.SelectedIndex == 5)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    int indexUse = indexBuff[i];
+                    double degree = theAngelController.getYawWithAM(
+                        AX[indexUse], AY[indexUse], AZ[indexUse], MX[indexUse], MY[indexUse], MZ[indexUse]
+                        );
+                    degree = headingOffsetExtraCanculate(degree, false);
+                    theStepAngeUse.Add(degree);
+                }
+            }
+            else if (HeadingMehtod.SelectedIndex == 6)
+            {
                 //方法3，AHRS方法
-                List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
-                List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
-                List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
-                List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
-                List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
-                List<double> MX = theFilter.theFilerWork(theInformationController.magnetometerX);
-                List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
-                List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
+
                 double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0, mx = 0, my = 0, mz = 0;
                 // Console.WriteLine(AX.Count +"-------------");
 
@@ -523,18 +559,9 @@ namespace socketServer
                 }
                 // theAngelController.makeMehtod3Clear();
             }
-            else if (HeadingMehtod.SelectedIndex == 5)
+            else if (HeadingMehtod.SelectedIndex == 7)
             {
                 //方法3，IMU方法
-                List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
-                List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
-                List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
-                List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
-                List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
-                //List<double> MX = theFilter.theFilerWork(theInformationController.magnetometerX);
-                //List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
-                //List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
                 double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0;//, mx = 0, my = 0, mz = 0;
                 // Console.WriteLine(AX.Count +"-------------");
 
@@ -556,27 +583,7 @@ namespace socketServer
                 }
                 // theAngelController.makeMehtod3Clear();
             }
-            else if (HeadingMehtod.SelectedIndex == 6)
-            {
-                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
-                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
-                //记录移动的方向 （方法1直接读取电子罗盘的信息）
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    if (i <= 1)
-                    {
-                        double degree = AHRSZ[indexBuff[i]];
-                        degree = headingOffsetExtraCanculate(degree, false);
-                        theStepAngeUse.Add(degree);
-                    }
-                    else
-                    {
-                        double degree = theAngelController.AHRSIMUSelect(indexBuff[i - 1], indexBuff[i], AHRSZ, IMUZ);
-                        degree = headingOffsetExtraCanculate(degree, false);
-                        theStepAngeUse.Add(degree);
-                    }
-                }
-            }
+         
             //记录最新的移动方向
             if (theStepAngeUse.Count > 0)
             SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
@@ -587,8 +594,8 @@ namespace socketServer
         void saveTrainBase(List<double> theFilteredAZ)
         {
             List<string> theTrainBase = new List<string>();
-            List<double> FilteredX = theFilter.theFilerWork(theInformationController.GPSPositionX);
-            List<double> FilteredY = theFilter.theFilerWork(theInformationController.GPSPositionY);
+           // List<double> FilteredX = theFilter.theFilerWork(theInformationController.GPSPositionX);
+           //List<double> FilteredY = theFilter.theFilerWork(theInformationController.GPSPositionY);
             //Console.WriteLine("V = "+indexBuff.Count);
             //for (int ee = 0; ee < FilteredX.Count; ee++)
             //{ 
@@ -623,15 +630,30 @@ namespace socketServer
             //}
             //生成通用的数据--------------------------------------------------------------------------------------------------
             theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theInformationController);
+            theTrainBase.Clear();
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
                 theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
             }
-            //生成决策树数据
+            //生成决策树数据----------------------------------------------------------------------------------------------------
+            theTrainBase.Clear();
             theTrainBase = theTrainFileMake.getSaveTrainFileForTreeDemo(indexBuff, theInformationController, theStepLengthController);
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
                 theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseTree.txt");
+            }
+            //生成回归测试使用的文件--------------------------------------------------------------------------------------------
+            theTrainBase.Clear();
+            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+            for (int i = 1; i < indexBuff.Count; i++)
+            {
+                theTrainBase.Add(
+                theTrainFileMake.getSaveTrainFileFake(indexBuff[i - 1], indexBuff[i], theFilteredAZ,timeUse)
+                );
+            }
+            if (theTrainBase != null && theTrainBase.Count >= 1)
+            {
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseFake.txt");
             }
         }
 

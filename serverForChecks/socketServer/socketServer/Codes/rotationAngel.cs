@@ -26,7 +26,7 @@ namespace socketServer
 
 
         //判断变化，超过阀值就认为有所改变了
-        public  double getAngelNow(double angelIn)
+        public double getAngelNow(double angelIn)
         {
             if (Math.Abs(theAngelNow - angelIn) > changeGate)
             {
@@ -38,7 +38,7 @@ namespace socketServer
         //微软提出的一种更准一点的判断转向了的方法
         public double getAngelNow(List<double> IN)
         {
-            if (IN.Count <=1)
+            if (IN.Count <= 1)
                 return theAngelNow;
 
             double ALL = 0;
@@ -49,12 +49,12 @@ namespace socketServer
             double average = ALL / IN.Count - 1;
             if (Math.Abs(theAngelNow - average) > changeGate)
             {
-                theAngelNow = IN[IN.Count -1];
+                theAngelNow = IN[IN.Count - 1];
             }
             return theAngelNow;
         }
 
-//--------------------------------------------------实际上这两种方法应该方法客户端来做，在服务器中采样不充分所以出错写在这里只是为了做一个对比--------------------------------------------------------------------------------------//
+        //--------------------------------------------------实际上这两种方法应该方法客户端来做，在服务器中采样不充分所以出错写在这里只是为了做一个对比--------------------------------------------------------------------------------------//
 
         //方法3  AHRS算法代码：磁力计+加计+陀螺版（来自网络有待进一步弄一波）
 
@@ -139,8 +139,8 @@ namespace socketServer
             // Console.WriteLine(string .Format ("q0 = {0} , q1 = {1} , q2 = {2} , q3 = {3}" , q0,q1,q2,q3));
             //四元数转换欧拉角
 
-            double roll = Math.Atan2(2.0f * (q0 * q1 + q2 * q3), 1 - 2.0f * (q1 * q1 + q2 * q2))* 57.3;
-            double pitch = Math.Asin(2.0f*(q0* q2 - q1* q3)) * 57.3;
+            double roll = Math.Atan2(2.0f * (q0 * q1 + q2 * q3), 1 - 2.0f * (q1 * q1 + q2 * q2)) * 57.3;
+            double pitch = Math.Asin(2.0f * (q0 * q2 - q1 * q3)) * 57.3;
             double yaw = Math.Atan2(2.0f * (q1 * q2 - q0 * q3), 2.0f * (q0 * q0 + q1 * q1) - 1) * 57.3;
             //Console.WriteLine("yaw = " + (yaw));
             return (yaw); //返回偏航角
@@ -149,28 +149,25 @@ namespace socketServer
         //因为本程序的机制是多从重复计算，而这个程序每一次计算都会改变状态，所以需要一个方法在运行一整个阶段的上面方法之后做一个清空
         public void makeMehtod3Clear()
         {
-           q0 = 1; q1 = 0; q2 = 0; q3 = 0;        // quaternion elements representing the estimated orientation
+            q0 = 1; q1 = 0; q2 = 0; q3 = 0;        // quaternion elements representing the estimated orientation
             exInt = 0; eyInt = 0; ezInt = 0;        // scaled integral error
         }
 
-
-
-       public double IMUupdate(double  gx, double  gy, double  gz, double ax, double ay, double az)
+        public double IMUupdate(double gx, double gy, double gz, double ax, double ay, double az)
         {
             double norm;
-            double  vx, vy, vz;
-            double  ex, ey, ez;
+            double vx, vy, vz;
+            double ex, ey, ez;
 
             // normalise the measurements
             norm = Math.Sqrt(ax * ax + ay * ay + az * az);
             ax = ax / norm;
             ay = ay / norm;
             az = az / norm;
-           // 把加计的三维向量转成单位向量。
-       
+            // 把加计的三维向量转成单位向量。
 
             // estimated direction of gravity
-             vx = 2 * (q1 * q3 - q0 * q2);
+            vx = 2 * (q1 * q3 - q0 * q2);
             vy = 2 * (q0 * q1 + q2 * q3);
             vz = q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3;
 
@@ -178,22 +175,19 @@ namespace socketServer
             根据余弦矩阵和欧拉角的定义，地理坐标系的重力向量，转到机体坐标系，正好是这三个元素。
             所以这里的vx\y\z，其实就是当前的欧拉角（即四元数）的机体坐标参照系上，换算出来的重力单位向量。
             */
-
-
-        // error is sum of cross product between reference direction of field and direction measured by sensor
-        ex = (ay * vz - az * vy);
+            // error is sum of cross product between reference direction of field and direction measured by sensor
+            ex = (ay * vz - az * vy);
             ey = (az * vx - ax * vz);
             ez = (ax * vy - ay * vx);
 
-/*axyz是机体坐标参照系上，加速度计测出来的重力向量，也就是实际测出来的重力向量。
-axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出的重力向量，它们都是机体坐标参照系上的重力向量。
-那它们之间的误差向量，就是陀螺积分后的姿态和加计测出来的姿态之间的误差。
-向量间的误差，可以用向量叉积（也叫向量外积、叉乘）来表示，exyz就是两个重力向量的叉积。
-这个叉积向量仍旧是位于机体坐标系上的，而陀螺积分误差也是在机体坐标系，而且叉积的大小与陀螺积分误差成正比，正好拿来纠正陀螺。（你可以自己拿东西想象一下）由于陀螺是对机体直接积分，所以对陀螺的纠正量会直接体现在对机体坐标系的纠正。
-*/
+            /*axyz是机体坐标参照系上，加速度计测出来的重力向量，也就是实际测出来的重力向量。
+            axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出的重力向量，它们都是机体坐标参照系上的重力向量。
+            那它们之间的误差向量，就是陀螺积分后的姿态和加计测出来的姿态之间的误差。
+            向量间的误差，可以用向量叉积（也叫向量外积、叉乘）来表示，exyz就是两个重力向量的叉积。
+            这个叉积向量仍旧是位于机体坐标系上的，而陀螺积分误差也是在机体坐标系，而且叉积的大小与陀螺积分误差成正比，正好拿来纠正陀螺。（你可以自己拿东西想象一下）由于陀螺是对机体直接积分，所以对陀螺的纠正量会直接体现在对机体坐标系的纠正。
+            */
 
-
-        // integral error scaled integral gain
+            // integral error scaled integral gain
             exInt = exInt + ex * Ki;
             eyInt = eyInt + ey * Ki;
             ezInt = ezInt + ez * Ki;
@@ -203,19 +197,14 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
             gy = gy + Kp * ey + eyInt;
             gz = gz + Kp * ez + ezInt;
 
-           // 用叉积误差来做PI修正陀螺零偏
+            // 用叉积误差来做PI修正陀螺零偏
 
-
-
-
-          // integrate quaternion rate and normalise
+            // integrate quaternion rate and normalise
             q0 = q0 + (-q1 * gx - q2 * gy - q3 * gz) * halfT;
             q1 = q1 + (q0 * gx + q2 * gz - q3 * gy) * halfT;
             q2 = q2 + (q0 * gy - q1 * gz + q3 * gx) * halfT;
             q3 = q3 + (q0 * gz + q1 * gy - q2 * gx) * halfT;
-           // 四元数微分方程
-
-
+            // 四元数微分方程
 
             // normalise quaternion
             norm = Math.Sqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3);
@@ -226,13 +215,12 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
             //四元数规范化
 
             double X = Math.Atan2(2 * (q1 * q2 + q3 * q0), q3 * q3 - q0 * q0 - q1 * q1 + q2 * q2) / 3.14 * 180;
-            double Y = Math.Asin(-2 * (q0 * q2 - q3 * q1))/3.14 * 180;
+            double Y = Math.Asin(-2 * (q0 * q2 - q3 * q1)) / 3.14 * 180;
             double Z = Math.Atan2(2 * (q0 * q1 + q3 * q2), q3 * q3 + q0 * q0 - q1 * q1 - q2 * q2) / 3.14 * 180;
 
             //Console.WriteLine("Z = " + -Z);
             return Z;
         }
-
 
         //论文方法中一个选择的方法
         //其实第一步是检查IGRF做偏差
@@ -242,7 +230,7 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
         //差异值小还是用AHRS
         double IGRFGate = 0;
         double EDYawGate = 3;
-        public double AHRSIMUSelect(int indexPre , int indexNow , List<double> AHRSValues , List<double> IMUValues)
+        public double AHRSIMUSelect(int indexPre, int indexNow, List<double> AHRSValues, List<double> IMUValues)
         {
             double degreeNow = 0;
             double AHRSAverage = 0;
@@ -252,10 +240,10 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
 
             for (int i = indexPre; i < indexNow; i++)
             {
-                AHRSAverage +=  AHRSValues[i];
+                AHRSAverage += AHRSValues[i];
                 IMUAverage += IMUValues[i];
             }
-            
+
             int count = indexNow - indexPre;
             AHRSAverage /= count;
             IMUAverage /= count;
@@ -285,5 +273,27 @@ axyz是测量得到的重力向量，vxyz是陀螺积分后的姿态来推算出
             return methodInformations[index];
         }
 
+        //来自博客的方法
+        //使用加速计和磁力计做的heading
+        //电子罗盘倾斜补偿航偏角计算
+        //算是比较贴近底层的东西了
+        //需要注意的是 unity 的XYZ轴 和AHRS/IMU的轴向不同
+        //虽然在这里直接使用unity的数据所以没有事
+        //目前为止这个方法非常的不稳定也并不准确（201711301356）
+        public double getYawWithAM(double AX, double AY, double AZ, double MX, double MY, double MZ)
+        {
+            double heading = 0;
+            double A = Math.Atan( AX / Math.Sqrt (AY * AY + AZ * AZ)) / 3.14 * 180;
+            double B = Math.Atan(AY / Math.Sqrt(AX * AX + AZ * AZ)) / 3.14 * 180;
+            Console.WriteLine("A = "+A +" B = "+B);
+            double HY = MY * Math.Cos(B) + MX * Math.Sin(B) * Math.Sin(A) - MZ * Math.Cos(A) * Math.Sin(B);
+            double HX = MX * Math.Cos(A) + MZ * Math.Sin(A);
+
+            Console.WriteLine("HX = " + HX +" HY = " + HY);
+            heading = Math.Atan(HY/HX) / 3.14 * 180;
+            Console.WriteLine("Heading = "+ heading);
+
+            return heading;
+        }
     }
 }

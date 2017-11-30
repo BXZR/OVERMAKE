@@ -283,15 +283,39 @@ namespace socketServer
         public double getYawWithAM(double AX, double AY, double AZ, double MX, double MY, double MZ)
         {
             double heading = 0;
-            double A = Math.Atan( AX / Math.Sqrt (AY * AY + AZ * AZ)) / 3.14 * 180;
+
+            double A = Math.Atan(AX / Math.Sqrt(AY * AY + AZ * AZ)) / 3.14 * 180;
             double B = Math.Atan(AY / Math.Sqrt(AX * AX + AZ * AZ)) / 3.14 * 180;
-            Console.WriteLine("A = "+A +" B = "+B);
+            //Console.WriteLine("A = " + A + " B = " + B);
+
             double HY = MY * Math.Cos(B) + MX * Math.Sin(B) * Math.Sin(A) - MZ * Math.Cos(A) * Math.Sin(B);
             double HX = MX * Math.Cos(A) + MZ * Math.Sin(A);
+            Console.WriteLine("HX = " + HX + " HY = " + HY);
 
-            Console.WriteLine("HX = " + HX +" HY = " + HY);
-            heading = Math.Atan(HY/HX) / 3.14 * 180;
-            Console.WriteLine("Heading = "+ heading);
+            heading = Math.Atan(HY / HX) / 3.14 * 180;
+
+            //看网上的说法还需要分开做一个象限的计算
+            if (HX > 0 && HY > 0)
+            {
+                heading = 360 - heading;
+            }
+            else if (HX > 0 && HY < 0)
+            {
+                heading = 180 - heading;
+            }
+            else if (HX < 0)
+            {
+                heading = -heading;
+            }
+            else if (HX == 0 && HY < 0)
+            {
+                heading = 90;
+            }
+            else if (HX == 0 && HY > 0)
+            {
+                heading = 270;
+            }
+            Console.WriteLine("Heading = " + heading);
 
             return heading;
         }

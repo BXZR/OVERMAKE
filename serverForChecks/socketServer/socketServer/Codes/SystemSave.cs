@@ -106,5 +106,19 @@ namespace socketServer
         //偏移量
         //得到这个偏移量之后就可以摆动移动了
         public static double headingOffsetFor3DHeading = 0;
+
+        //腿长，在使用倒置钟摆步长计算方法的时候会用到
+        private  static double legLength = 80;
+        public static double legLengthInHeight = 0.455;//身高的0.455是腿长
+        //这个参数可以考虑在后期扩展
+        public static double getLegLength()
+        {
+            legLength = Stature * legLengthInHeight;
+            return legLength;//这其实就是一个get方法
+        }
+
+        //滤波器的中平滑平均的数量，因为考虑到有积分的时候，所以需要把这个作为一参数来做
+        //积分滤波后的数据的时候需要乘以这个参数
+        public static int filterSmoothCount = 5;
     }
 }

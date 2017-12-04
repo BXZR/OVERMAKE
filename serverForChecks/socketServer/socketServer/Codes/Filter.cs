@@ -19,7 +19,7 @@ namespace socketServer
                 outList.Add(IN[i]);
         outList = theFliterMethod1(outList, theValueUse);
         outList = GetKalMan(outList);
-        outList = theFliterMethod2(outList);
+        outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
         return outList;
     }
         //对外平滑方法

@@ -300,13 +300,13 @@ namespace socketServer
                 //方法2，一般公式
                 else if (StepLengthMethod.SelectedIndex == 2)
                 {
-                   
+
                     if (i >= 1)
                     {
                         // for (int v = 0; v < theInformationController.timeStep.Count; v++)
                         //    Console.WriteLine(theInformationController.timeStep[v]);
                         List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-                       
+
                         double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                         theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                     }
@@ -357,7 +357,7 @@ namespace socketServer
                         {
                             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
                             int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
-                            Console.WriteLine("modeNow = " + mode);
+                           // Console.WriteLine("modeNow = " + mode);
                             double stepLength = theStepLengthController.getStepLength2WithDecisionTree(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
                             theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                         }
@@ -366,6 +366,17 @@ namespace socketServer
                     {
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
+                }
+                //方法7，使用关于腿长的倒置钟摆的方法（很好玩的方法）
+                else if (StepLengthMethod.SelectedIndex == 8)
+                {
+                    if (i >= 1)
+                    {
+                        List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+                        theStepLengthUse.Add(theStepLengthController.getStepLength8(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
+                    }
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
             }
             //记录最新的移动步长

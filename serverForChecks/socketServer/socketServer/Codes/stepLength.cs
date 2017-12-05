@@ -228,6 +228,11 @@ namespace socketServer
         //但是这个方法需要实现输入腿长
         //并且需要非常细致的积分出来高度的最大位移
         //所以这种方法看上去也不是非常好的自适应方法
+        //参考电子测量技术基于IOS平台的步长计算方案与实现
+
+        //这个方法可以做很多的扩展
+        //例如目前在选择加速度的积分的时候只是简单地做一般加速度的积分，没有考虑波形
+        //但是如果是用波峰波谷，则可以用上升和下降来做，也是使用peacksearch的类似方法，凡是貌似有一点不值得
         public double getStepLength8(int indexPre , int indexNow , List<double> AZ , List<long> timeStep)
         {
             double stepLength = 0;
@@ -236,7 +241,7 @@ namespace socketServer
             int idexHalf = (indexNow - indexPre) / 2 + indexPre;
             double S = 0;
             double V = 0;
-            Console.WriteLine("indexPre = "+ indexPre +" indexHalf = "+ idexHalf);
+            //Console.WriteLine("indexPre = "+ indexPre +" indexHalf = "+ idexHalf);
             for (int i = indexPre ; i < idexHalf; i++)
             {
                 if (i == 0)
@@ -261,7 +266,7 @@ namespace socketServer
             }
             S = Math.Abs(S);//取绝对值
             stepLength = 2 * Math.Sqrt( 2 * S * SystemSave.getLegLength() - S*S) *1.25;
-            Console.WriteLine("step Length with leg = "+stepLength);
+            //Console.WriteLine("step Length with leg = "+stepLength);
             return stepLength;
         }
 

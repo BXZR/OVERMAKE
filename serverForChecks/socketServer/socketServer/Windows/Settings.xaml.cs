@@ -1,4 +1,5 @@
 ﻿using socketServer.Codes.DecisionTree;
+using socketServer.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -334,6 +335,7 @@ namespace socketServer
             informationS += "决策树的节点个数： " + SystemSave.StepLengthTree.getNodeCount()+"\n";
             informationS += "决策树的深度： " + SystemSave.StepLengthTree.getDepth();
             MessageBox.Show(informationS);
+            DrawTreeButton1.IsEnabled = true;
         }
 
         private void CanculateZMove_Checked(object sender, RoutedEventArgs e)
@@ -358,6 +360,7 @@ namespace socketServer
             informationS += "决策树的节点个数： " + SystemSave.StairTree.getNodeCount() + "\n";
             informationS += "决策树的深度： " + SystemSave.StairTree.getDepth();
             MessageBox.Show(informationS);
+            DrawTreeButton2.IsEnabled = true;
         }
 
         private void HeadingCanculateMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -370,6 +373,28 @@ namespace socketServer
                 informationS += "此外这种方法只会对前三种方向判定算法生效";
                 TipsForHeading.Content += informationS;
             }
+        }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewWindow theWindow = new TreeViewWindow();
+            theWindow.Show();
+            theWindow.drawDecisionTree(0);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (SystemSave.StepLengthTree == null)
+                DrawTreeButton1.IsEnabled = false;
+            if (SystemSave.StairTree == null)
+                DrawTreeButton2.IsEnabled = false;
+        }
+
+        private void button3_Click_1(object sender, RoutedEventArgs e)
+        {
+            TreeViewWindow theWindow = new TreeViewWindow();
+            theWindow.Show();
+            theWindow.drawDecisionTree(0);
         }
     }
 }

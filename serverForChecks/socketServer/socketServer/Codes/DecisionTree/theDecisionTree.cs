@@ -35,7 +35,7 @@ namespace socketServer.Codes.DecisionTree
         List<int> countOfTypesForAll = new List<int>();//每一种类型有多少
         List<double> inforValues = new List<double>();//计算用的影响值
         List<string> titles = new List<string>();//标题集合
-        theDecisionTreeNode theRoot;//数根节点，这个是递归的根节点
+        public theDecisionTreeNode theRoot;//数根节点，这个是递归的根节点
         private bool isStarted = false;//是否构建的标志
         public bool IsStarted { get { return isStarted; } }//只读标记
         private double inforSL = 0;//用来选择的目标基准值
@@ -170,6 +170,7 @@ namespace socketServer.Codes.DecisionTree
         }
 
         //目标的infor参见公式
+        //计算信息获取度
         private void makeBasicValue()
         {
             //我这里将数据分成了四种情况，因此可以直接进行处理
@@ -276,30 +277,64 @@ namespace socketServer.Codes.DecisionTree
                 //for (int i = 0; i < countOfTypes.Count; i++)
                 //    Console.WriteLine("countOfTypes[" + i + "] = " + countOfTypes[i]);
                 //每一种小的类型对于大的类型有多少
-                //并开始套用公式/////////////////////////////////////////////////////////////////////////////////////
+                //并开始套用公式////////////////////////////////////////////////////////////////////////////////////////////////////
                 double inforValue = 0;
-                for (int i = 0; i < types.Count; i++)
+                if (SystemSave.DecisionTreeMethodID == 0)
                 {
-                    double allcountForThisType = 0;
-                    for (int j = 0; j < typesForAll.Count; j++)
+                    for (int i = 0; i < types.Count; i++)
                     {
-                        allcountForThisType += (double)countOfTypes[i + j];//做一下隐式转换
+                        double allcountForThisType = 0;
+                        for (int j = 0; j < typesForAll.Count; j++)
+                        {
+                            allcountForThisType += (double)countOfTypes[i + j];//做一下隐式转换
+                        }
+                        double P1 = allcountForThisType / MAP[mapIndex].Count;
+                        for (int j = 0; j < typesForAll.Count; j++)
+                        {
+                            double P2 = (double)countOfTypes[i + j] / allcountForThisType;//频率当概率使用
+                            inforValue += -P1 * P2 * Math.Log(P2, 2);
+                        }
                     }
-                    double P1 = allcountForThisType / MAP[mapIndex].Count;
-                    for (int j = 0; j < typesForAll.Count; j++)
-                    {
-
-                        double P2 = (double)countOfTypes[i + j] / allcountForThisType;//频率当概率使用
-                        inforValue += -P1 * P2 * Math.Log(P2, 2);
-                    }
+                    inforValue = inforSL - inforValue;
                 }
-                inforValue = inforSL - inforValue;
-
                 //如果使用的是C4.5的方法就需要加上一步
                 //，这个是目前看博客学到的公式方法，希望是对的....
+                //这里将不同的方法的相同代码分别使用了，要不然代码虽简但是不好看
                 if (SystemSave.DecisionTreeMethodID == 1)
-                { 
+                {
+                    for (int i = 0; i < types.Count; i++)
+                    {
+                        double allcountForThisType = 0;
+                        for (int j = 0; j < typesForAll.Count; j++)
+                        {
+                            allcountForThisType += (double)countOfTypes[i + j];//做一下隐式转换
+                        }
+                        double P1 = allcountForThisType / MAP[mapIndex].Count;
+                        for (int j = 0; j < typesForAll.Count; j++)
+                        {
+                            double P2 = (double)countOfTypes[i + j] / allcountForThisType;//频率当概率使用
+                            inforValue += -P1 * P2 * Math.Log(P2, 2);
+                        }
+                    }
+                    inforValue = inforSL - inforValue;
                     inforValue /= inforSL;
+                }
+                if (SystemSave.DecisionTreeMethodID == 2)
+                {
+                    for (int i = 0; i < types.Count; i++)
+                    {
+                        double allcountForThisType = 0;
+                        for (int j = 0; j < typesForAll.Count; j++)
+                        {
+                            allcountForThisType += (double)countOfTypes[i + j];//做一下隐式转换
+                        }
+                        double P1 = allcountForThisType / MAP[mapIndex].Count;
+                        for (int j = 0; j < typesForAll.Count; j++)
+                        {
+                            double P2 = (double)countOfTypes[i + j] / allcountForThisType;//频率当概率使用
+                            inforValue += P1 * (1-P2*P2);//目前的理解就是不同的方法其实就是不同的“熵”的算法而已
+                        }
+                    }
                 }
 
                 inforValues.Add(inforValue);
@@ -380,16 +415,21 @@ namespace socketServer.Codes.DecisionTree
         }
 
         //数据分成四类
+        //其实就是为了适应决策树而进行的属性离散化
        public static  int getTypeIndex(double Value = 0)
         {
-            if (Value < 0.25)
+            //if (Value < 0.25)
+            //    return 1;
+            //if (Value >= 0.25 && Value < 0.5)
+            //    return 2;
+            //if (Value >= 0.5 && Value  < 0.75)
+            //    return 3;
+            //else
+            //    return 4;
+            if (Value < 0.5)
                 return 1;
-            if (Value >= 0.25 && Value < 0.5)
-                return 2;
-            if (Value >= 0.5 && Value  < 0.75)
-                return 3;
             else
-                return 4;
+                return 2;
         }
     }
 }

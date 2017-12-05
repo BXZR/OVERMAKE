@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer"
         mc:Ignorable="d"
-        Title="Settings" Height="511.393" Width="490.653" Background="#FFF3F3F3" ResizeMode="NoResize" Closed="Window_Closed">
+        Title="Settings" Height="511.393" Width="490.653" Background="#FFF3F3F3" ResizeMode="NoResize" Closed="Window_Closed" Loaded="Window_Loaded">
     <Grid x:Name="GRID" Margin="0,0,4,9" Height="438" VerticalAlignment="Bottom">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -18,16 +18,20 @@
         <TabControl x:Name="tabControl" Height="417" VerticalAlignment="Top" Margin="0,-20,0,0">
             <TabItem Header="System Config">
                 <Grid Background="#FFE5E5E5" Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <Label x:Name="Tip" Margin="20,28,0,0" Foreground="Red" Content="服务器未开启，可以设置后直接开启。" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="420"/>
                     <TextBox x:Name="ServerIPText" HorizontalAlignment="Left" Height="23" Margin="127,63,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="268"/>
                     <Label x:Name="label" Content="Stair Height" HorizontalAlignment="Left" Margin="20,192,0,0" Width="87" Height="31" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy22" Content="Server Port" HorizontalAlignment="Left" Margin="20,98,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
                     <TextBox x:Name="ServerPortText" HorizontalAlignment="Left" Margin="127,100,0,0" TextWrapping="Wrap" Text="TextBox" Width="268" Height="23" VerticalAlignment="Top"/>
                     <CheckBox x:Name="Draw_route_with_buffer" Content="Draw route with buffer" HorizontalAlignment="Left" Margin="20,134,0,0" VerticalAlignment="Top" IsChecked="True" Height="16" Width="148"/>
-                    <CheckBox x:Name="CanculateZMove" Content="Calculate move in Z Axis" HorizontalAlignment="Left" Margin="20,164,0,0" VerticalAlignment="Top" Width="246" Checked="CanculateZMove_Checked"/>
+                    <CheckBox x:Name="CanculateZMove" Content="Calculate move in Z Axis" HorizontalAlignment="Left" Margin="20,164,0,0" VerticalAlignment="Top" Width="246" Checked="CanculateZMove_Checked" Height="16"/>
                     <TextBox x:Name="StairHeight" HorizontalAlignment="Left" Height="23" Margin="127,194,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="268"/>
                     <Label x:Name="label_Copy13" Content="Server IP" HorizontalAlignment="Left" Margin="20,61,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <Button x:Name="button2" Content="Create Decision Tree For Stairs" HorizontalAlignment="Left" Margin="104,228,0,0" VerticalAlignment="Top" Width="291" Click="button2_Click"/>
+                    <Button x:Name="button2" Content="Create Decision Tree For Stairs" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top" Width="291" Click="button2_Click" Height="22"/>
+                    <Button x:Name="DrawTreeButton2" Content="Draw the Tree" HorizontalAlignment="Left" Margin="319,228,0,0" VerticalAlignment="Top" Width="142" Click="button3_Click_1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Step Dection">
@@ -107,19 +111,21 @@
                         Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy" Margin="0,194,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Kim Method"/>
                     <TextBox
                         Text="TextBox" TextWrapping="Wrap" x:Name="Kim" Margin="192,197,10,0" Height="23" VerticalAlignment="Top"/>
-                    <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="137,324,98,0" VerticalAlignment="Top" Click="button1_Click"/>
+                    <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="23,318,212,0" VerticalAlignment="Top" Click="button1_Click"/>
                     <TextBox x:Name="DecisionTreePathText" Height="23" Margin="137,256,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
                         Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="0,225,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method"/>
                     <Label
                         Width="114" VerticalAlignment="Top" x:Name="label_Copy11" Margin="10,254,0,0" Height="26" HorizontalAlignment="Left" Content="FilePathForTree"/>
                     <Label
-                        Width="114" VerticalAlignment="Top" x:Name="label_Copy12" Margin="10,280,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTreeMethod"/>
-                    <ComboBox x:Name="TreeMethod" HorizontalAlignment="Left" Margin="137,286,0,0" VerticalAlignment="Top" Width="133">
+                        Width="114" VerticalAlignment="Top" x:Name="label_Copy12" Margin="10,284,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTreeMethod"/>
+                    <ComboBox x:Name="TreeMethod" HorizontalAlignment="Left" Margin="137,288,0,0" VerticalAlignment="Top" Width="133">
                         <ComboBoxItem Content="IC3"/>
                         <ComboBoxItem Content="C4.5"/>
+                        <ComboBoxItem Content="CART"/>
                     </ComboBox>
-                    <CheckBox x:Name="isPruning" Content="Pruning" HorizontalAlignment="Left" Margin="288,290,0,0" VerticalAlignment="Top" Width="173"/>
+                    <CheckBox x:Name="isPruning" Content="Pruning" HorizontalAlignment="Left" Margin="288,292,0,0" VerticalAlignment="Top" Width="173"/>
+                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="288,318,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

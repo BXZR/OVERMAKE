@@ -6,27 +6,63 @@ using System.Threading.Tasks;
 
 namespace socketServer.Codes.DecisionTree
 {
-   public  class theDecisionTreeNode
+    public class theDecisionTreeNode
     {
         public string name = "";
-        public int  Mode = 0;//这个节点所代表的模式，对应的属性Mode
+        public int Mode = 0;//这个节点所代表的模式，对应的属性Mode
         //这个节点所代表的步长的模式，因为可能有抖动导致SLMode未必唯一，所以使用list存储
-        public List<int> aimMode = new List<int> ();
-        public List<theDecisionTreeNode> childs = new List<theDecisionTreeNode> ();
+        public List<int> aimMode = new List<int>();
+        //如果分到叶子节点还没有分完，就需要使用多数表决的方法，也因此需要有一个缓冲区来实现数量的保存
+        public List<int> aimModeCount = new List<int>();
+        public List<theDecisionTreeNode> childs = new List<theDecisionTreeNode>();
         public List<List<int>> MAP = new List<List<int>>();
         public List<double> inforValues = new List<double>();
-        public  List<string > Titles  = new List<string> ();
+        public List<string> Titles = new List<string>();
         public int depth = 0;//这个节点在树中的深度
         private string thePart = "";//表现为AXAYAZGXGYGZ 用来在搜索的时候作为标记出现
-        public  static int maxDepth = 0;//最深的层数是？
+        public static int maxDepth = 0;//最深的层数是？
         public static int nodeCountAll = 0;//总共的节点个数
+
+        //选择叶节点计数数量最多的aimMode
+        private int getLeafAimMode()
+        {
+            int index = -11;
+            int maxCount = -9999;
+            for (int i = 0; i < aimModeCount.Count; i++)
+            {
+                if (aimModeCount[i] > maxCount)
+                {
+                    maxCount = aimModeCount[i];
+                    index = i;
+                }
+            }
+            return aimMode[index];
+        }
+
+        //增加aimMode的时候对结果进行计数
+        private void freshAimModeCount(int modeIn)
+        {
+            int indexUse = -1;
+            for (int i = 0; i < aimMode.Count; i++)
+            {
+                if (aimMode[i] == modeIn)
+                {
+                    indexUse = i;
+                    break;
+                }
+            }
+            if (indexUse >= 0)
+            {
+                aimModeCount[indexUse]++;
+            }
+        }
 
         public int searchLeafMode(List<int> values , List<string> titles )
         {
             int theModeReturn = 0;
             if (this.childs.Count == 0)
             {
-                theModeReturn = this.aimMode[0];
+                theModeReturn = getLeafAimMode();
                 return theModeReturn;
             }
             else
@@ -85,13 +121,17 @@ namespace socketServer.Codes.DecisionTree
                     Titles.Add(father.Titles[i]);
             }
 
-            //从自身代表的属性的mode找到所有father中有的steoLengthMode，这些对应的就是这个节点对应的steoLengthMode
+            //从自身代表的属性的mode找到所有father中有的stepLengthMode，这些对应的就是这个节点对应的steoLengthMode
             for (int i = 0; i < father.MAP[indexNotUse].Count; i++)
             {
                 if(father.MAP[indexNotUse][i] == this.Mode && father.aimMode.Contains(aimMode[i]))
                 {
-                    if(this.aimMode.Contains(aimMode[i]) == false)
-                    this.aimMode.Add(aimMode[i]);
+                    if (this.aimMode.Contains(aimMode[i]) == false)
+                    {
+                        this.aimMode.Add(aimMode[i]);
+                        this.aimModeCount.Add(0);
+                    }
+                    freshAimModeCount(aimMode[i]);
                 }
             }
             //如果出现矛盾的情况就放宽要求
@@ -103,7 +143,11 @@ namespace socketServer.Codes.DecisionTree
                     if (father.MAP[indexNotUse][i] == this.Mode)
                     {
                         if (this.aimMode.Contains(aimMode[i]) == false)
+                        { 
                             this.aimMode.Add(aimMode[i]);
+                            this.aimModeCount.Add(0);
+                        }
+                        freshAimModeCount(aimMode[i]);
                     }
                 }
             }
@@ -152,7 +196,11 @@ namespace socketServer.Codes.DecisionTree
                     {
                         //保证不重复
                         if (this.aimMode.Contains(stepLengthMode[i]) == false)
-                          this.aimMode.Add(stepLengthMode[i]);
+                        { 
+                            this.aimMode.Add(stepLengthMode[i]);
+                            this.aimModeCount.Add(0);
+                        }
+                        freshAimModeCount(stepLengthMode[i]);
                     }
                 }
                 //如果出现矛盾的情况就放宽要求
@@ -163,7 +211,11 @@ namespace socketServer.Codes.DecisionTree
                         if (theModesOfThis[i] == this.Mode)
                         {
                             if (this.aimMode.Contains(stepLengthMode[i]) == false)
+                            { 
                                 this.aimMode.Add(stepLengthMode[i]);
+                                this.aimModeCount.Add(0);
+                            }
+                            freshAimModeCount(stepLengthMode[i]);
                         }
                     }
                 }
@@ -173,8 +225,12 @@ namespace socketServer.Codes.DecisionTree
                   for(int i =0; i < fatherStepLengthMode.Count; i++)
                     {
                        if (this.aimMode.Contains(fatherStepLengthMode[i]) == false)
+                       { 
                         this.aimMode.Add(fatherStepLengthMode[i]);
-                    }
+                        this.aimModeCount.Add(0);
+                       }
+                    freshAimModeCount(fatherStepLengthMode[i]);
+                }
             }
             this.depth = depth+1;
             if (this.depth > maxDepth)

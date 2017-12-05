@@ -724,11 +724,11 @@ namespace socketServer
                 SystemSave.slopNow = slopeWithPeack;
                 double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
                 theStage = theStage.ChangeState(slopeWithwindow);
-                stepSlopLabel.Content ="[" +theStage.getInformation() +"]" + "\nSlop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
+                stepSlopLabel.Content ="[" +theStage.getInformation() +"]" + "  Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
             }
             else
             { 
-               stepSlopLabel.Content  = "[" + theStage.getInformation() + "]" + "\nSlop： 0/0";
+               stepSlopLabel.Content  = "[" + theStage.getInformation() + "]" + "  Slop： 0/0";
             }
         }
 
@@ -879,11 +879,6 @@ namespace socketServer
             theChartWindow.Show();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            // MessageBox.Show(demoForTensorFlow.DEMO());
-            demoForTensorFlow.lineNear();
-        }
 
         //这个方法辅助用的字段两个：
         private double  X1Save = 0;
@@ -1002,11 +997,6 @@ namespace socketServer
             return newColor;
         }
 
-        private void button7_Click(object sender, RoutedEventArgs e)
-        {
-            thePictureMaker = new pictureMaker();
-            thePictureMaker.createPictureFromData();
-        }
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
@@ -1135,6 +1125,15 @@ namespace socketServer
                 informationS += "建立决策树的过程如下：\nsettings ——> StepLength ——> Build Decision Tree\n";
                 informationS += "如果没有创建决策树，步长估计方法为立即数";
                 MessageBox.Show(informationS);
+            }
+        }
+
+        private void theAppendix_Click(object sender, RoutedEventArgs e)
+        {
+            if (SystemSave.theAppendixWindow == null)
+            {
+                SystemSave.theAppendixWindow = new Windows.Appendix();
+                SystemSave.theAppendixWindow.Show();
             }
         }
     }

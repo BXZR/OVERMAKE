@@ -93,7 +93,7 @@ namespace socketServer
             SystemSave.Dertshold = Convert.ToDouble(ChangeValue.Text);
             SystemSave.uperGateForStart = Convert.ToDouble(UpForStart.Text);
             SystemSave.downGateForStart = Convert.ToDouble(DownForStart.Text);
-            SystemSave.DecrsionTreeBasedFile = DecisionTreePathText.Text;
+            SystemSave.TrainBasedFile = TrainBasePath.Text;
             SystemSave.StairHeight = Convert.ToDouble( StairHeight.Text );
             SystemSave.startAngleForCHM1 = Convert.ToDouble(HCM1Start.Text);
             if (isMaleCheckc.IsChecked == true)
@@ -146,7 +146,7 @@ namespace socketServer
             ChangeValue.Text = SystemSave.Dertshold.ToString();
             UpForStart.Text = SystemSave.uperGateForStart.ToString();
             DownForStart.Text = SystemSave.downGateForStart.ToString();
-            DecisionTreePathText.Text = SystemSave.DecrsionTreeBasedFile;
+            TrainBasePath.Text = SystemSave.TrainBasedFile;
             TreeMethod.SelectedIndex = SystemSave.DecisionTreeMethodID;
             HeadingCanculateMode.SelectedIndex = SystemSave.CanculateHeadingMode;
             StairHeight.Text = SystemSave.StairHeight.ToString();
@@ -241,7 +241,7 @@ namespace socketServer
               ValueUperGateForStart = SystemSave.uperGateForStart.ToString();
               ValueDownGateForStart = SystemSave.downGateForStart.ToString();
               ValueIsDynamicallyZeroLine = SystemSave.isDynamicallyZeroLineForStepDection;
-              ValueDecisionTreePath = SystemSave.DecrsionTreeBasedFile;
+              ValueDecisionTreePath = SystemSave.TrainBasedFile;
               ValueTreeMethod = SystemSave.DecisionTreeMethodID;
 
               ValueIsAllowZMove = SystemSave.isStairsUp;
@@ -250,7 +250,8 @@ namespace socketServer
               ValueStairHeight = SystemSave.StairHeight.ToString();
               ValueHeadingCanculateMode = SystemSave.CanculateHeadingMode;
               ValueSystemStartAngleForCHM1 = SystemSave.startAngleForCHM1.ToString();
-               hasBasicValue = true;//最初数值只会被记录一次
+
+              hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -274,7 +275,7 @@ namespace socketServer
             ChangeValue.Text = ValueDertshold;
             UpForStart.Text = ValueUperGateForStart;
             DownForStart.Text = ValueDownGateForStart;
-            DecisionTreePathText.Text = ValueDecisionTreePath;
+            TrainBasePath.Text = ValueDecisionTreePath;
             StairHeight.Text = ValueStairHeight;
 
             HCM1Start.Text = ValueSystemStartAngleForCHM1;
@@ -326,8 +327,9 @@ namespace socketServer
             theDecisionTreeNode.nodeCountAll = 0;
             theDecisionTreeNode.maxDepth = 0;
             SystemSave.StepLengthTree = new Codes.DecisionTree.theDecisionTree();
-            SystemSave.StepLengthTree.BuildTheTree("TrainBase/TrainBaseTree.txt",0);
-            string informationS = "根据文件"+ DecisionTreePathText.Text+"内容已经建立决策树\n";
+            //SystemSave.StepLengthTree.BuildTheTree("TrainBase/TrainBaseTree.txt",0);
+            SystemSave.StepLengthTree.BuildTheTree(SystemSave.TrainBasedFile, 0);
+            string informationS = "根据文件"+ TrainBasePath.Text +"内容已经建立决策树\n";
             if (isPruning.IsChecked == true)
                 informationS += "(使用了一些剪枝策略)\n";
             else
@@ -351,8 +353,9 @@ namespace socketServer
             theDecisionTreeNode.nodeCountAll = 0;
             theDecisionTreeNode.maxDepth = 0;
             SystemSave.StairTree = new Codes.DecisionTree.theDecisionTree();
-            SystemSave.StairTree.BuildTheTree("TrainBase/TrainBaseTree.txt",1);
-            string informationS = "根据文件" + DecisionTreePathText.Text + "内容已经建立决策树\n";
+            //SystemSave.StairTree.BuildTheTree("TrainBase/TrainBaseTree.txt",1);
+            SystemSave.StairTree.BuildTheTree(SystemSave.TrainBasedFile, 1);
+            string informationS = "根据文件" + TrainBasePath.Text + "内容已经建立决策树\n";
             if (isPruning.IsChecked == true)
                 informationS += "(使用了一些剪枝策略)\n";
             else

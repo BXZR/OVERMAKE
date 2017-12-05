@@ -1,4 +1,5 @@
 ﻿using socketServer.Codes.DecisionTree;
+using socketServer.Windows;
 using System.Collections.Generic;
 using System.Windows.Media;
 
@@ -12,7 +13,11 @@ namespace socketServer
         public static string serverIP = "219.216.73.162";//程序服务器的IP
         public static int serverPort = 8886;//程序服务器的端口
         public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
+
+        //有些窗口应该保持单例模式
         public static Settings theSettingWindow = null;//全局唯一设定窗口
+        public static Appendix theAppendixWindow = null;//全局唯一附录窗口
+
         //如果正在上楼梯，这个标记实际上需要根据数据得到
         //这个标记的作用是开/关Z轴的计算
         public static bool isStairsUp = false;
@@ -88,7 +93,8 @@ namespace socketServer
         public static bool isDynamicallyZeroLineForStepDection = false;
 
         //构建决策树所需要的文件路径
-        public static string DecrsionTreeBasedFile = "TrainBase/TrainBaseTree.txt";
+        //事实上所有的数据集都用这个文件
+        public static string TrainBasedFile = "TrainBase/TrainBaseTree.txt";
         //决策树算法类型 0:IC3  1:C4.5
         public static int DecisionTreeMethodID = 0;
         public static bool isCutForDecisionTree = false;//决策树是不是要剪枝？默认不剪枝，用来对比

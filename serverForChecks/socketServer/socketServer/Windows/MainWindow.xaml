@@ -10,11 +10,15 @@
         <Button Content="save" HorizontalAlignment="Right" Margin="0,82,123,0" x:Name="button1" Width="75" Click="button1_Click" Height="22" VerticalAlignment="Top" />
         <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,46,123,0" x:Name="theStartButton" VerticalAlignment="Top" Width="75" Click="button2_Click" />
         <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,46,25,0" x:Name="theStopButton" VerticalAlignment="Top" Width="75" Click="button3_Click_1" IsEnabled="False" />
-        <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,449,25,0" x:Name="button4" VerticalAlignment="Top" Width="75" Click="button4_Click" />
+        <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,415,25,0" x:Name="button4" VerticalAlignment="Top" Width="75" Click="button4_Click" />
         <Grid Margin="10,12,203,6" x:Name="Chart">
-            <Label Content="Data Tip" Height="265" Margin="10,32,476,0" x:Name="theStepLabel" VerticalAlignment="Top" />
-            <TextBox x:Name="POSITION" Margin="3,302,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True"/>
-            <Canvas x:Name="theCanvas" Margin="0,32,20,-39" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="442" Height="458" VerticalAlignment="Top" UseLayoutRounding="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="409*"/>
+                <ColumnDefinition Width="480*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Data Tip" Height="265" Margin="10,32,476,0" x:Name="theStepLabel" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+            <TextBox x:Name="POSITION" Margin="3,302,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2"/>
+            <Canvas x:Name="theCanvas" Margin="0,32,10,0" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="452" Height="480" VerticalAlignment="Top" UseLayoutRounding="False" Grid.Column="1">
                 <Canvas.Background>
                     <ImageBrush ImageSource="/socketServer;component/pictures/back3.png"/>
                 </Canvas.Background>
@@ -27,17 +31,14 @@
                     </TransformGroup>
                 </Canvas.LayoutTransform>
                 <Image x:Name="HeadingImage" Source="/socketServer;component/pictures/headArrow.png" RenderTransformOrigin="0.5,0.577" Height="32" Canvas.Left="213" Canvas.Top="230" Width="39"/>
-                <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="169" Height="43" VerticalAlignment="Top" Foreground="#FF0101E6" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Canvas.Left="273"/>
             </Canvas>
-            <Button x:Name="button2" Content="Save Route Map" Margin="518,5,237,0" VerticalAlignment="Top" Click="button2_Click_1"/>
-            <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="418,32,0,0"/>
+            <Button x:Name="button2" Content="Save Route Map" Margin="109,2,237,0" VerticalAlignment="Top" Click="button2_Click_1" Grid.Column="1"/>
+            <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="9,32,0,0" Grid.Column="1"/>
+            <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="201" Height="33" VerticalAlignment="Top" Foreground="#FF0101E6" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Margin="0,0,20,0" Grid.Column="1"/>
         </Grid>
-        <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,449,123,0" x:Name="button6" VerticalAlignment="Top" Width="75" Click="button6_Click" />
-        <Button x:Name="button" Content="tensorFlowDEMO" Margin="632,510,325,0" Click="button_Click" Height="22" VerticalAlignment="Top"/>
-        <Button x:Name="button7" Content="createPic" HorizontalAlignment="Right" Margin="0,508,493,0" VerticalAlignment="Top" Width="99" Click="button7_Click" Height="22"/>
-        <Label x:Name="Charts" Content="ImageDisplay" Margin="0,412,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,415,123,0" x:Name="button6" VerticalAlignment="Top" Width="75" Click="button6_Click" />
+        <Label x:Name="Charts" Content="ImageDisplay" Margin="0,378,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy" Content="Normal" Margin="0,10,123,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Label x:Name="Charts_Copy1" Content="Demos" Margin="436,0,609,6" VerticalAlignment="Bottom" Foreground="#FF4600FF" FontWeight="Bold" Height="26"/>
         <Button x:Name="button5" Content="color" Margin="0,82,25,0" HorizontalAlignment="Right" Width="75" Click="button5_Click" Height="22" VerticalAlignment="Top">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -48,22 +49,22 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Label x:Name="Charts_Copy2" Content="StepCheckMethod" Margin="0,200,38,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="stepCheckAxisUse" Margin="0,166,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
+        <Label x:Name="Charts_Copy2" Content="StepCheckMethod" Margin="0,187,38,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="stepCheckAxisUse" Margin="0,153,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="DirectZ"/>
             <ComboBoxItem Content="DirecX"/>
             <ComboBoxItem Content="DirecY"/>
             <ComboBoxItem Content="AbsoluteXYZ"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,137,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="stepCheckMethod" Margin="0,229,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
+        <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,124,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="stepCheckMethod" Margin="0,216,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="Peack(Trend)"/>
             <ComboBoxItem Content="Peack(Threshold)"/>
             <ComboBoxItem Content="Sample"/>
             <ComboBoxItem Content="ZeroCross"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,262,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,291,25,0" VerticalAlignment="Top" Width="173" SelectedIndex="0" SelectionChanged="StepLengthMethod_SelectionChanged">
+        <Label x:Name="Charts_Copy4" Content="StepLengthMethod" Margin="0,249,44,0" HorizontalAlignment="Right" Width="163" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="StepLengthMethod" HorizontalAlignment="Right" Margin="0,278,25,0" VerticalAlignment="Top" Width="173" SelectedIndex="0" SelectionChanged="StepLengthMethod_SelectionChanged">
             <ComboBoxItem Content="ImmediateValue"/>
             <ComboBoxItem Content="ImmediateValue2"/>
             <ComboBoxItem Content="Common formula"/>
@@ -74,11 +75,11 @@
             <ComboBoxItem Content="Common formula with Dection Tree"/>
             <ComboBoxItem Content="ComMoveWithLeg"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,13,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,11,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="Tips" Margin="0,13,984,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Button x:Name="button8" Content="Settings" Margin="0,484,25,0" Click="button8_Click" HorizontalAlignment="Right" Width="75" Height="26" VerticalAlignment="Top"/>
-        <Label x:Name="Charts_Copy7" Content="HeadingMethod" Margin="0,322,44,0" HorizontalAlignment="Right" Width="163" Foreground="#FF4600FF" FontWeight="Bold" Height="26" VerticalAlignment="Top"/>
-        <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,350,25,0" Width="173" SelectedIndex="0" Height="22" VerticalAlignment="Top">
+        <Button x:Name="button8" Content="Settings" Margin="0,450,25,0" Click="button8_Click" HorizontalAlignment="Right" Width="75" Height="26" VerticalAlignment="Top"/>
+        <Label x:Name="Charts_Copy7" Content="HeadingMethod" Margin="0,309,44,0" HorizontalAlignment="Right" Width="163" Foreground="#FF4600FF" FontWeight="Bold" Height="26" VerticalAlignment="Top"/>
+        <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,337,25,0" Width="173" SelectedIndex="0" Height="22" VerticalAlignment="Top">
             <ComboBoxItem Content="CompassRead"/>
             <ComboBoxItem Content="MSBasedCompass"/>
             <ComboBoxItem Content="AHRS(client)"/>
@@ -88,7 +89,9 @@
             <ComboBoxItem Content="AHRS(server)"/>
             <ComboBoxItem Content="IMU(server)"/>
         </ComboBox>
-        <Button x:Name="button9" Content="3DView" Margin="0,416,25,0" Click="button9_Click" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Top"/>
-        <Label x:Name="Charts_Copy8" Content="SystemControl" Margin="0,484,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Button x:Name="button9" Content="3DView" Margin="0,382,25,0" Click="button9_Click" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Top"/>
+        <Label x:Name="Charts_Copy8" Content="SystemControl" Margin="0,450,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Label x:Name="Charts_Copy1" Content="AppendixWork" Margin="0,490,101,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Button x:Name="theAppendix" Content="Appendix" Margin="0,490,25,0" VerticalAlignment="Top" Click="theAppendix_Click" Height="26" HorizontalAlignment="Right" Width="75"/>
     </Grid>
 </Window>

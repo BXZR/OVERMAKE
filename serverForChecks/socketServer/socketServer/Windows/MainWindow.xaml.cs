@@ -34,7 +34,7 @@ namespace socketServer
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
         stepDetection stepExtra;//额外的判断走了一步的方法集合
-        stepModeCheck theStepModeCheckController;//推断行走状态：战力，行走，奔跑用 的控制单元
+        stepModeCheck theStepModeCheckController;//推断行走状态：站立，行走，奔跑用 的控制单元
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
         float stepTimer = 0.5f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
@@ -59,6 +59,7 @@ namespace socketServer
         //整体工作模式
         private void makeFlashController()
         {
+            Console.WriteLine("开始刷新");
             //方法切换在这里判断执行
             if (theWorkType == workType.timerFlash)//有一点强硬的阶段
             {
@@ -80,6 +81,9 @@ namespace socketServer
         void withSavedData(object sender, EventArgs e)
         {
             //-----------------------------------------------获取计算用数据-----------------------------------------------//
+            //如果扩展成多人同时操作（工作量超大）
+            //可以考虑将informationController做成List然后所有内容循环处理
+
             //刷新存储空间
             theFilteredAZ = stepCheckAxis();
             theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree, 0.1f);
@@ -806,10 +810,21 @@ namespace socketServer
 
 
         //开启封装方法
-        public string  makeStart()
+        //可以指定informationController，这样可以在整体的server中获得分项信息处理之后的信息内容 
+        public string  makeStart(information theInformationIn = null , bool isSingle = true)
         {
             //全世界的初始化都在这里完成
-            theInformationController = new information();
+            if (isSingle == false)
+            {
+                theStartButton.IsEnabled = false;
+                theStopButton.IsEnabled = false;
+            }
+
+            if (theInformationIn == null)
+                theInformationController = new information();
+            else
+                theInformationController = theInformationIn;
+
             theServerController = new theServer(theInformationController);
             thePeackFinder = new PeackSearcher();
             theFileSaver = new FileSaver();
@@ -828,8 +843,13 @@ namespace socketServer
             makeFlashController();
 
             //正式开始
-            string showInformation = theServerController.startTheServer();
-            return showInformation;
+            //单人可以出这个效果，多人使用共用server不必再次绑定
+            if (isSingle)
+            {
+                string showInformation = theServerController.startTheServer();
+                return showInformation;
+            }
+            return "";
         }
         //关闭分装方法
         public string makeClose()

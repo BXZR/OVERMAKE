@@ -27,3 +27,5 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Win
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\TreeViewWindow.baml
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\Appendix.g.cs
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\Appendix.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\AllStartServerWondow.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\AllStartServerWondow.baml

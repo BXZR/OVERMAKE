@@ -99,6 +99,9 @@
     <Compile Include="Codes\stages\StageStance.cs" />
     <Compile Include="Codes\stages\StageWalk.cs" />
     <Compile Include="Codes\stages\stepAxis.cs" />
+    <Compile Include="Windows\AllStartServerWondow.xaml.cs">
+      <DependentUpon>AllStartServerWondow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Appendix.xaml.cs">
       <DependentUpon>Appendix.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,10 @@
     <Compile Include="Windows\TreeViewWindow.xaml.cs">
       <DependentUpon>TreeViewWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Windows\AllStartServerWondow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\Appendix.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

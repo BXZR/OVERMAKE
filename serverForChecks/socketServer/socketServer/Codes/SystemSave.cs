@@ -10,9 +10,10 @@ namespace socketServer
     {
 
         //系统设置的相关参数
-        public static string serverIP = "219.216.73.162";//程序服务器的IP
+        public static string serverIP = "219.216.78.119";//程序服务器的IP
         public static int serverPort = 8886;//程序服务器的端口
         public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
+        public static theServer theServrForAll;//所有窗口共享唯一的一个网络服务器
 
         //默认初始坐标（,这个坐标首先可以在设置界面进行设置，若有条件就在使用一些定位的方法获得）
         public static double startPositionX = 0;

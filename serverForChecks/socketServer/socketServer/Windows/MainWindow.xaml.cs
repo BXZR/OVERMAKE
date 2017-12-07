@@ -99,7 +99,8 @@ namespace socketServer
             //计算上下楼梯的模式
             StairCheck(indexBuff);
             //计算坐标并获得显示的文本
-            POSITION.Text = thePositionController.getPositions(theStepAngeUse, theStepLengthUse , theStairMode);
+            string informationForPosition = thePositionController.getPositions(theStepAngeUse, theStepLengthUse, theStairMode);
+            showPositiopnInformations(informationForPosition);
             //更新slope的数值
             stepModeCheck(indexBuff);
             //制作输出显示的内容
@@ -113,6 +114,17 @@ namespace socketServer
         }
 
         //额外补充计算////////////////////////////////////////////////////////////////////////////////////
+
+        //POSITION显示的文本的制作过程
+        //但是注意，获取焦点显示最后一行的方法会与选择方法的combox有选择上的冲突
+        private void showPositiopnInformations(string informaitonIn)
+        {
+            POSITION.Text = informaitonIn;
+            //光标定位到文本最后，如果得到用户选定，就会自动定位到最后一行了
+            POSITION.Select(POSITION.Text.Length, 0);
+           // POSITION.Focus();//获取焦点(这个与其他控件有冲突，不如直接让用户自己选定)
+        }
+
         public void canculateExtra()
         {
             //使用动态零线方法

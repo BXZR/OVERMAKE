@@ -14,6 +14,11 @@ namespace socketServer
         public static int serverPort = 8886;//程序服务器的端口
         public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
 
+        //默认初始坐标（,这个坐标首先可以在设置界面进行设置，若有条件就在使用一些定位的方法获得）
+        public static double startPositionX = 0;
+        public static double startPositionY = 0;
+        public static double startPositionZ = 0; 
+
         //有些窗口应该保持单例模式
         public static Settings theSettingWindow = null;//全局唯一设定窗口
         public static Appendix theAppendixWindow = null;//全局唯一附录窗口

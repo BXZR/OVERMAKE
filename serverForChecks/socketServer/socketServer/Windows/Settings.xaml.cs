@@ -125,6 +125,10 @@ namespace socketServer
 
             SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
             SystemSave.CanculateHeadingMode = HeadingCanculateMode.SelectedIndex;
+
+            SystemSave.startPositionX = Convert.ToDouble(StartPositionX.Text);
+            SystemSave.startPositionY = Convert.ToDouble(StartPositionY.Text);
+            SystemSave.startPositionZ = Convert.ToDouble(StartPositionZ.Text);
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -181,6 +185,11 @@ namespace socketServer
             else
                 CanculateZMove.IsChecked =  false;
 
+            StartPositionX.Text = SystemSave.startPositionX.ToString();
+            StartPositionY.Text = SystemSave.startPositionY.ToString();
+            StartPositionZ.Text = SystemSave.startPositionZ.ToString();
+
+
             //记录一次最初的数值
             getStartValue();
         }
@@ -216,6 +225,11 @@ namespace socketServer
         private static bool ValueIsCuttingDectionTree;
         private static int  ValueHeadingCanculateMode;
         private static string  ValueSystemStartAngleForCHM1;
+
+        private static string ValueStartPositionX;
+        private static string ValueStartPositionY;
+        private static string ValueStartPositionZ;
+
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -250,6 +264,10 @@ namespace socketServer
               ValueStairHeight = SystemSave.StairHeight.ToString();
               ValueHeadingCanculateMode = SystemSave.CanculateHeadingMode;
               ValueSystemStartAngleForCHM1 = SystemSave.startAngleForCHM1.ToString();
+
+              ValueStartPositionX = SystemSave.startPositionX.ToString();
+              ValueStartPositionY = SystemSave.startPositionY.ToString();
+              ValueStartPositionZ = SystemSave.startPositionZ.ToString();
 
               hasBasicValue = true;//最初数值只会被记录一次
            }
@@ -309,6 +327,10 @@ namespace socketServer
 
             TreeMethod.SelectedIndex =  ValueTreeMethod;
             HeadingCanculateMode.SelectedIndex = ValueHeadingCanculateMode;
+
+            StartPositionX.Text = ValueStartPositionX;
+            StartPositionY.Text = ValueStartPositionY;
+            StartPositionZ.Text = ValueStartPositionZ;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

@@ -83,6 +83,12 @@ namespace socketServer
             }
             else
             {
+                //否则就是默认初始坐标(0)
+                //这是一个了累加展示的程序，因此展示相对坐标就好
+                // positionX = SystemSave.startPositionX;
+                // positionY = SystemSave.startPositionY;
+                // positionZ = SystemSave.startPositionZ;
+                // 真正使用的
                 positionX = 0;
                 positionY = 0;
                 positionZ = 0;
@@ -91,7 +97,8 @@ namespace socketServer
             List<double> YSave = new List<double>();
             List<double> ZSave = new List<double>();
             List<double> headingSave = new List<double>();
-            string theInformation = "角度： 0.0000  步长： 0.6000  坐标： （0.0000 , 0.0000 , 0.0000）\n";
+            string theInformation = "详细定位信息  初始坐标（" + SystemSave.startPositionX.ToString("f4")  +" , "+ 
+               SystemSave.startPositionY.ToString("f4") +" , " + SystemSave.startPositionZ.ToString("f4") + "）\n";
             for (int i = 0; i < angels .Count; i++)
             {
                 double XAdd = Math.Sin(getRadianFromDegree(angels[i])) * stepLengths[i];
@@ -121,7 +128,11 @@ namespace socketServer
             for (int i = 0; i < XSave.Count; i++)
             {
                 theTransformPosition.Add(new transForm(XSave[i] , YSave[i], ZSave[i], headingSave[i]));
-                theInformation += "角度： " + angels[i].ToString("f4") + "  步长： "+stepLengths [i].ToString("f4")+"  坐标： (" + XSave[i].ToString("f4") + " , " + YSave[i].ToString("f4") + " , " + ZSave[i].ToString("f4") + ") \n";
+                //最终展示的时候除了偏移量还需要加上真实初始的坐标
+                theInformation += "角度： " + angels[i].ToString("f4") + "  步长： " + stepLengths[i].ToString("f4");
+                theInformation += "  坐标： (" + (XSave[i] + SystemSave.startPositionX).ToString("f4") + " , ";
+                theInformation += (YSave[i] + SystemSave.startPositionY).ToString("f4") + " , ";
+                theInformation += (ZSave[i]+SystemSave.startPositionZ).ToString("f4") + ") \n";
             }
             return theInformation;
         }

@@ -129,6 +129,7 @@ namespace socketServer
             SystemSave.startPositionX = Convert.ToDouble(StartPositionX.Text);
             SystemSave.startPositionY = Convert.ToDouble(StartPositionY.Text);
             SystemSave.startPositionZ = Convert.ToDouble(StartPositionZ.Text);
+            SystemSave.routeLineScale = Convert.ToDouble(routeLineScale.Text);
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -188,7 +189,7 @@ namespace socketServer
             StartPositionX.Text = SystemSave.startPositionX.ToString();
             StartPositionY.Text = SystemSave.startPositionY.ToString();
             StartPositionZ.Text = SystemSave.startPositionZ.ToString();
-
+            routeLineScale.Text = SystemSave.routeLineScale.ToString();
 
             //记录一次最初的数值
             getStartValue();
@@ -230,6 +231,8 @@ namespace socketServer
         private static string ValueStartPositionY;
         private static string ValueStartPositionZ;
 
+        private static string ValuerRouteLineScale;
+
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -268,6 +271,8 @@ namespace socketServer
               ValueStartPositionX = SystemSave.startPositionX.ToString();
               ValueStartPositionY = SystemSave.startPositionY.ToString();
               ValueStartPositionZ = SystemSave.startPositionZ.ToString();
+              
+              ValuerRouteLineScale = SystemSave.routeLineScale.ToString();
 
               hasBasicValue = true;//最初数值只会被记录一次
            }
@@ -331,6 +336,7 @@ namespace socketServer
             StartPositionX.Text = ValueStartPositionX;
             StartPositionY.Text = ValueStartPositionY;
             StartPositionZ.Text = ValueStartPositionZ;
+            routeLineScale.Text = ValuerRouteLineScale;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

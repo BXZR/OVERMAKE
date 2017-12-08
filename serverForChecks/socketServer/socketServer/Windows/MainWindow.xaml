@@ -55,6 +55,7 @@
             <ComboBoxItem Content="DirecX"/>
             <ComboBoxItem Content="DirecY"/>
             <ComboBoxItem Content="AbsoluteXYZ"/>
+            <ComboBoxItem Content="MaxVariance"/>
         </ComboBox>
         <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,124,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <ComboBox x:Name="stepCheckMethod" Margin="0,216,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">

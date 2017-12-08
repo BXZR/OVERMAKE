@@ -225,6 +225,10 @@ namespace socketServer
                     //基础方法:用三个轴的加速度平方和开根号得到
                     theFilteredAZ = theStepAxis.ABXYZ(theInformationController, theFilter);
                     break;
+                case 4:
+                    //基础方法:用三个轴的加速度最大方差得到
+                    theFilteredAZ = theStepAxis.XYZMaxVariance(theInformationController, theFilter);
+                    break;
             }
             return theFilteredAZ;
         }
@@ -931,10 +935,10 @@ namespace socketServer
             theCanvas.Children.Add(ellipse);
 
             Line drawLine = new Line();
-            drawLine.X1 = theCanvas.Width / 2 + X1Save * 5;//怕跑出范围，所以就缩小了一些
-            drawLine.Y1 = theCanvas.Height / 2 - Y1Save * 5;//怕跑出范围，所以就缩小了一些
-            drawLine.X2 = theCanvas.Width / 2 + X2 * 5;//怕跑出范围，所以就缩小了一些
-            drawLine.Y2 = theCanvas.Height / 2 - Y2* 5;//怕跑出范围，所以就缩小了一些
+            drawLine.X1 = theCanvas.Width / 2 + X1Save * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            drawLine.Y1 = theCanvas.Height / 2 - Y1Save * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            drawLine.X2 = theCanvas.Width / 2 + X2 * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            drawLine.Y2 = theCanvas.Height / 2 - Y2* SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
             //保存字段值
             X1Save = X2;
             Y1Save = Y2;
@@ -963,10 +967,10 @@ namespace socketServer
             for (int u = 0; u < SystemSave.savedPositions .Count -1; u++)
             {
                 Line drawLine = new Line();
-                drawLine.X1 = theCanvas.Width / 2 + SystemSave.savedPositions[u].X * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y1 = theCanvas.Height / 2 - SystemSave.savedPositions[u].Y * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.X2 = theCanvas.Width / 2 + SystemSave.savedPositions[u+1].X * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y2 = theCanvas.Height / 2 - SystemSave.savedPositions[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.X1 = theCanvas.Width / 2 + SystemSave.savedPositions[u].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                drawLine.Y1 = theCanvas.Height / 2 - SystemSave.savedPositions[u].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                drawLine.X2 = theCanvas.Width / 2 + SystemSave.savedPositions[u+1].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                drawLine.Y2 = theCanvas.Height / 2 - SystemSave.savedPositions[u+1].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
                 drawLine.Stroke = new SolidColorBrush(SystemSave.theOldColor);
                 drawLine.StrokeThickness = 2;
                 theCanvas.Children.Add(drawLine);
@@ -975,10 +979,10 @@ namespace socketServer
             for (int u = 0; u < thePositionController.theTransformPosition.Count-1; u++)
             {
                 Line drawLine = new Line();
-                drawLine.X1 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u].X *5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y1 = theCanvas.Height / 2 - thePositionController.theTransformPosition[u].Y * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.X2 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u+1].X * 5;//怕跑出范围，所以就缩小了一些
-                drawLine.Y2 = theCanvas.Height / 2 - thePositionController.theTransformPosition[u+1].Y * 5;//怕跑出范围，所以就缩小了一些
+                drawLine.X1 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                drawLine.Y1 = theCanvas.Height / 2 - thePositionController.theTransformPosition[u].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                drawLine.X2 = theCanvas.Width / 2 + thePositionController.theTransformPosition[u+1].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                drawLine.Y2 = theCanvas.Height / 2 - thePositionController.theTransformPosition[u+1].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
                 drawLine.Stroke = new SolidColorBrush(SystemSave.theNewColor);
                 drawLine.StrokeThickness = 2;
                 theCanvas.Children.Add(drawLine);
@@ -996,8 +1000,8 @@ namespace socketServer
                 return;
             int indexForLast = thePositionController.theTransformPosition.Count - 1;
             //进行移动
-            double imagePositionX =  theCanvas.Width / 2 + thePositionController.theTransformPosition[indexForLast].X * 5;//怕跑出范围，所以就缩小了一些
-            double imagePositionY = theCanvas.Height / 2 - thePositionController.theTransformPosition[indexForLast].Y * 5;//怕跑出范围，所以就缩小了一些
+            double imagePositionX =  theCanvas.Width / 2 + thePositionController.theTransformPosition[indexForLast].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            double imagePositionY = theCanvas.Height / 2 - thePositionController.theTransformPosition[indexForLast].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
             imagePositionX -= HeadingImage.Width / 2;
             imagePositionY -= HeadingImage.Height / 2;
             Canvas.SetLeft(HeadingImage, imagePositionX);

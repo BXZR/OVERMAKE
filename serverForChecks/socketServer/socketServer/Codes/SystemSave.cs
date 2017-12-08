@@ -132,5 +132,8 @@ namespace socketServer
         //滤波器的中平滑平均的数量，因为考虑到有积分的时候，所以需要把这个作为一参数来做
         //积分滤波后的数据的时候需要乘以这个参数
         public static int filterSmoothCount = 5;
+
+        //路线图绘制缩放值，为了适应不同的路线大小每走一步的距离不一定就是那么大，要有缩放
+        public static double routeLineScale = 5;
     }
 }

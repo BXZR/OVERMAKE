@@ -625,8 +625,8 @@ namespace socketServer
         void saveTrainBase(List<double> theFilteredAZ)
         {
             List<string> theTrainBase = new List<string>();
-           // List<double> FilteredX = theFilter.theFilerWork(theInformationController.GPSPositionX);
-           //List<double> FilteredY = theFilter.theFilerWork(theInformationController.GPSPositionY);
+            // List<double> FilteredX = theFilter.theFilerWork(theInformationController.GPSPositionX);
+            //List<double> FilteredY = theFilter.theFilerWork(theInformationController.GPSPositionY);
             //Console.WriteLine("V = "+indexBuff.Count);
             //for (int ee = 0; ee < FilteredX.Count; ee++)
             //{ 
@@ -659,32 +659,13 @@ namespace socketServer
             //{
             //    theFileSaver.saveInformation(theTrainBase, "TrainBase/GPSFake-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
             //}
-            //生成通用的数据--------------------------------------------------------------------------------------------------
-            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theInformationController);
-            theTrainBase.Clear();
-            if (theTrainBase != null && theTrainBase.Count >= 1)
-            {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase-" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".txt");
-            }
-            //生成决策树数据----------------------------------------------------------------------------------------------------
-            theTrainBase.Clear();
-            theTrainBase = theTrainFileMake.getSaveTrainFileForTreeDemo(indexBuff, theInformationController, theStepLengthController);
-            if (theTrainBase != null && theTrainBase.Count >= 1)
-            {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseTree.txt");
-            }
-            //生成回归测试使用的文件--------------------------------------------------------------------------------------------
+            //生成文件，这个文件用做训练集，决策树或者其他操作，通用的--------------------------------------------------------------------------------------------------
             theTrainBase.Clear();
             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-            for (int i = 1; i < indexBuff.Count; i++)
-            {
-                theTrainBase.Add(
-                theTrainFileMake.getSaveTrainFileFake(indexBuff[i - 1], indexBuff[i], theFilteredAZ,timeUse)
-                );
-            }
+            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theFilteredAZ, timeUse, theInformationController,theStepLengthController);
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBaseFake.txt");
+                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase.txt");
             }
         }
 

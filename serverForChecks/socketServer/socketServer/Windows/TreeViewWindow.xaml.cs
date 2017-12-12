@@ -44,10 +44,10 @@ namespace socketServer.Windows
             }
             Console.WriteLine("开始绘制");
             theDecisionTreeNode root = theTree.theRoot;
-            YLength = theDrawCanvas.Height / theTree.getDepth();
-            Console.WriteLine(theDrawCanvas.Width);
-            Console.WriteLine(theDrawCanvas.Height );
-            drawTree(root, 0, theDrawCanvas.Width, theDrawCanvas.Width / 2, 0);
+            YLength = theDrawCanvas.Height*0.95 / theTree.getDepth();
+            //Console.WriteLine(theDrawCanvas.Width);
+            //Console.WriteLine(theDrawCanvas.Height );
+            drawTree(root, theDrawCanvas.Width*0.02, theDrawCanvas.Width*0.98, theDrawCanvas.Width / 2, 0);
         }
 
 
@@ -69,7 +69,8 @@ namespace socketServer.Windows
 
                 drawLine(fatherX, fatherY, XforthisChild, YfotthisChild);
                 drawEclipse(XforthisChild , YfotthisChild);
-
+                drawLabel(XforthisChild, YfotthisChild, father.childs[i].name);
+                
                 drawTree(father.childs[i], startPosition + stepNow , startPosition + stepNow + lengtForEach, XforthisChild, YfotthisChild);
 
                //为下一个节点做准备
@@ -77,11 +78,25 @@ namespace socketServer.Windows
             }
         }
 
+
+        //显示label
+        private void drawLabel(double X, double Y,string name)
+        {
+            Label aLabel = new Label();
+            aLabel.Content = name;
+            aLabel.FontSize = 10;
+            //设定旋转角
+            double headingAngel = 45;
+            aLabel.RenderTransform = new RotateTransform(headingAngel);
+
+            Canvas.SetLeft(aLabel, X-5 );
+            Canvas.SetTop(aLabel, Y-5 );
+            theDrawCanvas.Children.Add(aLabel);
+        }
+
         //画线使用
         private void drawLine(double X1, double Y1 , double X2 , double Y2)
         {
-
-
             Line drawLine = new Line();
             drawLine.X1 = X1;
             drawLine.Y1 = Y1;

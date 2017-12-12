@@ -29,16 +29,16 @@ sess = tf.Session()
 sess.run(init)
 
 index = 0
-file = open("TrainBaseFake.txt")
+file = open("TrainBase.txt")
 for eachline in file:
     read = eachline .split("," )
     if len(read) <3 :
         break
     X = [[],[]]
     SLData = []
-    X[0].append (float(str(read[0])))
-    X[1].append (float(str(read[1])))
-    SLData.append(float(str(read[2].split("\n")[0])))
+    X[0].append (float(str(read[12])))
+    X[1].append (float(str(read[13])))
+    SLData.append(float(str(read[14].split("\n")[0])))
     
     X = np.resize(X, (len(X[0]),2))
     SLData = np.resize(SLData , (len(SLData),1))
@@ -65,13 +65,13 @@ print("Model is saved.")
 
 print("========================读取最新信息使用训练好的内容进行推测================================")
 saver.restore(sess, './modelForBP.ckpt')
-file = open("TrainBaseFake.txt")
+file = open("TrainBase.txt")
 read = file.readline().split("," )
 X = [[],[]]
 SLData = []
-X[0].append (float(str(read[0])))
-X[1].append (float(str(read[1])))
-SLData.append(float(str(read[2].split("\n")[0])))
+X[0].append (float(str(read[12])))
+X[1].append (float(str(read[13])))
+SLData.append(float(str(read[14].split("\n")[0])))
         
 X = np.resize(X, (len(X[0]),2))
 SLData = np.resize(SLData , (len(SLData),1))

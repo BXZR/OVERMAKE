@@ -135,9 +135,8 @@ namespace socketServer.Codes.DecisionTree
                 GX.Add(Convert.ToDouble(rows[3]));
                 GY.Add(Convert.ToDouble(rows[4]));
                 GZ.Add(Convert.ToDouble(rows[5]));
-                SL.Add(Convert.ToDouble(rows[6]));
-                //Console.WriteLine("rows[7] = "+ rows[7]);
-                StairMode.Add(Convert.ToInt32(rows[7]));
+                SL.Add(Convert.ToDouble(rows[15]));
+                StairMode.Add(Convert.ToInt32(rows[16]));
             }
             Console.WriteLine("Data loaded for tree");
         }
@@ -379,7 +378,7 @@ namespace socketServer.Codes.DecisionTree
                 {
                     types.Add(theFatherPoint.MAP[index][i]);
                 }
-            }
+            } 
             //Console.WriteLine("------------------------------------------------");
             //Console.WriteLine("Father is "+ theFatherPoint.name);
             for (int i = 0; i < types.Count; i++)
@@ -422,7 +421,7 @@ namespace socketServer.Codes.DecisionTree
             //    return 1;
             //if (Value >= 0.25 && Value < 0.5)
             //    return 2;
-            //if (Value >= 0.5 && Value  < 0.75)
+            //if (Value >= 0.5 && Value < 0.75)
             //    return 3;
             //else
             //    return 4;

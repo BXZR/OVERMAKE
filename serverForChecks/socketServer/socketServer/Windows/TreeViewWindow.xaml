@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer.Windows"
         mc:Ignorable="d"
-        Title="TreeViewWindow" Height="554.373" Width="719.983" ResizeMode="NoResize">
+        Title="TreeViewWindow" Height="558.808" Width="884.077" ResizeMode="NoResize">
     <Grid Background="#FFF1F1F1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="theDrawCanvas" Margin="0,0,0,22" Background="#FFE0E0E0" Height="484" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="714"/>
+        <Canvas x:Name="theDrawCanvas" Background="#FFE0E0E0" Height="484" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="878" Margin="0,0,0,10"/>
 
     </Grid>
 </Window>

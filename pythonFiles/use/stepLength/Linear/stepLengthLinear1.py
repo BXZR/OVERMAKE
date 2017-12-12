@@ -20,14 +20,14 @@ sess.run(init)
 steps = 1000
 
 index = 0
-file = open("TrainBaseFake.txt")
+file = open("TrainBase.txt")
 for eachline in file:
     read = eachline .split("," )
     if len(read) <3 :
         break
-    xs = read[0]
-    ys = read[1]
-    sls = read[2].split("\n")[0]
+    xs = read[12]
+    ys = read[13]
+    sls = read[14].split("\n")[0]
     feed = {x : float(str(xs)), y : float(str(ys)) , sl : float(str(sls))}
     sess.run(train_step , feed_dict = feed)
     index += 1

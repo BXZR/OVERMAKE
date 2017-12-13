@@ -109,7 +109,7 @@ namespace socketServer
                 positionY += YAdd;
                 //这个需要使用决策树判断是不是上楼梯型的stepLength
                 //最后根据已经得到的siderStep来获得（这可能是一个立即数）
-                if (SystemSave.isStairsUp && stairMode != null)//如果判断Z轴向的移动(一般来说平面计算就有老所事情要做)
+                if (stairMode != null)//如果判断Z轴向的移动(一般来说平面计算就有老所事情要做)
                 {
                     //目前位置的向上平移不过是最简单的使用楼梯高度累积
                     int moveDir = stairMode[i];//这个可以用决策树得到1  -1  0

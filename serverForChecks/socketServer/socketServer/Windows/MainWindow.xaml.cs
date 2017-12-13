@@ -1,4 +1,5 @@
-﻿using socketServer.Codes.DecisionTree;
+﻿using socketServer.Codes;
+using socketServer.Codes.DecisionTree;
 using socketServer.Codes.stages;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace socketServer
         float stepTimer = 0.5f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
-
+        ZAxisMoveController theZMoveController;//Z轴向移动的控制单元
 
         //公有的存储空间
         List<double> theStepAngeUse = new List<double>();
@@ -266,23 +267,35 @@ namespace socketServer
         //开销很大...
         void StairCheck(List<int> indexBuff)
         {
-            if (SystemSave.isStairsUp == false)
+            //根本就不计算Z轴位移，其实也是另一种开关
+            if (ZAxisSelect.SelectedIndex == 0)
             {
-                theStairMode = null;
-                return;
+                theStairMode = new List<int>();
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    theStairMode.Add(0);
+                }
             }
-            theStairMode = new List<int>();
-            //这些数据在一些复杂的方法中会用到，因此计算出来备用
-            List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
-            List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
-            List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
-            List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
-            List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
-            List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
-            for (int i = 0; i < indexBuff.Count; i++)
+            //决策树的方法
+            if (ZAxisSelect.SelectedIndex == 1)
             {
-                int mode = SystemSave.StairTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
-                theStairMode.Add(mode);
+                theStairMode = new List<int>();
+                if (SystemSave.StairTree == null)
+                {
+                    theStairMode = theZMoveController.noneMethod(indexBuff);
+                }
+                else
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                    theStairMode =  theZMoveController.DecisitionTreeMethod(indexBuff,ax,ay,az,gx,gy,gz);
+                }
             }
         }
 
@@ -697,12 +710,14 @@ namespace socketServer
             theStepLabel.Content += "\n-----------------------------------------------------------------------------";
             theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
             theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
-            theStepLabel.Content += "\n\n" + stepCheckMethod.SelectionBoxItem;
+            theStepLabel.Content += "\n\n判步方法：" + stepCheckMethod.SelectionBoxItem;
             theStepLabel.Content += "\n思想： "+stepExtra.getMoreInformation(stepCheckMethod.SelectedIndex);
             theStepLabel.Content += "\n\n步长计算方法：" + StepLengthMethod.SelectionBoxItem;
             theStepLabel.Content += "\n思想： " + theStepLengthController.getMoreInformation(StepLengthMethod.SelectedIndex);
             theStepLabel.Content += "\n\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
             theStepLabel.Content += "\n思想： " + theAngelController .getMoreInformation(HeadingMehtod.SelectedIndex);
+            theStepLabel.Content += "\n\n上下位移计算方法：" + ZAxisSelect.SelectionBoxItem;
+            theStepLabel.Content += "\n思想： " + theZMoveController.getMoreInformation(ZAxisSelect.SelectedIndex);
         }
 
         //获得走路的最新的slope数值使用
@@ -824,6 +839,7 @@ namespace socketServer
             theStepModeCheckController = new stepModeCheck();
             theTrainFileMake = new TrainFileMaker();
             theStepAxis = new stepAxis();
+            theZMoveController = new ZAxisMoveController();
             //相关工程更新
             makeFlashController();
 
@@ -979,24 +995,47 @@ namespace socketServer
         {
             if (trransForm.Count == 0)
                 return;
-            int indexForLast = thePositionController.theTransformPosition.Count - 1;
-            //进行移动
-            double imagePositionX =  theCanvas.Width / 2 + thePositionController.theTransformPosition[indexForLast].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
-            double imagePositionY = theCanvas.Height / 2 - thePositionController.theTransformPosition[indexForLast].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
-            imagePositionX -= HeadingImage.Width / 2;
-            imagePositionY -= HeadingImage.Height / 2;
-            Canvas.SetLeft(HeadingImage, imagePositionX);
-            Canvas.SetTop(HeadingImage, imagePositionY);
-            theCanvas.Children.Add(HeadingImage);
+            try
+            {
+                int indexForLast = thePositionController.theTransformPosition.Count - 1;
+                //进行移动
+                double imagePositionX = theCanvas.Width / 2 + thePositionController.theTransformPosition[indexForLast].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                double imagePositionY = theCanvas.Height / 2 - thePositionController.theTransformPosition[indexForLast].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                imagePositionX -= HeadingImage.Width / 2;
+                imagePositionY -= HeadingImage.Height / 2;
+                Canvas.SetLeft(HeadingImage, imagePositionX);
+                Canvas.SetTop(HeadingImage, imagePositionY);
+                theCanvas.Children.Add(HeadingImage);
 
-            //设定旋转角
-            double headingAngel = thePositionController.theTransformPosition[indexForLast].heading;
-            double width = HeadingImage.ActualWidth;
-            double height = HeadingImage.ActualHeight;
-            HeadingImage.RenderTransform = new RotateTransform(headingAngel);
+                //设定旋转角
+                double headingAngel = thePositionController.theTransformPosition[indexForLast].heading;
+                double width = HeadingImage.ActualWidth;
+                double height = HeadingImage.ActualHeight;
+                HeadingImage.RenderTransform = new RotateTransform(headingAngel);
+            }
+            catch
+            {
+                Console.WriteLine("方向键头出现控制冲突，一次操作被隔绝");
+                theCanvas.Children.Remove(HeadingImage);
+                int indexForLast = thePositionController.theTransformPosition.Count - 1;
+                //进行移动
+                double imagePositionX = theCanvas.Width / 2 + thePositionController.theTransformPosition[indexForLast].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                double imagePositionY = theCanvas.Height / 2 - thePositionController.theTransformPosition[indexForLast].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                imagePositionX -= HeadingImage.Width / 2;
+                imagePositionY -= HeadingImage.Height / 2;
+                Canvas.SetLeft(HeadingImage, imagePositionX);
+                Canvas.SetTop(HeadingImage, imagePositionY);
+                theCanvas.Children.Add(HeadingImage);
+
+                //设定旋转角
+                double headingAngel = thePositionController.theTransformPosition[indexForLast].heading;
+                double width = HeadingImage.ActualWidth;
+                double height = HeadingImage.ActualHeight;
+                HeadingImage.RenderTransform = new RotateTransform(headingAngel);
+            }
         }
         //设置路径颜色的方法
-        Color SetColor()
+        public Color SetColor()
         {
             System.Windows.Forms.ColorDialog MyDialog = new System.Windows.Forms.ColorDialog();
             MyDialog.AllowFullOpen = true;
@@ -1014,11 +1053,6 @@ namespace socketServer
             return newColor;
         }
 
-
-        private void button5_Click(object sender, RoutedEventArgs e)
-        {
-            button5.Background = new SolidColorBrush(SetColor());
-        }
         
         private void button8_Click(object sender, RoutedEventArgs e)
         {
@@ -1151,6 +1185,17 @@ namespace socketServer
             {
                 SystemSave.theAppendixWindow = new Windows.Appendix();
                 SystemSave.theAppendixWindow.Show();
+            }
+        }
+
+        private void ZAxisSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ZAxisSelect.SelectedIndex == 1 && SystemSave.StairTree == null)
+            {
+                string informationS = "选用了决策树的方法进行分类估计\n但是现在需要的决策树尚未建立\n";
+                informationS += "\n建立决策树的过程如下：\nsettings ——> ZAxisMove ——> Create Decision Tree For ZAxis\n";
+                informationS += "\n如果没有建立决策树，此方法不生效";
+                MessageBox.Show(informationS);
             }
         }
     }

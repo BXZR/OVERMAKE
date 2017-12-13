@@ -118,11 +118,6 @@ namespace socketServer
             else
                 SystemSave.isCutForDecisionTree = false;
 
-            if (CanculateZMove.IsChecked == true)
-                SystemSave.isStairsUp = true;
-            else
-                SystemSave.isStairsUp = false;
-
             SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
             SystemSave.CanculateHeadingMode = HeadingCanculateMode.SelectedIndex;
 
@@ -181,16 +176,13 @@ namespace socketServer
             else
                 isPruning.IsChecked  = false;
 
-            if (SystemSave.isStairsUp == true)
-                CanculateZMove.IsChecked = true;
-            else
-                CanculateZMove.IsChecked =  false;
-
             StartPositionX.Text = SystemSave.startPositionX.ToString();
             StartPositionY.Text = SystemSave.startPositionY.ToString();
             StartPositionZ.Text = SystemSave.startPositionZ.ToString();
             routeLineScale.Text = SystemSave.routeLineScale.ToString();
-
+           
+            //加载绘制颜色
+            theDrawColorButton.Background = new SolidColorBrush(SystemSave.theNewColor2);
             //记录一次最初的数值
             getStartValue();
         }
@@ -222,7 +214,6 @@ namespace socketServer
         private static int ValueTreeMethod;
         private static string ValueStairHeight;
 
-        private static bool ValueIsAllowZMove;
         private static bool ValueIsCuttingDectionTree;
         private static int  ValueHeadingCanculateMode;
         private static string  ValueSystemStartAngleForCHM1;
@@ -261,7 +252,6 @@ namespace socketServer
               ValueDecisionTreePath = SystemSave.TrainBasedFile;
               ValueTreeMethod = SystemSave.DecisionTreeMethodID;
 
-              ValueIsAllowZMove = SystemSave.isStairsUp;
               ValueIsCuttingDectionTree = SystemSave.isCutForDecisionTree;
 
               ValueStairHeight = SystemSave.StairHeight.ToString();
@@ -325,10 +315,6 @@ namespace socketServer
             else
                 isPruning.IsChecked = false;
 
-            if (ValueIsAllowZMove)
-                CanculateZMove.IsChecked = true;
-            else
-                CanculateZMove.IsChecked = false;
 
             TreeMethod.SelectedIndex =  ValueTreeMethod;
             HeadingCanculateMode.SelectedIndex = ValueHeadingCanculateMode;
@@ -366,14 +352,6 @@ namespace socketServer
             informationS += "决策树的深度： " + SystemSave.StepLengthTree.getDepth();
             MessageBox.Show(informationS);
             DrawTreeButton1.IsEnabled = true;
-        }
-
-        private void CanculateZMove_Checked(object sender, RoutedEventArgs e)
-        {
-            if (CanculateZMove.IsChecked == true && SystemSave.StairTree == null)
-            {
-                MessageBox.Show("当前检测上下楼梯的方向需要使用决策树\n当前这棵决策树还没有被建立");
-            } 
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
@@ -426,6 +404,11 @@ namespace socketServer
             TreeViewWindow theWindow = new TreeViewWindow();
             theWindow.Show();
             theWindow.drawDecisionTree(0);
+        }
+
+        private void button3_Click_2(object sender, RoutedEventArgs e)
+        {
+            theDrawColorButton.Background = new SolidColorBrush(theMainWindow.SetColor());
         }
     }
 }

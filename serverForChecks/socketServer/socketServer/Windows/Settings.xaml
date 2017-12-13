@@ -38,8 +38,9 @@
                     <Label x:Name="label_Copy20" Content="Z:" HorizontalAlignment="Left" Margin="121,204,0,0" Width="41" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
                     <TextBox x:Name="StartPositionZ" HorizontalAlignment="Left" Height="23" Margin="147,204,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="248"/>
                     <Label
-                        Width="129" VerticalAlignment="Top" x:Name="label_Copy21" Margin="20,258,0,0" Height="26" HorizontalAlignment="Left" Content="RoutePictueScale"/>
-                    <TextBox x:Name="routeLineScale" HorizontalAlignment="Left" Height="23" Margin="147,261,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="248"/>
+                        Width="129" VerticalAlignment="Top" x:Name="label_Copy21" Margin="20,278,0,0" Height="26" HorizontalAlignment="Left" Content="RoutePictueScale"/>
+                    <TextBox x:Name="routeLineScale" HorizontalAlignment="Left" Height="24" Margin="147,280,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="248"/>
+                    <Button x:Name="theDrawColorButton" Content="Draw Color" HorizontalAlignment="Left" Margin="183,237,0,0" VerticalAlignment="Top" Width="186" Click="button3_Click_2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Step Dection">
@@ -133,18 +134,17 @@
                     <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="276,320,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="StairUse">
+            <TabItem Header="ZAxisMove">
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <CheckBox
                         Width="78" VerticalAlignment="Top" x:Name="isMaleCheckc1" Margin="507,15,-114,0" IsChecked="True" Height="16" HorizontalAlignment="Left" Content="IsMale"/>
-                    <Label x:Name="label" Content="StairHeight" HorizontalAlignment="Left" Margin="20,72,0,0" Width="87" Height="31" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="CanculateZMove" Content="Calculate move in Z Axis" HorizontalAlignment="Left" Margin="20,51,0,0" VerticalAlignment="Top" Width="246" Checked="CanculateZMove_Checked" Height="16"/>
-                    <TextBox x:Name="StairHeight" HorizontalAlignment="Left" Height="23" Margin="127,76,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="247"/>
-                    <Button x:Name="button2" Content="Create Decision Tree For Stairs" HorizontalAlignment="Left" Margin="20,110,0,0" VerticalAlignment="Top" Width="276" Click="button2_Click" Height="22"/>
-                    <Button x:Name="DrawTreeButton2" Content="Draw the Tree" Margin="319,110,22,0" VerticalAlignment="Top" Click="button3_Click_1"/>
+                    <Label x:Name="label" Content="StairHeight" HorizontalAlignment="Left" Margin="14,50,0,0" Width="87" Height="31" VerticalAlignment="Top"/>
+                    <TextBox x:Name="StairHeight" HorizontalAlignment="Left" Height="23" Margin="121,54,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="247"/>
+                    <Button x:Name="button2" Content="Create Decision Tree For ZAxis" HorizontalAlignment="Left" Margin="14,88,0,0" VerticalAlignment="Top" Width="276" Click="button2_Click" Height="22"/>
+                    <Button x:Name="DrawTreeButton2" Content="Draw the Tree" Margin="313,88,28,0" VerticalAlignment="Top" Click="button3_Click_1"/>
                     <Label
                         Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy1" Margin="10,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Canculate the Z Axis Moving"/>
                 </Grid>

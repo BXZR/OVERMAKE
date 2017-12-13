@@ -26,7 +26,6 @@ namespace socketServer
 
         //如果正在上楼梯，这个标记实际上需要根据数据得到
         //这个标记的作用是开/关Z轴的计算
-        public static bool isStairsUp = false;
         public static double StairHeight = 0.18;//每一阶台阶的高度
 
         public static int stepCount = 0;//被保存下来的前几个阶段的步数

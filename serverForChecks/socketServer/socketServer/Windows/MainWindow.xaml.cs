@@ -791,11 +791,20 @@ namespace socketServer
         //startServer按钮控制单元
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-           string information = makeStart();
-            MessageBox.Show(information);
-            //为了防止多次开启
-            theStartButton.IsEnabled = false;
-            theStopButton.IsEnabled = true;
+            try
+            {
+                string information = makeStart();
+                MessageBox.Show(information);
+                //为了防止多次开启
+                theStartButton.IsEnabled = false;
+                theStopButton.IsEnabled = true;
+                button4.IsEnabled = true;
+                button6.IsEnabled = true;
+            }
+            catch
+            {
+                MessageBox.Show("服务端开启失败\n原因可能是IP端口号设定不对\n可以在Setting ——> System Config中进行设定");
+            }
         }
 
         //closeServer按钮控制单元
@@ -806,6 +815,8 @@ namespace socketServer
             //为了防止多次开启
             theStartButton.IsEnabled = true;
             theStopButton.IsEnabled = false;
+            button4.IsEnabled = false;
+            button6.IsEnabled = false;
         }
 
 

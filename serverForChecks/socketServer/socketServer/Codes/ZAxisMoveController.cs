@@ -23,9 +23,9 @@ namespace socketServer.Codes
 
 
         //专门用来控制Z轴高度上下移动的类
-        public List<int> noneMethod(List<int> indexBuff)
+        public List<double> noneMethod(List<int> indexBuff)
         {
-            List<int> theStairMode = new List<int>();
+            List<double> theStairMode = new List<double>();
             for (int i = 0; i < indexBuff.Count; i++)
             {
                 theStairMode.Add(0);
@@ -33,15 +33,25 @@ namespace socketServer.Codes
             return theStairMode;
         }
 
-        public List<int> DecisitionTreeMethod(List<int> indexBuff, List<double> ax, List<double> ay, List<double> az, List<double> gx, List<double> gy, List<double> gz)
+        public List<double> DecisitionTreeMethod(List<int> indexBuff, List<double> ax, List<double> ay, List<double> az, List<double> gx, List<double> gy, List<double> gz)
         {
-            List<int> theStairMode = new List<int>();
+            List<double> theStairMode = new List<double>();
             for (int i = 0; i < indexBuff.Count; i++)
             {
                 int mode = SystemSave.StairTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
-                theStairMode.Add(mode);
+                theStairMode.Add(transToHeightMove(mode));
             }
             return theStairMode;
+        }
+
+        //移动模式转真实的位移
+        private double   transToHeightMove(int mode)
+        {
+            Console.WriteLine("ZMove Mode = "+ mode);
+            // 1 或者 -1 用来判断向上走还是向下走
+            //0表示根本就是平地
+            //(这个部分现在还未完成，需要与其他模块的配合)
+            return  SystemSave.StairHeight * mode;
         }
     }
 }

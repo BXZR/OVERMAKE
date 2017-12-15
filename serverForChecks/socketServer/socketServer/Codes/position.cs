@@ -71,7 +71,7 @@ namespace socketServer
         //此外步长现在是一个立即数，有方法获得
         //为此还需要一个波峰的下标的缓冲区，并且花时间建立两个List
         //但是这种方法大幅度减缓了周期，看上去还算合算
-        public string getPositions(List<double> angels, List<double> stepLengths, List<int> stairMode = null)
+        public string getPositions(List<double> angels, List<double> stepLengths, List<double> stairMove = null)
         {
             if (SystemSave.savedPositions.Count > 0)
             {
@@ -109,14 +109,9 @@ namespace socketServer
                 positionY += YAdd;
                 //这个需要使用决策树判断是不是上楼梯型的stepLength
                 //最后根据已经得到的siderStep来获得（这可能是一个立即数）
-                if (stairMode != null)//如果判断Z轴向的移动(一般来说平面计算就有老所事情要做)
+                if (stairMove != null)//如果判断Z轴向的移动(一般来说平面计算就有老所事情要做)
                 {
-                    //目前位置的向上平移不过是最简单的使用楼梯高度累积
-                    int moveDir = stairMode[i];//这个可以用决策树得到1  -1  0
-                    // 1 或者 -1 用来判断向上走还是向下走
-                    //0表示根本就是平地
-                    //(这个部分现在还未完成，需要与其他模块的配合)
-                    positionZ += SystemSave.StairHeight * moveDir;
+                    positionZ += stairMove[i];
                 }
                 XSave.Add(positionX);
                 YSave.Add(positionY);

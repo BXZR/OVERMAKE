@@ -26,26 +26,35 @@ namespace socketServer.Windows
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            theServer theServerForAll = new socketServer.theServer();
-            theServerForAll.setMode(2);
-            //制作显示用的label
-            string informationS = "";
-            informationS += theServerForAll.startTheServer();
-            informationS += "\n------------------------------------------------------------";
-            informationS += "\n正在侦听来自手机客户端的连接......";
-            informationS += "\n一个新的连接到来时将会打开一个新的窗口进行实验";
-            informationS += "\n进行实验时请尽量保持此窗口不关闭";
-            informationS += "\n------------------------------------------------------------";
-            informationS += "\n注意：\n每一个客户端窗口中的方法可分别选择\n但所有客户端窗口共享设定窗口中的内容";
-            theShowLabel.Content = informationS;
-            //为了防止乱按按钮，直接将button给禁了
-            button.IsEnabled = false;
-            button2.IsEnabled = false;
+            try
+            {
+                theServer theServerForAll = new socketServer.theServer(ALLIP.Text, Convert.ToInt32(ALLPort.Text));
+                theServerForAll.setMode(2);
+                //制作显示用的label
+                string informationS = "";
+                informationS += theServerForAll.startTheServer();
+                informationS += "\n------------------------------------------------------------";
+                informationS += "\n正在侦听来自手机客户端的连接......";
+                informationS += "\n一个新的连接到来时将会打开一个新的窗口进行实验";
+                informationS += "\n进行实验时请尽量保持此窗口不关闭";
+                informationS += "\n------------------------------------------------------------";
+                informationS += "\n注意：\n每一个客户端窗口中的方法可分别选择\n但所有客户端窗口共享设定窗口中的内容";
+                theShowLabel.Content = informationS;
+                //为了防止乱按按钮，直接将button给禁了
+                button.IsEnabled = false;
+                button2.IsEnabled = false;
+            }
+            catch
+            {
+                MessageBox.Show("IP和端口设置不正确\n请设置后重新尝试");
+            }
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            new MainWindow().Show();
+            MainWindow aMainWindow =  new MainWindow();
+            aMainWindow.pressStartButton();
+            aMainWindow.Show();
             this.Close();
         }
 
@@ -53,6 +62,12 @@ namespace socketServer.Windows
         {
             if (SystemSave.theServrForAll != null)
                 SystemSave.theServrForAll.closeServer();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ALLIP.Text = SystemSave.serverIP;
+            ALLPort.Text = SystemSave.serverPort.ToString();
         }
     }
 }

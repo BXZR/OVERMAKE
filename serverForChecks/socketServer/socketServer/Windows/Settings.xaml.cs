@@ -403,7 +403,7 @@ namespace socketServer
         {
             TreeViewWindow theWindow = new TreeViewWindow();
             theWindow.Show();
-            theWindow.drawDecisionTree(0);
+            theWindow.drawDecisionTree(1);
         }
 
         private void button3_Click_2(object sender, RoutedEventArgs e)

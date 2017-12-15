@@ -10,8 +10,8 @@ using System;
 public class moveWithSocket : MonoBehaviour {
 
 	private static byte[] result = new byte[1024];  
-	private static int myProt = 8886;   //端口  
-	public static string  serverIP = "219.216.73.162";
+	public static int myProt = 8886;   //端口  
+	public static string  serverIP = "219.216.78.119";
 	static Socket serverSocket;  
 	static Thread myThread;
 	static Socket clientSocketInServer;
@@ -40,7 +40,7 @@ public class moveWithSocket : MonoBehaviour {
 			clientSocket = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);  
 			try
 			{  
-				clientSocket.Connect (new IPEndPoint (ip, 8886)); //配置服务器IP与端口  
+				clientSocket.Connect (new IPEndPoint (ip, myProt)); //配置服务器IP与端口  
 				isOpened = true;
 				systemValues .linkServerLabel = "已连接到服务器";
 				//print ("连接服务器成功");  
@@ -82,6 +82,7 @@ public class moveWithSocket : MonoBehaviour {
 				systemValues.stepLengthNow = Convert.ToDouble (split[1]);
 				systemValues.stepAngle = Convert.ToDouble (split[2]);
 				systemValues.slopNow =  Convert.ToDouble (split[3]);
+				systemValues.height =  Convert.ToDouble (split[4]);
 				systemValues.canFlashPosition = true;//走了一步需要更新坐标
 			}
 			//print ("SDSD");

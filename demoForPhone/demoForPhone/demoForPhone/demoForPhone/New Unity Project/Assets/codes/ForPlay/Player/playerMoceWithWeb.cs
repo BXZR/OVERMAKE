@@ -30,6 +30,9 @@ public class playerMoceWithWeb : MonoBehaviour {
 			//				valueADD = -1;
 			systemValues.canFlashPosition = false;
 			Vector3 aimPositionNow = this.transform.root.position + this.transform .forward *(float)systemValues.stepLengthNow* speedScale ;//最后秤上的一点加成是因为真实世界和游戏世界的坐标没有加矫正
+			//额外计算Z轴向位移
+			aimPositionNow  += new Vector3 (0,(float)systemValues.heightNow,0);
+
 			if(aimPosition != aimPositionNow)//如果来了一个新的目标
 			{
 				if (Vector3.Distance (aimPosition, this.transform.root.transform.position) < 0.02f)

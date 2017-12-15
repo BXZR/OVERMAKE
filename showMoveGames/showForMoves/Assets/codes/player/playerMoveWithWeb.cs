@@ -27,8 +27,11 @@ public class playerMoveWithWeb : MonoBehaviour {
 //			//如果是 90 ——270 就是-1
 //			if (systemValues.stepAngle > 90 && systemValues.stepAngle < 270)
 //				valueADD = -1;
-			
-			Vector3 aimPositionNow = this.transform.root.position + this.transform .forward *(float)systemValues.stepLengthNow* speedScale ;//最后秤上的一点加成是因为真实世界和游戏世界的坐标没有加矫正
+
+			//最后乘上的一点加成是因为真实世界和游戏世界的坐标没有加矫正
+			Vector3 aimPositionNow = this.transform.root.position + this.transform .forward *(float)systemValues.stepLengthNow* speedScale;
+			aimPositionNow += new Vector3 (0,(float)systemValues.height,0);//高度上的移动
+
 			if(aimPosition != aimPositionNow)//如果来了一个新的目标
 			{
 				if (Vector3.Distance (aimPosition, this.transform.root.transform.position) < 0.02f)

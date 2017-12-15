@@ -46,7 +46,7 @@ namespace socketServer
         List<double> theStepAngeUse = new List<double>();
         List<double> theStepLengthUse = new List<double>();
         List<double> theFilteredD = new List<double>();
-        List<int> theStairMode = new List<int>();
+        List<double> theStairMode = new List<double>();//Z轴向移动
 
         int stepcounts = 0;//当前阶段的步数
         List<int> indexBuff = new List<int>();//确认一步的下标存储
@@ -270,7 +270,7 @@ namespace socketServer
             //根本就不计算Z轴位移，其实也是另一种开关
             if (ZAxisSelect.SelectedIndex == 0)
             {
-                theStairMode = new List<int>();
+                theStairMode = new List<double>();
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     theStairMode.Add(0);
@@ -279,7 +279,7 @@ namespace socketServer
             //决策树的方法
             if (ZAxisSelect.SelectedIndex == 1)
             {
-                theStairMode = new List<int>();
+                theStairMode = new List<double>();
                 if (SystemSave.StairTree == null)
                 {
                     theStairMode = theZMoveController.noneMethod(indexBuff);
@@ -297,6 +297,9 @@ namespace socketServer
                     theStairMode =  theZMoveController.DecisitionTreeMethod(indexBuff,ax,ay,az,gx,gy,gz);
                 }
             }
+            //记录最新的移动步长
+            if (theStairMode.Count > 0)
+                SystemSave.heightNow= theStairMode[theStairMode.Count - 1];
         }
 
 
@@ -788,8 +791,8 @@ namespace socketServer
             theFileSaver.saveInformation(saveStringUse);
         }
 
-        //startServer按钮控制单元
-        private void button2_Click(object sender, RoutedEventArgs e)
+        //封装的更高一级的开始
+        public void pressStartButton()
         {
             try
             {
@@ -805,6 +808,12 @@ namespace socketServer
             {
                 MessageBox.Show("服务端开启失败\n原因可能是IP端口号设定不对\n可以在Setting ——> System Config中进行设定");
             }
+        }
+
+        //startServer按钮控制单元
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            pressStartButton();
         }
 
         //closeServer按钮控制单元

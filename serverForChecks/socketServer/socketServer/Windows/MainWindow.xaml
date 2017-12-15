@@ -82,7 +82,7 @@
         </ComboBox>
         <Button x:Name="button9" Content="3DView" Margin="0,420,25,0" Click="button9_Click" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Top"/>
         <Label x:Name="Charts_Copy8" Content="SystemControl" Margin="0,488,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Button x:Name="theAppendix" Content="Appendix" Margin="0,82,25,0" VerticalAlignment="Top" Click="theAppendix_Click" Height="26" HorizontalAlignment="Right" Width="75"/>
+        <Button x:Name="theAppendix" Content="Appendix" Margin="0,82,25,0" VerticalAlignment="Top" Click="theAppendix_Click" Height="22" HorizontalAlignment="Right" Width="75"/>
         <Label x:Name="ZAxisMethod" Content="ZAxisMethod" Margin="0,347,44,0" HorizontalAlignment="Right" Width="163" Foreground="#FF4600FF" FontWeight="Bold" Height="26" VerticalAlignment="Top"/>
         <ComboBox x:Name="ZAxisSelect" Margin="0,378,25,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="173" SelectionChanged="ZAxisSelect_SelectionChanged">
             <ComboBoxItem Content="NoCanculate"/>

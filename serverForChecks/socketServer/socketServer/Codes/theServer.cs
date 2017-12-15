@@ -307,14 +307,17 @@ namespace socketServer
                         sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
                         sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
                         sendString += ";" + SystemSave.slopNow.ToString("f2");
+                        sendString += ";" + SystemSave.heightNow.ToString("f2");
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else if (information == "get")
                     {
+                        //3D显示客户端的需要
                         string sendString = SystemSave.allStepCount.ToString();
                         sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
                         sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
                         sendString += ";" + SystemSave.slopNow.ToString("f2");
+                        sendString += ";" + SystemSave.heightNow.ToString("f2");
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else//客户端请求关闭连接
@@ -448,6 +451,7 @@ namespace socketServer
                         sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
                         sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
                         sendString += ";" + SystemSave.slopNow.ToString("f2");
+                        sendString += ";" + SystemSave.heightNow.ToString("f2");
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else if (information == "get")
@@ -456,6 +460,7 @@ namespace socketServer
                         sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
                         sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
                         sendString += ";" + SystemSave.slopNow.ToString("f2");
+                        sendString += ";" + SystemSave.heightNow.ToString("f2");
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else//客户端请求关闭连接

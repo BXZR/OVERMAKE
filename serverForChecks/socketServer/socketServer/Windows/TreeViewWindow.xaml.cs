@@ -42,6 +42,7 @@ namespace socketServer.Windows
                 MessageBox.Show("查无此树");
                 return;
             }
+            
             Console.WriteLine("开始绘制");
             theDecisionTreeNode root = theTree.theRoot;
             YLength = theDrawCanvas.Height*0.95 / theTree.getDepth();

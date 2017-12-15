@@ -5,12 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer.Windows"
         mc:Ignorable="d"
-        Title="PDR With Smartphone" Height="299.106" Width="402.679" ResizeMode="NoResize" Closed="Window_Closed">
+        Title="PDR With Smartphone" Height="433.439" Width="407.346" ResizeMode="NoResize" Closed="Window_Closed" Loaded="Window_Loaded">
     <Grid Background="#FFDADADA">
-        <Button x:Name="button" Content="Mutiple User Mode" Margin="220,0,0,22" Click="button_Click" Height="32" VerticalAlignment="Bottom" ToolTip="复数实验者分别在各自的窗口进行实验" HorizontalAlignment="Left" Width="147"/>
-        <Button x:Name="button2" Content="Single User Mode" Margin="20,0,230,22" VerticalAlignment="Bottom" Height="32" Click="button2_Click" ToolTip="单独使用者在单个窗口进行实验"/>
-        <Label x:Name="theShowLabel" Content="information" Margin="20,0,19,59" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" Height="178" VerticalAlignment="Bottom"/>
-        <Label x:Name="theShowLabel_Copy" Content="PDR With Smartphone" Margin="0,0,30,236" Background="{x:Null}" Foreground="#FF1207FF" Height="25" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Width="347" FontWeight="Bold"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="button" Content="Mutiple User Mode" Margin="0,0,20,16" Click="button_Click" Height="32" VerticalAlignment="Bottom" ToolTip="复数实验者分别在各自的窗口进行实验" HorizontalAlignment="Right" Width="128"/>
+        <Button x:Name="button2" Content="Single User Mode" Margin="20,0,0,16" VerticalAlignment="Bottom" Height="32" Click="button2_Click" ToolTip="单独使用者在单个窗口进行实验" HorizontalAlignment="Left" Width="129"/>
+        <Label x:Name="theShowLabel" Content="information" Margin="20,138,20,59" Background="#FFF3F3F3" Foreground="#FF1207FF" HorizontalContentAlignment="Center"/>
+        <Label x:Name="theShowLabel_Copy" Content="PDR With Smartphone" Margin="61,10,41,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="34" VerticalAlignment="Top" FontSize="16"/>
+        <GroupBox x:Name="groupBox" Header="Basic Config" Margin="10,44,10,0" VerticalAlignment="Top" Height="89">
+            <Grid Margin="-1,2,-1,-4">
+                <TextBox x:Name="ALLIP" Height="23" Margin="26,27,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="151"/>
+                <Label x:Name="theShowLabel_Copy1" Content="ServerIP" Margin="26,2,0,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81"/>
+                <Label x:Name="theShowLabel_Copy2" Content="ServerPort" Margin="208,2,0,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="85"/>
+                <TextBox x:Name="ALLPort" Height="23" Margin="208,27,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="128"/>
+            </Grid>
+        </GroupBox>
 
     </Grid>
 </Window>

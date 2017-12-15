@@ -81,6 +81,7 @@ public class server : MonoBehaviour {
 				systemValues.stepCountNow = stepCount;
 				systemValues.stepLengthNow = Convert.ToDouble (split[1]);
 				systemValues.slopNow =  Convert.ToDouble (split[3]);
+				systemValues.heightNow = Convert.ToDouble (split[4]);
 				systemValues.canFlashPosition = true;//走了一步需要更新坐标
 			}
 		}

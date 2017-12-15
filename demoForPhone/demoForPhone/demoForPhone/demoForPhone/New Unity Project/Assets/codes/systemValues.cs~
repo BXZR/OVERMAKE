@@ -30,5 +30,6 @@ public class systemValues : MonoBehaviour {
 	public static double stepLengthNow  = 0; //当前步长
 	public static  double stepAngle = 0;//当前角度
 	public static double slopNow = 0;//当前姿态的一个小小的推断，如果比较大就认为是在奔跑
+	public static double heightNow = 0;//当前姿态的一个小小的推断，如果比较大就认为是在奔跑
 	public static bool canFlashPosition = false;//是否可以更新人物坐标
 }

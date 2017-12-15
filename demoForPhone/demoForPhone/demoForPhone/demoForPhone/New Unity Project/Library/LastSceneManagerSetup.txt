@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/DE2.unity
+- path: Assets/DEBased.unity
   isLoaded: 1
   isActive: 1

@@ -261,6 +261,7 @@ namespace socketServer
                 //方法4零点交叉
                 indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
             }
+            indexBuff = stepExtra.FixedStepCalculate(theInformationController,theFilter,indexBuff);
         }
 
         //判断走楼梯的模式的方法

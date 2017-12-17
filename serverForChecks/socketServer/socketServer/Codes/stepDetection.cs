@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -231,17 +232,9 @@ namespace socketServer
             if (data1.Count == 0)
                 return false;
 
-            double dataAverage1 = 0;//数据的平均数
-            double dataAverage2 = 0;//数据平均数2
-            for (int i = 0; i < data1.Count; i++)
-            {
-                dataAverage1 += data1[i];
-                dataAverage2 += data2[i];
-            }
+            double dataAverage1 = MathCanculate.getAverage(data1);//数据的平均数
+            double dataAverage2 = MathCanculate.getAverage(data2);//数据的平均数2
 
-            dataAverage1 /= data1.Count;
-            dataAverage2 /= data2.Count;
-             
             //分成多段来写，保持清晰
             double up = 0;//分子
             double  data1Down = 0;//分母计算因子
@@ -293,6 +286,43 @@ namespace socketServer
             return kq * q / (kq * q + kr * r + ks * s);
         }
 
+        //检测这个移动是不是真的移动，也就是说在原地晃手机的时候是否允许被判断走了一步
+        //在实验的时候原地晃手机是可以的，但是在实际使用的时候原地晃手机不可以这样，者可以通过一个模式进行判断
+        public List<int> FixedStepCalculate(information theInformationController, Filter theFilter , List<int> indexBuff)
+        {
+            if (SystemSave.SystemModeInd == 0)
+                return indexBuff;
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("indexBuff Count pre= " + indexBuff.Count);
+            List<int> toRemove = new List<int>();
+            for (int i = 1; i < indexBuff.Count; i++)
+            {
+                List<double> theX = theFilter.theFilerWork(theInformationController.accelerometerX);
+                List<double> theY = theFilter.theFilerWork(theInformationController.accelerometerY);
+                List<double> theZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                double XVariance = MathCanculate.getVariance(theX, indexBuff[i - 1], indexBuff[i]);
+                double YVariance = MathCanculate.getVariance(theY, indexBuff[i - 1], indexBuff[i]);
+                double ZVariance = MathCanculate.getVariance(theZ, indexBuff[i - 1], indexBuff[i]);
+                List<double> Variances = new List<double>();
+                Variances.Add(XVariance);
+                Variances.Add(YVariance);
+                Variances.Add(ZVariance);
+                Variances = MathCanculate.SortValues(Variances);
+                //如果第二大的项目方法不够大，就认为是原地踏步，这个方法可以在后期扩展
+                //也必须扩展
+                double gate = 0.1;
+                Console.WriteLine(Variances[1]);
+                if (Variances[1] < gate)
+                    toRemove.Add(indexBuff[i]);
+            }
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                indexBuff.Remove(toRemove[i]);
+            }
+            Console.WriteLine("indexBuff Count after= " + indexBuff.Count);
+            return  indexBuff;
+        }
+
         //这个类的统一外部刷新接口，因为有分组的存在，这个是非常必要的
         public  void makeFlash()
         {
@@ -304,6 +334,7 @@ namespace socketServer
         {
             return methodInformations[index];
         }
+
 
     }
 }

@@ -124,7 +124,9 @@ namespace socketServer
             SystemSave.startPositionX = Convert.ToDouble(StartPositionX.Text);
             SystemSave.startPositionY = Convert.ToDouble(StartPositionY.Text);
             SystemSave.startPositionZ = Convert.ToDouble(StartPositionZ.Text);
-            SystemSave.routeLineScale = Convert.ToDouble(routeLineScale.Text);
+            SystemSave.routeLineScale = routeLineScaleSlider.Value; //Convert.ToDouble(routeLineScale.Text);
+
+            SystemSave.SystemModeInd = SystemModeSelect.SelectedIndex;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -179,8 +181,10 @@ namespace socketServer
             StartPositionX.Text = SystemSave.startPositionX.ToString();
             StartPositionY.Text = SystemSave.startPositionY.ToString();
             StartPositionZ.Text = SystemSave.startPositionZ.ToString();
-            routeLineScale.Text = SystemSave.routeLineScale.ToString();
-           
+            routeLineScaleSlider.Value = SystemSave.routeLineScale;
+
+            SystemModeSelect.SelectedIndex = SystemSave.SystemModeInd;
+
             //加载绘制颜色
             theDrawColorButton.Background = new SolidColorBrush(SystemSave.theNewColor2);
             //记录一次最初的数值
@@ -222,7 +226,8 @@ namespace socketServer
         private static string ValueStartPositionY;
         private static string ValueStartPositionZ;
 
-        private static string ValuerRouteLineScale;
+        private static double ValuerRouteLineScale;
+        private static int ValueSystemMode;
 
         void getStartValue()
         {
@@ -262,8 +267,9 @@ namespace socketServer
               ValueStartPositionY = SystemSave.startPositionY.ToString();
               ValueStartPositionZ = SystemSave.startPositionZ.ToString();
               
-              ValuerRouteLineScale = SystemSave.routeLineScale.ToString();
-
+              ValuerRouteLineScale = SystemSave.routeLineScale;
+              ValueSystemMode = SystemSave.SystemModeInd;
+            
               hasBasicValue = true;//最初数值只会被记录一次
            }
         }
@@ -322,7 +328,9 @@ namespace socketServer
             StartPositionX.Text = ValueStartPositionX;
             StartPositionY.Text = ValueStartPositionY;
             StartPositionZ.Text = ValueStartPositionZ;
-            routeLineScale.Text = ValuerRouteLineScale;
+            routeLineScaleSlider.Value = ValuerRouteLineScale;
+
+            SystemModeSelect.SelectedIndex = ValueSystemMode;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -409,6 +417,11 @@ namespace socketServer
         private void button3_Click_2(object sender, RoutedEventArgs e)
         {
             theDrawColorButton.Background = new SolidColorBrush(theMainWindow.SetColor());
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

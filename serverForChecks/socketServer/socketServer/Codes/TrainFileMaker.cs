@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,23 +56,7 @@ namespace socketServer
 
         private string getVKFK(int indexPre , int indexNow, List<double> theA, List<long> timeUse = null)
         {
-            double average = 0;
-            for (int i = indexPre; i < indexNow; i++)
-            {
-                average += theA[i];
-            }
-            average /= (indexNow - indexPre);
-            //公式需要使用的参数 (为了保证清晰，分成多个循环来写)
-            double VK = 0;
-            for (int i = indexPre; i < indexNow; i++)
-            {
-                double minus = (theA[i] - average) * (theA[i] - average);
-                VK += minus;
-
-            }
-            //Console.WriteLine("VK = " + VK);
-            VK /= (indexNow - indexPre);
-            //Console.WriteLine("VK = " + VK);
+            double VK = MathCanculate.getVariance(theA , indexPre, indexNow);
 
             double timestep = timeUse[indexNow] - timeUse[indexPre];
             //有除零异常说明时间非常短，可以认为根本就没走
@@ -95,23 +80,7 @@ namespace socketServer
                 return "---";//万金油
             else
             {
-                double average = 0;
-                for (int i = indexPre; i < indexNow; i++)
-                {
-                    average += theA[i];
-                }
-                average /= (indexNow - indexPre);
-                //公式需要使用的参数 (为了保证清晰，分成多个循环来写)
-                double VK = 0;
-                for (int i = indexPre; i < indexNow; i++)
-                {
-                    double minus = (theA[i] - average) * (theA[i] - average);
-                    VK += minus;
-
-                }
-                //Console.WriteLine("VK = " + VK);
-                VK /= (indexNow - indexPre);
-                //Console.WriteLine("VK = " + VK);
+                double VK = MathCanculate.getVariance(theA, indexPre, indexNow);
 
                 double timestep = timeUse[indexNow] - timeUse[indexPre];
                 //有除零异常说明时间非常短，可以认为根本就没走

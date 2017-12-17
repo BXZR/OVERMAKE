@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -235,22 +236,12 @@ namespace socketServer
         public double AHRSIMUSelect(int indexPre, int indexNow, List<double> AHRSValues, List<double> IMUValues)
         {
             double degreeNow = 0;
-            double AHRSAverage = 0;
-            double IMUAverage = 0;
-            if (indexNow <= indexPre)
-                return 0;//肯定发现除零异常，所以直接没有数据
 
-            for (int i = indexPre; i < indexNow; i++)
-            {
-                AHRSAverage += AHRSValues[i];
-                IMUAverage += IMUValues[i];
-            }
-
-            int count = indexNow - indexPre;
-            AHRSAverage /= count;
-            IMUAverage /= count;
-            Console.WriteLine("Average1 = " + AHRSAverage);
-            Console.WriteLine("Average2 = " + IMUAverage);
+            double AHRSAverage = MathCanculate.getAverage(AHRSValues , indexPre,indexNow);
+            double IMUAverage = MathCanculate.getAverage(IMUValues, indexPre, indexNow);
+           
+            //Console.WriteLine("Average1 = " + AHRSAverage);
+           // Console.WriteLine("Average2 = " + IMUAverage);
 
             double EDYaw = 0;
             for (int i = indexPre; i < indexNow; i++)

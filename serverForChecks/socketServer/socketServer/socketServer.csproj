@@ -61,6 +61,21 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accord">
+      <HintPath>bin\x64\Debug\AccordUsing\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.MachineLearning">
+      <HintPath>bin\x64\Debug\AccordUsing\Accord.MachineLearning.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math">
+      <HintPath>bin\x64\Debug\AccordUsing\Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math.Core">
+      <HintPath>bin\x64\Debug\AccordUsing\Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Statistics">
+      <HintPath>bin\x64\Debug\AccordUsing\Accord.Statistics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -92,6 +107,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Codes\AccordNotNetUse.cs" />
     <Compile Include="Codes\DecisionTree\theDecisionTree.cs" />
     <Compile Include="Codes\DecisionTree\theDecisionTreeNode.cs" />
     <Compile Include="Codes\MathCanculate.cs" />

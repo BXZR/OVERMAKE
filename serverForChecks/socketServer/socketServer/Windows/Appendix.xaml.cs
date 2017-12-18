@@ -39,5 +39,10 @@ namespace socketServer.Windows
         {
             SystemSave.theAppendixWindow = null;
         }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            new Codes.AccordNotNetUse().Linear();
+        }
     }
 }

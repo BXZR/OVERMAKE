@@ -29,3 +29,8 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Win
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\Appendix.baml
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\AllStartServerWondow.g.cs
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\AllStartServerWondow.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.dll
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.MachineLearning.dll
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Math.Core.dll
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Math.dll
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Statistics.dll

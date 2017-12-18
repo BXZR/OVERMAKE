@@ -17,12 +17,13 @@ namespace socketServer
             "步长设定为固定的数值",
             "步长设定为固定的数值，大幅度转向的时候步长减半",
             "根据步频和加速度方差计算的一般性公式",
+            "准备多种一般性公式的参数，使用决策树选择参数计算",
+            "使用已有训练集线性回归得到一般公式参数",
             "根据男女身高进行比例计算得到步长",
             "纵向加速度差值开四次根号的方法",
             "加速度做平均然后除以阶段加速度的极差的做法",
             "加速度平均开三次根号的方法",
-            "准备多种一般性公式的参数，使用决策树选择参数计算",
-             "利用腿和重心移动的关系推断步长"
+            "利用腿和重心移动的关系推断步长"
         };
 
 
@@ -183,6 +184,44 @@ namespace socketServer
         }
 
 
+        //外部方法9，用重载做出的区分
+        //不论应用的是哪一个轴向，至少需要传入一个用来计算的轴向
+        //indexPre 和 indexNow 指的是传入的theA的下标，需要算theA的方差，而这这两个下标就是范围
+        //论文公式方法
+        //使用训练集线性回归得到公式
+        private AccordNotNetUse accordUsing = null;
+        public double getStepLengthWithKLinear(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
+        {
+            // Console.WriteLine("method");
+            if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
+                return stepLengthBasic();//万金油
+            else
+            {
+                if (accordUsing == null)
+                {
+                    accordUsing = new Codes.AccordNotNetUse();
+                    accordUsing.BuildWeights();
+                }
+
+                double VK = MathCanculate.getVariance(theA, indexNow, indexPre);
+
+                long timestep = timeUse[indexNow] - timeUse[indexPre];
+                //有除零异常说明时间非常短，可以认为根本就没走
+                if (timestep == 0)
+                    return 0;//万金油
+                             // Console.WriteLine("timeStep is "+ timestep);
+                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+
+                double stepLength = accordUsing.linearStepLength(VK,FK);
+                //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
+                if (stepLength > 2)//一步走两米，几乎不可能
+                    return stepLengthBasic();//万金油
+                else
+                    return stepLength;
+            }
+        }
+
+
 
         //为了保证以后传入多个参数进行判断的情况，请保持这种模式
         private double StepLengthMethod1(double angelPast = 0, double angelNow = 0)
@@ -203,6 +242,7 @@ namespace socketServer
         //这个方法可以做很多的扩展
         //例如目前在选择加速度的积分的时候只是简单地做一般加速度的积分，没有考虑波形
         //但是如果是用波峰波谷，则可以用上升和下降来做，也是使用peacksearch的类似方法，凡是貌似有一点不值得
+        //大腿移动扇形方法
         public double getStepLength8(int indexPre , int indexNow , List<double> AZ , List<long> timeStep)
         {
             double stepLength = 0;

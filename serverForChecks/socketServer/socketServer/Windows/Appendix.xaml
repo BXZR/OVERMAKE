@@ -10,6 +10,7 @@
         <Button x:Name="button7" Content="createPictureWithData" Margin="69,114,80,0" VerticalAlignment="Top" Click="button7_Click" Height="22"/>
         <Button x:Name="button" Content="tensorFlowSharpDEMO" Margin="67,163,80,0" Click="button_Click" Height="22" VerticalAlignment="Top"/>
         <Label x:Name="label" Content="附录窗口： 展示一些额外功能示例" HorizontalAlignment="Center" Margin="43,19,32,0" VerticalAlignment="Top" Width="219" Height="31"/>
+        <Button x:Name="button1" Content="AccordDemo" HorizontalAlignment="Left" Margin="69,216,0,0" VerticalAlignment="Top" Width="218" Click="button1_Click"/>
 
     </Grid>
 </Window>

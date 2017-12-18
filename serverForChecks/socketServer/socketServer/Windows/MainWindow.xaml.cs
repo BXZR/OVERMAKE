@@ -51,10 +51,10 @@ namespace socketServer
         int stepcounts = 0;//当前阶段的步数
         List<int> indexBuff = new List<int>();//确认一步的下标存储
         List<double> theFilteredAZ = new List<double>();//当前使用的轴
+
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         //整体工作模式
@@ -350,37 +350,8 @@ namespace socketServer
                     else
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
-                //方法3，身高相关
+                //方法3，一般公式 + 决策树
                 else if (StepLengthMethod.SelectedIndex == 3)
-                {
-                    theStepLengthUse.Add(theStepLengthController.getStepLength3());
-                }
-                //方法4，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
-                else if (StepLengthMethod.SelectedIndex == 4)
-                {
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
-                }
-                //方法5 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
-                else if (StepLengthMethod.SelectedIndex == 5)
-                {
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
-                }
-                //方法6，加速度平均开三次根号的做法
-                else if (StepLengthMethod.SelectedIndex == 6)
-                {
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
-                }
-                //方法7，决策树选择公式参数的方法
-                else if (StepLengthMethod.SelectedIndex == 7)
                 {
                     if (i >= 1)
                     {
@@ -394,7 +365,7 @@ namespace socketServer
                         {
                             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
                             int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
-                           // Console.WriteLine("modeNow = " + mode);
+                            // Console.WriteLine("modeNow = " + mode);
                             double stepLength = theStepLengthController.getStepLength2WithDecisionTree(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
                             theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                         }
@@ -404,7 +375,54 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
-                //方法7，使用关于腿长的倒置钟摆的方法（很好玩的方法）
+                //方法4，一般公式 + 线性回归
+                else if (StepLengthMethod.SelectedIndex == 4)
+                {
+
+                    if (i >= 1)
+                    {
+                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                        //    Console.WriteLine(theInformationController.timeStep[v]);
+                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+
+                        double stepLength = theStepLengthController.getStepLengthWithKLinear(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                        theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    }
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+
+                //方法5，身高相关
+                else if (StepLengthMethod.SelectedIndex == 3)
+                {
+                    theStepLengthUse.Add(theStepLengthController.getStepLength3());
+                }
+                //方法6，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
+                else if (StepLengthMethod.SelectedIndex == 4)
+                {
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+                //方法7 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
+                else if (StepLengthMethod.SelectedIndex == 5)
+                {
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+                //方法8，加速度平均开三次根号的做法
+                else if (StepLengthMethod.SelectedIndex == 6)
+                {
+                    if (i >= 1)
+                        theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+
+                //方法9，使用关于腿长的倒置钟摆的方法（很好玩的方法）
                 else if (StepLengthMethod.SelectedIndex == 8)
                 {
                     if (i >= 1)

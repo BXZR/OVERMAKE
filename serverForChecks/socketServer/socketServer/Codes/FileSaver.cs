@@ -78,5 +78,46 @@ namespace socketServer
             return information;
         }
 
+        public static string readFromFile(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return  "";//如果没有指定就用默认的
+
+            string information;
+            try
+            {
+                StreamReader sw = new StreamReader(path, true);
+                information = sw.ReadToEnd();
+                sw.Close();
+                sw.Dispose();
+            }
+            catch
+            {
+                information = "";
+            }
+            return information;
+        }
+
+        public static string readFromTrainBase()
+        {
+            string path = SystemSave.TrainBasedFile;
+            if (string.IsNullOrEmpty(path))
+                return "";//如果没有指定就用默认的
+
+            string information;
+            try
+            {
+                StreamReader sw = new StreamReader(path, true);
+                information = sw.ReadToEnd();
+                sw.Close();
+                sw.Dispose();
+            }
+            catch
+            {
+                information = "";
+            }
+            return information;
+        }
+
     }
 }

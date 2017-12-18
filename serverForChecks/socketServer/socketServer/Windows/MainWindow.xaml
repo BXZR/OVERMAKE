@@ -59,11 +59,12 @@
             <ComboBoxItem Content="ImmediateValue"/>
             <ComboBoxItem Content="ImmediateValue2"/>
             <ComboBoxItem Content="Common formula"/>
+            <ComboBoxItem Content="Common formula with Dection Tree"/>
+            <ComboBoxItem Content="Common formula with Linear"/>
             <ComboBoxItem Content="Stature formula"/>
             <ComboBoxItem Content="Weinberg approach"/>
             <ComboBoxItem Content="Scarlet approach"/>
             <ComboBoxItem Content="Kim approach"/>
-            <ComboBoxItem Content="Common formula with Dection Tree"/>
             <ComboBoxItem Content="ComMoveWithLeg"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,11,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>

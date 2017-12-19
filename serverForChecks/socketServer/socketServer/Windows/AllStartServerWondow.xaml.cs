@@ -52,6 +52,8 @@ namespace socketServer.Windows
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            SystemSave.serverIP = ALLIP.Text ;
+            SystemSave.serverPort = Convert.ToInt32( ALLPort.Text);
             MainWindow aMainWindow =  new MainWindow();
             aMainWindow.pressStartButton();
             aMainWindow.Show();

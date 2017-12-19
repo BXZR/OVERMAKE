@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pictures/blocks.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("runner.ico")]
 
 

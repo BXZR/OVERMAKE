@@ -393,12 +393,12 @@ namespace socketServer
                 }
 
                 //方法5，身高相关
-                else if (StepLengthMethod.SelectedIndex == 3)
+                else if (StepLengthMethod.SelectedIndex == 5)
                 {
                     theStepLengthUse.Add(theStepLengthController.getStepLength3());
                 }
                 //方法6，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
-                else if (StepLengthMethod.SelectedIndex == 4)
+                else if (StepLengthMethod.SelectedIndex == 6)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -406,7 +406,7 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法7 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
-                else if (StepLengthMethod.SelectedIndex == 5)
+                else if (StepLengthMethod.SelectedIndex == 7)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -414,7 +414,7 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法8，加速度平均开三次根号的做法
-                else if (StepLengthMethod.SelectedIndex == 6)
+                else if (StepLengthMethod.SelectedIndex == 8)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -423,7 +423,7 @@ namespace socketServer
                 }
 
                 //方法9，使用关于腿长的倒置钟摆的方法（很好玩的方法）
-                else if (StepLengthMethod.SelectedIndex == 8)
+                else if (StepLengthMethod.SelectedIndex == 9)
                 {
                     if (i >= 1)
                     {
@@ -1208,7 +1208,7 @@ namespace socketServer
 
         private void StepLengthMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (StepLengthMethod.SelectedIndex == 7 && SystemSave.StepLengthTree== null)
+            if (StepLengthMethod.SelectedIndex == 3 && SystemSave.StepLengthTree== null)
             {
                 string informationS = "使用决策树进行模式判断需要首先建立一棵决策树。\n";
                 informationS += "为了减少计算量本程序决策树的设定只有一次。\n";
@@ -1236,6 +1236,11 @@ namespace socketServer
                 informationS += "\n如果没有建立决策树，此方法不生效";
                 MessageBox.Show(informationS);
             }
+        }
+
+        private void HeadingMehtod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

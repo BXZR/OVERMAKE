@@ -275,7 +275,8 @@ namespace socketServer
                 //Console.WriteLine("S = " + S +"   V = "+V ) ;
             }
             S = Math.Abs(S);//取绝对值
-            stepLength = 2 * Math.Sqrt( 2 * S * SystemSave.getLegLength() - S*S) *1.25;
+            //stepLength = 2 * Math.Sqrt( 2 * S * SystemSave.getLegLength() - S*S) *1.25;
+            stepLength = 2 * Math.Sqrt(2 * S * SystemSave.getLegLength() - S * S);
             //Console.WriteLine("step Length with leg = "+stepLength);
             return stepLength;
         }

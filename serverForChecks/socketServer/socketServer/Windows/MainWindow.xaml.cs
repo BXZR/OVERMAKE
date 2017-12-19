@@ -52,6 +52,15 @@ namespace socketServer
         List<int> indexBuff = new List<int>();//确认一步的下标存储
         List<double> theFilteredAZ = new List<double>();//当前使用的轴
 
+        //需要单个窗口记录的信息这些信息将会被发送到对应的客户端
+        public double allStepCount = 0;
+        public double allStepCountSave = 0;
+        public double stepLengthNow = 0;
+        public double stepAngleNow = 0;
+        public double slopNow = 0;
+        public double heightNow = 0;
+        public double stepCount2 = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -169,8 +178,10 @@ namespace socketServer
             // thePictureMaker.createPictureFromDataComplex(theInformationController);//暂时先不必要用特别复杂的图像生成方法，会卡
             theInformationController.flashInformation();
             SystemSave.stepCount += thePeackFinder.peackBuff.Count;
+            this.allStepCountSave +=  thePeackFinder.peackBuff.Count;
             //方法2的刷新和存储
             SystemSave.stepCount2 += stepExtra.peackBuff.Count;
+            stepCount2 += stepExtra.peackBuff.Count;
             stepExtra.makeFlash();
             SystemSave.makeFlash();
   
@@ -300,7 +311,10 @@ namespace socketServer
             }
             //记录最新的移动步长
             if (theStairMode.Count > 0)
-                SystemSave.heightNow= theStairMode[theStairMode.Count - 1];
+            {
+                this.heightNow = theStairMode[theStairMode.Count - 1];
+                SystemSave.heightNow = theStairMode[theStairMode.Count - 1];
+            }
         }
 
 
@@ -436,7 +450,10 @@ namespace socketServer
             }
             //记录最新的移动步长
             if (theStepLengthUse.Count > 0)
+            {
+                this.stepLengthNow = theStepLengthUse[theStepLengthUse.Count - 1];
                 SystemSave.stepLengthNow = theStepLengthUse[theStepLengthUse.Count - 1];
+            }
         }
 
 
@@ -651,10 +668,13 @@ namespace socketServer
                 }
                 // theAngelController.makeMehtod3Clear();
             }
-         
+
             //记录最新的移动方向
             if (theStepAngeUse.Count > 0)
-            SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
+            {
+                this.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
+                SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
+            }
 
         }
 
@@ -709,25 +729,26 @@ namespace socketServer
         //生成输出在tips里面的显示信息
         void makeLabelMehtod(int stepcounts2 = 0)
         {
+            allStepCount = allStepCountSave + indexBuff.Count;
             SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
             if (stepCheckMethod.SelectedIndex == 0)
             {
                 theStepLabel.Content = "（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
-                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount ;
+                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount +"/"+ allStepCountSave + "    总步数：" + SystemSave.allStepCount +"/"+allStepCount ;
                 //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
             }
             else if (stepCheckMethod.SelectedIndex == 1)
             {
                 theStepLabel.Content = "（当前分组）"+"  上界： "+ SystemSave.uperGateForShow.ToString("f2") +"  下界： "+ SystemSave.downGateForShow.ToString("f2")+ "  总步数： " + thePeackFinder.peackBuff.Count ;
-                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "    总步数：" + SystemSave.allStepCount;
+                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "/" + allStepCountSave + "    总步数：" + SystemSave.allStepCount + "/" + allStepCount;
             }
             else if (stepCheckMethod.SelectedIndex == 2)
             {
-                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
+                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2)+"/"+(stepcounts2 + stepCount2);
             }
             else if (stepCheckMethod.SelectedIndex == 3)
             {
-                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2);
+                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2) + "/" + (stepcounts2 + stepCount2);
             }
             theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
             theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
@@ -761,6 +782,7 @@ namespace socketServer
                       X, Y ,Z ,
                     indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count-1]
                     );
+                this.slopNow = slopeWithPeack;
                 SystemSave.slopNow = slopeWithPeack;
                 double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
                 theStage = theStage.ChangeState(slopeWithwindow);

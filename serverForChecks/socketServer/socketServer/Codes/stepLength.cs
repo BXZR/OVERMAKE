@@ -268,15 +268,23 @@ namespace socketServer
                 {
                     timeUse = 0.2;
                 }
-
+                //加速度的二重积分就是距离
                 //Console.WriteLine("timeUse = "+ timeUse);
                 V += AZ[i] * timeUse;
                 S += V * timeUse + 0.5 * AZ[i] * timeUse  * timeUse;
                 //Console.WriteLine("S = " + S +"   V = "+V ) ;
             }
+
             S = Math.Abs(S);//取绝对值
             //stepLength = 2 * Math.Sqrt( 2 * S * SystemSave.getLegLength() - S*S) *1.25;
-            stepLength = 2 * Math.Sqrt(2 * S * SystemSave.getLegLength() - S * S);
+            double beSqrt =  (2 * S * SystemSave.getLegLength() - S * S);
+            Console.WriteLine("S = " + S + "  beSqrt = " + beSqrt + "  leg = " + SystemSave.getLegLength());
+
+            //一个很土的防护措施
+            if (beSqrt < 0)
+                return stepLengthBasic();
+
+            stepLength = 2 * Math.Sqrt(beSqrt);
             //Console.WriteLine("step Length with leg = "+stepLength);
             return stepLength;
         }

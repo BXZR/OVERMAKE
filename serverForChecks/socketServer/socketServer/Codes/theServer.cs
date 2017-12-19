@@ -303,21 +303,13 @@ namespace socketServer
                         //sendString += ";" + SystemSave.stepLengthNow.ToString("f2") ;
                         //sendString += ";" + SystemSave.stepAngleNow.ToString("f2") ;
                         //myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
-                        string sendString = SystemSave.allStepCount.ToString();
-                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
-                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
-                        sendString += ";" + SystemSave.slopNow.ToString("f2");
-                        sendString += ";" + SystemSave.heightNow.ToString("f2");
+                        string sendString = makeSendToClients();
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else if (information == "get")
                     {
                         //3D显示客户端的需要
-                        string sendString = SystemSave.allStepCount.ToString();
-                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
-                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
-                        sendString += ";" + SystemSave.slopNow.ToString("f2");
-                        sendString += ";" + SystemSave.heightNow.ToString("f2");
+                        string sendString = makeSendToClients();
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else//客户端请求关闭连接
@@ -337,22 +329,25 @@ namespace socketServer
             }
         }
 
-        public delegate void showNewMainWindow(information theInformationController);
-        public void showMainWindow(information theInformationController)
+        public delegate MainWindow showNewMainWindow(information theInformationController);
+        public MainWindow showMainWindow(information theInformationController)
         {
             MainWindow aNewMainWindow = new MainWindow();
             aNewMainWindow.makeStart(theInformationController, false);
             //在这里对应不同客户端窗口的信息title(可以扩展一下)
             aNewMainWindow.Title = "PDR With SmartPhone No. " + theInformationControllers.Count;
             aNewMainWindow.Show();
+            return aNewMainWindow;
         }
+
+
         //分割线
         private void ReceiveMessage2(object clientSocket)
         {
             information theInformationController = new socketServer.information() ;
             theInformationControllers.Add(theInformationController);
             //有关窗口UI等等的内容需要在一些特殊的线程里面处理
-            System.Windows.Application.Current.Dispatcher.Invoke(System.Windows .Threading.DispatcherPriority.Normal , new showNewMainWindow(showMainWindow),theInformationController);
+            MainWindow theMainWindowForthisClient =  (MainWindow)System.Windows.Application.Current.Dispatcher.Invoke(System.Windows .Threading.DispatcherPriority.Normal , new showNewMainWindow(showMainWindow),theInformationController);
             Console.WriteLine("a new client");
             //获取到发送消息的客户端socket引用
             //专门用来接收这个客户端的信息的线程
@@ -443,25 +438,13 @@ namespace socketServer
                             }
                             */
                         }
-                        //string sendString = SystemSave.allStepCount.ToString();
-                        //sendString += ";" + SystemSave.stepLengthNow.ToString("f2") ;
-                        //sendString += ";" + SystemSave.stepAngleNow.ToString("f2") ;
-                        //myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
-                        string sendString = SystemSave.allStepCount.ToString();
-                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
-                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
-                        sendString += ";" + SystemSave.slopNow.ToString("f2");
-                        sendString += ";" + SystemSave.heightNow.ToString("f2");
-                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
+                        string theSendString = makeSendToClients(theMainWindowForthisClient);
+                        myClientSocket.Send(Encoding.UTF8.GetBytes(theSendString));//发送一个步数信息
                     }
                     else if (information == "get")
                     {
-                        string sendString = SystemSave.allStepCount.ToString();
-                        sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
-                        sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
-                        sendString += ";" + SystemSave.slopNow.ToString("f2");
-                        sendString += ";" + SystemSave.heightNow.ToString("f2");
-                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
+                        string theSendString = makeSendToClients(theMainWindowForthisClient);
+                        myClientSocket.Send(Encoding.UTF8.GetBytes(theSendString));//发送一个步数信息
                     }
                     else//客户端请求关闭连接
                     {
@@ -480,6 +463,28 @@ namespace socketServer
             }
         }
 
+        private string makeSendToClients(MainWindow theWindow = null)
+        {
+            string sendString = "";
+            if (theWindow == null)
+            {
+                sendString = SystemSave.allStepCount.ToString();
+                sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
+                sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
+                sendString += ";" + SystemSave.slopNow.ToString("f2");
+                sendString += ";" + SystemSave.heightNow.ToString("f2");
+            }
+            else
+            {
+                sendString += theWindow.allStepCount.ToString();
+                sendString += ";" + theWindow.stepLengthNow.ToString("f2");
+                sendString += ";" + theWindow.stepAngleNow.ToString("f2");
+                sendString += ";" + theWindow.slopNow.ToString("f2");
+                sendString += ";" + theWindow.heightNow.ToString("f2");
+            }
+            return sendString; 
+
+        }
 
     }
 }

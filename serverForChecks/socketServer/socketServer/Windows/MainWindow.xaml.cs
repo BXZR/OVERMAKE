@@ -543,6 +543,29 @@ namespace socketServer
             }
             else if (HeadingMehtod.SelectedIndex == 3)
             {
+                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
+                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
+                //记录移动的方向
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i <= 1)
+                    {
+                        double degree = AHRSZ[indexBuff[i]];
+                        degree = headingOffsetExtraCanculate(degree, false);
+                        theStepAngeUse.Add(degree);
+                    }
+                    else
+                    {
+                        double degree = theAngelController.AHRSIMUSelect(indexBuff[i - 1], indexBuff[i], AHRSZ, IMUZ);
+                        degree = headingOffsetExtraCanculate(degree, false);
+                        theStepAngeUse.Add(degree);
+                    }
+                }
+
+              
+            }
+            else if (HeadingMehtod.SelectedIndex == 4)
+            {
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
                 try
                 {
@@ -562,27 +585,6 @@ namespace socketServer
                     {
                         double degree = theFilteredD[indexBuff[i]];
                         degree = headingOffsetExtraCanculate(degree);
-                        theStepAngeUse.Add(degree);
-                    }
-                }
-            }
-            else if (HeadingMehtod.SelectedIndex == 4)
-            {
-                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
-                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
-                //记录移动的方向
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    if (i <= 1)
-                    {
-                        double degree = AHRSZ[indexBuff[i]];
-                        degree = headingOffsetExtraCanculate(degree, false);
-                        theStepAngeUse.Add(degree);
-                    }
-                    else
-                    {
-                        double degree = theAngelController.AHRSIMUSelect(indexBuff[i - 1], indexBuff[i], AHRSZ, IMUZ);
-                        degree = headingOffsetExtraCanculate(degree, false);
                         theStepAngeUse.Add(degree);
                     }
                 }

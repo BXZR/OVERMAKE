@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,10 +27,14 @@ namespace socketServer.Windows
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
+                SystemSave.serverIP = ALLIP.Text;
+                SystemSave.serverPort = Convert.ToInt32(ALLPort.Text);
+
                 theServer theServerForAll = new socketServer.theServer(ALLIP.Text, Convert.ToInt32(ALLPort.Text));
                 theServerForAll.setMode(2);
+                SystemSave.SystemServerMode = 2;
                 //制作显示用的label
                 string informationS = "";
                 informationS += theServerForAll.startTheServer();
@@ -43,11 +48,13 @@ namespace socketServer.Windows
                 //为了防止乱按按钮，直接将button给禁了
                 button.IsEnabled = false;
                 button2.IsEnabled = false;
-            }
-            catch
-            {
-                MessageBox.Show("IP和端口设置不正确\n请设置后重新尝试");
-            }
+            //}
+            //catch
+            //{
+            //    //恢复原先的数值
+            //    SystemSave.SystemServerMode = 1;
+            //    MessageBox.Show("IP和端口设置不正确\n请设置后重新尝试");
+            //}
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
@@ -70,6 +77,11 @@ namespace socketServer.Windows
         {
             ALLIP.Text = SystemSave.serverIP;
             ALLPort.Text = SystemSave.serverPort.ToString();
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            ALLIP.Text = SystemSave.getIPAddress();
         }
     }
 }

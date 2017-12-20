@@ -186,9 +186,12 @@ namespace socketServer
             SystemModeSelect.SelectedIndex = SystemSave.SystemModeInd;
 
             //加载绘制颜色
-            theDrawColorButton.Background = new SolidColorBrush(SystemSave.theNewColor2);
+            theDrawColorButton.Background = new SolidColorBrush(SystemSave.theOldColor);
             //记录一次最初的数值
             getStartValue();
+
+            if (SystemSave.SystemServerMode == 2)//多人模式之下不允许restart，因为多客户端有可能造成混乱
+                saveRestartButton.IsEnabled = false;
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -422,6 +425,18 @@ namespace socketServer
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void button3_Click_3(object sender, RoutedEventArgs e)
+        {
+            ServerIPText.Text = SystemSave.getIPAddress();
+        }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            //单纯的保存
+            setValues();
+            MessageBox.Show("数据保存成功");
         }
     }
 }

@@ -129,7 +129,7 @@ namespace socketServer
             }
             IPAddress ip = IPAddress.Parse(IP);
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Console.WriteLine("IP is" + ip);
+            Console.WriteLine("ServerIP is " + ip);
             serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
             serverSocket.Listen(10);    //设定最多10个排队连接请求  
             opened = true;//标记，用与表示开启
@@ -150,9 +150,16 @@ namespace socketServer
             {
                 if (clientSockets[i] == null)
                     continue;
-                clientSockets[i].Shutdown(SocketShutdown.Both);
-                clientSockets[i].Close();
-                clientSockets[i] = null;
+                try
+                {
+                    clientSockets[i].Shutdown(SocketShutdown.Both);
+                    clientSockets[i].Close();
+                    clientSockets[i] = null;
+                }
+                catch
+                {
+                    Console.WriteLine("不必重复删除");
+                }
             }
             //关掉客户端线程
             for (int i = 0; i < theClientThreads.Count; i++)
@@ -187,12 +194,14 @@ namespace socketServer
                     {
                         Thread receiveThread = new Thread(ReceiveMessage);
                         theClientThreads.Add(receiveThread);//保留这个客户端连接的引用
+                        clientSockets.Add(clientSocket);//保留socket引用
                         receiveThread.Start(clientSocket);
                     }
                     else if (mode == 2)
                     {
                         Thread receiveThread = new Thread(ReceiveMessage2);
                         theClientThreads.Add(receiveThread);//保留这个客户端连接的引用
+                        clientSockets.Add(clientSocket);//保留socket引用
                         receiveThread.Start(clientSocket);
                     }
                   
@@ -483,6 +492,12 @@ namespace socketServer
                 sendString += ";" + theWindow.heightNow.ToString("f2");
             }
             return sendString; 
+
+        }
+
+        //有客户端关闭了的连接被消除掉
+        private void flashSocketLinks()
+        {
 
         }
 

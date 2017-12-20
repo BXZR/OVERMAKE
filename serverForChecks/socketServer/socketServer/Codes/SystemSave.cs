@@ -15,6 +15,7 @@ namespace socketServer
         public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
         public static theServer theServrForAll;//所有窗口共享唯一的一个网络服务器
         public static int SystemModeInd = 0;//系统模式，有实验模式和实际模式
+        public static int SystemServerMode = 1;//1 单人使用 2 多人使用
         //两种模式的区别就是实验模式之下在原地晃手机就可以移动，但是这种情况在实际模式之下不被允许
 
 
@@ -139,5 +140,17 @@ namespace socketServer
 
         //路线图绘制缩放值，为了适应不同的路线大小每走一步的距离不一定就是那么大，要有缩放
         public static double routeLineScale = 5;
+
+        //获得本地IP地址的方法
+        public static string getIPAddress()
+        {
+            //这个获取IP地址的方法非常简单粗暴但是不是公网的IP
+            // string IP = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault<IPAddress>(a => a.AddressFamily.ToString().Equals("InterNetwork")).ToString();
+            //真正使用的获得IP的手段是下面更细节的方法
+            System.Net.IPAddress[] addressList = System.Net.Dns.GetHostByName(System.Net.Dns.GetHostName()).AddressList;
+            string IP1 = addressList[0].ToString();
+            string IP2 = addressList[1].ToString();
+            return IP1;
+        }
     }
 }

@@ -27,8 +27,8 @@ namespace socketServer.Windows
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 SystemSave.serverIP = ALLIP.Text;
                 SystemSave.serverPort = Convert.ToInt32(ALLPort.Text);
 
@@ -48,17 +48,18 @@ namespace socketServer.Windows
                 //为了防止乱按按钮，直接将button给禁了
                 button.IsEnabled = false;
                 button2.IsEnabled = false;
-            //}
-            //catch
-            //{
-            //    //恢复原先的数值
-            //    SystemSave.SystemServerMode = 1;
-            //    MessageBox.Show("IP和端口设置不正确\n请设置后重新尝试");
-            //}
+            }
+            catch (Exception E)
+            {
+                //恢复原先的数值
+                SystemSave.SystemServerMode = 1;
+                MessageBox.Show("IP和端口设置不正确\n请设置后重新尝试\n"+ E.Message);
+            }
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            SystemSave.SystemServerMode = 1;
             SystemSave.serverIP = ALLIP.Text ;
             SystemSave.serverPort = Convert.ToInt32( ALLPort.Text);
             MainWindow aMainWindow =  new MainWindow();
@@ -75,8 +76,9 @@ namespace socketServer.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ALLIP.Text = SystemSave.serverIP;
+            //ALLIP.Text = SystemSave.serverIP;
             ALLPort.Text = SystemSave.serverPort.ToString();
+            ALLIP.Text = SystemSave.getIPAddress();
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)

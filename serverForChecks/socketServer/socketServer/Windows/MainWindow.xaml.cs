@@ -927,8 +927,11 @@ namespace socketServer
         //窗口自动关闭的时候也做一次自动的关闭
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (theServerController != null)
+            //单人模式之下关闭窗口就是彻底结束
+            if (theServerController != null && SystemSave.SystemServerMode == 1)
+            {
                 theServerController.closeServer();
+            }
         }
 
 

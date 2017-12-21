@@ -34,3 +34,5 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Acc
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Math.Core.dll
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Math.dll
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Statistics.dll
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Neuro.dll
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Genetic.dll

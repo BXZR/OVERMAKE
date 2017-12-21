@@ -67,6 +67,9 @@
     <Reference Include="Accord">
       <HintPath>bin\x64\Debug\AccordUsing\Accord.dll</HintPath>
     </Reference>
+    <Reference Include="Accord.Genetic">
+      <HintPath>bin\x64\Debug\AccordUsing\Accord.Genetic.dll</HintPath>
+    </Reference>
     <Reference Include="Accord.MachineLearning">
       <HintPath>bin\x64\Debug\AccordUsing\Accord.MachineLearning.dll</HintPath>
     </Reference>
@@ -75,6 +78,9 @@
     </Reference>
     <Reference Include="Accord.Math.Core">
       <HintPath>bin\x64\Debug\AccordUsing\Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Neuro">
+      <HintPath>bin\x64\Debug\AccordUsing\Accord.Neuro.dll</HintPath>
     </Reference>
     <Reference Include="Accord.Statistics">
       <HintPath>bin\x64\Debug\AccordUsing\Accord.Statistics.dll</HintPath>
@@ -110,7 +116,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Codes\AccordNotNetUse.cs" />
+    <Compile Include="Codes\AcordUse\AccordANN.cs" />
+    <Compile Include="Codes\AcordUse\AccordNotNetUse.cs" />
     <Compile Include="Codes\DecisionTree\theDecisionTree.cs" />
     <Compile Include="Codes\DecisionTree\theDecisionTreeNode.cs" />
     <Compile Include="Codes\MathCanculate.cs" />

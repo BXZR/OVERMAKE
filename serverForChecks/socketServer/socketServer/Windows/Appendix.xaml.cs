@@ -44,5 +44,10 @@ namespace socketServer.Windows
         {
             new Codes.AccordNotNetUse().Linear();
         }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            new Codes.AcordUse.AccordANN().checkClass();
+        }
     }
 }

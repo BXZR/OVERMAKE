@@ -118,6 +118,11 @@ namespace socketServer
             else
                 SystemSave.isCutForDecisionTree = false;
 
+            if (UseFilters.IsChecked == true)
+                SystemSave.useFilter = true;
+            else
+                SystemSave.useFilter = false;
+
             SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
             SystemSave.CanculateHeadingMode = HeadingCanculateMode.SelectedIndex;
 
@@ -178,6 +183,11 @@ namespace socketServer
             else
                 isPruning.IsChecked  = false;
 
+            if (SystemSave.useFilter   == true)
+                UseFilters.IsChecked = true;
+            else
+                UseFilters.IsChecked = false;
+
             StartPositionX.Text = SystemSave.startPositionX.ToString();
             StartPositionY.Text = SystemSave.startPositionY.ToString();
             StartPositionZ.Text = SystemSave.startPositionZ.ToString();
@@ -232,6 +242,7 @@ namespace socketServer
         private static double ValuerRouteLineScale;
         private static int ValueSystemMode;
 
+        private static bool ValueUseFilters;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -272,7 +283,8 @@ namespace socketServer
               
               ValuerRouteLineScale = SystemSave.routeLineScale;
               ValueSystemMode = SystemSave.SystemModeInd;
-            
+              ValueUseFilters = SystemSave.useFilter;
+
               hasBasicValue = true;//最初数值只会被记录一次
            }
         }
@@ -324,6 +336,10 @@ namespace socketServer
             else
                 isPruning.IsChecked = false;
 
+            if (ValueUseFilters)
+                UseFilters.IsChecked = true;
+            else
+                UseFilters.IsChecked = false;
 
             TreeMethod.SelectedIndex =  ValueTreeMethod;
             HeadingCanculateMode.SelectedIndex = ValueHeadingCanculateMode;

@@ -380,7 +380,7 @@ namespace socketServer
                             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
                             int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
                             // Console.WriteLine("modeNow = " + mode);
-                            double stepLength = theStepLengthController.getStepLength2WithDecisionTree(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
+                            double stepLength = theStepLengthController.getStepLength2WithMode(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
                             theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                         }
                     }
@@ -392,11 +392,8 @@ namespace socketServer
                 //方法4，一般公式 + 线性回归
                 else if (StepLengthMethod.SelectedIndex == 4)
                 {
-
                     if (i >= 1)
                     {
-                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
-                        //    Console.WriteLine(theInformationController.timeStep[v]);
                         List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
 
                         double stepLength = theStepLengthController.getStepLengthWithKLinear(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
@@ -406,13 +403,27 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
 
-                //方法5，身高相关
+                //方法5，一般公式 + ANN
                 else if (StepLengthMethod.SelectedIndex == 5)
+                {
+                    if (i >= 1)
+                    {
+                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+
+                        double stepLength = theStepLengthController.getStepLengthWithANN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                        theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    }
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+
+                //方法5，身高相关
+                else if (StepLengthMethod.SelectedIndex == 6)
                 {
                     theStepLengthUse.Add(theStepLengthController.getStepLength3());
                 }
                 //方法6，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
-                else if (StepLengthMethod.SelectedIndex == 6)
+                else if (StepLengthMethod.SelectedIndex == 7)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -420,7 +431,7 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法7 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
-                else if (StepLengthMethod.SelectedIndex == 7)
+                else if (StepLengthMethod.SelectedIndex == 8)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -428,7 +439,7 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法8，加速度平均开三次根号的做法
-                else if (StepLengthMethod.SelectedIndex == 8)
+                else if (StepLengthMethod.SelectedIndex == 9)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -437,7 +448,7 @@ namespace socketServer
                 }
 
                 //方法9，使用关于腿长的倒置钟摆的方法（很好玩的方法）
-                else if (StepLengthMethod.SelectedIndex == 9)
+                else if (StepLengthMethod.SelectedIndex == 10)
                 {
                     if (i >= 1)
                     {
@@ -718,8 +729,7 @@ namespace socketServer
             //}
             //生成文件，这个文件用做训练集，决策树或者其他操作，通用的--------------------------------------------------------------------------------------------------
             theTrainBase.Clear();
-            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theFilteredAZ, timeUse, theInformationController,theStepLengthController);
+            theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theFilteredAZ,  theInformationController,theStepLengthController);
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
                 theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase.txt");

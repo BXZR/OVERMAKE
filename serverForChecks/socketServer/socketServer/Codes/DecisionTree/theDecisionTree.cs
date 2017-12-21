@@ -51,12 +51,12 @@ namespace socketServer.Codes.DecisionTree
             {
                 //这个顺序都是AX AY AZ GX GY GZ 顺序不可以打乱
                 //量化成为类型或者说模式
-                int axUse = getTypeIndex(ax);
-                int ayUse = getTypeIndex(ay);
-                int azUse = getTypeIndex(az);
-                int gxUse = getTypeIndex(gx);
-                int gyUse = getTypeIndex(gy);
-                int gzUse = getTypeIndex(gz);
+                int axUse = SystemSave.getTypeIndex(ax);
+                int ayUse = SystemSave.getTypeIndex(ay);
+                int azUse = SystemSave.getTypeIndex(az);
+                int gxUse = SystemSave.getTypeIndex(gx);
+                int gyUse = SystemSave.getTypeIndex(gy);
+                int gzUse = SystemSave.getTypeIndex(gz);
                 List<int> VAL = new List<int>();
                 VAL.Add(axUse);
                 VAL.Add(ayUse);
@@ -157,13 +157,13 @@ namespace socketServer.Codes.DecisionTree
         {
             for (int i = 0; i < AX.Count; i++)
             {
-                AXMode.Add(getTypeIndex(AX[i]));
-                AYMode.Add(getTypeIndex(AY[i]));
-                AZMode.Add(getTypeIndex(AZ[i]));
-                GXMode.Add(getTypeIndex(GX[i]));
-                GYMode.Add(getTypeIndex(GY[i]));
-                GZMode.Add(getTypeIndex(GZ[i]));
-                SLMode.Add(getTypeIndex(SL[i]));
+                AXMode.Add(SystemSave. getTypeIndex(AX[i]));
+                AYMode.Add(SystemSave.getTypeIndex(AY[i]));
+                AZMode.Add(SystemSave.getTypeIndex(AZ[i]));
+                GXMode.Add(SystemSave.getTypeIndex(GX[i]));
+                GYMode.Add(SystemSave.getTypeIndex(GY[i]));
+                GZMode.Add(SystemSave.getTypeIndex(GZ[i]));
+                SLMode.Add(SystemSave.getTypeIndex(SL[i]));
             }
             //Console.WriteLine("Part get");
         }
@@ -413,22 +413,6 @@ namespace socketServer.Codes.DecisionTree
             return theDecisionTreeNode.maxDepth;
         }
 
-        //数据分成四类
-        //其实就是为了适应决策树而进行的属性离散化
-       public static  int getTypeIndex(double Value = 0)
-        {
-            //if (Value < 0.25)
-            //    return 1;
-            //if (Value >= 0.25 && Value < 0.5)
-            //    return 2;
-            //if (Value >= 0.5 && Value < 0.75)
-            //    return 3;
-            //else
-            //    return 4;
-            if (Value < 0.5)
-                return 1;
-            else
-                return 2;
-        }
+     
     }
 }

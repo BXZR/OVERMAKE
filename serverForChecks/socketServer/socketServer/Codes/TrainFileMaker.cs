@@ -15,7 +15,7 @@ namespace socketServer
 
         //保存每一步所有的数据，这个是目前为止最通用的方法（不包含GPS）
         //算是线管数据的全存储，训练的饿的时候挑出来自己用的就好
-        public List<string> getSaveTrainFile(List<int> indexBuff, List<double> theA , List<long> timeUse, information theInformationController , stepLength theStepLengthController)
+        public List<string> getSaveTrainFile(List<int> indexBuff, List<double> theA, information theInformationController , stepLength theStepLengthController)
         {
             //在这里用list是为了和fileSave做配合，没有必要每一次都设计格式
             //传入一个list使用统一的格式比较好
@@ -33,7 +33,8 @@ namespace socketServer
             List<double> compass = theFilter.theFilerWork(theInformationController.compassDegree);
             List<double> AHRS = theFilter.theFilerWork(theInformationController.AHRSZFromClient);
             List<double> IMU = theFilter.theFilerWork(theInformationController.IMUZFromClient);
-
+            //List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep,0.4f,true, AX.Count);
             //加工成字符串
             for (int i = 1; i < indexBuff.Count; i++)
             {
@@ -56,17 +57,19 @@ namespace socketServer
 
         private string getVKFK(int indexPre , int indexNow, List<double> theA, List<long> timeUse = null)
         {
-            double VK = MathCanculate.getVariance(theA , indexPre, indexNow);
+            Console.WriteLine("indexPre = " + indexPre + "  indexNow = " + indexNow +" timeUse.count = "+timeUse.Count);
+                double VK = MathCanculate.getVariance(theA, indexPre, indexNow);
 
-            double timestep = timeUse[indexNow] - timeUse[indexPre];
-            //有除零异常说明时间非常短，可以认为根本就没走
-            if (timestep == 0)
-                return "---";//万金油
-            double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+                double timestep = timeUse[indexNow] - timeUse[indexPre];
+                //有除零异常说明时间非常短，可以认为根本就没走
+                if (timestep == 0)
+                    return "---";//万金油
+                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
-            double fakeStepLength = 0.4 * VK + 0.4 * FK + 0.3;
-            string  saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + fakeStepLength.ToString("f3");
-            return saveStringItem;
+                double fakeStepLength = 0.4 * VK + 0.4 * FK + 0.3;
+                string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + fakeStepLength.ToString("f3");
+                return saveStringItem;
+ 
         }
 
 

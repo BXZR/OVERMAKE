@@ -227,8 +227,8 @@ namespace socketServer
              byte[] result = new byte[SystemSave.lengthForBuffer];
             while (true)
             {
-                //try
-                //{
+                try
+                {
                     //通过clientSocket接收数据  
                     int receiveNumber = myClientSocket.Receive(result);
                     // MessageBox.Show("接收客户端" + myClientSocket.RemoteEndPoint.ToString() + "\n消息" + Encoding.ASCII.GetString(result, 0, receiveNumber) + "\ntype: server");
@@ -260,15 +260,15 @@ namespace socketServer
                         myClientSocket.Close();
                         return;//，这层死循环可以结束了
                     }
-                //}
-                //catch //如果发送信息居然失败了，就关掉这个客户端连接
-                //{
-                //    Console.WriteLine("传送信息失败");
-                //    myClientSocket.Shutdown(SocketShutdown.Both);
-                //    myClientSocket.Close();
-                //    return;
-                //}
             }
+                catch //如果发送信息居然失败了，就关掉这个客户端连接
+            {
+                Console.WriteLine("传送信息失败");
+                myClientSocket.Shutdown(SocketShutdown.Both);
+                myClientSocket.Close();
+                return;
+            }
+        }
         }
 
         public delegate MainWindow showNewMainWindow(information theInformationController);

@@ -11,6 +11,88 @@ namespace socketServer.Codes.AcordUse
 {
     class AccordANN 
     {
+        private bool isBuilt = false;
+        ActivationNetwork network;
+        int[] outputsFromFile;//labels标签
+        public void BuildANN( )
+        {
+            if (isBuilt == false)
+            {
+                string information = FileSaver.readFromTrainBase();
+                string[] informationSplit = information.Split('\n');
+                int trueLength = 0;//数据有时候并没有如此理想，因此还是分两次处理
+                                   //否则有可能会有空项，继而产生空引用的错误
+                                   //也是一个贪心的思想在啊
+                for (int i = 0; i < informationSplit.Length; i++)
+                {
+                    string[] informaitonUse = informationSplit[i].Split(',');
+                    if (informaitonUse.Length < 14)
+                        break;
+
+                    trueLength++;
+                }
+                double[][] inputsFromFile = new double[trueLength][];
+                outputsFromFile = new int[trueLength];
+                for (int i = 0; i < trueLength; i++)
+                {
+                    string[] informaitonUse = informationSplit[i].Split(',');
+                    if (informaitonUse.Length < 14)
+                        break;
+
+                    inputsFromFile[i] = new double[] { Convert.ToDouble(informaitonUse[12]), Convert.ToDouble(informaitonUse[13]) };
+                    outputsFromFile[i] = SystemSave.getTypeIndex(Convert.ToDouble(informaitonUse[14]));
+                }
+
+                int numberOfInputs = 2;
+                int numberOfClasses = 4;
+                int hiddenNeurons = 5;
+
+                double[][] outputs = Accord.Statistics.Tools.Expand(outputsFromFile, numberOfClasses, -1, 1);
+                // Next we can proceed to create our network
+                var function = new BipolarSigmoidFunction(2);
+                network = new ActivationNetwork(function,
+                  numberOfInputs, hiddenNeurons, numberOfClasses);
+
+                // Heuristically randomize the network
+                new NguyenWidrow(network).Randomize();
+
+                // Create the learning algorithm
+                var teacher = new LevenbergMarquardtLearning(network);
+
+                // Teach the network for 10 iterations:
+                //double error = Double.PositiveInfinity;
+                //for (int i = 0; i < 10; i++)
+                //    error = teacher.RunEpoch(inputsFromFile, outputs);
+                isBuilt = true;
+            }
+        }
+
+        public int getModeWithANN(double VK ,double FK )
+        {
+            double[] input = new double[] { VK, FK };// 0
+            int answer;
+            double[] output = network.Compute(input);
+            answer = getMaxIndex(output);
+            Console.WriteLine(answer + " is the mode");
+            return answer;
+        }
+
+        int getMaxIndex(double [] output)
+        {
+            int indexUse = -1;
+            double maxValue = -9999999;
+            for (int i = 0; i < output.Length; i++)
+            {
+                if (output[i] > maxValue)
+                {
+                    maxValue = output[i];
+                    indexUse = i;
+                }
+            }
+            return indexUse;
+        }
+
+        //这是一个官方的示例-----------------------------
         public void checkClass()
         {
             // Here we will be creating a neural network to process 3-valued input
@@ -36,17 +118,17 @@ namespace socketServer.Codes.AcordUse
                 new double[] {  1,  1,  1 }  // 2
              };
 
-            int[] labels =
-            {
-                0,
-                1,
-                1,
-                0,
-                2,
-                3,
-                3,
-                2,
-            };
+                int[] labels =
+                {
+                    0,
+                    1,
+                    1,
+                    0,
+                    2,
+                    3,
+                    3,
+                    2,
+                };
 
             // In order to perform multi-class classification, we have to select a 
             // decision strategy in order to be able to interpret neural network 
@@ -85,9 +167,10 @@ namespace socketServer.Codes.AcordUse
                 int answer;
                 double[] output = network.Compute(input[i]);
                 //double response = output.Max(out answer);
-
+                answer = getMaxIndex(output);
                 int expected = labels[i];
                 Console.WriteLine(expected +" is expected");
+                Console.WriteLine(answer + " is answer");
                 // at this point, the variables 'answer' and
                 // 'expected' should contain the same value.
             }

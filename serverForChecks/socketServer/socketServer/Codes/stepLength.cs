@@ -1,4 +1,5 @@
 ﻿using socketServer.Codes;
+using socketServer.Codes.AcordUse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace socketServer
             "根据步频和加速度方差计算的一般性公式",
             "准备多种一般性公式的参数，使用决策树选择参数计算",
             "使用已有训练集线性回归得到一般公式参数",
+            "使用已有训练集使用ANN的做法进行估计",
             "根据男女身高进行比例计算得到步长",
             "纵向加速度差值开四次根号的方法",
             "加速度做平均然后除以阶段加速度的极差的做法",
@@ -151,13 +153,10 @@ namespace socketServer
         }
 
         //论文公式方法，算法7
-        //使用决策树选择出来模式，使用这一套模式的参数来做
-        private double[] afas = { 0.7, 0.8, 0.9, 1.0 };
-        private double[] betas = { 0.3, 0.4, 0.5, 0.6 };
-        private double[] gamas = { 0.1, 0.2, 0.3, 0.4 };
-        public double getStepLength2WithDecisionTree(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null, int modeUse = 1)
+        //实际上这是一个公用的方法，不论用什么方法，只需要传入mode就可以使用systemSave储存的参数了
+        public double getStepLength2WithMode(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null, int modeUse = 1)
         {
-            int indexUse = 0;
+            int indexUse = modeUse;
             // Console.WriteLine("method");
             if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
                 return stepLengthBasic();//万金油
@@ -174,7 +173,7 @@ namespace socketServer
                              // Console.WriteLine("timeStep is "+ timestep);
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                double stepLength = afas[indexUse] * VK + betas[indexUse] * FK + gamas[indexUse];
+                double stepLength = SystemSave.afas[indexUse] * VK + SystemSave.betas[indexUse] * FK + SystemSave.gamas[indexUse];
                 //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油
@@ -221,7 +220,40 @@ namespace socketServer
             }
         }
 
+        //使用accord的人工神经网络的做法
+        //实际上这里有很大的空间进行重构
+        private AccordANN theAccordANN = null;
+        public double getStepLengthWithANN(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
+        {
+            // Console.WriteLine("method");
+            if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
+                return stepLengthBasic();//万金油
+            else
+            {
+                if (theAccordANN == null)
+                {
+                    theAccordANN = new AccordANN();
+                    theAccordANN.BuildANN();
+                }
 
+                double VK = MathCanculate.getVariance(theA, indexNow, indexPre);
+
+                long timestep = timeUse[indexNow] - timeUse[indexPre];
+                //有除零异常说明时间非常短，可以认为根本就没走
+                if (timestep == 0)
+                    return 0;//万金油
+                             // Console.WriteLine("timeStep is "+ timestep);
+                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+
+                int indexUse = theAccordANN .getModeWithANN(VK, FK);
+                double stepLength = SystemSave.afas[indexUse] * VK + SystemSave.betas[indexUse] * FK + SystemSave.gamas[indexUse];
+
+                if (stepLength > 2)//一步走两米，几乎不可能
+                    return stepLengthBasic();//万金油
+                else
+                    return stepLength;
+            }
+        }
 
         //为了保证以后传入多个参数进行判断的情况，请保持这种模式
         private double StepLengthMethod1(double angelPast = 0, double angelNow = 0)

@@ -16,6 +16,7 @@ namespace socketServer
         public static theServer theServrForAll;//所有窗口共享唯一的一个网络服务器
         public static int SystemModeInd = 0;//系统模式，有实验模式和实际模式
         public static int SystemServerMode = 1;//1 单人使用 2 多人使用
+        public static bool useFilter = true;//是否使用滤波
         //两种模式的区别就是实验模式之下在原地晃手机就可以移动，但是这种情况在实际模式之下不被允许
 
 
@@ -64,11 +65,7 @@ namespace socketServer
             return pictureNumber * buffCount + valueNow;
         }
 
-        //每一个阶段的数据收集，系统面板也会有一些东西需要刷新的
-        public static void makeFlash()
-        {
-           
-        }
+   
         //波峰波谷判断走一步的方法中，间隔一定的数据量才能够判别唯一不，这个就是数据间隔量（高度滤波之后的）
         public static int peackThresholdForStepDetection = 2;
         //手机在口袋中的时候的偏差值
@@ -152,5 +149,32 @@ namespace socketServer
             string IP2 = addressList[1].ToString();
             return IP1;
         }
+
+        public static void makeFlash()
+        {
+
+        }
+        //数据分类方法
+        //其实就是为了适应决策树而进行的属性离散化
+        public static int getTypeIndex(double Value = 0)
+        {
+            //if (Value < 0.25)
+            //    return 1;
+            //if (Value >= 0.25 && Value < 0.5)
+            //    return 2;
+            //if (Value >= 0.5 && Value < 0.75)
+            //    return 3;
+            //else
+            //    return 4;
+            if (Value < 0.5)
+                return 1;
+            else
+                return 2;
+        }
+        //一般步长计算方法参数族群
+        //使用决策树,神经网络等等方案选择出来模式，使用这一套模式的参数来做
+        public static  double[] afas = { 0.7, 0.8, 0.9, 1.0 };
+        public static double[] betas = { 0.3, 0.4, 0.5, 0.6 };
+        public static double[] gamas = { 0.1, 0.2, 0.3, 0.4 };
     }
 }

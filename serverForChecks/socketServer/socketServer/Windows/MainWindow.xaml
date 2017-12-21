@@ -61,6 +61,7 @@
             <ComboBoxItem Content="Common formula"/>
             <ComboBoxItem Content="Common formula with Dection Tree"/>
             <ComboBoxItem Content="Common formula with Linear"/>
+            <ComboBoxItem Content="Common formula with ANN"/>
             <ComboBoxItem Content="Stature formula"/>
             <ComboBoxItem Content="Weinberg approach"/>
             <ComboBoxItem Content="Scarlet approach"/>

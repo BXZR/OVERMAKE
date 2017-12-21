@@ -14,13 +14,16 @@ namespace socketServer
      //对外平滑方法
     public List <double> theFilerWork(List<double> IN , float  theValueUse = 0.4f)
     {
+            if (SystemSave.useFilter == false)
+                return IN;
+
             List<double> outList = new List<double>();
             for (int i = 0; i < IN.Count; i++)
                 outList.Add(IN[i]);
-        outList = theFliterMethod1(outList, theValueUse);
-        outList = GetKalMan(outList);
-        outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
-        return outList;
+            outList = theFliterMethod1(outList, theValueUse);
+            outList = GetKalMan(outList);
+            outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
+            return outList;
     }
         //对外平滑方法
         //countForCheck使用其它队列匹配使用（可选）
@@ -28,6 +31,9 @@ namespace socketServer
         //这个问题出现的原因因该是阻塞，所以  outList = theFliterMethod2(outList,4); 运行的次数不会太多，算是应急处理
         public List<long> theFilerWork(List<long> IN, float theValueUse = 0.4f ,bool isSimple = false , int  countForCheck = -1)
         {
+            if (SystemSave.useFilter == false)
+                return IN;
+
             if (isSimple == false)
                 return theFilerWork(IN, theValueUse);
 
@@ -38,13 +44,18 @@ namespace socketServer
             List<long> outList = new List<long>();
             for (int i = 0; i < IN.Count; i++)
                 outList.Add(IN[i]);
+
                 //做普匹配的检查
                 //之所以这样设计是因为存在网络丢包的问题，发现数据包B(包含时间戳)的数据量要比前面的数据包A要少，也就是数据丢失了
                 //算是一个简单的容错自动替换策略（待优化）
-                if (countForCheck > 0 && countForCheck  > outList.Count)
-                    outList = theFliterMethod2(outList,4); 
-               else
-                    outList = theFliterMethod2(outList, 5);
+                if (countForCheck > 0 && countForCheck > outList.Count)
+                {
+                    outList = theFliterMethod2(outList, SystemSave.filterSmoothCount - 1);
+                }
+                else
+                {
+                    outList = theFliterMethod2(outList, SystemSave.filterSmoothCount);
+                }
                 return outList;
             }
         }

@@ -11,7 +11,7 @@ namespace socketServer
     class rotationAngel
     {
         private double theAngelNow = 0;//总记录的角度
-        private double changeGate = 5;//如果变化超过这个数目就认为改变了
+        
 
         //每一种方法的简短说明信息
         private string[] methodInformations =
@@ -31,7 +31,7 @@ namespace socketServer
         //判断变化，超过阀值就认为有所改变了
         public double getAngelNow(double angelIn)
         {
-            if (Math.Abs(theAngelNow - angelIn) > changeGate)
+            if (Math.Abs(theAngelNow - angelIn) > SystemSave.MSHeadingGate)
             {
                 theAngelNow = angelIn;
             }
@@ -50,7 +50,7 @@ namespace socketServer
                 ALL += IN[i];
             }
             double average = ALL / IN.Count - 1;
-            if (Math.Abs(theAngelNow - average) > changeGate)
+            if (Math.Abs(theAngelNow - average) > SystemSave.MSHeadingGate)
             {
                 theAngelNow = IN[IN.Count - 1];
             }

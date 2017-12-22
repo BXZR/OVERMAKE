@@ -132,6 +132,11 @@ namespace socketServer
             SystemSave.routeLineScale = routeLineScaleSlider.Value; //Convert.ToDouble(routeLineScale.Text);
 
             SystemSave.SystemModeInd = SystemModeSelect.SelectedIndex;
+            SystemSave.stepLengthForImmediate = Convert.ToDouble(immediateSL.Text);
+            SystemSave.legLengthInHeight  = Convert.ToDouble(LegInStature.Text);
+            SystemSave.changeGateForImmediate2 = Convert.ToDouble(headingChangeGate.Text);
+            SystemSave.percentWhenMeetChangeGate = Convert.ToDouble(StepLengthRatio.Text);
+            SystemSave.MSHeadingGate = Convert.ToDouble(MSHeadingGate.Text);
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -196,12 +201,18 @@ namespace socketServer
             SystemModeSelect.SelectedIndex = SystemSave.SystemModeInd;
 
             //加载绘制颜色
-            theDrawColorButton.Background = new SolidColorBrush(SystemSave.theOldColor);
+            theDrawColorButton.Foreground = new SolidColorBrush(SystemSave.theOldColor);
             //记录一次最初的数值
             getStartValue();
 
             if (SystemSave.SystemServerMode == 2)//多人模式之下不允许restart，因为多客户端有可能造成混乱
                 saveRestartButton.IsEnabled = false;
+            immediateSL.Text = SystemSave.stepLengthForImmediate.ToString();
+            LegInStature.Text = SystemSave.legLengthInHeight.ToString();
+
+            headingChangeGate.Text = SystemSave.changeGateForImmediate2.ToString();
+            StepLengthRatio.Text = SystemSave.percentWhenMeetChangeGate.ToString();
+            MSHeadingGate.Text = SystemSave.MSHeadingGate.ToString();
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -243,6 +254,13 @@ namespace socketServer
         private static int ValueSystemMode;
 
         private static bool ValueUseFilters;
+        private static string ValueImmeDiateSL;
+        private static string ValueLegInStature;
+
+        private static string ValueHeadingGate;
+        private static string ValueRatioInSL2;
+        private static string ValueMSHeadingGate;
+
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -284,8 +302,14 @@ namespace socketServer
               ValuerRouteLineScale = SystemSave.routeLineScale;
               ValueSystemMode = SystemSave.SystemModeInd;
               ValueUseFilters = SystemSave.useFilter;
+              ValueImmeDiateSL = SystemSave.stepLengthForImmediate.ToString();
+              ValueLegInStature = SystemSave.legLengthInHeight.ToString();
+              
+              ValueHeadingGate = SystemSave.changeGateForImmediate2.ToString();
+              ValueRatioInSL2 = SystemSave.percentWhenMeetChangeGate.ToString();
+              ValueMSHeadingGate = SystemSave.MSHeadingGate.ToString();
 
-              hasBasicValue = true;//最初数值只会被记录一次
+                hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -350,6 +374,12 @@ namespace socketServer
             routeLineScaleSlider.Value = ValuerRouteLineScale;
 
             SystemModeSelect.SelectedIndex = ValueSystemMode;
+            immediateSL.Text = ValueImmeDiateSL;
+            LegInStature.Text = ValueLegInStature;
+
+            headingChangeGate.Text = ValueHeadingGate;
+            StepLengthRatio.Text = ValueRatioInSL2;
+            MSHeadingGate.Text =  ValueMSHeadingGate;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -435,7 +465,7 @@ namespace socketServer
 
         private void button3_Click_2(object sender, RoutedEventArgs e)
         {
-            theDrawColorButton.Background = new SolidColorBrush(theMainWindow.SetColor());
+            theDrawColorButton.Foreground= new SolidColorBrush(theMainWindow.SetColor());
         }
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -453,6 +483,11 @@ namespace socketServer
             //单纯的保存
             setValues();
             MessageBox.Show("数据保存成功");
+        }
+
+        private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

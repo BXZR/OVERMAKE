@@ -74,6 +74,13 @@ namespace socketServer
         public static double zeroCrossOffset = -0.75;
         //是否使用buffer绘制路线图
         public static bool drawWithBuffer = true;
+        //默认行人路长
+        public static double stepLengthForImmediate = 0.6;
+        //转弯测试阀值
+        public static double changeGateForImmediate2 = 60;//转弯的阀值
+        //如果转弯且角度差异大于一个阀值，返回的步长信息恐怕需要调整
+        //调整的参数如下
+        public static double percentWhenMeetChangeGate = 0.4;
         //默认行人身高
         public static double Stature = 1.7234;
         //男性步长身高加权值
@@ -116,6 +123,9 @@ namespace socketServer
         public static bool CHM1Sampled = false;
         public static int sampleTime = 5;//采样保证正确性
         public static double startAngleForCHM1 = 0;//起始的角度
+        //如果变化超过这个数目就认为改变了
+        //实际上就是一个来自微软的简单平滑的思路参数
+        public static double MSHeadingGate = 5;
         //计算偏移量的时候总该有一个准确的当前方向，但是没有就只能输入了
         //偏移量
         //得到这个偏移量之后就可以摆动移动了

@@ -5,49 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer"
         mc:Ignorable="d"
-        Title="Settings" Height="511.393" Width="490.653" Background="#FFF3F3F3" ResizeMode="NoResize" Closed="Window_Closed" Loaded="Window_Loaded">
+        Title="Settings" Height="526.726" Width="489.32" Background="#FFF3F3F3" ResizeMode="NoResize" Closed="Window_Closed" Loaded="Window_Loaded">
     <Grid x:Name="GRID" Margin="0,0,4,9" Height="438" VerticalAlignment="Bottom">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button
-            Width="107" VerticalAlignment="Bottom" x:Name="saveQuit" Margin="364,0,0,8" Height="22" HorizontalAlignment="Left" Content="Save and quit" Click="button_Click_1"/>
+        <Button VerticalAlignment="Bottom" x:Name="saveQuit" Margin="364,0,10,8" Height="22" Content="Save and quit" Click="button_Click_1"/>
         <Button
             Width="107" VerticalAlignment="Bottom" x:Name="saveRestartButton" Margin="132,0,0,8" Loaded="saveRestart_Loaded" Height="22" HorizontalAlignment="Left" Content="Save and restart" Click="button_Copy_Click"/>
         <Button x:Name="button" Content="Get raw value" HorizontalAlignment="Left" Margin="10,0,0,8" Width="108" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
-        <TabControl x:Name="tabControl" Height="417" VerticalAlignment="Top" Margin="0,-20,0,0">
+        <TabControl x:Name="tabControl" Height="436" VerticalAlignment="Top" Margin="0,-39,0,0" SelectionChanged="tabControl_SelectionChanged">
             <TabItem Header="System Config">
                 <Grid Background="#FFE5E5E5" Margin="0,0,0,4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="Tip" Margin="20,28,0,0" Foreground="Red" Content="服务器未开启，可以设置后直接开启。" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="420"/>
-                    <TextBox x:Name="ServerIPText" HorizontalAlignment="Left" Height="23" Margin="127,63,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="110"/>
-                    <Label x:Name="label_Copy22" Content="ServerPort" HorizontalAlignment="Left" Margin="20,98,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <TextBox x:Name="ServerPortText" HorizontalAlignment="Left" Margin="127,100,0,0" TextWrapping="Wrap" Text="TextBox" Width="268" Height="23" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="Draw_route_with_buffer" Content="DrawRouteWithBuffer" HorizontalAlignment="Left" Margin="25,239,0,0" VerticalAlignment="Top" IsChecked="True" Height="16" Width="148"/>
-                    <Label x:Name="label_Copy13" Content="ServerIP" HorizontalAlignment="Left" Margin="20,61,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <TextBox x:Name="TrainBasePath" Height="23" Margin="127,315,20,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label x:Name="Tip" Margin="20,10,0,0" Foreground="Red" Content="服务器未开启，可以设置后直接开启。" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="420"/>
+                    <TextBox x:Name="ServerIPText" HorizontalAlignment="Left" Height="23" Margin="127,45,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="110"/>
+                    <Label x:Name="label_Copy22" Content="ServerPort" HorizontalAlignment="Left" Margin="20,80,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                    <TextBox x:Name="ServerPortText" HorizontalAlignment="Left" Margin="127,82,0,0" TextWrapping="Wrap" Text="TextBox" Width="268" Height="23" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="Draw_route_with_buffer" Content="DrawRouteWithBuffer" HorizontalAlignment="Left" Margin="25,248,0,0" VerticalAlignment="Top" IsChecked="True" Height="16" Width="148"/>
+                    <Label x:Name="label_Copy13" Content="ServerIP" HorizontalAlignment="Left" Margin="20,43,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TrainBasePath" Height="23" Margin="127,333,20,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
-                        Width="99" VerticalAlignment="Top" x:Name="label_Copy11" Margin="20,312,0,0" Height="26" HorizontalAlignment="Left" Content="TrainBasePath"/>
-                    <Label x:Name="label_Copy17" Content="StartPosition" HorizontalAlignment="Left" Margin="20,165,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy18" Content="X:" HorizontalAlignment="Left" Margin="14,193,0,0" Width="41" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy19" Content="Y:" HorizontalAlignment="Left" Margin="162,193,0,0" Width="41" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <TextBox x:Name="StartPositionX" HorizontalAlignment="Left" Height="23" Margin="40,195,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="114"/>
-                    <TextBox x:Name="StartPositionY" HorizontalAlignment="Left" Height="23" Margin="188,195,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="114"/>
-                    <Label x:Name="label_Copy20" Content="Z:" HorizontalAlignment="Left" Margin="307,193,0,0" Width="41" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <TextBox x:Name="StartPositionZ" HorizontalAlignment="Left" Height="23" Margin="337,195,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="114"/>
+                        Width="99" VerticalAlignment="Top" x:Name="label_Copy11" Margin="20,330,0,0" Height="26" HorizontalAlignment="Left" Content="TrainBasePath"/>
+                    <Label x:Name="label_Copy17" Content="StartPosition" HorizontalAlignment="Left" Margin="20,174,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy18" Content="X:" HorizontalAlignment="Left" Margin="14,202,0,0" Width="41" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy19" Content="Y:" HorizontalAlignment="Left" Margin="162,202,0,0" Width="41" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                    <TextBox x:Name="StartPositionX" HorizontalAlignment="Left" Height="23" Margin="40,204,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="114"/>
+                    <TextBox x:Name="StartPositionY" HorizontalAlignment="Left" Height="23" Margin="188,204,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="114"/>
+                    <Label x:Name="label_Copy20" Content="Z:" HorizontalAlignment="Left" Margin="307,202,0,0" Width="41" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                    <TextBox x:Name="StartPositionZ" HorizontalAlignment="Left" Height="23" Margin="337,204,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="114"/>
                     <Label
-                        Width="129" VerticalAlignment="Top" x:Name="label_Copy21" Margin="20,272,0,0" Height="26" HorizontalAlignment="Left" Content="RoutePictueScale"/>
-                    <Button x:Name="theDrawColorButton" Content="Draw Color" HorizontalAlignment="Left" Margin="307,272,0,0" VerticalAlignment="Top" Width="127" Click="button3_Click_2"/>
-                    <Slider x:Name="routeLineScaleSlider" Margin="147,272,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="155"/>
-                    <Label x:Name="label_Copy23" Content="SystemMode" HorizontalAlignment="Left" Margin="20,134,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="SystemModeSelect" HorizontalAlignment="Left" Margin="127,134,0,0" VerticalAlignment="Top" Width="268" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged">
+                        Width="129" VerticalAlignment="Top" x:Name="label_Copy21" Margin="20,281,0,0" Height="26" HorizontalAlignment="Left" Content="RoutePictueScale"/>
+                    <Button x:Name="theDrawColorButton" Content="Draw Color" HorizontalAlignment="Left" Margin="234,248,0,0" VerticalAlignment="Top" Width="206" Click="button3_Click_2" FontWeight="Bold" FontStyle="Italic"/>
+                    <Slider x:Name="routeLineScaleSlider" Margin="147,281,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="293" Maximum="15"/>
+                    <Label x:Name="label_Copy23" Content="SystemMode" HorizontalAlignment="Left" Margin="20,116,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="SystemModeSelect" HorizontalAlignment="Left" Margin="127,116,0,0" VerticalAlignment="Top" Width="268" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged">
                         <ComboBoxItem Content="experimental"/>
                         <ComboBoxItem Content="practical"/>
                     </ComboBox>
-                    <Button x:Name="button3" Content="Get Local IP" HorizontalAlignment="Left" Margin="251,64,0,0" VerticalAlignment="Top" Width="144" Click="button3_Click_3"/>
-                    <CheckBox x:Name="UseFilters" Content="UseFilters" HorizontalAlignment="Left" Margin="210,242,0,0" VerticalAlignment="Top" Width="194"/>
+                    <Button x:Name="button3" Content="Get Local IP" HorizontalAlignment="Left" Margin="251,46,0,0" VerticalAlignment="Top" Width="144" Click="button3_Click_3"/>
+                    <CheckBox x:Name="UseFilters" Content="UseFiltersInCanculate" HorizontalAlignment="Left" Margin="127,149,0,0" VerticalAlignment="Top" Width="268"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Step Dection">
@@ -78,67 +77,92 @@
             <TabItem Header="Heading">
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,-1">
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="packageOffset" Margin="165,34,24,0" Height="23"/>
-                    <CheckBox x:Name="UseOffSet" Content="UseHeadingOffset" HorizontalAlignment="Left" Margin="25,72,0,0" VerticalAlignment="Top" Width="227"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="packageOffset" Margin="164,124,25,0" Height="23"/>
+                    <CheckBox x:Name="UseOffSet" Content="UseHeadingOffset" HorizontalAlignment="Left" Margin="24,162,0,0" VerticalAlignment="Top" Width="227"/>
                     <Label
-                        Width="128" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy14" Margin="20,31,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingOffsetExtra"/>
-                    <ComboBox x:Name="HeadingCanculateMode" Margin="0,106,24,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="256" SelectionChanged="HeadingCanculateMode_SelectionChanged">
+                        Width="128" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy14" Margin="19,121,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingOffsetExtra"/>
+                    <ComboBox x:Name="HeadingCanculateMode" Margin="0,196,25,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="256" SelectionChanged="HeadingCanculateMode_SelectionChanged">
                         <ComboBoxItem Content="Horizontal Plane"/>
                         <ComboBoxItem Content="3D Free"/>
                     </ComboBox>
                     <Label
-                        Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="20,102,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
-                    <Label x:Name="TipsForHeading" Content="" Margin="0,170,0,0" VerticalAlignment="Top" Foreground="Red" Height="94" IsHitTestVisible="False"/>
+                        Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="19,192,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
+                    <Label x:Name="TipsForHeading" Content="说明---------------------------------------------------------------------------------" Margin="0,289,0,0" VerticalAlignment="Top" Foreground="Red" Height="94" IsHitTestVisible="False"/>
                     <Label
-                        Width="254" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy16" Margin="20,139,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode(3D) StartAngle"/>
-                    <TextBox x:Name="HCM1Start" Height="23" Margin="279,139,24,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                        Width="254" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy16" Margin="19,229,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode(3D) StartAngle"/>
+                    <TextBox x:Name="HCM1Start" Height="23" Margin="278,229,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label
+                        Width="211" VerticalAlignment="Top" x:Name="TTXXTT" Margin="10,38,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="MS Heading Method Gate"/>
+                    <TextBox x:Name="MSHeadingGate" Height="23" Margin="188,41,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy4" Margin="10,90,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Offset Config"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="StepLength">
+            <TabItem Header="StepLengthNormal">
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight" Margin="0,161,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Weinberg Method"/>
+                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight" Margin="19,255,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Weinberg Method"/>
                     <TextBox
-                        Text="TextBox" TextWrapping="Wrap" x:Name="Aminus" Margin="192,164,10,0" Height="23" VerticalAlignment="Top"/>
+                        Text="TextBox" TextWrapping="Wrap" x:Name="Aminus" Margin="211,258,28,0" Height="23" VerticalAlignment="Top"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy" Margin="0,10,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Stature Method"/>
+                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy" Margin="19,132,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Stature Method"/>
                     <Label
-                        Width="115" VerticalAlignment="Top" x:Name="label_Copy3" Margin="8,42,0,0" Height="26" HorizontalAlignment="Left" Content="Stature for people"/>
+                        Width="115" VerticalAlignment="Top" x:Name="label_Copy3" Margin="27,164,0,0" Height="26" HorizontalAlignment="Left" Content="Stature for people"/>
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="Stature" Margin="137,43,10,0" Height="23"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="Stature" Margin="156,165,122,0" Height="23"/>
                     <Label
-                        Width="103" VerticalAlignment="Top" x:Name="label_Copy4" Margin="8,71,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for male"/>
+                        Width="103" VerticalAlignment="Top" x:Name="label_Copy4" Margin="27,193,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for male"/>
                     <Label
-                        Width="114" VerticalAlignment="Top" x:Name="label_Copy5" Margin="8,100,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for female"/>
+                        Width="114" VerticalAlignment="Top" x:Name="label_Copy5" Margin="27,222,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for female"/>
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="MailWeight" Margin="137,73,10,0" Height="23"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="MailWeight" Margin="156,195,28,0" Height="23"/>
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="FemailWeight" Margin="137,103,10,0" Height="23"/>
-                    <CheckBox
-                        Width="78" VerticalAlignment="Top" x:Name="isMaleCheckc" Margin="137,135,0,0" IsChecked="True" Height="16" HorizontalAlignment="Left" Content="IsMale"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="FemailWeight" Margin="156,225,28,0" Height="23"/>
+                    <CheckBox VerticalAlignment="Top" x:Name="isMaleCheckc" Margin="365,168,26,0" IsChecked="True" Height="16" Content="IsMale"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight" Margin="0,193,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Scarlet Method"/>
+                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight" Margin="19,287,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Scarlet Method"/>
                     <TextBox
-                        Text="TextBox" TextWrapping="Wrap" x:Name="Scarlet" Margin="192,196,10,0" Height="23" VerticalAlignment="Top"/>
+                        Text="TextBox" TextWrapping="Wrap" x:Name="Scarlet" Margin="211,290,28,0" Height="23" VerticalAlignment="Top"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy" Margin="0,224,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Kim Method"/>
+                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy" Margin="19,318,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Kim Method"/>
                     <TextBox
-                        Text="TextBox" TextWrapping="Wrap" x:Name="Kim" Margin="192,227,10,0" Height="23" VerticalAlignment="Top"/>
-                    <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="15,320,220,0" VerticalAlignment="Top" Click="button1_Click"/>
+                        Text="TextBox" TextWrapping="Wrap" x:Name="Kim" Margin="211,321,28,0" Height="23" VerticalAlignment="Top"/>
                     <Label
-                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="0,255,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method"/>
+                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy2" Margin="19,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Immediate Step Length"/>
+                    <TextBox x:Name="immediateSL" Height="23" Margin="173,16,26,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
-                        Width="134" VerticalAlignment="Top" x:Name="label_Copy12" Margin="8,283,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTreeMethod"/>
-                    <ComboBox x:Name="TreeMethod" HorizontalAlignment="Left" Margin="147,287,0,0" VerticalAlignment="Top" Width="133">
+                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy2" Margin="19,346,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Leg/Stature"/>
+                    <TextBox x:Name="LegInStature" Height="23" Margin="211,349,28,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label
+                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy3" Margin="19,41,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Immediate Step Length"/>
+                    <Label
+                        Width="129" VerticalAlignment="Top" x:Name="label_Copy24" Margin="27,70,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingChangeGate"/>
+                    <TextBox x:Name="headingChangeGate" Height="23" Margin="161,72,26,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label
+                        Width="129" VerticalAlignment="Top" x:Name="TXT" Margin="27,101,0,0" Height="26" HorizontalAlignment="Left" Content="StepLengthRatio"/>
+                    <TextBox x:Name="StepLengthRatio" Height="23" Margin="161,103,28,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="StepLengthMore">
+                <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="24,84,211,0" VerticalAlignment="Top" Click="button1_Click"/>
+                    <Label
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method"/>
+                    <Label
+                        Width="134" VerticalAlignment="Top" x:Name="label_Copy12" Margin="15,44,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTreeMethod"/>
+                    <ComboBox x:Name="TreeMethod" HorizontalAlignment="Left" Margin="154,48,0,0" VerticalAlignment="Top" Width="133">
                         <ComboBoxItem Content="IC3"/>
                         <ComboBoxItem Content="C4.5"/>
                         <ComboBoxItem Content="CART"/>
                     </ComboBox>
-                    <CheckBox x:Name="isPruning" Content="Pruning" HorizontalAlignment="Left" Margin="298,288,0,0" VerticalAlignment="Top" Width="173"/>
-                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="276,320,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
+                    <CheckBox x:Name="isPruning" Content="Pruning" HorizontalAlignment="Left" Margin="309,51,0,0" VerticalAlignment="Top" Width="124"/>
+                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="282,84,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">

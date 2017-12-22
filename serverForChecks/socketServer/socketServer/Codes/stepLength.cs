@@ -29,8 +29,7 @@ namespace socketServer
         };
 
 
-        private double changeGate = 60;//转弯的阀值
-        //如果转弯且角度差异大于一个阀值，返回的步长信息恐怕需要调整
+
 
         //外部方法0，必须对应methodType方法0，这个在mainWindow处会有判断
         //同时也是外部方法1，传参就是方法1
@@ -258,8 +257,8 @@ namespace socketServer
         //为了保证以后传入多个参数进行判断的情况，请保持这种模式
         private double StepLengthMethod1(double angelPast = 0, double angelNow = 0)
         {
-            if (Math.Abs(angelPast - angelNow) > changeGate)
-                return stepLengthBasic() / 2;
+            if (Math.Abs(angelPast - angelNow) > SystemSave.changeGateForImmediate2)
+                return stepLengthBasic()  * SystemSave.percentWhenMeetChangeGate;
             else
                 return stepLengthBasic();
         }
@@ -326,7 +325,7 @@ namespace socketServer
         //后期打算用训练后的步长模型来做
         private double stepLengthBasic()
         {
-            return 0.6;
+            return SystemSave.stepLengthForImmediate;
         }
         
         //返回训练用的"真实步长"，用来构建决策树

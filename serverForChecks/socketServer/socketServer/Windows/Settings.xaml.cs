@@ -213,6 +213,7 @@ namespace socketServer
             headingChangeGate.Text = SystemSave.changeGateForImmediate2.ToString();
             StepLengthRatio.Text = SystemSave.percentWhenMeetChangeGate.ToString();
             MSHeadingGate.Text = SystemSave.MSHeadingGate.ToString();
+            headingCanculateTips();//制作heading的tips
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -431,16 +432,34 @@ namespace socketServer
 
         private void HeadingCanculateMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (HeadingCanculateMode.SelectedIndex == 1)
-            {
-                string informationS = "有关3D判断当前移动方向的方法说明：\n";
-                informationS += "这种方法需要事先有一定的基础数据来计算偏移量\n";
-                informationS += "因此最开始的"+SystemSave.sampleTime+"步会因为采样而失效";
-                informationS += "此外这种方法只会对前三种方向判定算法生效";
-                TipsForHeading.Content += informationS;
-            }
+            headingCanculateTips();
         }
 
+        //因为初始化的时候也应该做这一步，但是因为控件的初始化的并不完全相同，所以需要使用loaded方法统一处理
+        //为此需要封装成一个方法
+        private void headingCanculateTips()
+        {
+            try
+            {
+                if (HeadingCanculateMode.SelectedIndex == 1)
+                {
+                    string  informationS = "----------------------------------------说明-----------------------------------------\n";
+                    informationS += "有关3D判断当前移动方向的方法说明：\n";
+                    informationS += "这种方法需要事先有一定的基础数据来计算偏移量\n";
+                    informationS += "因此最开始的" + SystemSave.sampleTime + "步会因为采样而失效";
+                    informationS += "此外这种方法只会对前三种方向判定算法生效";
+                    TipsForHeading.Content = informationS;
+                }
+                else
+                {
+                    TipsForHeading.Content = "----------------------------------------说明------------------------------------------\n当前没有必须说明的项目";
+                }
+            }
+            catch
+            {
+                Console.WriteLine("初始化尚未完成");
+            }
+        }
         private void button3_Click(object sender, RoutedEventArgs e)
         {
             TreeViewWindow theWindow = new TreeViewWindow();

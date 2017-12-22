@@ -87,7 +87,7 @@
                     </ComboBox>
                     <Label
                         Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="19,192,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
-                    <Label x:Name="TipsForHeading" Content="说明---------------------------------------------------------------------------------" Margin="0,289,0,0" VerticalAlignment="Top" Foreground="Red" Height="94" IsHitTestVisible="False"/>
+                    <Label x:Name="TipsForHeading" Content="说明---------------------------------------------------------------------------------" Margin="0,281,0,0" VerticalAlignment="Top" Foreground="Red" Height="102" IsHitTestVisible="False"/>
                     <Label
                         Width="254" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy16" Margin="19,229,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode(3D) StartAngle"/>
                     <TextBox x:Name="HCM1Start" Height="23" Margin="278,229,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>

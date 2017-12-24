@@ -52,17 +52,17 @@ namespace socketServer
                 //Console.WriteLine("timeUseCount = "+ timeUse.Count);
                 // Console.WriteLine("theACount = " + theA.Count);
 
-               double  VK = MathCanculate.getVariance(theA , indexNow, indexPre);
+                double VK = MathCanculate.getVariance(theA, indexNow, indexPre);
 
                 long timestep = timeUse[indexNow] - timeUse[indexPre];
                 //有除零异常说明时间非常短，可以认为根本就没走
                 if (timestep == 0)
                     return 0;//万金油
-                             // Console.WriteLine("timeStep is "+ timestep);
-                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+                  Console.WriteLine("timeStep is "+ timestep);
+                double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                double stepLength = 0.9 * VK + 0.4 * FK + 0.3;
-                //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
+                double stepLength = SystemSave.CommonFormulaWeights[0][0] * VK + SystemSave.CommonFormulaWeights[0][1] * FK + SystemSave.CommonFormulaWeights[0][2];
+                Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油
                 else
@@ -170,7 +170,7 @@ namespace socketServer
                 if (timestep == 0)
                     return 0;//万金油
                              // Console.WriteLine("timeStep is "+ timestep);
-                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+                double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];
                 //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
@@ -208,7 +208,7 @@ namespace socketServer
                 if (timestep == 0)
                     return 0;//万金油
                              // Console.WriteLine("timeStep is "+ timestep);
-                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+                double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 double stepLength = accordUsing.linearStepLength(VK,FK);
                 //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
@@ -242,7 +242,7 @@ namespace socketServer
                 if (timestep == 0)
                     return 0;//万金油
                              // Console.WriteLine("timeStep is "+ timestep);
-                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
+                double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 int indexUse = theAccordANN .getModeWithANN(VK, FK);
                 double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];

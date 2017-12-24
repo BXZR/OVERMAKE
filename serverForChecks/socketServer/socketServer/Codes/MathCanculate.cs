@@ -59,8 +59,13 @@ namespace socketServer.Codes
         public static double getVariance(List<double> values, int indexPre, int indexNow)
         {
             if (indexNow <= indexPre)
-                return 0;
-
+            {
+                //Console.WriteLine("pre index should be lower than now index , so swap them.");
+                //return 0;//交换是一个看上去更人性化的解决方案
+                int temp = indexPre;
+                indexPre = indexNow;
+                indexNow = temp;
+            }
             double average = 0;
             for (int i = indexPre; i < indexNow; i++)
             {

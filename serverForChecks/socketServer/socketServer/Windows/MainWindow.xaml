@@ -69,7 +69,7 @@
             <ComboBoxItem Content="ComMoveWithLeg"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,11,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Label x:Name="Charts_Copy6" Content="Tips" Margin="0,11,1008,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <Label x:Name="Charts_Copy6" Content="Tips" Margin="10,10,1008,0" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Button x:Name="button8" Content="Settings" Margin="0,488,25,0" Click="button8_Click" HorizontalAlignment="Right" Width="75" Height="26" VerticalAlignment="Top"/>
         <Label x:Name="Charts_Copy7" Content="HeadingMethod" Margin="0,292,44,0" HorizontalAlignment="Right" Width="163" Foreground="#FF4600FF" FontWeight="Bold" Height="26" VerticalAlignment="Top"/>
         <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,321,25,0" Width="173" SelectedIndex="0" Height="22" VerticalAlignment="Top" SelectionChanged="HeadingMehtod_SelectionChanged">

@@ -463,7 +463,7 @@ namespace socketServer
                 if (HeadingCanculateMode.SelectedIndex == 1)
                 {
                     string  informationS = "----------------------------------------说明-----------------------------------------\n";
-                    informationS += "有关3D判断当前移动方向的方法说明：\n";
+                    informationS += "有关3D Free判断当前移动方向的方法说明：\n";
                     informationS += "这种方法需要事先有一定的基础数据来计算偏移量\n";
                     informationS += "因此最开始的" + SystemSave.sampleTime + "步会因为采样而失效";
                     informationS += "此外这种方法只会对前三种方向判定算法生效";
@@ -497,6 +497,7 @@ namespace socketServer
         {
             TreeViewWindow theWindow = new TreeViewWindow();
             theWindow.Show();
+            theWindow.Title= "Step Length Tree";
             theWindow.drawDecisionTree(0);
         }
 
@@ -512,6 +513,7 @@ namespace socketServer
         {
             TreeViewWindow theWindow = new TreeViewWindow();
             theWindow.Show();
+            theWindow.Title = "Z Move Tree";
             theWindow.drawDecisionTree(1);
         }
 

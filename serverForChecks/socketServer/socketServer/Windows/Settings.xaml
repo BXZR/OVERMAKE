@@ -77,25 +77,25 @@
             <TabItem Header="Heading">
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,-1">
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="packageOffset" Margin="164,124,25,0" Height="23"/>
-                    <CheckBox x:Name="UseOffSet" Content="UseHeadingOffset" HorizontalAlignment="Left" Margin="24,162,0,0" VerticalAlignment="Top" Width="227"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="packageOffset" Margin="164,159,187,0" Height="23"/>
+                    <CheckBox x:Name="UseOffSet" Content="UseExtraHeadingOffset" HorizontalAlignment="Left" Margin="290,164,0,0" VerticalAlignment="Top" Width="157"/>
                     <Label
-                        Width="128" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy14" Margin="19,121,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingOffsetExtra"/>
-                    <ComboBox x:Name="HeadingCanculateMode" Margin="0,196,25,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="256" SelectionChanged="HeadingCanculateMode_SelectionChanged">
+                        Width="128" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy14" Margin="19,158,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingOffsetExtra"/>
+                    <ComboBox x:Name="HeadingCanculateMode" Margin="0,91,25,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="256" SelectionChanged="HeadingCanculateMode_SelectionChanged">
                         <ComboBoxItem Content="Horizontal Plane"/>
                         <ComboBoxItem Content="3D Free"/>
                     </ComboBox>
                     <Label
-                        Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="19,192,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
+                        Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="19,87,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
                     <Label x:Name="TipsForHeading" Content="说明---------------------------------------------------------------------------------" Margin="0,281,0,0" VerticalAlignment="Top" Foreground="Red" Height="102" IsHitTestVisible="False"/>
                     <Label
-                        Width="254" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy16" Margin="19,229,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode(3D) StartAngle"/>
-                    <TextBox x:Name="HCM1Start" Height="23" Margin="278,229,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                        Width="254" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy16" Margin="19,123,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode(3D) StartAngle"/>
+                    <TextBox x:Name="HCM1Start" Height="23" Margin="278,123,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
-                        Width="211" VerticalAlignment="Top" x:Name="TTXXTT" Margin="10,38,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="MS Heading Method Gate"/>
-                    <TextBox x:Name="MSHeadingGate" Height="23" Margin="188,41,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                        Width="211" VerticalAlignment="Top" x:Name="TTXXTT" Margin="10,23,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="MS Heading Method Gate"/>
+                    <TextBox x:Name="MSHeadingGate" Height="23" Margin="188,26,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
-                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy4" Margin="10,90,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Offset Config"/>
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy4" Margin="10,60,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Offset Config"/>
                 </Grid>
             </TabItem>
             <TabItem Header="StepLengthNormal">
@@ -148,6 +148,9 @@
             </TabItem>
             <TabItem Header="StepLengthMore">
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -163,15 +166,15 @@
                     </ComboBox>
                     <CheckBox x:Name="isPruning" Content="Pruning" HorizontalAlignment="Left" Margin="309,51,0,0" VerticalAlignment="Top" Width="124"/>
                     <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="282,84,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
-                    <ListBox x:Name="CommonFamily" HorizontalAlignment="Left" Height="124" Margin="230,234,0,0" VerticalAlignment="Top" Width="226" MouseDoubleClick="CommonFamily_MouseDoubleClick">
+                    <ListBox x:Name="CommonFamily" Height="124" Margin="0,209,22,0" VerticalAlignment="Top" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="216">
                         <ListBoxItem Content="A = 1 B = 2 C = 3"/>
                         <ListBoxItem Content="A = 3 B = 454 C = 3"/>
                     </ListBox>
                     <Label
                         Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="15,132,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Config"/>
                     <Label
-                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="231,147,0,0" Height="26" HorizontalAlignment="Left" Content="Common Formula Count "/>
-                    <ComboBox x:Name="CommonFamilyCountChoice" HorizontalAlignment="Left" Margin="231,173,0,0" VerticalAlignment="Top" Width="225" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1">
+                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,147,81,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
+                    <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,151,25,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">
                         <ComboBoxItem Content="1"/>
                         <ComboBoxItem Content="2"/>
                         <ComboBoxItem Content="3"/>
@@ -179,9 +182,9 @@
                         <ComboBoxItem Content="5"/>
                     </ComboBox>
                     <Label
-                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="231,202,0,0" Height="26" HorizontalAlignment="Left" Content="Common Formula Weights"/>
+                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,177,72,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
                     <Label
-                        Width="208" VerticalAlignment="Top" x:Name="CommonFormulaFamilyLabel" Margin="10,173,0,0" Height="185" HorizontalAlignment="Left" Content="" Foreground="#FFFF00AE"/>
+                        Width="208" x:Name="CommonFormulaFamilyLabel" Margin="10,0,0,24" HorizontalAlignment="Left" Content="" Foreground="#FFFF00AE" Height="185" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">

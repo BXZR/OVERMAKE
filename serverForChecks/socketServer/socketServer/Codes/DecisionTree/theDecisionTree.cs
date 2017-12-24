@@ -139,7 +139,7 @@ namespace socketServer.Codes.DecisionTree
                 SL.Add(Convert.ToDouble(rows[15]));
                 SM.Add(Convert.ToInt32(rows[16]));
             }
-            Console.WriteLine("Data loaded for tree");
+           // Console.WriteLine("Data loaded for tree");
         }
         //建立属性集合，用来拆分和标记
         private void makeDictionary()
@@ -164,7 +164,7 @@ namespace socketServer.Codes.DecisionTree
                 GXMode.Add(SystemSave.getTypeIndex(GX[i]));
                 GYMode.Add(SystemSave.getTypeIndex(GY[i]));
                 GZMode.Add(SystemSave.getTypeIndex(GZ[i]));
-                SLMode.Add(SystemSave.getTypeIndexForStair(SL[i]));
+                SLMode.Add(SystemSave.getTypeIndex(SL[i]));
                 StairMode.Add(SystemSave.getTypeIndexForStair(SM[i]));
             }
             //Console.WriteLine("Part get");
@@ -183,12 +183,12 @@ namespace socketServer.Codes.DecisionTree
             {
                 if (typesForAll.Contains(aimMode[i]) == false)
                 {
-                    Console.WriteLine("aimMode =" + aimMode[i]);
+                   // Console.WriteLine("aimMode =" + aimMode[i]);
                     typesForAll.Add(aimMode[i]);
                     countOfTypesForAll.Add(0);
                 }
             }
-            // Console.WriteLine("get type count = " + typesForAll.Count);
+            //Console.WriteLine("get type count = " + typesForAll.Count);
             // Console.WriteLine("countOfTypesForAll = " + countOfTypesForAll.Count);
 
             for (int i = 0; i < aimMode.Count; i++)

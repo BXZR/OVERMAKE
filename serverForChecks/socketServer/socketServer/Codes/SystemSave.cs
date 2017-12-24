@@ -176,15 +176,40 @@ namespace socketServer
             //    return 3;
             //else
             //    return 4;
-            if (Value < 0.5)
-                return 1;
-            else
-                return 2;
+            //-----------------------------------------------------------
+            //if (Value < 0.5)
+            //    return 1;
+            //else
+            //    return 2;
+            //按照下面公式的数量进行分类
+            //分类，同时分类的结果是选择的公式参数组的下标
+            double caluetoCheck = 1.0 / CommonFormulaWeights.Count;
+            double checker = caluetoCheck;
+            for (int i = 0; i < CommonFormulaWeights.Count; i++)
+            {
+                if (Value < checker)
+                    return i;
+                checker += caluetoCheck;
+            }
+            return CommonFormulaWeights.Count - 1;
+        }
+
+        public static int getTypeIndexForStair(double Value = 0)
+        {
+            return (int)Value;
         }
         //一般步长计算方法参数族群
         //使用决策树,神经网络等等方案选择出来模式，使用这一套模式的参数来做
-        public static  double[] afas = { 0.7, 0.8, 0.9, 1.0 };
-        public static double[] betas = { 0.3, 0.4, 0.5, 0.6 };
-        public static double[] gamas = { 0.1, 0.2, 0.3, 0.4 };
+        //public static  double[] afas = { 0.7, 0.8, 0.9, 1.0 };
+        //public static double[] betas = { 0.3, 0.4, 0.5, 0.6 };
+        //public static double[] gamas = { 0.1, 0.2, 0.3, 0.4 };
+        public static List<double []> CommonFormulaWeights = new List<double[]>()
+        {
+            new double []{ 0.7,0.3,0.1},
+            new double []{ 0.8,0.4,0.2 },
+            new double []{ 0.9,0.5,0.3 },
+            new double []{ 1.0, 0.6,0.4 },
+        };
+          
     }
 }

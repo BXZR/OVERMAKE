@@ -29,11 +29,21 @@ namespace socketServer
         }
 
 
-
-        public void startSet(MainWindow theIN)
+        //后直接在最开始的界面打开的时候，IP设置不可以重复进行，否则太乱了
+        private void makeCancalSomeSetting()
+        {
+            if (theMainWindow == null)
+            {
+                ServerIPText.IsEnabled = false;
+                LocalIPGetter.IsEnabled = false;
+                ServerPortText.IsEnabled = false;
+                theDrawColorButton.IsEnabled = false;
+            }
+        }
+        public void startSet(MainWindow theIN = null)
         {
             theMainWindow = theIN;
-            if (theMainWindow.isServerStarted() == false)
+            if (theMainWindow != null && theMainWindow.isServerStarted() == false)
             {
                 saveRestartButton.IsEnabled = false;//没有开启服务器就没必要重启
             }
@@ -48,6 +58,7 @@ namespace socketServer
             try
             {
                 setValues();
+                SaveCommonFormulaWeightsFamily();
                 this.Close();
             }
             catch
@@ -61,10 +72,15 @@ namespace socketServer
             try
             {
                 setValues();
-                string information = theMainWindow.makeClose();
-                information += "\n-----------------------\n" + theMainWindow.makeStart();
+                SaveCommonFormulaWeightsFamily();
+                if (theMainWindow != null)
+                {
+                    string information = theMainWindow.makeClose();
+                    information += "\n-----------------------\n" + theMainWindow.makeStart();
+                    MessageBox.Show(information);
+                }
                 this.Close();
-                MessageBox.Show(information);
+                
 
             }
             catch (Exception eee)
@@ -213,7 +229,10 @@ namespace socketServer
             headingChangeGate.Text = SystemSave.changeGateForImmediate2.ToString();
             StepLengthRatio.Text = SystemSave.percentWhenMeetChangeGate.ToString();
             MSHeadingGate.Text = SystemSave.MSHeadingGate.ToString();
-            headingCanculateTips();//制作heading的tips
+            TipsMake();//制作tips
+            CommonFamilyCountChoice.SelectedIndex = SystemSave.CommonFormulaWeights.Count -1;
+            makeCommonFormulaWeightsFamily();//初始的公式族的内容
+            makeCancalSomeSetting();
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -432,12 +451,12 @@ namespace socketServer
 
         private void HeadingCanculateMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            headingCanculateTips();
+            TipsMake(true);
         }
 
         //因为初始化的时候也应该做这一步，但是因为控件的初始化的并不完全相同，所以需要使用loaded方法统一处理
         //为此需要封装成一个方法
-        private void headingCanculateTips()
+        private void TipsMake(bool sample = false)
         {
             try
             {
@@ -454,11 +473,24 @@ namespace socketServer
                 {
                     TipsForHeading.Content = "----------------------------------------说明------------------------------------------\n当前没有必须说明的项目";
                 }
+
+                if (!sample)
+                {
+                    CommonFormulaFamilyLabel.Content =
+                        "右侧的参数对应一般步长算法中参数\n" +
+                        "SL= α * VK + β * FK + γ \n" +
+                        "一般公式使用容器中第一组的参数\n" +
+                        "决策树、神经网络的步长分类数量\n" +
+                        "等于容器中总的参数组数\n" +
+                        "双击条目可调整α，β，γ 参数数值";
+                }
             }
             catch
             {
                 Console.WriteLine("初始化尚未完成");
             }
+
+
         }
         private void button3_Click(object sender, RoutedEventArgs e)
         {
@@ -484,7 +516,14 @@ namespace socketServer
 
         private void button3_Click_2(object sender, RoutedEventArgs e)
         {
-            theDrawColorButton.Foreground= new SolidColorBrush(theMainWindow.SetColor());
+            if (theMainWindow != null)
+            {
+                theDrawColorButton.Foreground = new SolidColorBrush(theMainWindow.SetColor());
+            }
+            else
+            {
+                MessageBox.Show("当前这一项不可编辑。");
+            }
         }
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -501,12 +540,101 @@ namespace socketServer
         {
             //单纯的保存
             setValues();
+            SaveCommonFormulaWeightsFamily();
             MessageBox.Show("数据保存成功");
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void comboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            CommonFamily.Items.Clear();
+            int countforWeight = CommonFamilyCountChoice.SelectedIndex + 1;
+
+            if (countforWeight >= SystemSave.CommonFormulaWeights.Count)
+            {
+                for (int i = 0; i < SystemSave.CommonFormulaWeights.Count; i++)
+                {
+                    ListBoxItem theItem = new ListBoxItem();
+                    theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}",
+                    SystemSave.CommonFormulaWeights[i][0].ToString("f2"),
+                    SystemSave.CommonFormulaWeights[i][1].ToString("f2"),
+                    SystemSave.CommonFormulaWeights[i][2].ToString("f2"));
+
+                    CommonFamily.Items.Add(theItem);
+                }
+                for (int i = 0; i < countforWeight - SystemSave.CommonFormulaWeights.Count; i++)
+                {
+                    ListBoxItem theItem = new ListBoxItem();
+                    theItem.Content = "α = 1.00 , β = 2.00 , γ = 3.00";
+                    CommonFamily.Items.Add(theItem);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < countforWeight; i++)
+                {
+                    ListBoxItem theItem = new ListBoxItem();
+                    theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}",
+                    SystemSave.CommonFormulaWeights[i][0].ToString("f2"),
+                    SystemSave.CommonFormulaWeights[i][1].ToString("f2"),
+                    SystemSave.CommonFormulaWeights[i][2].ToString("f2"));
+
+                    CommonFamily.Items.Add(theItem);
+                }
+            }
+
+
+        }
+
+        private void CommonFamily_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.RightButton == MouseButtonState.Released)
+            {
+                commonWeightSetting settingsForWeight =  new commonWeightSetting();
+
+                settingsForWeight.Show();
+                settingsForWeight.makeStart(CommonFamily.SelectedItem as ListBoxItem);
+            }
+        }
+
+        //加载原有的一般公式参数族
+        void makeCommonFormulaWeightsFamily()
+        {
+            CommonFamily.Items.Clear();
+            for (int i = 0; i < SystemSave.CommonFormulaWeights.Count; i++)
+            {
+                ListBoxItem theItem = new ListBoxItem();
+                //这个逗号分隔非常有用
+                //因为保存数据的时候使用的是字符串处理的东西
+                theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}" ,
+                SystemSave.CommonFormulaWeights[i][0].ToString("f2"), 
+                SystemSave.CommonFormulaWeights[i][1].ToString("f2"), 
+                SystemSave.CommonFormulaWeights[i][2].ToString("f2"));
+
+                CommonFamily.Items.Add(theItem);
+            }
+        }
+
+        //字符串处理保存整整个一般公式族的参数
+        private void SaveCommonFormulaWeightsFamily()
+        {
+            SystemSave.CommonFormulaWeights = new List<double[]>();
+            for (int i = 0; i < CommonFamily.Items.Count; i++)
+            {
+                string information = (string)((ListBoxItem)CommonFamily.Items[i]).Content;
+                information = information.Replace(" ", "");
+                string[] values = information.Split(',');
+                double A = Convert.ToDouble(values[0].Split('=')[1]);
+                double B = Convert.ToDouble(values[1].Split('=')[1]);
+                double C = Convert.ToDouble(values[2].Split('=')[1]);
+                double[] newWeights = new double[] { A, B, C };
+                //Console.WriteLine("information = " + information);
+                SystemSave.CommonFormulaWeights.Add(newWeights);
+            }
         }
     }
 }

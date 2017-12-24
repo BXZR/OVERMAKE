@@ -139,6 +139,9 @@
     <Compile Include="Codes\FileSaver.cs" />
     <Compile Include="Codes\Filter.cs" />
     <Compile Include="Codes\information.cs" />
+    <Compile Include="Windows\commonWeightSetting.xaml.cs">
+      <DependentUpon>commonWeightSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\insectUnityPlay.xaml.cs">
       <DependentUpon>insectUnityPlay.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ChartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\commonWeightSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

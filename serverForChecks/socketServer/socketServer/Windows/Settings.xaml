@@ -45,7 +45,7 @@
                         <ComboBoxItem Content="experimental"/>
                         <ComboBoxItem Content="practical"/>
                     </ComboBox>
-                    <Button x:Name="button3" Content="Get Local IP" HorizontalAlignment="Left" Margin="251,46,0,0" VerticalAlignment="Top" Width="144" Click="button3_Click_3"/>
+                    <Button x:Name="LocalIPGetter" Content="Get Local IP" HorizontalAlignment="Left" Margin="251,46,0,0" VerticalAlignment="Top" Width="144" Click="button3_Click_3"/>
                     <CheckBox x:Name="UseFilters" Content="UseFiltersInCanculate" HorizontalAlignment="Left" Margin="127,149,0,0" VerticalAlignment="Top" Width="268"/>
                 </Grid>
             </TabItem>
@@ -155,7 +155,7 @@
                     <Label
                         Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method"/>
                     <Label
-                        Width="134" VerticalAlignment="Top" x:Name="label_Copy12" Margin="15,44,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTreeMethod"/>
+                        Width="134" VerticalAlignment="Top" x:Name="label_Copy12" Margin="15,44,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTree Method"/>
                     <ComboBox x:Name="TreeMethod" HorizontalAlignment="Left" Margin="154,48,0,0" VerticalAlignment="Top" Width="133">
                         <ComboBoxItem Content="IC3"/>
                         <ComboBoxItem Content="C4.5"/>
@@ -163,6 +163,25 @@
                     </ComboBox>
                     <CheckBox x:Name="isPruning" Content="Pruning" HorizontalAlignment="Left" Margin="309,51,0,0" VerticalAlignment="Top" Width="124"/>
                     <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="282,84,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
+                    <ListBox x:Name="CommonFamily" HorizontalAlignment="Left" Height="124" Margin="230,234,0,0" VerticalAlignment="Top" Width="226" MouseDoubleClick="CommonFamily_MouseDoubleClick">
+                        <ListBoxItem Content="A = 1 B = 2 C = 3"/>
+                        <ListBoxItem Content="A = 3 B = 454 C = 3"/>
+                    </ListBox>
+                    <Label
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="15,132,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Config"/>
+                    <Label
+                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="231,147,0,0" Height="26" HorizontalAlignment="Left" Content="Common Formula Count "/>
+                    <ComboBox x:Name="CommonFamilyCountChoice" HorizontalAlignment="Left" Margin="231,173,0,0" VerticalAlignment="Top" Width="225" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1">
+                        <ComboBoxItem Content="1"/>
+                        <ComboBoxItem Content="2"/>
+                        <ComboBoxItem Content="3"/>
+                        <ComboBoxItem Content="4"/>
+                        <ComboBoxItem Content="5"/>
+                    </ComboBox>
+                    <Label
+                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="231,202,0,0" Height="26" HorizontalAlignment="Left" Content="Common Formula Weights"/>
+                    <Label
+                        Width="208" VerticalAlignment="Top" x:Name="CommonFormulaFamilyLabel" Margin="10,173,0,0" Height="185" HorizontalAlignment="Left" Content="" Foreground="#FFFF00AE"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">
@@ -170,8 +189,6 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox
-                        Width="78" VerticalAlignment="Top" x:Name="isMaleCheckc1" Margin="507,15,-114,0" IsChecked="True" Height="16" HorizontalAlignment="Left" Content="IsMale"/>
                     <Label x:Name="label" Content="StairHeight" HorizontalAlignment="Left" Margin="14,50,0,0" Width="87" Height="31" VerticalAlignment="Top"/>
                     <TextBox x:Name="StairHeight" HorizontalAlignment="Left" Height="23" Margin="121,54,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="247"/>
                     <Button x:Name="button2" Content="Create Decision Tree For ZAxis" HorizontalAlignment="Left" Margin="14,88,0,0" VerticalAlignment="Top" Width="276" Click="button2_Click" Height="22"/>

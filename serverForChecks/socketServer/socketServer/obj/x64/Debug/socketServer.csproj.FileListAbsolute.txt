@@ -36,3 +36,5 @@ D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Acc
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Statistics.dll
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Neuro.dll
 D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\x64\Debug\Accord.Genetic.dll
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\commonWeightSetting.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x64\Debug\Windows\commonWeightSetting.baml

@@ -85,5 +85,16 @@ namespace socketServer.Windows
         {
             ALLIP.Text = SystemSave.getIPAddress();
         }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+           //为了防止出现同步设定的问题，这里使用了简单的单例模式的思想
+            if (SystemSave. theSettingWindow == null)
+            {
+                SystemSave.theSettingWindow = new socketServer.Settings();
+                SystemSave.theSettingWindow.startSet(null);
+                SystemSave.theSettingWindow.Show();
+            }
+        }
     }
 }

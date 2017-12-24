@@ -172,7 +172,7 @@ namespace socketServer
                              // Console.WriteLine("timeStep is "+ timestep);
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                double stepLength = SystemSave.afas[indexUse] * VK + SystemSave.betas[indexUse] * FK + SystemSave.gamas[indexUse];
+                double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];
                 //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油
@@ -245,7 +245,7 @@ namespace socketServer
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 int indexUse = theAccordANN .getModeWithANN(VK, FK);
-                double stepLength = SystemSave.afas[indexUse] * VK + SystemSave.betas[indexUse] * FK + SystemSave.gamas[indexUse];
+                double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];
 
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油

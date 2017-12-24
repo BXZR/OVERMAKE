@@ -18,7 +18,7 @@ namespace socketServer.Codes.DecisionTree
         private List<double> GY = new List<double>();
         private List<double> GZ = new List<double>();
         private List<double> SL = new List<double>();
-
+        private List<double> SM = new List<double>();
         //因为是针对“程度”的分类，所以其实真正参与到计算的不是确切的数值，而是“分类”
         private List<int> AXMode = new List<int>();
         private List<int> AYMode = new List<int>();
@@ -78,9 +78,10 @@ namespace socketServer.Codes.DecisionTree
         {
             if (isStarted == false)
             {
-                makeTreeType(treeType);//设定决策树的type或者说根节点的目标
+               
                 makeTitles();//建立titles集合
                 initMap(path);//读数据
+                makeTreeType(treeType);//设定决策树的type或者说根节点的目标
                 makePartValues();//建立分类数据
                 makeDictionary();//创建“字典”
                 makeBasicValue();//计算基础数值
@@ -136,7 +137,7 @@ namespace socketServer.Codes.DecisionTree
                 GY.Add(Convert.ToDouble(rows[4]));
                 GZ.Add(Convert.ToDouble(rows[5]));
                 SL.Add(Convert.ToDouble(rows[15]));
-                StairMode.Add(Convert.ToInt32(rows[16]));
+                SM.Add(Convert.ToInt32(rows[16]));
             }
             Console.WriteLine("Data loaded for tree");
         }
@@ -163,7 +164,8 @@ namespace socketServer.Codes.DecisionTree
                 GXMode.Add(SystemSave.getTypeIndex(GX[i]));
                 GYMode.Add(SystemSave.getTypeIndex(GY[i]));
                 GZMode.Add(SystemSave.getTypeIndex(GZ[i]));
-                SLMode.Add(SystemSave.getTypeIndex(SL[i]));
+                SLMode.Add(SystemSave.getTypeIndexForStair(SL[i]));
+                StairMode.Add(SystemSave.getTypeIndexForStair(SM[i]));
             }
             //Console.WriteLine("Part get");
         }
@@ -181,7 +183,7 @@ namespace socketServer.Codes.DecisionTree
             {
                 if (typesForAll.Contains(aimMode[i]) == false)
                 {
-                    //Console.WriteLine("SLMode =" + SLMode[i]);
+                    Console.WriteLine("aimMode =" + aimMode[i]);
                     typesForAll.Add(aimMode[i]);
                     countOfTypesForAll.Add(0);
                 }

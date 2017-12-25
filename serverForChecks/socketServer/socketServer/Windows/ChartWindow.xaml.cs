@@ -28,7 +28,7 @@ namespace socketServer
 
 
         #region 折线图
-        public void CreateChartSpline(UseDataType IN, List<double> theValues)
+        public void CreateChartSpline(UseDataType IN, List<double> theValues ,string titleName = "")
         {
             //创建一个图标
             Chart chart = new Chart();
@@ -47,20 +47,23 @@ namespace socketServer
             //创建一个标题的对象
             Title title = new Title();
 
-            title.Text = "表格标题";
+            title.Text = titleName;
             //设置标题的名称
-            switch (IN)
+            if (string.IsNullOrEmpty(titleName))
             {
-                case UseDataType.accelerometerY:
-                    {
-                        title.Text = "Z轴加速度";
-                    }
-                    break;
-                case UseDataType.compassDegree:
-                    {
-                        title.Text = "磁力计角度";
-                    }
-                    break;
+                switch (IN)
+                {
+                    case UseDataType.accelerometerY:
+                        {
+                            title.Text = "选中轴的加速度";
+                        }
+                        break;
+                    case UseDataType.compassDegree:
+                        {
+                            title.Text = "磁力计角度";
+                        }
+                        break;
+                }
             }
            
             title.Padding = new Thickness(0, 10, 5, 0);
@@ -105,20 +108,8 @@ namespace socketServer
             // 创建一个新的数据线。               
             DataSeries dataSeries = new DataSeries();
             // 设置数据线的格式。
-            switch (IN)
-            {
-                case UseDataType.accelerometerY:
-                    {
-                        dataSeries.LegendText = "Y轴加速度";
-                    }
-                    break;
-                case UseDataType.compassDegree:
-                    {
-                        dataSeries.LegendText = "磁力计角度";
-                    }
-                    break;
-            }
-            
+            dataSeries.LegendText = titleName;
+
 
             dataSeries.RenderAs = RenderAs.Spline;//折线图
 
@@ -159,7 +150,7 @@ namespace socketServer
 
         #region 折线图2
         //绘制对比曲线使用的折线图
-        public void CreateChartSpline2(UseDataType IN, List<double> theValues , List<double>  theValues2)
+        public void CreateChartSpline2(UseDataType IN, List<double> theValues , List<double>  theValues2 , string titleName = "")
         {
             //创建一个图标
             Chart chart = new Chart();
@@ -184,7 +175,7 @@ namespace socketServer
             {
                 case UseDataType.accelerometerZ:
                     {
-                        title.Text = "Z轴加速度";
+                        title.Text = "选中轴的加速度";
                     }
                     break;
                 case UseDataType.compassDegree:
@@ -237,8 +228,8 @@ namespace socketServer
             {
                 case UseDataType.accelerometerZ:
                     {
-                        dataSeries.LegendText = "Z轴加速度 ";
-                        dataSeries2.LegendText = "Z轴加速度样本";
+                        dataSeries.LegendText = "加速度";
+                        dataSeries2.LegendText = "加速度样本";
                     }
                     break;
                 case UseDataType.compassDegree:

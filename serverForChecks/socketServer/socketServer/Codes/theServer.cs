@@ -263,8 +263,8 @@ namespace socketServer
             }
                 catch //如果发送信息居然失败了，就关掉这个客户端连接
             {
-                Console.WriteLine("传送信息失败");
-                myClientSocket.Shutdown(SocketShutdown.Both);
+                Console.WriteLine("传送信息失败\n这个socket已经关闭");
+                myClientSocket.Shutdown(SocketShutdown.Receive);
                 myClientSocket.Close();
                 return;
             }

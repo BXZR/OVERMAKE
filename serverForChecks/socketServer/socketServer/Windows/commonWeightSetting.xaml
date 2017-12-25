@@ -7,12 +7,12 @@
         mc:Ignorable="d"
         Title="commonWeightSetting" Height="127.811" Width="481.953" Background="#FFE5E5E5">
     <Grid>
-        <Label x:Name="label" Content="Label" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label" Content="α =" HorizontalAlignment="Left" Margin="29,18,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="AT" HorizontalAlignment="Left" Height="23" Margin="64,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="84"/>
-        <Label x:Name="label_Copy" Content="Label" HorizontalAlignment="Left" Margin="164,17,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="BT" HorizontalAlignment="Left" Height="23" Margin="218,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="84"/>
-        <Label x:Name="label_Copy1" Content="Label" HorizontalAlignment="Left" Margin="318,17,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="CT" HorizontalAlignment="Left" Height="23" Margin="372,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="84"/>
+        <Label x:Name="label_Copy" Content="β =" HorizontalAlignment="Left" Margin="175,18,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="BT" HorizontalAlignment="Left" Height="23" Margin="205,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="84"/>
+        <Label x:Name="label_Copy1" Content="γ =" HorizontalAlignment="Left" Margin="318,17,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="CT" HorizontalAlignment="Left" Height="23" Margin="352,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="84"/>
         <Button x:Name="button" Content="Save and quit" Margin="144,0,145,10" VerticalAlignment="Bottom" Click="button_Click"/>
     </Grid>
 </Window>

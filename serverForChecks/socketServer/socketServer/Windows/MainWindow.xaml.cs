@@ -61,6 +61,8 @@ namespace socketServer
         public double heightNow = 0;
         public double stepCount2 = 0;
 
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -223,7 +225,7 @@ namespace socketServer
             {
                 case 0:
                     //基础方法:用Z轴加速度来做
-                    theFilteredAZ = theStepAxis.AZ(theInformationController , theFilter);  
+                    theFilteredAZ = theStepAxis.AZ(theInformationController , theFilter);
                     break;
                 case 1:
                     //实验用方法：X轴向
@@ -948,9 +950,9 @@ namespace socketServer
         //非自动测试触发的按钮
         private void button4_Click(object sender, RoutedEventArgs e)
         {
-
-            //为了保证数据干净，要做一次滤波
-            List<double> theFiltered = theFilter.theFilerWork(theInformationController.accelerometerY);
+            //展示“滤波”之后的加速度的曲线
+            List<double> theFiltered = theFilteredAZ;
+           // List<double> theFiltered = 
             if (theFiltered == null)
                 return;
             //查看滤波后的数据
@@ -964,9 +966,12 @@ namespace socketServer
             int stepCount = thePeackFinder.countStepWithStatic(theFiltered);
 
             ChartWindow theChartWindow = new ChartWindow();
-            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered);
+
+           
+
+            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered, stepCheckAxisUse.SelectionBoxItem.ToString());
             theChartWindow.Show();
-            MessageBox.Show("一共" + stepCount + "步");
+            //MessageBox.Show("一共" + stepCount + "步");
         }
 
         //处理移动朝向方向的按钮逻辑

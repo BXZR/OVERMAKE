@@ -14,7 +14,80 @@ namespace socketServer.Codes.AcordUse
         private bool isBuilt = false;
         ActivationNetwork network;
         int[] outputsFromFile;//labels标签
-        public void BuildANN( )
+
+        //上下楼梯计算用的ANN-----------------------------------------------------------------------------------
+        public void BuildANNForStair()
+        {
+            if (isBuilt == false)
+            {
+                string information = FileSaver.readFromTrainBase();
+                string[] informationSplit = information.Split('\n');
+                int trueLength = 0;//数据有时候并没有如此理想，因此还是分两次处理
+                                   //否则有可能会有空项，继而产生空引用的错误
+                                   //也是一个贪心的思想在啊
+                for (int i = 0; i < informationSplit.Length; i++)
+                {
+                    string[] informaitonUse = informationSplit[i].Split(',');
+                    if (informaitonUse.Length < 17)
+                        break;
+
+                    trueLength++;
+                }
+                double[][] inputsFromFile = new double[trueLength][];
+                outputsFromFile = new int[trueLength];
+                for (int i = 0; i < trueLength; i++)
+                {
+                    string[] informaitonUse = informationSplit[i].Split(',');
+                    if (informaitonUse.Length < 17)
+                        break;
+
+                    inputsFromFile[i] = new double[] 
+                    {
+                        Convert.ToDouble(informaitonUse[0]), Convert.ToDouble(informaitonUse[2]), Convert.ToDouble(informaitonUse[2]),
+                         Convert.ToDouble(informaitonUse[3]), Convert.ToDouble(informaitonUse[4]), Convert.ToDouble(informaitonUse[5])
+                    };
+                    outputsFromFile[i] = SystemSave.getTypeIndexForStair(Convert.ToDouble(informaitonUse[16]));
+                }
+
+                int numberOfInputs = 6;
+                int numberOfClasses = 3;//对于楼梯，只有三种情况，上楼，下剅以及平地走
+                int hiddenNeurons = 5;
+
+                double[][] outputs = Accord.Statistics.Tools.Expand(outputsFromFile, numberOfClasses, -1, 1);
+                // Next we can proceed to create our network
+                var function = new BipolarSigmoidFunction(2);
+                network = new ActivationNetwork(function,
+                  numberOfInputs, hiddenNeurons, numberOfClasses);
+
+                // Heuristically randomize the network
+                new NguyenWidrow(network).Randomize();
+
+                // Create the learning algorithm
+                var teacher = new LevenbergMarquardtLearning(network);
+
+                // Teach the network for 10 iterations:
+                double error = Double.PositiveInfinity;
+                for (int i = 0; i < 10; i++)
+                    error = teacher.RunEpoch(inputsFromFile, outputs);
+                isBuilt = true;
+            }
+        }
+
+        public int getModeWithANNForStair(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            double[] input = new double[] { AX, AY,AZ,GX,GY,GZ };// 0
+            int answer;
+            double[] output = network.Compute(input);
+            answer = getMaxIndex(output);
+            //Console.WriteLine(answer + " is the mode");
+            return answer;
+        }
+
+
+
+
+        //步长计算用的ANN-----------------------------------------------------------------------------------
+        public void BuildANNForSL( )
         {
             if (isBuilt == false)
             {
@@ -44,7 +117,7 @@ namespace socketServer.Codes.AcordUse
                 }
 
                 int numberOfInputs = 2;
-                int numberOfClasses = 4;
+                int numberOfClasses = SystemSave.CommonFormulaWeights.Count;//这个同样也受systemSave公式族的制约
                 int hiddenNeurons = 5;
 
                 double[][] outputs = Accord.Statistics.Tools.Expand(outputsFromFile, numberOfClasses, -1, 1);
@@ -60,20 +133,20 @@ namespace socketServer.Codes.AcordUse
                 var teacher = new LevenbergMarquardtLearning(network);
 
                 // Teach the network for 10 iterations:
-                //double error = Double.PositiveInfinity;
-                //for (int i = 0; i < 10; i++)
-                //    error = teacher.RunEpoch(inputsFromFile, outputs);
+                double error = Double.PositiveInfinity;
+                for (int i = 0; i < 10; i++)
+                    error = teacher.RunEpoch(inputsFromFile, outputs);
                 isBuilt = true;
             }
         }
 
-        public int getModeWithANN(double VK ,double FK )
+        public int getModeWithANNForSL(double VK ,double FK )
         {
             double[] input = new double[] { VK, FK };// 0
             int answer;
             double[] output = network.Compute(input);
             answer = getMaxIndex(output);
-            Console.WriteLine(answer + " is the mode");
+            //Console.WriteLine(answer + " is the mode");
             return answer;
         }
 

@@ -134,23 +134,23 @@ namespace socketServer.Codes.DecisionTree
                     freshAimModeCount(aimMode[i]);
                 }
             }
-            //如果出现矛盾的情况就放宽要求
-            if (this.aimMode.Count == 0)
-            {
-                Console.WriteLine(this.name+"出现矛盾项");
-                for (int i = 0; i < father.MAP[indexNotUse].Count; i++)
-                {
-                    if (father.MAP[indexNotUse][i] == this.Mode)
-                    {
-                        if (this.aimMode.Contains(aimMode[i]) == false)
-                        { 
-                            this.aimMode.Add(aimMode[i]);
-                            this.aimModeCount.Add(0);
-                        }
-                        freshAimModeCount(aimMode[i]);
-                    }
-                }
-            }
+            ////如果出现矛盾的情况就放宽要求
+            //if (this.aimMode.Count == 0)
+            //{
+            //    Console.WriteLine(this.name+"出现矛盾项");
+            //    for (int i = 0; i < father.MAP[indexNotUse].Count; i++)
+            //    {
+            //        if (father.MAP[indexNotUse][i] == this.Mode)
+            //        {
+            //            if (this.aimMode.Contains(aimMode[i]) == false)
+            //            { 
+            //                this.aimMode.Add(aimMode[i]);
+            //                this.aimModeCount.Add(0);
+            //            }
+            //            freshAimModeCount(aimMode[i]);
+            //        }
+            //    }
+            //}
 
             this.depth = father.depth + 1;
             if (this.depth > maxDepth)

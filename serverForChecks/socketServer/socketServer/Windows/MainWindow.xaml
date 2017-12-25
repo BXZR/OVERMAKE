@@ -89,6 +89,7 @@
         <ComboBox x:Name="ZAxisSelect" Margin="0,378,25,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="173" SelectionChanged="ZAxisSelect_SelectionChanged">
             <ComboBoxItem Content="NoCanculate"/>
             <ComboBoxItem Content="DecisionTree"/>
+            <ComboBoxItem Content="ANN"/>
         </ComboBox>
     </Grid>
 </Window>

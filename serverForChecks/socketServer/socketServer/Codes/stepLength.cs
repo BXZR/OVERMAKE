@@ -232,7 +232,7 @@ namespace socketServer
                 if (theAccordANN == null)
                 {
                     theAccordANN = new AccordANN();
-                    theAccordANN.BuildANN();
+                    theAccordANN.BuildANNForSL();
                 }
 
                 double VK = MathCanculate.getVariance(theA, indexNow, indexPre);
@@ -244,7 +244,7 @@ namespace socketServer
                              // Console.WriteLine("timeStep is "+ timestep);
                 double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                int indexUse = theAccordANN .getModeWithANN(VK, FK);
+                int indexUse = theAccordANN .getModeWithANNForSL(VK, FK);
                 double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];
 
                 if (stepLength > 2)//一步走两米，几乎不可能
@@ -338,7 +338,8 @@ namespace socketServer
         //返回训练用的“真实走楼梯的模式”
         public int getRandomStairMode()
         {
-            int stairMode = 1 - new Random(DateTime.Now.Millisecond).Next(0, 3);
+            //0,1,2
+            int stairMode = new Random(DateTime.Now.Millisecond).Next(0, 3);
            // Console.WriteLine("Stair Mode Random is "+stairMode);
             return stairMode ;
         }

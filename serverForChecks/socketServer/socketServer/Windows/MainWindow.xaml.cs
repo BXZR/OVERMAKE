@@ -311,6 +311,19 @@ namespace socketServer
                     theStairMode =  theZMoveController.DecisitionTreeMethod(indexBuff,ax,ay,az,gx,gy,gz);
                 }
             }
+            //人工神经网络方法
+            if (ZAxisSelect.SelectedIndex == 2)
+            {
+                //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                theStairMode = theZMoveController.ANNZMove(indexBuff, ax, ay, az, gx, gy, gz);
+            }
             //记录最新的移动步长
             if (theStairMode.Count > 0)
             {
@@ -966,8 +979,6 @@ namespace socketServer
             int stepCount = thePeackFinder.countStepWithStatic(theFiltered);
 
             ChartWindow theChartWindow = new ChartWindow();
-
-           
 
             theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered, stepCheckAxisUse.SelectionBoxItem.ToString());
             theChartWindow.Show();

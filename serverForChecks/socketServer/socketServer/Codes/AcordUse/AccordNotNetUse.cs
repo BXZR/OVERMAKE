@@ -25,11 +25,13 @@ namespace socketServer.Codes
         //配合一般公式的做法
         //用这个API做的回归
         //如果没有建立或者没有文件，就直接用瞎编的公式处理
+        //这里这个瞎编的公式当然同样收到systemSave的统一处理
         public double linearStepLength(double VK , double  FK)
         {
             if (!isMade)
             {
-                return 0.9 * VK + 0.4 * FK + 0.3;
+                return SystemSave.CommonFormulaWeights [0][0]* VK
+                       + SystemSave.CommonFormulaWeights[0][1] * FK + SystemSave.CommonFormulaWeights[0][2];
             }
             return WeightA * VK + WeightB * FK + WeightC;
         }

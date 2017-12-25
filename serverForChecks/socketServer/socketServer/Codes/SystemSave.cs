@@ -194,9 +194,18 @@ namespace socketServer
             return CommonFormulaWeights.Count - 1;
         }
 
+        //所有的分类都是数组形式的 0 1 2
+        //0 下楼
+        //1 平走
+        //2 上楼
         public static int getTypeIndexForStair(double Value = 0)
         {
-            return (int)Value;
+            if (Value > 1)
+                return 2;
+            if (Value == 1)
+                return 1;
+
+                return 0;
         }
         //一般步长计算方法参数族群
         //使用决策树,神经网络等等方案选择出来模式，使用这一套模式的参数来做

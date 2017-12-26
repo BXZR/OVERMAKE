@@ -37,7 +37,6 @@ namespace socketServer
         stepDetection stepExtra;//额外的判断走了一步的方法集合
         stepModeCheck theStepModeCheckController;//推断行走状态：站立，行走，奔跑用 的控制单元
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
-        float stepTimer = 0.5f;//间隔多长时间进行一次计算（计算时间间隔越短自然越灵敏，但是开销也就越大）
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         ZAxisMoveController theZMoveController;//Z轴向移动的控制单元
@@ -81,7 +80,7 @@ namespace socketServer
             else if (theWorkType == workType.withSavedData)//个人更加推荐这种方法
             {
                 tm.Tick += new EventHandler(withSavedData);
-                tm.Interval = TimeSpan.FromSeconds(stepTimer);
+                tm.Interval = TimeSpan.FromSeconds(SystemSave.systemFlashTimer);
             }
             tm.Start();
         }

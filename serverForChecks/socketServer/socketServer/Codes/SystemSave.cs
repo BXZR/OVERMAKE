@@ -17,6 +17,7 @@ namespace socketServer
         public static int SystemModeInd = 0;//系统模式，有实验模式和实际模式
         public static int SystemServerMode = 1;//1 单人使用 2 多人使用
         public static bool useFilter = true;//是否使用滤波
+        public static double systemFlashTimer = 0.5;//系统绘制和计算的时间间隔，时间越短刷新越快灵敏越高开销越大
         //两种模式的区别就是实验模式之下在原地晃手机就可以移动，但是这种情况在实际模式之下不被允许
 
 
@@ -219,6 +220,10 @@ namespace socketServer
             new double []{ 0.9,0.5,0.3 },
             new double []{ 1.0, 0.6,0.4 },
         };
-          
+
+        //ANN的隐层层数
+        public static int accordANNHiddenLayerCount = 5;
+        //整体ANN训练的次数
+        public static int accordANNTrainTime = 10;
     }
 }

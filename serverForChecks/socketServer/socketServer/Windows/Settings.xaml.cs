@@ -43,7 +43,11 @@ namespace socketServer
         public void startSet(MainWindow theIN = null)
         {
             theMainWindow = theIN;
-            if (theMainWindow != null && theMainWindow.isServerStarted() == false)
+            if (theMainWindow == null)
+            {
+                Tip.Content = "当前不可在这个面板设置服务器IP和端口。";
+            }
+            else if (theMainWindow.isServerStarted() == false)
             {
                 saveRestartButton.IsEnabled = false;//没有开启服务器就没必要重启
             }
@@ -153,6 +157,9 @@ namespace socketServer
             SystemSave.changeGateForImmediate2 = Convert.ToDouble(headingChangeGate.Text);
             SystemSave.percentWhenMeetChangeGate = Convert.ToDouble(StepLengthRatio.Text);
             SystemSave.MSHeadingGate = Convert.ToDouble(MSHeadingGate.Text);
+            SystemSave.systemFlashTimer = Convert.ToDouble(systemFlashTimerText.Text);
+            SystemSave.accordANNHiddenLayerCount = Convert.ToInt32(ANNHiddenNeuronsText.Text);
+            SystemSave.accordANNTrainTime = Convert.ToInt32(ANNTrainTimesText.Text);
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -231,6 +238,10 @@ namespace socketServer
             MSHeadingGate.Text = SystemSave.MSHeadingGate.ToString();
             TipsMake();//制作tips
             CommonFamilyCountChoice.SelectedIndex = SystemSave.CommonFormulaWeights.Count -1;
+            systemFlashTimerText.Text = SystemSave.systemFlashTimer.ToString();
+            ANNHiddenNeuronsText.Text = SystemSave.accordANNHiddenLayerCount.ToString();
+            ANNTrainTimesText.Text = SystemSave.accordANNTrainTime.ToString();
+
             makeCommonFormulaWeightsFamily();//初始的公式族的内容
             makeCancalSomeSetting();
         }
@@ -280,6 +291,10 @@ namespace socketServer
         private static string ValueHeadingGate;
         private static string ValueRatioInSL2;
         private static string ValueMSHeadingGate;
+        private static string ValueSystemFlashTimer;
+
+        private static string ValueAccordANNHiddenLayerCount;
+        private static string ValueAccordANNTrainTime; 
 
         void getStartValue()
         {
@@ -328,8 +343,12 @@ namespace socketServer
               ValueHeadingGate = SystemSave.changeGateForImmediate2.ToString();
               ValueRatioInSL2 = SystemSave.percentWhenMeetChangeGate.ToString();
               ValueMSHeadingGate = SystemSave.MSHeadingGate.ToString();
+              ValueSystemFlashTimer = SystemSave.systemFlashTimer.ToString();
 
-                hasBasicValue = true;//最初数值只会被记录一次
+              ValueAccordANNHiddenLayerCount = SystemSave.accordANNHiddenLayerCount.ToString();
+              ValueAccordANNTrainTime = SystemSave.accordANNTrainTime.ToString();
+
+              hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -400,6 +419,10 @@ namespace socketServer
             headingChangeGate.Text = ValueHeadingGate;
             StepLengthRatio.Text = ValueRatioInSL2;
             MSHeadingGate.Text =  ValueMSHeadingGate;
+            systemFlashTimerText.Text = ValueMSHeadingGate;
+
+            ANNHiddenNeuronsText.Text =  ValueAccordANNHiddenLayerCount;
+            ANNTrainTimesText.Text =  ValueAccordANNTrainTime;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -451,7 +474,16 @@ namespace socketServer
 
         private void HeadingCanculateMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TipsMake(true);
+            // TipsMake(true);
+            if (HeadingCanculateMode.SelectedIndex == 1)
+            {
+                string informationS = "----------说明----------\n";
+                informationS += "有关3D Free判断当前移动方向的方法说明：\n";
+                informationS += "这种方法需要事先有一定的基础数据来计算偏移量\n";
+                informationS += "因此最开始的" + SystemSave.sampleTime + "步会因为采样而失效\n";
+                informationS += "此外,这种方法只会对前三种方向判定算法生效";
+                MessageBox.Show(informationS);
+            }
         }
 
         //因为初始化的时候也应该做这一步，但是因为控件的初始化的并不完全相同，所以需要使用loaded方法统一处理
@@ -460,30 +492,33 @@ namespace socketServer
         {
             try
             {
-                if (HeadingCanculateMode.SelectedIndex == 1)
-                {
-                    string  informationS = "----------------------------------------说明-----------------------------------------\n";
-                    informationS += "有关3D Free判断当前移动方向的方法说明：\n";
-                    informationS += "这种方法需要事先有一定的基础数据来计算偏移量\n";
-                    informationS += "因此最开始的" + SystemSave.sampleTime + "步会因为采样而失效";
-                    informationS += "此外这种方法只会对前三种方向判定算法生效";
-                    TipsForHeading.Content = informationS;
-                }
-                else
-                {
-                    TipsForHeading.Content = "----------------------------------------说明------------------------------------------\n当前没有必须说明的项目";
-                }
+                //if (HeadingCanculateMode.SelectedIndex == 1)
+                //{
+                //    string  informationS = "----------------------------------------说明-----------------------------------------\n";
+                //    informationS += "有关3D Free判断当前移动方向的方法说明：\n";
+                //    informationS += "这种方法需要事先有一定的基础数据来计算偏移量\n";
+                //    informationS += "因此最开始的" + SystemSave.sampleTime + "步会因为采样而失效";
+                //    informationS += "此外这种方法只会对前三种方向判定算法生效";
+                //    TipsForHeading.Content = informationS;
+                //}
+                //else
+                //{
+                //    TipsForHeading.Content = "----------------------------------------说明------------------------------------------\n当前没有必须说明的项目";
+                //}
 
                 if (!sample)
                 {
                     CommonFormulaFamilyLabel.Content =
-                        "右侧的参数对应一般步长算法中参数\n" +
+                        "一般计算步长的计算公式为\n" +
                         "SL= α * VK + β * FK + γ \n" +
-                        "一般公式使用容器中第一组的参数\n" +
-                        "决策树、神经网络方法中的变量分类\n" +
-                        "等于容器中总的参数组数\n" +
-                        "此规则也会作用于判断Z轴的决策树\n" +
-                        "双击条目可调整α，β，γ 参数数值";
+                        "右侧容器每一项为一组公式参数\n" +
+                        "以此建立一般公式的公式族\n\n" +
+                        "可直接使用族中首项公式计算步长\n" +
+                        "决策树和神经网络方法目标分类数\n" +
+                        "等于公式族中所有公式的数量\n" +
+                        "根据分类结果用不同公式计算步长\n\n" +
+                        "双击容器项调整α，β，γ 参数数值\n" +
+                        "用下拉框有限制地选择公式族大小";
                 }
             }
             catch
@@ -639,5 +674,7 @@ namespace socketServer
                 SystemSave.CommonFormulaWeights.Add(newWeights);
             }
         }
+
+ 
     }
 }

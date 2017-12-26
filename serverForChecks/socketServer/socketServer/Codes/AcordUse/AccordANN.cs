@@ -51,7 +51,7 @@ namespace socketServer.Codes.AcordUse
 
                 int numberOfInputs = 6;
                 int numberOfClasses = 3;//对于楼梯，只有三种情况，上楼，下剅以及平地走
-                int hiddenNeurons = 5;
+                int hiddenNeurons = SystemSave.accordANNHiddenLayerCount;
 
                 double[][] outputs = Accord.Statistics.Tools.Expand(outputsFromFile, numberOfClasses, -1, 1);
                 // Next we can proceed to create our network
@@ -67,7 +67,7 @@ namespace socketServer.Codes.AcordUse
 
                 // Teach the network for 10 iterations:
                 double error = Double.PositiveInfinity;
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < SystemSave.accordANNTrainTime; i++)
                     error = teacher.RunEpoch(inputsFromFile, outputs);
                 isBuilt = true;
             }
@@ -118,7 +118,7 @@ namespace socketServer.Codes.AcordUse
 
                 int numberOfInputs = 2;
                 int numberOfClasses = SystemSave.CommonFormulaWeights.Count;//这个同样也受systemSave公式族的制约
-                int hiddenNeurons = 5;
+                int hiddenNeurons = SystemSave.accordANNHiddenLayerCount;
 
                 double[][] outputs = Accord.Statistics.Tools.Expand(outputsFromFile, numberOfClasses, -1, 1);
                 // Next we can proceed to create our network
@@ -134,7 +134,7 @@ namespace socketServer.Codes.AcordUse
 
                 // Teach the network for 10 iterations:
                 double error = Double.PositiveInfinity;
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < SystemSave.accordANNTrainTime; i++)
                     error = teacher.RunEpoch(inputsFromFile, outputs);
                 isBuilt = true;
             }

@@ -16,7 +16,7 @@ namespace socketServer
         public static theServer theServrForAll;//所有窗口共享唯一的一个网络服务器
         public static int SystemModeInd = 0;//系统模式，有实验模式和实际模式
         public static int SystemServerMode = 1;//1 单人使用 2 多人使用
-        public static bool useFilter = true;//是否使用滤波
+        public static int FilterMode = 1;//滤波模式 0 不用滤波 1 一般滤波 2 复杂滤波
         public static double systemFlashTimer = 0.5;//系统绘制和计算的时间间隔，时间越短刷新越快灵敏越高开销越大
         //两种模式的区别就是实验模式之下在原地晃手机就可以移动，但是这种情况在实际模式之下不被允许
 

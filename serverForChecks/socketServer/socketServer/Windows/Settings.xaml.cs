@@ -138,10 +138,7 @@ namespace socketServer
             else
                 SystemSave.isCutForDecisionTree = false;
 
-            if (UseFilters.IsChecked == true)
-                SystemSave.useFilter = true;
-            else
-                SystemSave.useFilter = false;
+            SystemSave.FilterMode = FilterModeSelects.SelectedIndex;
 
             SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
             SystemSave.CanculateHeadingMode = HeadingCanculateMode.SelectedIndex;
@@ -211,10 +208,7 @@ namespace socketServer
             else
                 isPruning.IsChecked  = false;
 
-            if (SystemSave.useFilter   == true)
-                UseFilters.IsChecked = true;
-            else
-                UseFilters.IsChecked = false;
+            FilterModeSelects.SelectedIndex = SystemSave.FilterMode;
 
             StartPositionX.Text = SystemSave.startPositionX.ToString();
             StartPositionY.Text = SystemSave.startPositionY.ToString();
@@ -284,7 +278,7 @@ namespace socketServer
         private static double ValuerRouteLineScale;
         private static int ValueSystemMode;
 
-        private static bool ValueUseFilters;
+        private static int ValueUseFilters;
         private static string ValueImmeDiateSL;
         private static string ValueLegInStature;
 
@@ -336,7 +330,7 @@ namespace socketServer
               
               ValuerRouteLineScale = SystemSave.routeLineScale;
               ValueSystemMode = SystemSave.SystemModeInd;
-              ValueUseFilters = SystemSave.useFilter;
+              ValueUseFilters = SystemSave.FilterMode;
               ValueImmeDiateSL = SystemSave.stepLengthForImmediate.ToString();
               ValueLegInStature = SystemSave.legLengthInHeight.ToString();
               
@@ -399,10 +393,7 @@ namespace socketServer
             else
                 isPruning.IsChecked = false;
 
-            if (ValueUseFilters)
-                UseFilters.IsChecked = true;
-            else
-                UseFilters.IsChecked = false;
+            FilterModeSelects.SelectedIndex = ValueUseFilters;
 
             TreeMethod.SelectedIndex =  ValueTreeMethod;
             HeadingCanculateMode.SelectedIndex = ValueHeadingCanculateMode;
@@ -675,6 +666,9 @@ namespace socketServer
             }
         }
 
- 
+        private void comboBox_SelectionChanged_2(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

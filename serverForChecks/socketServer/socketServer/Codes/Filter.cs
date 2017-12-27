@@ -14,15 +14,32 @@ namespace socketServer
      //对外平滑方法
     public List <double> theFilerWork(List<double> IN , float  theValueUse = 0.4f)
     {
-            if (SystemSave.useFilter == false)
-                return IN;
+            List<double> outList = new List<double> ();
 
-            List<double> outList = new List<double>();
-            for (int i = 0; i < IN.Count; i++)
-                outList.Add(IN[i]);
-            outList = theFliterMethod1(outList, theValueUse);
-            outList = GetKalMan(outList);
-            outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
+            switch (SystemSave.FilterMode)
+            {
+                case 0:{ outList = IN;} break;
+                case 1:
+                    {
+                        for (int i = 0; i < IN.Count; i++)
+                            outList.Add(IN[i]);
+
+                        outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
+                        outList = GetKalMan(outList);
+                    }
+                    break;
+                case 2:
+                    {
+                        for (int i = 0; i < IN.Count; i++)
+                            outList.Add(IN[i]);
+
+                        outList = theFliterMethod1(outList, theValueUse);
+                        outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
+                        outList = GetKalMan(outList);
+                        outList = ButterworthFilter(outList);
+                    }
+                    break;
+            }
             return outList;
     }
         //对外平滑方法
@@ -31,9 +48,6 @@ namespace socketServer
         //这个问题出现的原因因该是阻塞，所以  outList = theFliterMethod2(outList,4); 运行的次数不会太多，算是应急处理
         public List<long> theFilerWork(List<long> IN, float theValueUse = 0.4f ,bool isSimple = false , int  countForCheck = -1)
         {
-            if (SystemSave.useFilter == false)
-                return IN;
-
             if (isSimple == false)
                 return theFilerWork(IN, theValueUse);
 
@@ -48,6 +62,7 @@ namespace socketServer
                 //做普匹配的检查
                 //之所以这样设计是因为存在网络丢包的问题，发现数据包B(包含时间戳)的数据量要比前面的数据包A要少，也就是数据丢失了
                 //算是一个简单的容错自动替换策略（待优化）
+                //实际上这个操作不是十分常见，一般来说前一种滤波整合方法足够用
                 if (countForCheck > 0 && countForCheck > outList.Count)
                 {
                     outList = theFliterMethod2(outList, SystemSave.filterSmoothCount - 1);
@@ -166,6 +181,69 @@ namespace socketServer
             }
            // Average = KamanSum / Observe.Length;
             return outList;
+        }
+
+
+        double[] InSave = new double[] { 0, 0 };
+        double[] OutSave = new double[] { 0, 0 };
+        double[] BWeights = new double[] { 0, 0, 0 };
+        double[] AWeights = new double[] { 0 , 0 }; 
+        public List<double> ButterworthFilter(List<double> In)
+        {
+            //制作公式参数
+            makeButterworthWeights(20, 30);
+            //制作数据副本
+            List<double> outList = new List<double>();
+            //处理数据
+            for (int i = 0; i < In.Count; i++)
+            {
+                double value = BWeights[0] * In[i] + BWeights[1] * InSave[1] + BWeights[2] * InSave[0] - AWeights[0] * OutSave[1] - AWeights[1] * OutSave[0];
+
+                //输入序列保存 
+                InSave[0] = InSave[1];
+                InSave[1] = In[i];
+                //输出序列保存
+                OutSave[0] = OutSave[1];
+                OutSave[1] =  value;
+
+                outList.Add(value);
+               // Console.WriteLine(string.Format("In = {0} Out = {1}" , In[i] , value));
+            }
+            return outList;
+        }
+
+        private bool madeButterworthWeights = false;
+        public void makeButterworthWeights(float sample_freq, float cutoff_freq)
+        {
+            if (madeButterworthWeights == false)
+            {
+                BWeights = new double[] { 0, 0, 0 };
+                AWeights = new double[] { 0, 0 };
+
+                try
+                {
+                    float fr = 0;
+                    float ohm = 0;
+                    float c = 0;
+
+                    fr = sample_freq / cutoff_freq;
+                    ohm = (float)Math.Tan((float)Math.PI / fr);
+                    c = 1.0f + 2.0f * (float)Math.Cos((float)Math.PI / 4.0f) * ohm + ohm * ohm;
+
+                    BWeights[0] = ohm * ohm / c;
+                    BWeights[1] = 2.0f * BWeights[0];
+                    BWeights[2] = BWeights[0];
+                    AWeights[0] = 2.0f * (ohm * ohm - 1.0f) / c;
+                    AWeights[1] = (1.0f - 2.0f * (float)Math.Cos((float)Math.PI / 4.0f) * ohm + ohm * ohm) / c;
+                    madeButterworthWeights = true;
+
+                   // Console.WriteLine(string.Format("B1 = {0} B2 = {1} B3 = {2} A1 = {3} A2 = {4}", BWeights[0], BWeights[1], BWeights[2], AWeights[0], AWeights[1]));
+                }
+                catch (Exception W)
+                {
+                    Console.WriteLine(W.Message);
+                }
+            }
         }
 
     }

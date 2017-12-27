@@ -90,6 +90,10 @@ namespace socketServer
         public static double WeightForFemale = 0.413;
         //是否是男人
         public static bool isMale = true;
+        //身高公式2中可变参数A
+        public static double StaturaMethod2_A = 0.371;
+        //身高公式2中可变参数A
+        public static double StaturaMethod2_B = 0.227;
         //最大加速度和最小加速度的差开四次根号的步长计算方法的参数K
         public static double stepLengthWeightForAMinus = 0.71;//注意论文中是0.41但是这个参数不太适合本工程
         //Scarlet步长估计方法的参数

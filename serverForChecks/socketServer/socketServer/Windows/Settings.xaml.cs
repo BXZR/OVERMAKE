@@ -50,10 +50,12 @@ namespace socketServer
             else if (theMainWindow.isServerStarted() == false)
             {
                 saveRestartButton.IsEnabled = false;//没有开启服务器就没必要重启
+               
             }
             else
             {
                 Tip.Content = "检测到服务器已经运行，不推荐修改IP设置。";
+                systemFlashTimerText.IsEnabled = false;//刷新速率在启动之后是不能修改的
             }
         }
 
@@ -157,6 +159,9 @@ namespace socketServer
             SystemSave.systemFlashTimer = Convert.ToDouble(systemFlashTimerText.Text);
             SystemSave.accordANNHiddenLayerCount = Convert.ToInt32(ANNHiddenNeuronsText.Text);
             SystemSave.accordANNTrainTime = Convert.ToInt32(ANNTrainTimesText.Text);
+
+            SystemSave.StaturaMethod2_A = Convert.ToDouble(saturate2AText.Text);
+            SystemSave.StaturaMethod2_B = Convert.ToDouble(saturate2BText.Text);
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -236,6 +241,9 @@ namespace socketServer
             ANNHiddenNeuronsText.Text = SystemSave.accordANNHiddenLayerCount.ToString();
             ANNTrainTimesText.Text = SystemSave.accordANNTrainTime.ToString();
 
+            saturate2AText.Text = SystemSave.StaturaMethod2_A.ToString();
+            saturate2BText.Text = SystemSave.StaturaMethod2_B.ToString();
+
             makeCommonFormulaWeightsFamily();//初始的公式族的内容
             makeCancalSomeSetting();
         }
@@ -288,7 +296,10 @@ namespace socketServer
         private static string ValueSystemFlashTimer;
 
         private static string ValueAccordANNHiddenLayerCount;
-        private static string ValueAccordANNTrainTime; 
+        private static string ValueAccordANNTrainTime;
+
+        private static string ValueStature2A;
+        private static string ValueStature2B;
 
         void getStartValue()
         {
@@ -341,8 +352,11 @@ namespace socketServer
 
               ValueAccordANNHiddenLayerCount = SystemSave.accordANNHiddenLayerCount.ToString();
               ValueAccordANNTrainTime = SystemSave.accordANNTrainTime.ToString();
+              
+              ValueStature2A = SystemSave.StaturaMethod2_A.ToString();
+              ValueStature2B = SystemSave.StaturaMethod2_B.ToString();
 
-              hasBasicValue = true;//最初数值只会被记录一次
+                hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -414,6 +428,10 @@ namespace socketServer
 
             ANNHiddenNeuronsText.Text =  ValueAccordANNHiddenLayerCount;
             ANNTrainTimesText.Text =  ValueAccordANNTrainTime;
+
+
+            saturate2AText.Text = ValueStature2A;
+            saturate2BText.Text = ValueStature2B;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

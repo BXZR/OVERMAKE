@@ -129,46 +129,52 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label
-                        Width="192" VerticalAlignment="Top" x:Name="AminusWeight" Margin="19,255,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Weinberg Method" FontWeight="Bold"/>
+                        Width="192" VerticalAlignment="Top" x:Name="AminusWeight" Margin="21,238,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Weinberg Method" FontWeight="Bold"/>
                     <TextBox
-                        Text="TextBox" TextWrapping="Wrap" x:Name="Aminus" Margin="211,258,28,0" Height="23" VerticalAlignment="Top"/>
+                        Text="TextBox" TextWrapping="Wrap" x:Name="Aminus" Margin="213,241,26,0" Height="23" VerticalAlignment="Top"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy" Margin="19,132,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Stature Method" FontWeight="Bold"/>
+                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy" Margin="18,101,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Stature Method Famliy" FontWeight="Bold"/>
                     <Label
-                        Width="115" VerticalAlignment="Top" x:Name="label_Copy3" Margin="27,164,0,0" Height="26" HorizontalAlignment="Left" Content="Stature for people"/>
+                        Width="115" VerticalAlignment="Top" x:Name="label_Copy3" Margin="26,133,0,0" Height="26" HorizontalAlignment="Left" Content="Stature for people"/>
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="Stature" Margin="156,165,122,0" Height="23"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="Stature" Margin="155,134,123,0" Height="23"/>
                     <Label
-                        Width="103" VerticalAlignment="Top" x:Name="label_Copy4" Margin="27,193,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for male"/>
+                        Width="103" VerticalAlignment="Top" x:Name="label_Copy4" Margin="25,164,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for male"/>
                     <Label
-                        Width="114" VerticalAlignment="Top" x:Name="label_Copy5" Margin="27,222,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for female"/>
+                        Width="114" VerticalAlignment="Top" x:Name="label_Copy5" Margin="253,164,0,0" Height="26" HorizontalAlignment="Left" Content="Weight for female"/>
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="MailWeight" Margin="156,195,28,0" Height="23"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="MailWeight" Margin="143,168,244,0" Height="23"/>
                     <TextBox
-                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="FemailWeight" Margin="156,225,28,0" Height="23"/>
-                    <CheckBox VerticalAlignment="Top" x:Name="isMaleCheckc" Margin="381,168,10,0" IsChecked="True" Height="16" Content="IsMale"/>
+                        VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="FemailWeight" Margin="372,168,28,0" Height="23"/>
+                    <CheckBox VerticalAlignment="Top" x:Name="isMaleCheckc" Margin="380,137,11,0" IsChecked="True" Height="16" Content="IsMale"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight" Margin="19,287,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Scarlet Method" FontWeight="Bold"/>
+                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight" Margin="21,270,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Scarlet Method" FontWeight="Bold"/>
                     <TextBox
-                        Text="TextBox" TextWrapping="Wrap" x:Name="Scarlet" Margin="211,290,28,0" Height="23" VerticalAlignment="Top"/>
+                        Text="TextBox" TextWrapping="Wrap" x:Name="Scarlet" Margin="213,273,26,0" Height="23" VerticalAlignment="Top"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy" Margin="19,318,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Kim Method" FontWeight="Bold"/>
+                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy" Margin="21,301,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Kim Method" FontWeight="Bold"/>
                     <TextBox
-                        Text="TextBox" TextWrapping="Wrap" x:Name="Kim" Margin="211,321,28,0" Height="23" VerticalAlignment="Top"/>
+                        Text="TextBox" TextWrapping="Wrap" x:Name="Kim" Margin="213,304,26,0" Height="23" VerticalAlignment="Top"/>
+                    <TextBox x:Name="immediateSL" Height="23" Margin="171,40,28,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy2" Margin="19,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Immediate Step Length" FontWeight="Bold"/>
-                    <TextBox x:Name="immediateSL" Height="23" Margin="173,16,26,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy2" Margin="21,329,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Leg/Stature" FontWeight="Bold"/>
+                    <TextBox x:Name="LegInStature" Height="23" Margin="213,332,26,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
-                        Width="187" VerticalAlignment="Top" x:Name="ScarletWeight_Copy2" Margin="19,346,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Leg/Stature" FontWeight="Bold"/>
-                    <TextBox x:Name="LegInStature" Height="23" Margin="211,349,28,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <Label
-                        Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy3" Margin="19,41,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Immediate Step Length" FontWeight="Bold"/>
+                        Width="200" VerticalAlignment="Top" x:Name="AminusWeight_Copy3" Margin="18,14,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Immediate Step Length Family" FontWeight="Bold"/>
                     <Label
                         Width="129" VerticalAlignment="Top" x:Name="label_Copy24" Margin="27,70,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingChangeGate"/>
-                    <TextBox x:Name="headingChangeGate" Height="23" Margin="161,72,26,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <TextBox x:Name="headingChangeGate" Height="23" Margin="161,72,245,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
-                        Width="129" VerticalAlignment="Top" x:Name="TXT" Margin="27,101,0,0" Height="26" HorizontalAlignment="Left" Content="StepLengthRatio"/>
-                    <TextBox x:Name="StepLengthRatio" Height="23" Margin="161,103,28,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                        Width="108" VerticalAlignment="Top" x:Name="TXT" Margin="261,70,0,0" Height="26" HorizontalAlignment="Left" Content="StepLengthRatio"/>
+                    <TextBox x:Name="StepLengthRatio" Height="23" Margin="369,72,26,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <Label
+                        Width="137" VerticalAlignment="Top" x:Name="label_Copy30" Margin="29,39,0,0" Height="26" HorizontalAlignment="Left" Content="ImmediateStepLength"/>
+                    <Label
+                        Width="103" VerticalAlignment="Top" x:Name="LL" Margin="26,200,0,0" Height="26" HorizontalAlignment="Left" Content="Stature2-A"/>
+                    <TextBox x:Name="saturate2AText" HorizontalAlignment="Left" Height="23" Margin="116,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+                    <Label
+                        Width="80" VerticalAlignment="Top" x:Name="DDS" Margin="253,198,0,0" Height="26" HorizontalAlignment="Left" Content="Stature2-B"/>
+                    <TextBox x:Name="saturate2BText" Height="23" Margin="338,200,28,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="StepLengthMore">
@@ -195,7 +201,7 @@
                         <ListBoxItem Content="A = 3 B = 454 C = 3"/>
                     </ListBox>
                     <Label
-                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="15,132,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Config" FontWeight="Bold"/>
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="15,132,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Family Config" FontWeight="Bold"/>
                     <Label
                         Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,164,85,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
                     <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,168,29,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">

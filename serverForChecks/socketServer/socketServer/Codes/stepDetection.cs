@@ -33,6 +33,7 @@ namespace socketServer
         private string[] methodInformations =
         {
             "一段时间内出现唯一的波峰意味着一步的发生",
+            "限制波峰波谷差值的波峰波谷判步方法",
             "在一个峰值的限定内两次经过峰值判断走出一步",
             "对第一步进行采样，从而对后续数据进行匹配",
             "根据数据连续两次的经过零点来判断走出一步",
@@ -106,6 +107,12 @@ namespace socketServer
         public List<int> stepDectionExtration3(List<double> AZValues, PeackSearcher PK)
         {
             int stepCount = PK.coutStepWithStatic2(AZValues);
+            return PK.peackBuff;
+        }
+        //带波峰波谷距离阀值的方法
+        public List<int> stepDectionExtration4(List<double> AZValues, PeackSearcher PK)
+        {
+            int stepCount = PK.countStepWithStatic3(AZValues);
             return PK.peackBuff;
         }
 

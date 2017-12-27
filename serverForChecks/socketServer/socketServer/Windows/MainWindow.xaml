@@ -51,6 +51,7 @@
         <Label x:Name="Charts_Copy3" Content="StepCheckAxis" Margin="0,124,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <ComboBox x:Name="stepCheckMethod" Margin="0,209,25,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="Peack(Trend)"/>
+            <ComboBoxItem Content="Peack(Trend and distance)"/>
             <ComboBoxItem Content="Peack(Threshold)"/>
             <ComboBoxItem Content="Sample"/>
             <ComboBoxItem Content="ZeroCross"/>
@@ -64,6 +65,7 @@
             <ComboBoxItem Content="Common formula with Linear"/>
             <ComboBoxItem Content="Common formula with ANN"/>
             <ComboBoxItem Content="Stature formula"/>
+            <ComboBoxItem Content="Stature formula2"/>
             <ComboBoxItem Content="Weinberg approach"/>
             <ComboBoxItem Content="Scarlet approach"/>
             <ComboBoxItem Content="Kim approach"/>

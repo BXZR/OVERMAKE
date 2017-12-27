@@ -264,14 +264,18 @@ namespace socketServer
             }
             else if (stepCheckMethod.SelectedIndex == 1)
             {
-                indexBuff = stepExtra.stepDectionExtration3(theFilteredAZ, thePeackFinder);
+                indexBuff = stepExtra.stepDectionExtration4(theFilteredAZ, thePeackFinder);
             }
             else if (stepCheckMethod.SelectedIndex == 2)
+            {
+                indexBuff = stepExtra.stepDectionExtration3(theFilteredAZ, thePeackFinder);
+            }
+            else if (stepCheckMethod.SelectedIndex == 3)
             {
                 //方法3：重复性判断方法，相对比较严格（感觉不是人能用的）
                 indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
             }
-            else if (stepCheckMethod.SelectedIndex == 3)
+            else if (stepCheckMethod.SelectedIndex == 4)
             {
                 //方法4零点交叉
                 indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
@@ -439,8 +443,19 @@ namespace socketServer
                 {
                     theStepLengthUse.Add(theStepLengthController.getStepLength3());
                 }
-                //方法6，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
+                //方法6，身高相关2，这个看上去更专业一点
                 else if (StepLengthMethod.SelectedIndex == 7)
+                {
+                    if (i >= 1)
+                    {
+                        List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+                        theStepLengthUse.Add(theStepLengthController.getStepLength11(indexBuff[i - 1], indexBuff[i], timeUse2));
+                    }
+                    else
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                }
+                //方法6，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
+                else if (StepLengthMethod.SelectedIndex == 8)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -448,7 +463,7 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法7 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
-                else if (StepLengthMethod.SelectedIndex == 8)
+                else if (StepLengthMethod.SelectedIndex == 9)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -456,7 +471,7 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法8，加速度平均开三次根号的做法
-                else if (StepLengthMethod.SelectedIndex == 9)
+                else if (StepLengthMethod.SelectedIndex == 10)
                 {
                     if (i >= 1)
                         theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
@@ -465,7 +480,7 @@ namespace socketServer
                 }
 
                 //方法9，使用关于腿长的倒置钟摆的方法（很好玩的方法）
-                else if (StepLengthMethod.SelectedIndex == 10)
+                else if (StepLengthMethod.SelectedIndex == 11)
                 {
                     if (i >= 1)
                     {

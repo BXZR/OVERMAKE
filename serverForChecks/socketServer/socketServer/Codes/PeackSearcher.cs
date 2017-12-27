@@ -206,5 +206,63 @@ namespace socketServer
           return theCount;
         }
 
+
+        //更严格的波峰波谷方法
+        //波峰和波谷的差值必须大于阀值
+        //附带缓冲区记录
+        //基础方法，可以通过这个方法来修改共有变量
+        //返回步数
+        //传入的是加速度传感器的Y轴的数值
+        //这个方法被应用于peack step detection里面中
+        public int countStepWithStatic3(List<double> wave)
+        {
+            peackBuff.Clear();//每一次都重新计算，这个方法整体可以考虑大优化
+            theCount = 0;//波峰的个数
+            theCount2 = 0;//波谷的个数
+
+            List<double> peackValueSave = new List<double>();//记录波峰波谷的数值
+
+            if (wave.Count < 1)
+                return 0;
+            int direction = wave[0] > 0 ? -1 : 1;
+            for (int i = 0; i < wave.Count - 1; i++)
+            {
+                if (Math.Abs(wave[i]) < canReachGate)
+                    continue;
+                double minus = wave[i + 1] - wave[i];
+
+                if (Math.Abs(minus) > canReachGate && minus * direction > 0)//放弃突变的情况
+                {
+                    direction *= -1;
+                    if (direction == 1)
+                    {
+                        theCount++;
+                        //"波峰"
+                        peackValueSave.Add(wave[i]);
+                    }
+                    else
+                    {
+                        theCount2++;
+                        //"波谷"
+                        peackValueSave.Add(wave[i]);
+                    }
+                }
+                if (peackValueSave.Count == 2)
+                {
+                    double distance = Math.Abs(peackValueSave[0] - peackValueSave[1]);
+                    peackValueSave.Clear();
+                    Console.WriteLine("step detection distance = "+ distance);
+                    if (distance > 0.1f)
+                    {
+                        if (peackBuff.Count < 3 || (i - peackBuff[peackBuff.Count - 1]) > SystemSave.peackThresholdForStepDetection)
+                            peackBuff.Add(i);
+                    }
+                }
+            }
+            theStepCount = theCount;//记录这个步数
+                                    //用波峰波谷的数量平均值来做似乎比较好，暂时从个人的逻辑来说
+            return theCount;
+        }
+
     }
 }

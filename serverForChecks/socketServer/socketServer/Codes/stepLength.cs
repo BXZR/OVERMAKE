@@ -22,6 +22,7 @@ namespace socketServer
             "使用已有训练集线性回归得到一般公式参数",
             "使用已有训练集使用ANN的做法进行估计",
             "根据男女身高进行比例计算得到步长",
+            "根据身高进行更加复杂的步长估计",
             "纵向加速度差值开四次根号的方法",
             "加速度做平均然后除以阶段加速度的极差的做法",
             "加速度平均开三次根号的方法",
@@ -79,6 +80,20 @@ namespace socketServer
                 return SystemSave.WeightForMale * SystemSave.Stature;
             return SystemSave.WeightForFemale * SystemSave.Stature;
         }
+
+        //身高加权，更复杂的公式
+        public double getStepLength11(int indexPre , int indexNow, List<long> timeUse )
+        {
+            long timestep = timeUse[indexNow] - timeUse[indexPre];
+            //有除零异常说明时间非常短，可以认为根本就没走
+            if (timestep == 0)
+                return 0;//万金油
+            double SF  = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
+            //Console.WriteLine("SF = "+ SF);
+            double SL = 0.7 + SystemSave.StaturaMethod2_A * (SystemSave.Stature - 1.75) + SystemSave.StaturaMethod2_B * (SF - 1.79) * SystemSave.Stature / 1.75;
+            return SL;
+        }
+
 
         //方法4，纵向加速度差值开四次根号的方法
         public double getStepLength4(int indexPre, int indexNow, List<double> theA)

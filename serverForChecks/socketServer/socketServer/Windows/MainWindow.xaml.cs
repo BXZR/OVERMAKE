@@ -118,7 +118,10 @@ namespace socketServer
             showPositiopnInformations(informationForPosition);
             //更新slope的数值
             stepModeCheck(indexBuff);
+            //显示分辨率
+            showResolutionn();
             //制作输出显示的内容
+            //做这些输出显示内容是整合过的主题功能，与上面的slop和分辨率不太一样
             makeLabelMehtod(stepcounts);
             //绘制路线图
             drawPicturesShow();
@@ -787,6 +790,18 @@ namespace socketServer
             theStepLabel.Content += "\n思想： " + theAngelController .getMoreInformation(HeadingMehtod.SelectedIndex);
             theStepLabel.Content += "\n\n上下位移计算方法：" + ZAxisSelect.SelectionBoxItem;
             theStepLabel.Content += "\n思想： " + theZMoveController.getMoreInformation(ZAxisSelect.SelectedIndex);
+
+
+            
+        }
+
+        //显示分辨率
+        void showResolutionn()
+        {
+            //一些额外的显示内容
+            resolutionLabel.Content = "1m = " + SystemSave.routeLineScale.ToString("f2") +"pixel";
+            if (SystemSave.routeLineScale > 1)
+                resolutionLabel.Content += "s";
         }
 
         //获得走路的最新的slope数值使用

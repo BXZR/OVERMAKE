@@ -38,7 +38,8 @@
                             <Button x:Name="theDrawColorButton" Content="Draw Color" Margin="6,27,14,0" VerticalAlignment="Top" Click="button3_Click_2" FontWeight="Bold" FontStyle="Italic"/>
                             <Label
                         Width="129" VerticalAlignment="Top" x:Name="label_Copy21" Margin="6,49,0,0" Height="26" HorizontalAlignment="Left" Content="RoutePictueScale"/>
-                            <Slider x:Name="routeLineScaleSlider" Margin="-1,75,10,0" VerticalAlignment="Top" Maximum="15" Height="22"/>
+                            <Slider x:Name="routeLineScaleSlider" Margin="-1,75,10,0" VerticalAlignment="Top" Maximum="15" Height="22" ValueChanged="routeLineScaleSlider_ValueChanged"/>
+                            <Label x:Name="routeLineScaleSliderValueText" Content="15.00" Margin="0,0,0,20" VerticalAlignment="Bottom" Foreground="#FF7400FF" Height="21" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right" Width="42"/>
                         </Grid>
                     </GroupBox>
                     <Label x:Name="Tip" Margin="5,0,0,0" Foreground="Red" Content="服务器未开启，可以设置后直接开启。" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="532"/>

@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\codes\UI\ServerIPText.cs" />
      <Compile Include="Assets\codes\UI\ShowLabels.cs" />
+     <Compile Include="Assets\codes\UI\textFlasher.cs" />
      <Compile Include="Assets\codes\controller.cs" />
      <Compile Include="Assets\codes\player\moveByKey.cs" />
      <Compile Include="Assets\codes\player\playerMoveWithWeb.cs" />

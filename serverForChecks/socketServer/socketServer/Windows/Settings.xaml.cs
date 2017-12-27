@@ -670,5 +670,10 @@ namespace socketServer
         {
 
         }
+
+        private void routeLineScaleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            routeLineScaleSliderValueText.Content = routeLineScaleSlider.Value.ToString("f2");
+        }
     }
 }

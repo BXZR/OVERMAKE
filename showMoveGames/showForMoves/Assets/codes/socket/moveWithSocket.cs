@@ -44,7 +44,10 @@ public class moveWithSocket : MonoBehaviour {
 				isOpened = true;
 				systemValues .linkServerLabel = "已连接到服务器";
 				//print ("连接服务器成功");  
-			} catch {
+			}
+			catch(Exception E)
+			{
+				print ("ERROR:\n"+E.Message);
 				systemValues .linkServerLabel  = "服务器连接失败";
 				//print ("连接服务器失败 ");  
 				isOpened  = false;

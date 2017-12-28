@@ -839,7 +839,7 @@ namespace socketServer
                 this.slopNow = slopeWithPeack;
                 SystemSave.slopNow = slopeWithPeack;
                 double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
-                theStage = theStage.ChangeState(slopeWithwindow);
+                theStage = theStage.ChangeState(slopeWithwindow  , indexBuff , theFilteredAZ);
                 stepSlopLabel.Content ="[" +theStage.getInformation() +"]" + "  Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
             }
             else

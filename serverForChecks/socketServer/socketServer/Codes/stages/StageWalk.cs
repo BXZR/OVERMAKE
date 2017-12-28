@@ -18,6 +18,18 @@ namespace socketServer.Codes.stages
                 return new StageRun();
             return this;
         }
+
+        public override FSMBasic ChangeState(double valueToCheck, List<int> indexBuff, List<double> usedZ)
+        {
+            if (getStairModeCheck(indexBuff, usedZ))
+            { Console.WriteLine("开始上下楼梯"); return new StageStair(); }
+            if (valueToCheck <= 0.2)
+                return new StageStance();
+            if (valueToCheck >= 0.9)
+                return new StageRun();
+            return this;
+        }
+
         public override string getInformation()
         {
             return "正在行走";

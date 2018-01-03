@@ -66,9 +66,10 @@
                             <TextBox x:Name="ANNTrainTimesText" HorizontalAlignment="Left" Height="22" Margin="331,71,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="97"/>
                             <Label x:Name="label1" Content="FilterMode" HorizontalAlignment="Left" Margin="0,100,0,0" VerticalAlignment="Top" Width="86"/>
                             <ComboBox x:Name="FilterModeSelects" HorizontalAlignment="Left" Margin="80,104,0,0" VerticalAlignment="Top" Width="145" SelectedIndex="1" SelectionChanged="comboBox_SelectionChanged_2">
-                                <ComboBoxItem Content="NoFilter"/>
-                                <ComboBoxItem Content="CommonFilter"/>
-                                <ComboBoxItem Content="ComplexFilter"/>
+                                <ComboBoxItem Content="NoFilter" ToolTip="不滤波"/>
+                                <ComboBoxItem Content="CommonFilter" ToolTip="一般强度的滤波方法族"/>
+                                <ComboBoxItem Content="ComplexFilter" ToolTip="带有正向平均滤波的滤波方法族"/>
+                                <ComboBoxItem Content="ComplexFilter2" ToolTip="带有反向平均滤波的滤波方法族"/>
                             </ComboBox>
                         </Grid>
                     </GroupBox>

@@ -24,7 +24,7 @@ namespace socketServer
                         for (int i = 0; i < IN.Count; i++)
                             outList.Add(IN[i]);
 
-                        outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
+                        outList = theFliterMethodAverage(outList ,SystemSave.filterSmoothCount);
                         outList = GetKalMan(outList);
                     }
                     break;
@@ -34,7 +34,20 @@ namespace socketServer
                             outList.Add(IN[i]);
 
                         outList = theFliterMethod1(outList, theValueUse);
-                        outList = theFliterMethod2(outList ,SystemSave.filterSmoothCount);
+                        outList = theFliterMethodAverage(outList ,SystemSave.filterSmoothCount);
+                        outList = GetKalMan(outList);
+                        outList = ButterworthFilter(outList);
+                    }
+                    break;
+                case 3:
+                    {
+                        //Console.WriteLine("filter method3 ");
+                        for (int i = 0; i < IN.Count; i++)
+                            outList.Add(IN[i]);
+
+                        outList = theFliterMethod1(outList, theValueUse);
+                        //倒叙滤波的效果似乎更好一点，但是更加基于贪心的做法
+                        outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
                         outList = GetKalMan(outList);
                         outList = ButterworthFilter(outList);
                     }
@@ -65,11 +78,11 @@ namespace socketServer
                 //实际上这个操作不是十分常见，一般来说前一种滤波整合方法足够用
                 if (countForCheck > 0 && countForCheck > outList.Count)
                 {
-                    outList = theFliterMethod2(outList, SystemSave.filterSmoothCount - 1);
+                    outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount - 1);
                 }
                 else
                 {
-                    outList = theFliterMethod2(outList, SystemSave.filterSmoothCount);
+                    outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
                 }
                 return outList;
             }
@@ -102,7 +115,7 @@ namespace socketServer
         }
 
 
-        //滤波方法2
+        //滤波方法2----------------------------------------------------------------------------------------------
         //A、方法：
         //    连续取N个采样值进行算术平均运算
         //    N值较大时：信号平滑度较高，但灵敏度较低
@@ -116,7 +129,7 @@ namespace socketServer
         //    比较浪费RAM
 
         //int smoothCount = 5;//平滑的方法（用几个数据的平均数来代替这几个数据）
-        private List<double> theFliterMethod2(List<double> IN, int smoothCount = 5)
+        private List<double> theFliterMethodAverage(List<double> IN, int smoothCount = 5)
         {
             List<double> OUT = new List<double>();
             int countUse = 1;//计数器，为了明显用1作为开头了
@@ -135,7 +148,7 @@ namespace socketServer
             return OUT;
         }
         //对于时间戳来说貌似没有必要狠狠滤波，做一次平均就可以了
-        private List<long> theFliterMethod2(List<long> IN, int smoothCount = 5)
+        private List<long> theFliterMethodAverage(List<long> IN, int smoothCount = 5)
         {
             List<long> OUT = new List<long>();
             int countUse = 1;//计数器，为了明显用1作为开头了
@@ -153,6 +166,50 @@ namespace socketServer
             }
             return OUT;
         }
+
+        //平均方法的倒叙的滤波，每一次新加一个数据，就用新数据来算平均，同时放掉一个旧数据，也就是所谓的倒叙的滤波
+        private List<double> theFliterMethodAverageRevert(List<double> IN, int smoothCount = 5)
+        {
+            List<double> OUT = new List<double>();
+            int countUse = 1;//计数器，为了明显用1作为开头了
+            double numPlus = 0;//这几个数的总和
+            for (int i = IN.Count ; i >= 0 ; i--)
+            {
+                countUse++;
+                numPlus += IN[i];
+                if (countUse == smoothCount || (i == 0 && countUse != 0))//到了采样的时候了
+                {
+                    OUT.Add(numPlus / countUse);
+                    numPlus = 0;
+                    countUse = 0;
+                }
+            }
+            return OUT;
+        }
+        //平均方法的倒叙的滤波，每一次新加一个数据，就用新数据来算平均，同时放掉一个旧数据，也就是所谓的倒叙的滤波
+        //对于时间戳来说貌似没有必要狠狠滤波，做一次平均就可以了
+        private List<long> theFliterMethodAverageRevert(List<long> IN, int smoothCount = 5)
+        {
+            List<long> OUT = new List<long>();
+            int countUse = 1;//计数器，为了明显用1作为开头了
+            long numPlus = 0;//这几个数的总和
+            for (int i = IN.Count; i >= 0; i--)
+            {
+                countUse++;
+                numPlus += IN[i];
+                if (countUse == smoothCount || (i == 0 && countUse != 0))//到了采样的时候了
+                {
+                    OUT.Add(numPlus / countUse);
+                    numPlus = 0;
+                    countUse = 0;
+                }
+            }
+            return OUT;
+        }
+
+
+
+        //滤波方法2----------------------------------------------------------------------------------------------
 
         //滤波方法3，究极的卡尔曼滤波
         double[] CanShu = { 23, 9, 16, 16, 1, 0, 0, 0 };

@@ -593,6 +593,18 @@ namespace socketServer
             }
             else if (HeadingMehtod.SelectedIndex == 2)
             {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    int indexUse = indexBuff[i];
+                    double degree = theAngelController.getAngelNowWithMatrixRotate(
+                        AX[indexUse], AY[indexUse], AZ[indexUse], MX[indexUse], MY[indexUse], MZ[indexUse]
+                        );
+                    degree = headingOffsetExtraCanculate(degree, false);
+                    theStepAngeUse.Add(degree);
+                }
+            }
+            else if (HeadingMehtod.SelectedIndex == 3)
+            {
                 List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
@@ -601,7 +613,7 @@ namespace socketServer
                     theStepAngeUse.Add(degree);
                 }
             }
-            else if (HeadingMehtod.SelectedIndex == 3)
+            else if (HeadingMehtod.SelectedIndex == 4)
             {
                 List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
@@ -624,7 +636,7 @@ namespace socketServer
 
               
             }
-            else if (HeadingMehtod.SelectedIndex == 4)
+            else if (HeadingMehtod.SelectedIndex == 5)
             {
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
                 try
@@ -650,7 +662,7 @@ namespace socketServer
                 }
             }
 
-            else if (HeadingMehtod.SelectedIndex == 5)
+            else if (HeadingMehtod.SelectedIndex == 6)
             {
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
@@ -662,7 +674,7 @@ namespace socketServer
                     theStepAngeUse.Add(degree);
                 }
             }
-            else if (HeadingMehtod.SelectedIndex == 6)
+            else if (HeadingMehtod.SelectedIndex == 7)
             {
                 //方法3，AHRS方法
 
@@ -687,7 +699,7 @@ namespace socketServer
                 }
                 // theAngelController.makeMehtod3Clear();
             }
-            else if (HeadingMehtod.SelectedIndex == 7)
+            else if (HeadingMehtod.SelectedIndex == 8)
             {
                 //方法3，IMU方法
                 double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0;//, mx = 0, my = 0, mz = 0;
@@ -1323,6 +1335,21 @@ namespace socketServer
         private void HeadingMehtod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        //清空一下绘画的内容，重新定位到中心点，但是这个中心点的坐标已经修改为位移之后的坐标
+        //一个很有意思的扩展项
+        private void clearDraw_Click(object sender, RoutedEventArgs e)
+        {
+            theInformationController.flashInformation();
+            if (SystemSave.savedPositions.Count > 0)
+            {
+                transForm temp = SystemSave.savedPositions[SystemSave.savedPositions.Count - 1];
+                SystemSave.startPositionX = temp.X;
+                SystemSave.startPositionY = temp.Y;
+                SystemSave.startPositionZ = temp.Z;
+            }
+            SystemSave.savedPositions.Clear();
         }
     }
 }

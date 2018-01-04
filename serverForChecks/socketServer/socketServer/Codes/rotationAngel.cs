@@ -11,20 +11,21 @@ namespace socketServer
     class rotationAngel
     {
         private double theAngelNow = 0;//总记录的角度
-        
+
 
         //每一种方法的简短说明信息
         private string[] methodInformations =
         {
             "直接读取电子罗盘角度的方法",
             "无视短时间内的较小的方向偏移，方向更平滑",
+            "使用加速度和磁力计计算姿态兼容方向",
             "客户端实现加速计、陀螺仪、磁力计融合算法(AHRS)",
              "根据不同的情况切换使用AHRS和IMU的数值",
              "在客户端实现的加速计、陀螺仪融合算法(IMU)",
              "根据电子罗盘的原理判断方向（并不正确）",
             "在服务端实现的加速计、陀螺仪、磁力计融合算法(并不正确)",
             "在服务端实现的加速计、陀螺仪融合算法(并不正确)",
-           
+
         };
 
 
@@ -237,11 +238,11 @@ namespace socketServer
         {
             double degreeNow = 0;
 
-            double AHRSAverage = MathCanculate.getAverage(AHRSValues , indexPre,indexNow);
+            double AHRSAverage = MathCanculate.getAverage(AHRSValues, indexPre, indexNow);
             double IMUAverage = MathCanculate.getAverage(IMUValues, indexPre, indexNow);
-           
+
             //Console.WriteLine("Average1 = " + AHRSAverage);
-           // Console.WriteLine("Average2 = " + IMUAverage);
+            // Console.WriteLine("Average2 = " + IMUAverage);
 
             double EDYaw = 0;
             for (int i = indexPre; i < indexNow; i++)
@@ -254,10 +255,10 @@ namespace socketServer
             //返回数值
             if (EDYaw > EDYawGate)
             {
-                Console.WriteLine("Select AHRS");
+                //  Console.WriteLine("Select AHRS");
                 return AHRSValues[indexNow];
             }
-            Console.WriteLine("Select IMU");
+            // Console.WriteLine("Select IMU");
             return IMUValues[indexNow];
         }
         //返回对这种方法的说明
@@ -283,11 +284,13 @@ namespace socketServer
 
             double HY = MY * Math.Cos(B) + MX * Math.Sin(B) * Math.Sin(A) - MZ * Math.Cos(A) * Math.Sin(B);
             double HX = MX * Math.Cos(A) + MZ * Math.Sin(A);
-            Console.WriteLine("HX = " + HX + " HY = " + HY);
 
             heading = Math.Atan(HY / HX) / 3.14 * 180;
+            Console.WriteLine("HX = " + HX + " HY = " + HY);
+            Console.WriteLine("Heading = " + heading);
 
-            //看网上的说法还需要分开做一个象限的计算
+
+            ////看网上的说法还需要分开做一个象限的计算
             if (HX > 0 && HY > 0)
             {
                 heading = 360 - heading;
@@ -308,8 +311,45 @@ namespace socketServer
             {
                 heading = 270;
             }
-            Console.WriteLine("Heading = " + heading);
 
+
+            return heading;
+        }
+
+        //来自计算机工程2016年11月15日的论文《一种基于智能手机传感器的行人室内定位算法》
+        //关于方向的基础方法，看上去写得还是很明白的，实现一下
+        public double getAngelNowWithMatrixRotate(double AX, double AY, double AZ, double MX, double MY, double MZ)
+        {
+            double heading = 0;
+            double gama = Math.Asin(AY/SystemSave.g);
+            double theta = Math.Atan(AX/AZ);
+            //磁场旋转之后的磁力计信息
+            double MXR = Math.Cos(theta) * MX + Math.Sin(theta) * Math.Sin(gama) * MY - Math.Sin(theta)*Math.Cos(gama) * MZ;
+            double MYR = 0 * MX + Math.Cos(gama) * MY + Math.Sin(gama) * MZ;
+            double MZR = Math.Sin(theta) * MX - Math.Cos(theta) * Math.Sin(gama) * MY + Math.Cos(gama) * Math.Cos(theta) * MZ;
+            //计算heading
+            //千万不要忘了弧度转角度
+            heading = Math.Atan(MYR / MXR) / 3.14 * 180 ;
+            //Console.WriteLine("MXR = " + MXR +"  MYR = "+ MYR);
+            //Console.WriteLine("Heading = " + heading);
+            //分象限进行计算,这个在论文里面没有提到，但是在我的机器上需要做四象限的分别对待
+            if (MXR <= 0 && MYR <= 0)
+            {
+                heading = heading;
+            }
+            else if (MXR > 0 && MYR <= 0)
+            {
+                heading = 180 + heading;
+            }
+            else if (MXR > 0 && MYR > 0)
+            {
+                heading = 180 + heading;
+            }
+            else if (MXR <= 0 && MYR > 0)
+            {
+                heading = 360 + heading;
+            }
+            //Console.WriteLine("HeadingAfter = " + heading);
             return heading;
         }
     }

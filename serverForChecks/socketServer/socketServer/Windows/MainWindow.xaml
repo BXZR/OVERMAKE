@@ -34,8 +34,9 @@
             </Canvas>
             <Button x:Name="button2" Content="Save Route Map" Margin="109,2,237,0" VerticalAlignment="Top" Click="button2_Click_1" Grid.Column="1"/>
             <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="9,32,0,0" Grid.Column="1"/>
-            <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="201" Height="33" VerticalAlignment="Top" Foreground="#FFD12179" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Margin="0,0,20,0" Grid.Column="1"/>
-            <Label x:Name="resolutionLabel" Content="1m = 1 pixel" Grid.Column="1" Margin="0,0,10,2" FontWeight="Bold" HorizontalAlignment="Right" Width="108" Height="26" VerticalAlignment="Bottom"/>
+            <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="212" Height="33" VerticalAlignment="Top" Foreground="#FFD12179" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Margin="0,-6,20,0" Grid.Column="1"/>
+            <Label x:Name="resolutionLabel" Content="1m = 1 pixel" Grid.Column="1" Margin="0,0,10,0" FontWeight="Bold" HorizontalAlignment="Right" Width="108" Height="26" VerticalAlignment="Bottom"/>
+            <Button x:Name="clearDraw" Content="ClearDraw" Margin="18,0,0,-2" Grid.Column="1" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Click="clearDraw_Click"/>
         </Grid>
         <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,453,123,0" x:Name="button6" VerticalAlignment="Top" Width="75" Click="button6_Click" IsEnabled="False" />
         <Label x:Name="Charts" Content="ImageDisplay" Margin="0,416,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
@@ -78,6 +79,7 @@
         <ComboBox x:Name="HeadingMehtod" HorizontalAlignment="Right" Margin="0,321,25,0" Width="173" SelectedIndex="0" Height="22" VerticalAlignment="Top" SelectionChanged="HeadingMehtod_SelectionChanged">
             <ComboBoxItem Content="CompassRead"/>
             <ComboBoxItem Content="MSBasedCompass"/>
+            <ComboBoxItem Content="MatrixRotateMA"/>
             <ComboBoxItem Content="AHRS(client)"/>
             <ComboBoxItem Content="AHRSIMUSelect(Client)"/>
             <ComboBoxItem Content="IMU(client)" Foreground="Red"/>

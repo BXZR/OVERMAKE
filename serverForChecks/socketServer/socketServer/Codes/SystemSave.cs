@@ -20,6 +20,8 @@ namespace socketServer
         public static double systemFlashTimer = 0.5;//系统绘制和计算的时间间隔，时间越短刷新越快灵敏越高开销越大
         //两种模式的区别就是实验模式之下在原地晃手机就可以移动，但是这种情况在实际模式之下不被允许
 
+        //重力加速度
+        public static double g = 9.8;
 
         //默认初始坐标（,这个坐标首先可以在设置界面进行设置，若有条件就在使用一些定位的方法获得）
         public static double startPositionX = 0;
@@ -165,6 +167,7 @@ namespace socketServer
             return IP1;
         }
 
+        //留出来的钩子，以备不时之需
         public static void makeFlash()
         {
 

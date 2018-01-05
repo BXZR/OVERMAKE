@@ -1030,7 +1030,8 @@ namespace socketServer
         private void button6_Click(object sender, RoutedEventArgs e)
         {
             //为了保证数据干净，要做一次滤波
-            List<double> theFiltered = theFilter.theFilerWork(theInformationController.compassDegree);
+            // List<double> theFiltered =  theFilter.theFilerWork(theInformationController.compassDegree);
+            List<double> theFiltered = theStepAngeUse;
             if (theFiltered == null)
                 return;
             //查看滤波后的数据

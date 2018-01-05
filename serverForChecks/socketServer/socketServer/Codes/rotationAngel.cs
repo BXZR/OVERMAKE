@@ -286,8 +286,9 @@ namespace socketServer
             double HX = MX * Math.Cos(A) + MZ * Math.Sin(A);
 
             heading = Math.Atan(HY / HX) / 3.14 * 180;
-            Console.WriteLine("HX = " + HX + " HY = " + HY);
-            Console.WriteLine("Heading = " + heading);
+
+           // Console.WriteLine("HX = " + HX + " HY = " + HY);
+            //Console.WriteLine("Heading = " + heading);
 
 
             ////看网上的说法还需要分开做一个象限的计算
@@ -297,11 +298,11 @@ namespace socketServer
             }
             else if (HX > 0 && HY < 0)
             {
-                heading = 180 - heading;
+                heading = -heading;
             }
             else if (HX < 0)
             {
-                heading = -heading;
+                heading = 180  - heading;
             }
             else if (HX == 0 && HY < 0)
             {
@@ -312,12 +313,18 @@ namespace socketServer
                 heading = 270;
             }
 
-
+           // Console.WriteLine("Heading = " + heading);
             return heading;
         }
 
         //来自计算机工程2016年11月15日的论文《一种基于智能手机传感器的行人室内定位算法》
         //关于方向的基础方法，看上去写得还是很明白的，实现一下
+        //γ ＝ ｓｉｎ － １（ ａ ｙ ／ｇ）
+        //θ ＝ ｔａｎ － １（ ａ ｘ ／ａ ｚ）
+        //下面是磁力计需要左乘的转换矩阵
+        //ｃｏｓθ    ｓｉｎθｓｉｎγ   －ｓｉｎθｃｏｓγ
+        //    ０     ｃｏｓγ         ｓｉｎγ
+        // ｓｉｎθ   -ｃｏｓθｓｉｎγ  ｃｏｓθｃｏｓγ
         public double getAngelNowWithMatrixRotate(double AX, double AY, double AZ, double MX, double MY, double MZ)
         {
             double heading = 0;

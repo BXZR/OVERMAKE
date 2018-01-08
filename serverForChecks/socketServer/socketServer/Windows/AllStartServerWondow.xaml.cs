@@ -29,10 +29,10 @@ namespace socketServer.Windows
         {
             try
             {
-                SystemSave.serverIP = ALLIP.Text;
+                SystemSave.serverIP = comboBoxForIP.SelectionBoxItem.ToString();
                 SystemSave.serverPort = Convert.ToInt32(ALLPort.Text);
 
-                theServer theServerForAll = new socketServer.theServer(ALLIP.Text, Convert.ToInt32(ALLPort.Text));
+                theServer theServerForAll = new socketServer.theServer(SystemSave.serverIP, SystemSave.serverPort);
                 theServerForAll.setMode(2);
                 SystemSave.SystemServerMode = 2;
                 //制作显示用的label
@@ -48,6 +48,8 @@ namespace socketServer.Windows
                 //为了防止乱按按钮，直接将button给禁了
                 button.IsEnabled = false;
                 button2.IsEnabled = false;
+                comboBoxForIP.IsEnabled = false;
+                ALLPort.IsEnabled = false;
             }
             catch (Exception E)
             {
@@ -59,8 +61,12 @@ namespace socketServer.Windows
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("IP = " + SystemSave.serverIP);
+
             SystemSave.SystemServerMode = 1;
-            SystemSave.serverIP = ALLIP.Text ;
+            SystemSave.serverIP = comboBoxForIP.SelectionBoxItem.ToString() ;
+            Console.WriteLine("IP = " + SystemSave.serverIP);
+
             SystemSave.serverPort = Convert.ToInt32( ALLPort.Text);
             MainWindow aMainWindow =  new MainWindow();
             aMainWindow.pressStartButton();
@@ -76,14 +82,21 @@ namespace socketServer.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //这两种也是展示IP的方式，先留在这里
             //ALLIP.Text = SystemSave.serverIP;
-            ALLPort.Text = SystemSave.serverPort.ToString();
-            ALLIP.Text = SystemSave.getIPAddress();
-        }
+            //ALLIP.Text = SystemSave.getIPAddress();
 
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            ALLIP.Text = SystemSave.getIPAddress();
+            ALLPort.Text = SystemSave.serverPort.ToString();
+
+            List<string> IPS = SystemSave.getIPAddressAll();
+            comboBoxForIP.Items.Clear();
+            for (int i = 0; i < IPS.Count; i++)
+            {
+                ComboBoxItem Item = new ComboBoxItem();
+                Item.Content = IPS[i];
+                comboBoxForIP.Items.Add(Item);
+            }
+            comboBoxForIP.SelectedIndex = 0;
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)

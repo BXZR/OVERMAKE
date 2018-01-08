@@ -166,6 +166,20 @@ namespace socketServer
             string IP2 = addressList[1].ToString();
             return IP1;
         }
+        public static List<string> getIPAddressAll()
+        {
+            //这个获取IP地址的方法非常简单粗暴但是不是公网的IP
+            // string IP = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault<IPAddress>(a => a.AddressFamily.ToString().Equals("InterNetwork")).ToString();
+            //真正使用的获得IP的手段是下面更细节的方法
+            System.Net.IPAddress[] addressList = System.Net.Dns.GetHostByName(System.Net.Dns.GetHostName()).AddressList;
+            List<string> IPS = new List<string>();
+            for (int i = 0; i < addressList.Length; i++)
+            {
+                IPS.Add(addressList[i].ToString());
+            }
+            return IPS;
+        }
+
 
         //留出来的钩子，以备不时之需
         public static void makeFlash()

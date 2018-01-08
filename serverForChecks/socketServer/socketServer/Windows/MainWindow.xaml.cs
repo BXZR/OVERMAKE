@@ -1343,9 +1343,9 @@ namespace socketServer
         private void clearDraw_Click(object sender, RoutedEventArgs e)
         {
             theInformationController.flashInformation();
-            if (SystemSave.savedPositions.Count > 0)
+            if (thePositionController.theTransformPosition.Count > 0)
             {
-                transForm temp = SystemSave.savedPositions[SystemSave.savedPositions.Count - 1];
+                transForm temp = thePositionController.theTransformPosition[thePositionController.theTransformPosition.Count - 1];
                 SystemSave.startPositionX = temp.X;
                 SystemSave.startPositionY = temp.Y;
                 SystemSave.startPositionZ = temp.Z;

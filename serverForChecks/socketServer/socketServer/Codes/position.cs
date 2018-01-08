@@ -99,7 +99,7 @@ namespace socketServer
             List<double> headingSave = new List<double>();
             string theInformation = "详细定位信息  初始坐标（" + SystemSave.startPositionX.ToString("f4") + " , " +
                SystemSave.startPositionY.ToString("f4") + " , " + SystemSave.startPositionZ.ToString("f4") + "）";
-              theInformation  += "\n------------------------------------------------------------------------------\n";
+              theInformation  += "\n----------------------------------------------------------------------------------------\n";
             for (int i = 0; i < angels .Count; i++)
             {
                 double XAdd = Math.Sin(getRadianFromDegree(angels[i])) * stepLengths[i];

@@ -101,7 +101,7 @@ namespace socketServer
                     double x2 = theGPSX[indexNow];
                     double y2 = theGPSY[indexNow];
                     // Console.WriteLine(string.Format("x1 = {0} , y1 = {1} , x2 = {2} , y2 = {3}" , x1,y1,x2,y2));
-                    double stepLength = Distance(x1, y1, x2, y2);
+                    double stepLength = MathCanculate.DistanceForGPS(x1, y1, x2, y2);
                     //这是根据希望得到的公式而做的
                     string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + stepLength.ToString("f3");
                     return saveStringItem;
@@ -115,23 +115,7 @@ namespace socketServer
             }
         }
 
-        //计算两个GPS信号之间的距离
-        //单位是米
-        private double Distance(double long1, double lat1, double long2, double lat2)
-        {
-            double a, b, R;
-            R = 6378137; //地球半径
-            lat1 = lat1 * Math.PI / 180.0;
-            lat2 = lat2 * Math.PI / 180.0;
-            a = lat1 - lat2;
-            b = (long1 - long2) * Math.PI / 180.0;
-            double d;
-            double sa2, sb2;
-            sa2 = Math.Sin(a / 2.0);
-            sb2 = Math.Sin(b / 2.0);
-            d = 2 * R * Math.Asin(Math.Sqrt(sa2 * sa2 + Math.Cos(lat1) * Math.Cos(lat2) * sb2 * sb2));
-            return d;
-        }
+
 
     }
 }

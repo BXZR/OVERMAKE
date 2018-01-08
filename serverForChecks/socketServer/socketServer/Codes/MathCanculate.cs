@@ -10,6 +10,37 @@ namespace socketServer.Codes
     //提供静态计算方法
     class MathCanculate
     {
+
+        //计算两个GPS信号之间的距离
+        //单位是米
+        public static  double DistanceForGPS(double long1, double lat1, double long2, double lat2)
+        {
+            double a, b, R;
+            R = 6378137; //地球半径
+            lat1 = lat1 * Math.PI / 180.0;
+            lat2 = lat2 * Math.PI / 180.0;
+            a = lat1 - lat2;
+            b = (long1 - long2) * Math.PI / 180.0;
+            double d;
+            double sa2, sb2;
+            sa2 = Math.Sin(a / 2.0);
+            sb2 = Math.Sin(b / 2.0);
+            d = 2 * R * Math.Asin(Math.Sqrt(sa2 * sa2 + Math.Cos(lat1) * Math.Cos(lat2) * sb2 * sb2));
+            return d;
+        }
+
+
+        // 角度转弧度 π/180×角度
+        public static double getRadianFromDegree(double degree)
+        {
+            return degree * Math.PI / 180;
+        }
+        // 弧度变角度 180/π×弧度
+        public static double getDegreeFromRadian(double radian)
+        {
+            return radian * 180 / Math.PI;
+        }
+
         //计算平均数
         public static double getAverage(List<double> values)
         {

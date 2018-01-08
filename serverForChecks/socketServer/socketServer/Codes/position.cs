@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -102,8 +103,8 @@ namespace socketServer
               theInformation  += "\n----------------------------------------------------------------------------------------\n";
             for (int i = 0; i < angels .Count; i++)
             {
-                double XAdd = Math.Sin(getRadianFromDegree(angels[i])) * stepLengths[i];
-                double YAdd = Math.Cos(getRadianFromDegree(angels[i])) * stepLengths[i];
+                double XAdd = Math.Sin(MathCanculate.getRadianFromDegree(angels[i])) * stepLengths[i];
+                double YAdd = Math.Cos(MathCanculate.getRadianFromDegree(angels[i])) * stepLengths[i];
                 // Console.WriteLine("--"+XAdd+"--"+YAdd+"--");
                 // theInformation += "角度： " + angels[i].ToString("f4") +"\n移动：( " + XAdd.ToString("f4") + " , " + YAdd.ToString("f4") + " )\n------------------\n";
                 positionX += XAdd;
@@ -133,15 +134,6 @@ namespace socketServer
             return theInformation;
         }
 
-        // 角度转弧度 π/180×角度
-        double getRadianFromDegree(double degree)
-        {
-            return degree * Math.PI / 180;
-        }
-        // 弧度变角度 180/π×弧度
-        double getDegreeFromRadian(double radian)
-        {
-            return radian * 180 / Math.PI;
-        }
+
     }
 }

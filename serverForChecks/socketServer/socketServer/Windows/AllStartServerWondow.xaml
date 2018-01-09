@@ -10,16 +10,16 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="button" Content="Mutiple User Mode" Margin="0,0,124,16" Click="button_Click" Height="32" VerticalAlignment="Bottom" ToolTip="复数实验者分别在各自的窗口进行实验" HorizontalAlignment="Right" Width="124"/>
+        <Button x:Name="button" Content="Mutiple User Mode" Margin="0,0,126,16" Click="button_Click" Height="32" VerticalAlignment="Bottom" ToolTip="复数实验者分别在各自的窗口进行实验" HorizontalAlignment="Right" Width="124"/>
         <Button x:Name="button2" Content="Single User Mode" Margin="0,0,262,16" Click="button2_Click" ToolTip="单独使用者在单个窗口进行实验" HorizontalAlignment="Right" Width="119" Height="32" VerticalAlignment="Bottom"/>
         <Label x:Name="theShowLabel" Content="information" Margin="20,138,20,59" Background="#FFF3F3F3" Foreground="#FF1207FF" HorizontalContentAlignment="Center"/>
         <Label x:Name="theShowLabel_Copy" Content="PDR With Smartphone" Margin="61,10,41,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="34" VerticalAlignment="Top" FontSize="16"/>
-        <GroupBox x:Name="groupBox" Header="Basic Config" Margin="10,44,10,0" VerticalAlignment="Top" Height="89">
+        <GroupBox x:Name="groupBox" Header="Basic Config" Margin="10,46,10,0" VerticalAlignment="Top" Height="74" BorderBrush="Black">
             <Grid Margin="-1,2,-1,-4">
-                <Label x:Name="theShowLabel_Copy1" Content="ServerIP" Margin="8,10,0,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81"/>
-                <Label x:Name="theShowLabel_Copy2" Content="ServerPort" Margin="223,10,0,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="85"/>
-                <TextBox x:Name="ALLPort" Height="23" Margin="221,35,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="128"/>
-                <ComboBox x:Name="comboBoxForIP" HorizontalAlignment="Left" Margin="25,35,0,0" VerticalAlignment="Top" Width="159" Height="23"/>
+                <Label x:Name="theShowLabel_Copy1" Content="ServerIP" Margin="4,-1,0,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81"/>
+                <Label x:Name="theShowLabel_Copy2" Content="ServerPort" Margin="208,-1,0,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="85"/>
+                <TextBox x:Name="ALLPort" Height="23" Margin="217,24,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140"/>
+                <ComboBox x:Name="comboBoxForIP" HorizontalAlignment="Left" Margin="21,24,0,0" VerticalAlignment="Top" Width="159" Height="23"/>
             </Grid>
         </GroupBox>
         <Button x:Name="button3" Content="Settings" Margin="0,0,20,16" Click="button3_Click" HorizontalAlignment="Right" Width="95" Height="32" VerticalAlignment="Bottom"/>

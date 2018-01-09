@@ -266,6 +266,11 @@ namespace socketServer
         {
             return methodInformations[index];
         }
+        //返回全部的方法说明
+        public string [] getMoreInformation()
+        {
+            return methodInformations;
+        }
 
         //来自博客的方法
         //使用加速计和磁力计做的heading

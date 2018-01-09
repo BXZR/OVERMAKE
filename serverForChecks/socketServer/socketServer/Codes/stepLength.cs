@@ -365,5 +365,11 @@ namespace socketServer
         {
             return methodInformations[index];
         }
+        //返回全部的方法说明
+        public string[] getMoreInformation()
+        {
+            return methodInformations;
+        }
+
     }
 }

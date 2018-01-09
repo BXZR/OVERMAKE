@@ -969,6 +969,8 @@ namespace socketServer
             theTrainFileMake = new TrainFileMaker();
             theStepAxis = new stepAxis();
             theZMoveController = new ZAxisMoveController();
+            //制作提示信息
+            makeToolTips();
             //相关工程更新
             makeFlashController();
 
@@ -981,6 +983,31 @@ namespace socketServer
             }
             return "";
         }
+
+        //tool tips的制作
+        private void makeToolTips()
+        {
+            string[] information = theStepAxis.getMoreInformation();
+            for (int i = 0; i < stepCheckAxisUse.Items.Count; i++)
+                (stepCheckAxisUse.Items[i] as ComboBoxItem).ToolTip = information[i];
+
+            information = stepExtra.getMoreInformation();
+            for (int i = 0; i < stepCheckMethod.Items.Count; i++)
+                (stepCheckMethod.Items[i] as ComboBoxItem).ToolTip = information[i];
+
+            information = theStepLengthController.getMoreInformation();
+            for (int i = 0; i < StepLengthMethod.Items.Count; i++)
+                (StepLengthMethod.Items[i] as ComboBoxItem).ToolTip = information[i];
+
+            information = theAngelController.getMoreInformation();
+            for (int i = 0; i < HeadingMehtod.Items.Count; i++)
+                (HeadingMehtod.Items[i] as ComboBoxItem).ToolTip = information[i];
+
+            information = theZMoveController.getMoreInformation();
+            for (int i = 0; i < ZAxisSelect.Items.Count; i++)
+                (ZAxisSelect.Items[i] as ComboBoxItem).ToolTip = information[i];
+        }
+
         //关闭分装方法
         public string makeClose()
         {

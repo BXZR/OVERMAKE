@@ -17,22 +17,25 @@
         <TabControl x:Name="tabControl" Height="436" VerticalAlignment="Top" Margin="0,-39,0,0" SelectionChanged="tabControl_SelectionChanged">
             <TabItem Header="System Config">
                 <Grid Background="#FFE5E5E5" Margin="0,2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBox x:Name="TrainBasePath" Height="23" Margin="126,347,21,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                     <Label
                         Width="112" VerticalAlignment="Top" x:Name="label_Copy11" Margin="10,344,0,0" Height="26" HorizontalAlignment="Left" Content="TrainBaseFilePath"/>
-                    <GroupBox x:Name="groupBox" Header="ServerConfig" Margin="8,28,256,0" VerticalAlignment="Top" Height="131">
+                    <GroupBox x:Name="groupBox" Header="ServerConfig" Margin="8,35,256,0" VerticalAlignment="Top" Height="131" Foreground="#FF2E00FF" BorderBrush="Black">
                         <Grid Margin="10,10,7,6">
                             <TextBox x:Name="ServerIPText" Height="23" Margin="71,0,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
                             <Label x:Name="label_Copy13" Content="ServerIP" HorizontalAlignment="Left" Margin="10,0,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
                             <Button x:Name="LocalIPGetter" Content="Get Local IP" Margin="10,30,19,0" VerticalAlignment="Top" Click="button3_Click_3"/>
-                            <Label x:Name="label_Copy22" Content="ServerPort" HorizontalAlignment="Left" Margin="10,60,0,0" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                            <Label x:Name="label_Copy22" Content="ServerPort" HorizontalAlignment="Left" Margin="10,60,0,0" Width="72" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
                             <TextBox x:Name="ServerPortText" Margin="82,60,10,0" TextWrapping="Wrap" Text="TextBox" Height="23" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="groupBox1" Header="routeDrawConfig" Margin="241,28,14,0" VerticalAlignment="Top" Height="131">
+                    <GroupBox x:Name="groupBox1" Header="routeDrawConfig" Margin="241,35,14,0" VerticalAlignment="Top" Height="131" Foreground="#FF2E00FF" BorderBrush="Black">
                         <Grid Margin="10,10,-2,2">
                             <CheckBox x:Name="Draw_route_with_buffer" Content="DrawRouteWithBuffer" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" IsChecked="True" Height="16" Width="148"/>
                             <Button x:Name="theDrawColorButton" Content="Draw Color" Margin="6,27,14,0" VerticalAlignment="Top" Click="button3_Click_2" FontWeight="Bold" FontStyle="Italic"/>
@@ -42,37 +45,44 @@
                             <Label x:Name="routeLineScaleSliderValueText" Content="15.00" Margin="0,0,0,20" VerticalAlignment="Bottom" Foreground="#FF7400FF" Height="21" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right" Width="42"/>
                         </Grid>
                     </GroupBox>
-                    <Label x:Name="Tip" Margin="5,0,0,0" Foreground="Red" Content="服务器未开启，可以设置后直接开启。" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="532"/>
-                    <GroupBox x:Name="groupBox2" Header="CanculateConfig" Margin="10,164,10,0" VerticalAlignment="Top" Height="163">
+                    <Label x:Name="Tip" Margin="5,4,0,0" Foreground="Red" Content="服务器未开启，可以设置后直接开启。" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="274" FontStyle="Italic" FontWeight="Bold"/>
+                    <GroupBox x:Name="groupBox2" Header="CanculateConfig" Margin="10,174,10,0" VerticalAlignment="Top" Height="163" Foreground="#FF2E00FF" BorderBrush="Black">
                         <Grid Margin="0,10,-2,-1">
                             <Label x:Name="label_Copy17" Content="StartPosition" HorizontalAlignment="Left" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
                             <Label x:Name="label_Copy19" Content="Y:" HorizontalAlignment="Left" Margin="199,0,0,0" Width="26" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
                             <TextBox x:Name="StartPositionX" HorizontalAlignment="Left" Height="23" Margin="112,4,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="88"/>
-                            <TextBox x:Name="StartPositionY" HorizontalAlignment="Left" Height="23" Margin="219,4,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="88"/>
-                            <Label x:Name="label_Copy20" Content="Z:" HorizontalAlignment="Left" Margin="309,0,0,0" Width="25" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                            <TextBox x:Name="StartPositionZ" HorizontalAlignment="Left" Height="23" Margin="334,4,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="88"/>
+                            <TextBox x:Name="StartPositionY" HorizontalAlignment="Left" Height="23" Margin="225,4,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="88"/>
+                            <Label x:Name="label_Copy20" Content="Z:" HorizontalAlignment="Left" Margin="316,0,0,0" Width="25" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
+                            <TextBox x:Name="StartPositionZ" HorizontalAlignment="Left" Height="23" Margin="343,4,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="88"/>
                             <Label x:Name="label_Copy18" Content="X:" HorizontalAlignment="Left" Margin="89,0,0,0" Width="23" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top"/>
-                            <Label x:Name="label_Copy23" Content="SystemMode" HorizontalAlignment="Left" Width="86" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="0,36,0,0"/>
-                            <ComboBox x:Name="SystemModeSelect" HorizontalAlignment="Left" Margin="91,38,0,0" VerticalAlignment="Top" Width="109" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged">
-                                <ComboBoxItem Content="experimental"/>
-                                <ComboBoxItem Content="practical"/>
-                            </ComboBox>
-                            <CheckBox x:Name="isPruning" Content="PruningForDecisionTree" HorizontalAlignment="Left" Margin="264,107,0,0" Width="164"/>
-                            <Label x:Name="label_Copy27" Content="SystemFlashTimer" HorizontalAlignment="Left" Width="113" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="213,36,0,0"/>
-                            <TextBox x:Name="systemFlashTimerText" HorizontalAlignment="Left" Height="23" Margin="331,38,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="97"/>
+                            <CheckBox x:Name="isPruning" Content="PruningForDecisionTree" HorizontalAlignment="Left" Margin="267,104,0,3" Width="164"/>
+                            <Label x:Name="label_Copy27" Content="SystemFlashTimer" HorizontalAlignment="Left" Width="116" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="225,35,0,0"/>
+                            <TextBox x:Name="systemFlashTimerText" HorizontalAlignment="Left" Height="23" Margin="344,38,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="87"/>
                             <Label x:Name="label_Copy28" Content="ANNHiddenNeurons" HorizontalAlignment="Left" Width="131" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="0,69,0,0"/>
-                            <TextBox x:Name="ANNHiddenNeuronsText" HorizontalAlignment="Left" Height="23" Margin="131,71,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="94"/>
+                            <TextBox x:Name="ANNHiddenNeuronsText" HorizontalAlignment="Left" Height="23" Margin="131,71,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="87"/>
                             <Label x:Name="label_Copy29" Content="ANNTrainTimes" HorizontalAlignment="Left" Width="104" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="230,69,0,0"/>
-                            <TextBox x:Name="ANNTrainTimesText" HorizontalAlignment="Left" Height="22" Margin="331,71,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="97"/>
-                            <Label x:Name="label1" Content="FilterMode" HorizontalAlignment="Left" Margin="0,100,0,0" VerticalAlignment="Top" Width="86"/>
-                            <ComboBox x:Name="FilterModeSelects" HorizontalAlignment="Left" Margin="80,104,0,0" VerticalAlignment="Top" Width="145" SelectedIndex="1" SelectionChanged="comboBox_SelectionChanged_2">
+                            <TextBox x:Name="ANNTrainTimesText" HorizontalAlignment="Left" Height="22" Margin="344,71,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="87"/>
+                            <Label x:Name="label1" Content="FilterMode" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" Width="86"/>
+                            <ComboBox x:Name="FilterModeSelects" HorizontalAlignment="Left" Margin="80,39,0,0" VerticalAlignment="Top" Width="138" SelectedIndex="1" SelectionChanged="comboBox_SelectionChanged_2">
                                 <ComboBoxItem Content="NoFilter" ToolTip="不滤波"/>
                                 <ComboBoxItem Content="CommonFilter" ToolTip="一般强度的滤波方法族"/>
                                 <ComboBoxItem Content="ComplexFilter" ToolTip="带有正向平均滤波的滤波方法族"/>
                                 <ComboBoxItem Content="ComplexFilter2" ToolTip="带有反向平均滤波的滤波方法族"/>
                             </ComboBox>
+                            <Label
+            Width="134" VerticalAlignment="Top" x:Name="label_Copy12" Margin="0,99,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTreeMethod"/>
+                            <ComboBox x:Name="TreeMethod" HorizontalAlignment="Left" Margin="134,103,0,0" VerticalAlignment="Top" Width="100">
+                                <ComboBoxItem Content="IC3"/>
+                                <ComboBoxItem Content="C4.5"/>
+                                <ComboBoxItem Content="CART"/>
+                            </ComboBox>
                         </Grid>
                     </GroupBox>
+                    <Label x:Name="label_Copy23" Content="SystemMode" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="0,4,127,0" HorizontalAlignment="Right" Width="93" FontWeight="Bold" Foreground="Red"/>
+                    <ComboBox x:Name="SystemModeSelect" Margin="0,6,12,0" VerticalAlignment="Top" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged" HorizontalAlignment="Right" Width="109">
+                        <ComboBoxItem Content="experimental" ToolTip="实验室环境下的计算，不考虑传感器欺骗等因素，因此抗干扰能力较弱效率较高。"/>
+                        <ComboBoxItem Content="practical" ToolTip="实际环境之下的计算，考虑实际情况的特殊性，有一些额外的抗干扰的算法，因此抗干扰能力较强，但是效率因此较低。"/>
+                    </ComboBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Step Dection">
@@ -108,8 +118,8 @@
                     <Label
                         Width="128" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy14" Margin="19,158,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingOffsetExtra"/>
                     <ComboBox x:Name="HeadingCanculateMode" Margin="0,91,25,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="256" SelectionChanged="HeadingCanculateMode_SelectionChanged">
-                        <ComboBoxItem Content="Horizontal Plane"/>
-                        <ComboBoxItem Content="3D Free"/>
+                        <ComboBoxItem Content="Horizontal Plane" ToolTip="手机平放或者接近平放的姿态计算当前方向"/>
+                        <ComboBoxItem Content="3D Free" ToolTip="手机以任意固定角度（或周期）放置的时候计算方向"/>
                     </ComboBox>
                     <Label
                         Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="19,87,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
@@ -186,26 +196,19 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="24,84,211,0" VerticalAlignment="Top" Click="button1_Click"/>
+                    <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="21,47,214,0" VerticalAlignment="Top" Click="button1_Click"/>
                     <Label
                         Width="225" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method" FontWeight="Bold"/>
-                    <Label
-                        Width="134" VerticalAlignment="Top" x:Name="label_Copy12" Margin="15,44,0,0" Height="26" HorizontalAlignment="Left" Content="DecisionTree Method"/>
-                    <ComboBox x:Name="TreeMethod" HorizontalAlignment="Left" Margin="154,48,0,0" VerticalAlignment="Top" Width="133">
-                        <ComboBoxItem Content="IC3"/>
-                        <ComboBoxItem Content="C4.5"/>
-                        <ComboBoxItem Content="CART"/>
-                    </ComboBox>
-                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="309,84,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
-                    <ListBox x:Name="CommonFamily" Height="124" Margin="0,226,26,0" VerticalAlignment="Top" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="216">
+                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="306,47,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
+                    <ListBox x:Name="CommonFamily" Height="124" Margin="0,200,26,0" VerticalAlignment="Top" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="216">
                         <ListBoxItem Content="A = 1 B = 2 C = 3"/>
                         <ListBoxItem Content="A = 3 B = 454 C = 3"/>
                     </ListBox>
                     <Label
-                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="15,132,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Family Config" FontWeight="Bold"/>
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="15,106,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Family Config" FontWeight="Bold"/>
                     <Label
-                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,164,85,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
-                    <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,168,29,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">
+                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,138,85,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
+                    <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,142,29,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">
                         <ComboBoxItem Content="1"/>
                         <ComboBoxItem Content="2"/>
                         <ComboBoxItem Content="3"/>
@@ -213,9 +216,9 @@
                         <ComboBoxItem Content="5"/>
                     </ComboBox>
                     <Label
-                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,194,76,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
+                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,168,76,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
                     <Label
-                        Width="217" x:Name="CommonFormulaFamilyLabel" Margin="15,0,0,10" HorizontalAlignment="Left" Content="" Foreground="#FF2E00FF" Height="214" VerticalAlignment="Bottom"/>
+                        Width="217" x:Name="CommonFormulaFamilyLabel" Margin="15,0,0,36" HorizontalAlignment="Left" Content="" Foreground="#FF2E00FF" Height="214" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">

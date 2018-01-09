@@ -22,7 +22,11 @@ namespace socketServer.Codes
         {
             return methodInformations[index];
         }
-
+        //返回全部的方法说明
+        public string[] getMoreInformation()
+        {
+            return methodInformations;
+        }
 
         //专门用来控制Z轴高度上下移动的类
         public List<double> noneMethod(List<int> indexBuff)

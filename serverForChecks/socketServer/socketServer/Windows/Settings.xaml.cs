@@ -95,6 +95,9 @@ namespace socketServer
             }
         }
 
+        //是否已经建立一次公式族群的保存，如果保存，就应该在开始的时候加载记录的数值
+        //如果没有保存，就应该从头计算
+        private static bool madeCommonFamilyWeights = false;
 
         private void setValues()
         {
@@ -244,8 +247,11 @@ namespace socketServer
             saturate2AText.Text = SystemSave.StaturaMethod2_A.ToString();
             saturate2BText.Text = SystemSave.StaturaMethod2_B.ToString();
 
-            makeCommonFormulaWeightsFamily();//初始的公式族的内容
             makeCancalSomeSetting();
+            if(!madeCommonFamilyWeights)
+            makeCommonFamilyWeights();//计算获取参数的方法
+            else
+            makeCommonFormulaWeightsFamily();//初始的公式族的内容(直接读取systemSave文件的做法)
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -596,45 +602,60 @@ namespace socketServer
 
         }
 
+
+        void makeCommonFamilyWeights()
+        {
+            int countforWeight = CommonFamilyCountChoice.SelectedIndex + 1;
+            List<double[]> CommonFormulaWeightes = SystemSave.CommonFormulaWeightesInBuffWithLinear(countforWeight);
+            CommonFamily.Items.Clear();
+            for (int i = 0; i < countforWeight; i++)
+            {
+                ListBoxItem theItem = new ListBoxItem();
+                theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}",
+                CommonFormulaWeightes[i][0].ToString("f2"),
+                CommonFormulaWeightes[i][1].ToString("f2"),
+                CommonFormulaWeightes[i][2].ToString("f2"));
+
+                CommonFamily.Items.Add(theItem);
+            }
+        }
+
         private void comboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            CommonFamily.Items.Clear();
-            int countforWeight = CommonFamilyCountChoice.SelectedIndex + 1;
+                makeCommonFamilyWeights();
 
-            if (countforWeight >= SystemSave.CommonFormulaWeights.Count)
-            {
-                for (int i = 0; i < SystemSave.CommonFormulaWeights.Count; i++)
-                {
-                    ListBoxItem theItem = new ListBoxItem();
-                    theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}",
-                    SystemSave.CommonFormulaWeights[i][0].ToString("f2"),
-                    SystemSave.CommonFormulaWeights[i][1].ToString("f2"),
-                    SystemSave.CommonFormulaWeights[i][2].ToString("f2"));
+            //if (countforWeight >= SystemSave.CommonFormulaWeights.Count)
+            //{
+            //    for (int i = 0; i < SystemSave.CommonFormulaWeights.Count; i++)
+            //    {
+            //        ListBoxItem theItem = new ListBoxItem();
+            //        theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}",
+            //        SystemSave.CommonFormulaWeights[i][0].ToString("f2"),
+            //        SystemSave.CommonFormulaWeights[i][1].ToString("f2"),
+            //        SystemSave.CommonFormulaWeights[i][2].ToString("f2"));
 
-                    CommonFamily.Items.Add(theItem);
-                }
-                for (int i = 0; i < countforWeight - SystemSave.CommonFormulaWeights.Count; i++)
-                {
-                    ListBoxItem theItem = new ListBoxItem();
-                    theItem.Content = "α = 1.00 , β = 2.00 , γ = 3.00";
-                    CommonFamily.Items.Add(theItem);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < countforWeight; i++)
-                {
-                    ListBoxItem theItem = new ListBoxItem();
-                    theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}",
-                    SystemSave.CommonFormulaWeights[i][0].ToString("f2"),
-                    SystemSave.CommonFormulaWeights[i][1].ToString("f2"),
-                    SystemSave.CommonFormulaWeights[i][2].ToString("f2"));
+            //        CommonFamily.Items.Add(theItem);
+            //    }
+            //    for (int i = 0; i < countforWeight - SystemSave.CommonFormulaWeights.Count; i++)
+            //    {
+            //        ListBoxItem theItem = new ListBoxItem();
+            //        theItem.Content = "α = 1.00 , β = 2.00 , γ = 3.00";
+            //        CommonFamily.Items.Add(theItem);
+            //    }
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < countforWeight; i++)
+            //    {
+            //        ListBoxItem theItem = new ListBoxItem();
+            //        theItem.Content = string.Format("α = {0} , β = {1} , γ = {2}",
+            //        SystemSave.CommonFormulaWeights[i][0].ToString("f2"),
+            //        SystemSave.CommonFormulaWeights[i][1].ToString("f2"),
+            //        SystemSave.CommonFormulaWeights[i][2].ToString("f2"));
 
-                    CommonFamily.Items.Add(theItem);
-                }
-            }
-
-
+            //        CommonFamily.Items.Add(theItem);
+            //    }
+            //}
         }
 
         private void CommonFamily_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -682,6 +703,7 @@ namespace socketServer
                 //Console.WriteLine("information = " + information);
                 SystemSave.CommonFormulaWeights.Add(newWeights);
             }
+            madeCommonFamilyWeights = true;
         }
 
         private void comboBox_SelectionChanged_2(object sender, SelectionChangedEventArgs e)

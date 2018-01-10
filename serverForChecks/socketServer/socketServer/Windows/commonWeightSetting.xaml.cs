@@ -45,11 +45,11 @@ namespace socketServer.Windows
             try
             {
                 //仅仅是用来检查是不是符合格式的
-                double VCheck = Convert.ToDouble(AT.Text);
-                VCheck = Convert.ToDouble(BT.Text);
-                VCheck = Convert.ToDouble(CT.Text);
+                double VCheck1  = Convert.ToDouble(AT.Text);
+                double VCheck2  = Convert.ToDouble(BT.Text);
+                double VCheck3 = Convert.ToDouble(CT.Text);
 
-                theItemToChange.Content = string.Format("α = {0} , β = {1} , γ = {2}", AT.Text, BT.Text, CT.Text);
+                theItemToChange.Content = string.Format("α = {0} , β = {1} , γ = {2}", VCheck1.ToString("f2"), VCheck2.ToString("f2"), VCheck3.ToString("f2"));
                 this.Close();
             }
             catch

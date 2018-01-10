@@ -1,4 +1,5 @@
-﻿using socketServer.Codes.DecisionTree;
+﻿using socketServer.Codes;
+using socketServer.Codes.DecisionTree;
 using socketServer.Windows;
 using System.Collections.Generic;
 using System.Windows.Media;
@@ -216,6 +217,20 @@ namespace socketServer
             return CommonFormulaWeights.Count - 1;
         }
 
+        //其实就是为了适应决策树而进行的属性离散化
+        public static int getTypeIndex(double Value = 0 , int allCount = 1)
+        {
+            double caluetoCheck = 1.0 / allCount;
+            double checker = caluetoCheck;
+            for (int i = 0; i < allCount; i++)
+            {
+                if (Value < checker)
+                    return i;
+                checker += caluetoCheck;
+            }
+            return  allCount - 1;
+        }
+
         //所有的分类都是数组形式的 0 1 2
         //0 下楼
         //1 平走
@@ -241,6 +256,29 @@ namespace socketServer
             new double []{ 0.9,0.5,0.3 },
             new double []{ 1.0, 0.6,0.4 },
         };
+
+        //选择不同方法族的时候用来计算的缓存，临时计算使用线性回归得到的公式族群中各个公式的参数
+        //以计算结果作为显示的结果存在
+        public static List<double[]> CommonFormulaWeightsCanculate = new List<double[]>()
+        {
+            new double []{ 0.7,0.3,0.4},
+            new double []{ 0.8,0.4,0.2 },
+            new double []{ 0.9,0.5,0.3 },
+            new double []{ 1.0, 0.6,0.4 },
+        };
+
+        public static List<double[]> CommonFormulaWeightesInBuffWithLinear(int count = 0 )
+        {
+            CommonFormulaWeightsCanculate = new List<double[]>();
+            AccordNotNetUse ANS = new AccordNotNetUse();
+            for (int i = 0; i < count; i++)
+            {
+                CommonFormulaWeightsCanculate.Add(ANS.getBufferWeightsWithType(i,count));
+            }
+
+            return CommonFormulaWeightsCanculate;
+        }
+
 
         //ANN的隐层层数
         public static int accordANNHiddenLayerCount = 5;

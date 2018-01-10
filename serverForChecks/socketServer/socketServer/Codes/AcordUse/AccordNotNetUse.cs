@@ -40,6 +40,8 @@ namespace socketServer.Codes
         {
             // We will use Ordinary Least Squares to create a
             // linear regression model with an intercept term
+
+            Console.WriteLine("building weights");
             var ols = new OrdinaryLeastSquares()
             {
                 UseIntercept = true
@@ -85,6 +87,59 @@ namespace socketServer.Codes
    
         }
 
+
+        public double[] getBufferWeightsWithType(int aimType = 0 , int allCount = 1)
+        {
+            Console.WriteLine("building weights for buffer for the type "+ aimType);
+            var ols = new OrdinaryLeastSquares()
+            {
+                UseIntercept = true
+            };
+            string information = FileSaver.readFromTrainBase();
+            string[] informationSplit = information.Split('\n');
+            //否则有可能会有空项，继而产生空引用的错误
+            //也是一个贪心的思想在啊
+            List<int> indexUse = new List<int>();//记录可以使用的index
+            for (int i = 0; i < informationSplit.Length; i++)
+            {
+                string[] informaitonUse = informationSplit[i].Split(',');
+                if (informaitonUse.Length < 14)
+                    break;
+
+                int thistype = SystemSave.getTypeIndex(Convert.ToDouble(informaitonUse[14]), allCount);
+                //Console.WriteLine("this type = "+ thistype);
+                if (thistype == aimType)
+                    indexUse.Add(i);
+            }
+
+            Console.WriteLine("fixed count = "+ indexUse.Count);
+            double[][] inputsFromFile = new double[indexUse.Count][];
+            double[] outputsFromFile = new double[indexUse.Count];
+            for (int i = 0; i < indexUse.Count; i++)
+            {
+                string[] informaitonUse = informationSplit[i].Split(',');
+               // if (informaitonUse.Length < 14)
+               //     break;//这句话实际上不会被调用的
+
+                inputsFromFile[i] = new double[] { Convert.ToDouble(informaitonUse[12]), Convert.ToDouble(informaitonUse[13]) };
+                outputsFromFile[i] = Convert.ToDouble(informaitonUse[14]);
+            }
+            if (indexUse.Count > 0)
+            {
+                MultipleLinearRegression regression = ols.Learn(inputsFromFile, outputsFromFile);
+                WeightA = regression.Coefficients[0];
+                WeightB = regression.Coefficients[1];
+                WeightC = regression.Intercept;
+            }
+            else
+            {
+                WeightA = 0;
+                WeightB = 0;
+                WeightC = 0;
+            }
+            //Console.WriteLine("WeightA = " + WeightA + "  WeightB = " + WeightB + "  WeightC = " + WeightC);
+            return new double[] { WeightA  , WeightB , WeightC };
+        }
 //官方示例svm ---------------------------------------------------------------------------------------------------------------------
         public void deom()
         {

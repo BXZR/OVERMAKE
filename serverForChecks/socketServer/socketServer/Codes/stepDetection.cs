@@ -145,8 +145,8 @@ namespace socketServer
                     }
                     if (contrast2(data1, sample))
                     {
-                        Console.WriteLine("---------" + peackBuff.Count);
-                        Console.WriteLine("判断走了一步");
+                       // Console.WriteLine("---------" + peackBuff.Count);
+                       // Console.WriteLine("判断走了一步");
                         peackBuff.Add(i);  
                     }
                 }
@@ -162,7 +162,7 @@ namespace socketServer
         {
             List<int> buff = new List<int>();
             int overCount = 0;//过零点的次数
-            Console.WriteLine("--------------------------------------");
+           // Console.WriteLine("--------------------------------------");
             //因为震荡的关系需要做一下间隔，一小段时间内只可能走一步
             int savedIndex = -1;//及记录的当前下标
             int steps = 3;//间隔这些数据才有可能被称为一步
@@ -207,7 +207,7 @@ namespace socketServer
                     if (checkValue > minusGate)
                     sameCount++;
             }
-            Console.WriteLine("sameCount2  = " + sameCount);
+            //Console.WriteLine("sameCount2  = " + sameCount);
             if (sameCount >= countBetweenTwoStep / 2)
             {
                 if (showed == false)
@@ -253,12 +253,12 @@ namespace socketServer
                 data2Down += (data2[i] - dataAverage2) * (data2[i] - dataAverage2);
             }
             double down = Math .Sqrt(  data1Down * data2Down);
-            Console.WriteLine("data1Down = "+ data1Down / data1.Count);
+           // Console.WriteLine("data1Down = "+ data1Down / data1.Count);
             if (down == 0 ||  ( data1Down/data1 .Count) < 0.07 )//不可比较的话统统返回false
                 return false;
 
             double pearsonValue = up / down;
-            Console.WriteLine("pearsonValue = " + pearsonValue);
+           // Console.WriteLine("pearsonValue = " + pearsonValue);
             if (Math.Abs( pearsonValue)  > 0.65)//一个折中的小数值（数值要求并不是很严格）
             {
                 //if (showPWindowCount >0 )
@@ -299,8 +299,8 @@ namespace socketServer
         {
             if (SystemSave.SystemModeInd == 0)
                 return indexBuff;
-            Console.WriteLine("-------------------------------------------");
-            Console.WriteLine("indexBuff Count pre= " + indexBuff.Count);
+           //Console.WriteLine("-------------------------------------------");
+           // Console.WriteLine("indexBuff Count pre= " + indexBuff.Count);
             List<int> toRemove = new List<int>();
             for (int i = 1; i < indexBuff.Count; i++)
             {
@@ -326,7 +326,7 @@ namespace socketServer
             {
                 indexBuff.Remove(toRemove[i]);
             }
-            Console.WriteLine("indexBuff Count after= " + indexBuff.Count);
+            //Console.WriteLine("indexBuff Count after= " + indexBuff.Count);
             return  indexBuff;
         }
 

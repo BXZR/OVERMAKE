@@ -7,13 +7,14 @@ using System.IO;
 namespace socketServer
 {
     //这个类用于保存客户端传过来的数据
+    //这个类是专门在处理文件I/O的操作类，实际上trainBaseFile等等类也是用这个来做底层调用的
     class FileSaver
     {
         //内部方法得到保存用的文件名
         //主要是为了统一文件名的编辑过程
         private string makeFileName()
         {
-            string  fileName = @"informationSave/information_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")  +".txt" ;
+            string  fileName = SystemSave.InformationFilePath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss")  +".txt" ;
             return fileName;
         }
 
@@ -33,6 +34,7 @@ namespace socketServer
         }
 
         //单个信息写入适合这种方法
+        bool locked  = false;
        public void saveInformation(string information , string fileName = "" )
         {
             if (string.IsNullOrEmpty(fileName))
@@ -100,7 +102,7 @@ namespace socketServer
 
         public static string readFromTrainBase()
         {
-            string path = SystemSave.TrainBasedFile;
+            string path = SystemSave.TrainBasedFilePath;
             if (string.IsNullOrEmpty(path))
                 return "";//如果没有指定就用默认的
 

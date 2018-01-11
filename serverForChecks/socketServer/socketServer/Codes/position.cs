@@ -31,15 +31,15 @@ namespace socketServer
         }
         public string toString()
         {
-            return ("X = " + X + " Y = " + Y);
+            return ("X = " + X.ToString("f2") + " Y = " + Y.ToString("f2") );
         }
         public string toStringWithHeading()
         {
-            return ("X = " + X + " Y = " + Y +" heading = "+ heading);
+            return ("X = " + X.ToString("f2") + " Y = " + Y.ToString("f2") + " heading = "+ heading.ToString("f2"));
         }
         public string toStringFull()
         {
-            return ("X = " + X + " Y = " + Y + " Z = "+Z +" heading = " + heading);
+            return ("X = " + X.ToString("f2") + " Y = " + Y.ToString("f2") + " Z = " +Z.ToString("f2") + " heading = " + heading);
         }
     }
 

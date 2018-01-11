@@ -320,12 +320,14 @@ namespace socketServer
             S = Math.Abs(S);//取绝对值
             //stepLength = 2 * Math.Sqrt( 2 * S * SystemSave.getLegLength() - S*S) *1.25;
             double beSqrt =  (2 * S * SystemSave.getLegLength() - S * S);
-            Console.WriteLine("S = " + S + "  beSqrt = " + beSqrt + "  leg = " + SystemSave.getLegLength());
+            //Console.WriteLine("S = " + S + "  beSqrt = " + beSqrt + "  leg = " + SystemSave.getLegLength());
 
             //一个很土的防护措施
             if (beSqrt < 0)
+            {
+                Log.saveLog(LogType.error, "腿长步长计算方法计算中出现负数开根号");
                 return stepLengthBasic();
-
+            }
             stepLength = 2 * Math.Sqrt(beSqrt);
             //Console.WriteLine("step Length with leg = "+stepLength);
             return stepLength;

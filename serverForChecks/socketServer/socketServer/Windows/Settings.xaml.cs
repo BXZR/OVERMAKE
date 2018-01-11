@@ -1,4 +1,5 @@
-﻿using socketServer.Codes.AcordUse;
+﻿using socketServer.Codes;
+using socketServer.Codes.AcordUse;
 using socketServer.Codes.DecisionTree;
 using socketServer.Windows;
 using System;
@@ -119,7 +120,7 @@ namespace socketServer
             SystemSave.Dertshold = Convert.ToDouble(ChangeValue.Text);
             SystemSave.uperGateForStart = Convert.ToDouble(UpForStart.Text);
             SystemSave.downGateForStart = Convert.ToDouble(DownForStart.Text);
-            SystemSave.TrainBasedFile = TrainBasePath.Text;
+            SystemSave.TrainBasedFilePath = TrainBasePath.Text;
             SystemSave.StairHeight = Convert.ToDouble( StairHeight.Text );
             SystemSave.startAngleForCHM1 = Convert.ToDouble(HCM1Start.Text);
             if (isMaleCheckc.IsChecked == true)
@@ -187,7 +188,7 @@ namespace socketServer
             ChangeValue.Text = SystemSave.Dertshold.ToString();
             UpForStart.Text = SystemSave.uperGateForStart.ToString();
             DownForStart.Text = SystemSave.downGateForStart.ToString();
-            TrainBasePath.Text = SystemSave.TrainBasedFile;
+            TrainBasePath.Text = SystemSave.TrainBasedFilePath;
             TreeMethod.SelectedIndex = SystemSave.DecisionTreeMethodID;
             HeadingCanculateMode.SelectedIndex = SystemSave.CanculateHeadingMode;
             StairHeight.Text = SystemSave.StairHeight.ToString();
@@ -333,7 +334,7 @@ namespace socketServer
               ValueUperGateForStart = SystemSave.uperGateForStart.ToString();
               ValueDownGateForStart = SystemSave.downGateForStart.ToString();
               ValueIsDynamicallyZeroLine = SystemSave.isDynamicallyZeroLineForStepDection;
-              ValueDecisionTreePath = SystemSave.TrainBasedFile;
+              ValueDecisionTreePath = SystemSave.TrainBasedFilePath;
               ValueTreeMethod = SystemSave.DecisionTreeMethodID;
 
               ValueIsCuttingDectionTree = SystemSave.isCutForDecisionTree;
@@ -462,7 +463,7 @@ namespace socketServer
             theDecisionTreeNode.maxDepth = 0;
             SystemSave.StepLengthTree = new Codes.DecisionTree.theDecisionTree();
             //SystemSave.StepLengthTree.BuildTheTree("TrainBase/TrainBaseTree.txt",0);
-            SystemSave.StepLengthTree.BuildTheTree(SystemSave.TrainBasedFile, 0);
+            SystemSave.StepLengthTree.BuildTheTree(SystemSave.TrainBasedFilePath, 0);
             string informationS = "根据文件"+ TrainBasePath.Text +"内容已经建立决策树\n";
             if (isPruning.IsChecked == true)
                 informationS += "(使用了一些剪枝策略)\n";
@@ -472,6 +473,8 @@ namespace socketServer
             informationS += "决策树的深度： " + SystemSave.StepLengthTree.getDepth();
             MessageBox.Show(informationS);
             DrawTreeButton1.IsEnabled = true;
+
+            Log.saveLog(LogType.information, "根据文件" + TrainBasePath.Text + "内容建立决策树");
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
@@ -480,7 +483,7 @@ namespace socketServer
             theDecisionTreeNode.maxDepth = 0;
             SystemSave.StairTree = new Codes.DecisionTree.theDecisionTree();
             //SystemSave.StairTree.BuildTheTree("TrainBase/TrainBaseTree.txt",1);
-            SystemSave.StairTree.BuildTheTree(SystemSave.TrainBasedFile, 1);
+            SystemSave.StairTree.BuildTheTree(SystemSave.TrainBasedFilePath, 1);
             string informationS = "根据文件" + TrainBasePath.Text + "内容已经建立决策树\n";
             if (isPruning.IsChecked == true)
                 informationS += "(使用了一些剪枝策略)\n";
@@ -490,6 +493,8 @@ namespace socketServer
             informationS += "决策树的深度： " + SystemSave.StairTree.getDepth();
             MessageBox.Show(informationS);
             DrawTreeButton2.IsEnabled = true;
+
+            Log.saveLog(LogType.information, "根据文件" + TrainBasePath.Text + "内容建立决策树");
         }
 
         private void HeadingCanculateMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -602,7 +607,7 @@ namespace socketServer
             //单纯的保存
             setValues();
             SaveCommonFormulaWeightsFamily();
-
+            Log.saveLog(LogType.information, "保存设置数据");
             MessageBox.Show("数据保存成功");
         }
 
@@ -731,13 +736,16 @@ namespace socketServer
             //相对而言，上下楼梯的ANN类别数量是固定的，所以没有必要进行修正了
             SystemSave.AccordANNforSL = new AccordANN();
             SystemSave.AccordANNforSL.BuildANNForSL();
-            MessageBox.Show("步长计算相关的ANN已经重建");
+            MessageBox.Show("步长计算相关的ANN已经新建或重建");
+            Log.saveLog(LogType.information, "步长计算相关的ANN已经新建或重建");
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
             SystemSave.AccordANNforSLForZAxis = new AccordANN();
             SystemSave.AccordANNforSLForZAxis.BuildANNForStair();
+            MessageBox.Show("楼梯计算相关的ANN已经新建或重建");
+            Log.saveLog(LogType.information, "楼梯计算相关的ANN已经新建或重建");
         }
     }
 }

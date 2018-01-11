@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -21,13 +22,13 @@ namespace socketServer
 
         //真正用的方法
         //输入的是整体控制集合，
-        public void createPictureFromData(information theInformationController, string path = @"img/")
+        public void createPictureFromData(information theInformationController, string path = @"DataForPDR/DataImage/")
         {
             if (theInformationController.accelerometerX.Count < SystemSave. countUseX)
                 return;//数据不足就不处理
 
 
-
+            Log.saveLog(LogType.information, "保存一张数据生成图");
             string pictureName = "dataPicture" + SystemSave.pictureNumber +".jpeg";
             SystemSave.pictureNumber++;
 
@@ -62,11 +63,12 @@ namespace socketServer
         //真正用的方法
         //输入的是整体控制集合，这可能是以后会用到的更加复杂的方法
         //需要考虑数据排布
-        public void createPictureFromDataComplex(information theInformationController, string path = @"img/")
+        public void createPictureFromDataComplex(information theInformationController, string path = @"DataForPDR/DataImage/")
         {
             if (theInformationController.accelerometerX.Count < SystemSave.countUseX)
                 return;//数据不足就不处理
 
+            Log.saveLog(LogType.information, "保存一张数据生成图");
             string pictureName = "dataPictureComplex" + SystemSave.pictureNumber + ".jpeg";
             SystemSave.pictureNumber++;
 
@@ -113,7 +115,7 @@ namespace socketServer
 
         //概念性的方法，当然需要优化
         //angle输入的是角度值
-        public void createPictureFromData(double angle = 0 , double AX =0, double AY  =0, double AZ =0, string path = @"img/" , string pictureName = "demo.bmp")
+        public void createPictureFromData(double angle = 0 , double AX =0, double AY  =0, double AZ =0, string path = @"DataForPDR/DataImage/", string pictureName = "demo.bmp")
         {
                //千万注意读写路径问题
                //此外在这里需要深拷贝，否则会报错（GDI+）

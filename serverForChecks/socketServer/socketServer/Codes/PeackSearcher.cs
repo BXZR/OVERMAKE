@@ -251,7 +251,7 @@ namespace socketServer
                 {
                     double distance = Math.Abs(peackValueSave[0] - peackValueSave[1]);
                     peackValueSave.Clear();
-                    Console.WriteLine("step detection distance = "+ distance);
+                    //Console.WriteLine("step detection distance = "+ distance);
                     if (distance > 0.1f)
                     {
                         if (peackBuff.Count < 3 || (i - peackBuff[peackBuff.Count - 1]) > SystemSave.peackThresholdForStepDetection)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -82,6 +83,7 @@ namespace socketServer
                 }
                 else
                 {
+                    Log.saveLog(LogType.information, "滤波时使用容错自动替换策略（待优化）");
                     outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
                 }
                 return outList;

@@ -1,4 +1,5 @@
-﻿using socketServer.Codes.DecisionTree;
+﻿using socketServer.Codes;
+using socketServer.Codes.DecisionTree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace socketServer.Windows
             else
             {
                 MessageBox.Show("查无此树");
+                Log.saveLog(LogType.error, "决策树未生成，因此绘制失败");
                 return;
             }
             

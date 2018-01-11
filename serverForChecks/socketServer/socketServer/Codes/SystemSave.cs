@@ -118,7 +118,11 @@ namespace socketServer
 
         //构建决策树所需要的文件路径
         //事实上所有的数据集都用这个文件
-        public static string TrainBasedFile = "TrainBase/TrainBase.txt";
+        public static string TrainBasedFilePath = @"DataForPDR/TrainBase/TrainBase.txt";
+        public static string InformationFilePath = @"DataForPDR/informationSave/information_";
+        public static string DataPicturePath = @"DataForPDR/DataImage/";
+        public static string RoutePictureSavePath = @"DataForPDR/RouteImage/";
+        public static string SystemLogPath = @"DataForPDR/Log/Log.txt";
         //决策树算法类型 0:IC3  1:C4.5
         public static int DecisionTreeMethodID = 0;
         public static bool isCutForDecisionTree = false;//决策树是不是要剪枝？默认不剪枝，用来对比

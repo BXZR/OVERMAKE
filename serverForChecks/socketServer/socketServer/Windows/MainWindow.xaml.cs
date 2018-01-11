@@ -70,7 +70,7 @@ namespace socketServer
         //整体工作模式
         private void makeFlashController()
         {
-            Console.WriteLine("开始刷新");
+            Log.saveLog(LogType.information, "开始进行刷新程序");
             //方法切换在这里判断执行
             if (theWorkType == workType.timerFlash)//有一点强硬的阶段
             {
@@ -166,6 +166,7 @@ namespace socketServer
         //刷新操作////////////////////////////////////////////////////////////////////////////////////
         void makeFlash()
         {
+            Log.saveLog(LogType.information, "缓冲区满，进行数据保存");
             //额外补充计算
             canculateExtra();
             //---------------------------------保存训练用的数据---------------------------------------------//
@@ -178,7 +179,7 @@ namespace socketServer
             //方法1的刷新和存储
             savedIndex = 0;
             //制作信息图像
-            thePictureMaker.createPictureFromData(theInformationController);
+            thePictureMaker.createPictureFromData(theInformationController , SystemSave.DataPicturePath);
             // thePictureMaker.createPictureFromDataComplex(theInformationController);//暂时先不必要用特别复杂的图像生成方法，会卡
             theInformationController.flashInformation();
             SystemSave.stepCount += thePeackFinder.peackBuff.Count;
@@ -188,7 +189,6 @@ namespace socketServer
             stepCount2 += stepExtra.peackBuff.Count;
             stepExtra.makeFlash();
             SystemSave.makeFlash();
-  
         }
 
 
@@ -790,7 +790,8 @@ namespace socketServer
             theTrainBase = theTrainFileMake.getSaveTrainFile(indexBuff, theFilteredAZ,  theInformationController,theStepLengthController);
             if (theTrainBase != null && theTrainBase.Count >= 1)
             {
-                theFileSaver.saveInformation(theTrainBase, "TrainBase/TrainBase.txt");
+                Log.saveLog(LogType.information, "保存训练用的数据");
+                theFileSaver.saveInformation(theTrainBase, SystemSave.TrainBasedFilePath);
             }
         }
 
@@ -910,7 +911,7 @@ namespace socketServer
                 return;
             string saveStringUse = "";
             for (int i = 0; i < SystemSave.savedPositions.Count; i++)
-                saveStringUse += SystemSave.savedPositions[i].toString() + "\n";
+                saveStringUse += SystemSave.savedPositions[i].toStringFull() + "\n";
             theFileSaver.saveInformation(saveStringUse);
         }
 
@@ -929,6 +930,7 @@ namespace socketServer
             }
             catch
             {
+                Log.saveLog(LogType.error, "服务端开启失败");
                 MessageBox.Show("服务端开启失败\n原因可能是IP端口号设定不对\n可以在Setting ——> System Config中进行设定");
             }
         }
@@ -993,6 +995,7 @@ namespace socketServer
             if (isSingle)
             {
                 string showInformation = theServerController.startTheServer();
+                Log.saveLog(LogType.information, showInformation);
                 return showInformation;
             }
             return "";
@@ -1039,6 +1042,8 @@ namespace socketServer
             {
                 theServerController.closeServer();
             }
+            //窗口关闭的时候做一次Log的保存
+            Log.writeLogToFile();
         }
 
 
@@ -1190,6 +1195,7 @@ namespace socketServer
             }
             catch
             {
+                Log.saveLog(LogType.error, "方向键头出现控制冲突，一次操作被隔绝");
                 Console.WriteLine("方向键头出现控制冲突，一次操作被隔绝");
                 theCanvas.Children.Remove(HeadingImage);
                 int indexForLast = thePositionController.theTransformPosition.Count - 1;
@@ -1316,8 +1322,9 @@ namespace socketServer
         private void button2_Click_1(object sender, RoutedEventArgs e)
         {
             string theFileName = "route" + DateTime.Now.ToString("yyyy - MM - dd - hh - mm - ss") + ".png";
-            new pictureMaker(). saveCanvasPicture(theCanvas , @"routeMap/"+theFileName );
+            new pictureMaker(). saveCanvasPicture(theCanvas , SystemSave.RoutePictureSavePath+theFileName );
             MessageBox.Show("路线图已经保存在routeMap文件夹中\n文件名："+theFileName);
+            Log.saveLog(LogType.information, "保存一张路径的截图");
         }
 
         //获得信息处理单元

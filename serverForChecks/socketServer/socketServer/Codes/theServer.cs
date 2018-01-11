@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using socketServer.Codes;
 
 namespace socketServer
 {
@@ -66,8 +67,9 @@ namespace socketServer
                 //通过Clientsoket发送数据  
                 SystemSave.theServrForAll = this;
             }
-            catch
+            catch(Exception E)
             {
+                Log.saveLog(LogType.error, "Server 构建出错:" + E.Message);
                 serverSocket = null;
                 SystemSave.theServrForAll = null;
             }
@@ -144,7 +146,10 @@ namespace socketServer
         {
             //如果socket没有建立，或者没有总控单元，那么所有工作都不会开始
             if (serverSocket == null || theInformationController == null)
-                return "关闭失败，丢失引用或者根本就没开启";
+            {
+                Log.saveLog(LogType.error, "Server 关闭出错: 丢失引用" );
+                return "socket关闭失败，丢失引用或者根本就没开启";
+            }
             //关闭所有的客户端socket
             for (int i = 0; i < clientSockets.Count; i++ )
             {
@@ -156,9 +161,10 @@ namespace socketServer
                     clientSockets[i].Close();
                     clientSockets[i] = null;
                 }
-                catch
+                catch(Exception E)
                 {
-                    Console.WriteLine("srever socket 不必重复删除");
+                    Log.saveLog(LogType.error, "Server 关闭出错: " + E.Message);
+                    // Console.WriteLine("srever socket 不必重复删除");
                 }
             }
             //关掉客户端线程
@@ -172,6 +178,8 @@ namespace socketServer
             serverSocket.Close();
             theServerThread.Abort();
             opened = false;
+
+            Log.saveLog(LogType.information, "Server成功关闭");
             return "服务器socket关闭成功";
         }
          
@@ -182,6 +190,7 @@ namespace socketServer
             //Console.WriteLine("opened = "+ opened);
             while (opened)
             {
+                Log.saveLog(LogType.information, "Server以"+ mode+ "形式开始");
                 Console.WriteLine("Server started with mode " + mode);
                 try
                 {
@@ -206,8 +215,9 @@ namespace socketServer
                     }
                   
                 }
-                catch
+                catch(Exception E)
                 {
+                    Log.saveLog(LogType.error, "Server 关闭出错: " + E.Message);
                     Console.WriteLine("Server is closed with error");
                     //如果服务器崩了，就直接关闭
                     closeServer();
@@ -263,7 +273,8 @@ namespace socketServer
             }
                 catch //如果发送信息居然失败了，就关掉这个客户端连接
             {
-                Console.WriteLine("传送信息失败\n这个socket已经关闭");
+                    Log.saveLog(LogType.error, "传送信息失败 socket已经关闭");
+                    Console.WriteLine("传送信息失败\n这个socket已经关闭");
                 //myClientSocket.Shutdown(SocketShutdown.Receive);
                 myClientSocket.Close();
                 return;
@@ -297,6 +308,7 @@ namespace socketServer
             //有关窗口UI等等的内容需要在一些特殊的线程里面处理
             MainWindow theMainWindowForthisClient =  (MainWindow)System.Windows.Application.Current.Dispatcher.Invoke(System.Windows .Threading.DispatcherPriority.Normal , new showNewMainWindow(showMainWindow),theInformationController);
             Console.WriteLine("a new client");
+            Log.saveLog(LogType.information, "一个新的实验用户到来，开启新窗口");
             //获取到发送消息的客户端socket引用
             //专门用来接收这个客户端的信息的线程
             Socket myClientSocket = (Socket)clientSocket;
@@ -345,9 +357,10 @@ namespace socketServer
                        return;//，这层死循环可以结束了
                     }
             }
-                catch //如果发送信息居然失败了，就关掉这个客户端连接
+                catch(Exception E) //如果发送信息居然失败了，就关掉这个客户端连接
             {
-                Console.WriteLine("传送信息失败");
+                    Log.saveLog(LogType.error, "传送信息失败: "+ E.Message);
+                    Console.WriteLine("传送信息失败");
                 //myClientSocket.Shutdown(SocketShutdown.Both);
                 myClientSocket.Close();
                 return;
@@ -401,8 +414,8 @@ namespace socketServer
                         //第一大项： Y轴加速度
                         case 1: { theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]); } break;
                         //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
-                        case 2: { theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]); } break;//正北0度 
-                                                                                                                             //第三大项： X轴加速度
+                        case 2: { theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]); } break;//正北0度                                                                                 //第三大项： X轴加速度
+                        //第三大项： X轴加速度
                         case 3: { theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]); } break;
                         //第四大项： Z轴加速度
                         case 4: { theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]); } break;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -55,6 +56,7 @@ namespace socketServer.Windows
             {
                 //恢复原先的数值
                 SystemSave.SystemServerMode = 1;
+                Log.saveLog(LogType.error, "多人模式下IPn/端口设置出现问题，开启失败");
                 MessageBox.Show("IP和端口设置不正确\n请设置后重新尝试\n"+ E.Message);
             }
         }

@@ -57,7 +57,7 @@ namespace socketServer
 
         private string getVKFK(int indexPre , int indexNow, List<double> theA, List<long> timeUse = null)
         {
-            Console.WriteLine("indexPre = " + indexPre + "  indexNow = " + indexNow +" timeUse.count = "+timeUse.Count);
+           // Console.WriteLine("indexPre = " + indexPre + "  indexNow = " + indexNow +" timeUse.count = "+timeUse.Count);
                 double VK = MathCanculate.getVariance(theA, indexPre, indexNow);
 
                 double timestep = timeUse[indexNow] - timeUse[indexPre];
@@ -108,8 +108,9 @@ namespace socketServer
                     return saveStringItem;
                     // Console.WriteLine(saveStringItem);
                 }
-                catch
+                catch(Exception E)
                 {
+                    Log.saveLog(LogType.error, "TrainBase构建出错:"+E.Message);
                     return "";
                 } 
               

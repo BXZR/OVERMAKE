@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -108,22 +109,18 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
+
+                try
                 {
-                    try
-                    {
-                        degree = Convert.ToDouble(splitInformation[i]);
-                    }
-                    catch
-                    {
-                        degree = 0;
-                    }
-                    if(type == 0)  {AHRSZFromClient .Add(degree); }
-                    else if(type == 1) {IMUZFromClient.Add(degree); }
+                    degree = Convert.ToDouble(splitInformation[i]);
                 }
+                catch
+                {
+                    degree = 0;
+                }
+                if(type == 0)  {AHRSZFromClient .Add(degree); }
+                else if(type == 1) {IMUZFromClient.Add(degree); }
             }
         }
         //各种分量的存储小方法,私有，绝对要私有
@@ -134,25 +131,20 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
+                try
                 {
-                    try
-                    {
-                        theMagnetometerData = Convert.ToDouble(splitInformation[i]);
-                    }
-                    catch
-                    {
-                        theMagnetometerData = 0;
-                    }
-                    switch (type)
-                    {
-                        case 0: { magnetometerX.Add(theMagnetometerData); } break;
-                        case 1: { magnetometerY.Add(theMagnetometerData); } break;
-                        case 2: { magnetometerZ.Add(theMagnetometerData); } break;
-                    }
+                    theMagnetometerData = Convert.ToDouble(splitInformation[i]);
+                }
+                catch
+                {
+                    theMagnetometerData = 0;
+                }
+                switch (type)
+                {
+                    case 0: { magnetometerX.Add(theMagnetometerData); } break;
+                    case 1: { magnetometerY.Add(theMagnetometerData); } break;
+                    case 2: { magnetometerZ.Add(theMagnetometerData); } break;
                 }
             }
         }
@@ -165,25 +157,20 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
+                try
                 {
-                    try
-                    {
-                        theGYROData = Convert.ToDouble(splitInformation[i]);
-                    }
-                    catch
-                    {
-                        theGYROData = 0;
-                    }
-                    switch (type)
-                    {
-                        case 0: { gyroX.Add(theGYROData); } break;
-                        case 1: { gyroY.Add(theGYROData); } break;
-                        case 2: { gyroZ.Add(theGYROData); } break;
-                    }
+                    theGYROData = Convert.ToDouble(splitInformation[i]);
+                }
+                catch
+                {
+                    theGYROData = 0;
+                }
+                switch (type)
+                {
+                    case 0: { gyroX.Add(theGYROData); } break;
+                    case 1: { gyroY.Add(theGYROData); } break;
+                    case 2: { gyroZ.Add(theGYROData); } break;
                 }
             }
         }
@@ -196,21 +183,18 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
+
+                try
                 {
-                    try
-                    {
-                        // Random D = new Random();
-                        theTime = Convert.ToInt64(splitInformation[i]);// +D.Next(20, 180)
-                    }
-                    catch
-                    {
-                        Console.WriteLine("信息不完整（timeStep）：" + splitInformation[i]);
-                        theTime = 0;
-                    }
+                    // Random D = new Random();
+                    theTime = Convert.ToInt64(splitInformation[i]);// +D.Next(20, 180)
+                }
+                catch
+                {
+                    Log.saveLog(LogType.error, "信息不完整（timeStep）：" + splitInformation[i]);
+                    Console.WriteLine("信息不完整（timeStep）：" + splitInformation[i]);
+                    theTime = 0;
                 }
                 timeStep.Add(theTime);//这个是我用别人的手机指南针软件搞出来的角度与这个角度的差异，中间相差90度
             }
@@ -225,21 +209,17 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
+                try
                 {
-                    try
-                    {
-                        // Random D = new Random();
-                        theCDData = Convert.ToDouble(splitInformation[i]);// +D.Next(20, 180)
-                    }
-                    catch
-                    {
-                        Console.WriteLine("信息不完整（timeCD）：" + splitInformation[i]);
-                        theCDData = 0;
-                    }
+                    // Random D = new Random();
+                    theCDData = Convert.ToDouble(splitInformation[i]);// +D.Next(20, 180)
+                }
+                catch
+                {
+                    Log.saveLog(LogType.error, "信息不完整（timeCD）：" + splitInformation[i]);
+                    Console.WriteLine("信息不完整（timeCD）：" + splitInformation[i]);
+                    theCDData = 0;
                 }
                 compassDegree.Add(theCDData );//这个是我用别人的手机指南针软件搞出来的角度与这个角度的差异，中间相差90度
             }
@@ -255,25 +235,20 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i+=2)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
+                try
                 {
-                    try
-                    {
-                        GPSX = Convert.ToDouble(splitInformation[i]);
-                        GPSY = Convert.ToDouble(splitInformation[i+1]);
-                    }
-                    catch
-                    {
-                        GPSX = 0;
-                        GPSY = 0;
-                    }
-                    //坐标的XY成对出现，后面解析的时候也是同样的策略
-                    GPSPositionX.Add(GPSX);
-                    GPSPositionY.Add(GPSY);
+                    GPSX = Convert.ToDouble(splitInformation[i]);
+                    GPSY = Convert.ToDouble(splitInformation[i+1]);
                 }
+                catch
+                {
+                    GPSX = 0;
+                    GPSY = 0;
+                }
+                //坐标的XY成对出现，后面解析的时候也是同样的策略
+                GPSPositionX.Add(GPSX);
+                GPSPositionY.Add(GPSY);
             }
         }
 
@@ -284,21 +259,10 @@ namespace socketServer
             for(int i=0;i< splitInformation .Length ;i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
-                {
-                    try
-                    {
-                        theAYData = Convert.ToDouble(splitInformation[i]);
-                    }
-                    catch
-                    {
-                        theAYData = 0;
-                    }
-                    accelerometerY.Add(theAYData);
-                }
+                try { theAYData = Convert.ToDouble(splitInformation[i]);}
+                catch{theAYData = 0;}
+                accelerometerY.Add(theAYData);
             }
         }
 
@@ -310,21 +274,10 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
-                {
-                    try
-                    {
-                        theAXData = Convert.ToDouble(splitInformation[i]);
-                    }
-                    catch
-                    {
-                        theAXData = 0;
-                    }
-                    accelerometerX.Add(theAXData);
-                }
+                try{theAXData = Convert.ToDouble(splitInformation[i]);}
+                catch {theAXData = 0; }
+                accelerometerX.Add(theAXData);
             }
         }
 
@@ -336,21 +289,10 @@ namespace socketServer
             for (int i = 0; i < splitInformation.Length; i++)
             {
                 if (string.IsNullOrEmpty(splitInformation[i]) == true)
-                {
                     continue;
-                }
-                else
-                {
-                    try
-                    {
-                        theAZData = Convert.ToDouble(splitInformation[i]);
-                    }
-                    catch
-                    {
-                        theAZData = 0;
-                    }
-                    accelerometerZ.Add(theAZData);
-                }
+               try { theAZData = Convert.ToDouble(splitInformation[i]);}
+               catch {theAZData = 0;}
+               accelerometerZ.Add(theAZData);
             }
         }
 

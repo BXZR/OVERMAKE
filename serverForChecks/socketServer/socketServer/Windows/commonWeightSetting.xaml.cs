@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,10 +51,12 @@ namespace socketServer.Windows
                 double VCheck3 = Convert.ToDouble(CT.Text);
 
                 theItemToChange.Content = string.Format("α = {0} , β = {1} , γ = {2}", VCheck1.ToString("f2"), VCheck2.ToString("f2"), VCheck3.ToString("f2"));
+                Log.saveLog(LogType.error, "公式族群的公式参数被修改");
                 this.Close();
             }
             catch
             {
+                Log.saveLog(LogType.error, "修改公式族群参数的时候出现格式错误");
                 MessageBox.Show("输入格式似乎不对，请输入数字");
             }
         }

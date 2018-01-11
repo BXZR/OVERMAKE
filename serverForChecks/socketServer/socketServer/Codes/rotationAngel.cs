@@ -20,11 +20,13 @@ namespace socketServer
             "无视短时间内的较小的方向偏移，方向更平滑",
             "使用加速度和磁力计计算姿态兼容方向",
             "客户端实现加速计、陀螺仪、磁力计融合算法(AHRS)",
+            "在服务端实现的加速计、陀螺仪、磁力计融合算法(开销大)",
+
              "根据不同的情况切换使用AHRS和IMU的数值",
-             "在客户端实现的加速计、陀螺仪融合算法(IMU)",
+
              "根据电子罗盘的原理判断方向（并不正确）",
-            "在服务端实现的加速计、陀螺仪、磁力计融合算法(并不正确)",
-            "在服务端实现的加速计、陀螺仪融合算法(并不正确)",
+              "在客户端实现的加速计、陀螺仪融合算法(IMU)",
+             "在服务端实现的加速计、陀螺仪融合算法(并不正确)",
 
         };
 
@@ -67,6 +69,33 @@ namespace socketServer
         double halfT = 0.025;                //必须设置为采样频率的一半
         double q0 = 1, q1 = 0, q2 = 0, q3 = 0;        // quaternion elements representing the estimated orientation
         double exInt = 0, eyInt = 0, ezInt = 0;        // scaled integral error
+
+        double KpSave = 2.0;                     // proportional gain governs rate of convergence to accelerometer/magnetometer
+        double KiSave = 0.005;                // integral gain governs rate of convergence of gyroscope biases
+        double halfTSave = 0.025;                //必须设置为采样频率的一半
+        double q0Save = 1, q1Save = 0, q2Save = 0, q3Save = 0;        // quaternion elements representing the estimated orientation
+        double exIntSave = 0, eyIntSave = 0, ezIntSave = 0;        // scaled integral error
+
+        //因为本程序的机制是多从重复计算，而这个程序每一次计算都会改变状态，所以需要一个方法在运行一整个阶段的上面方法之后做一个清空
+        public void makeMehtod34Clear()
+        {
+            Kp = KpSave;
+            Ki = KiSave;
+            halfT = halfTSave;
+            q0 = q0Save; q1 = q1Save; q2 = q2Save; q3 = q3Save;
+            exInt = exIntSave; eyInt = eyIntSave; ezInt = ezIntSave;
+        }
+
+        //刷新缓冲区的时候需要记录这些连续的数值
+        public void makeMethod34Save()
+        {
+            KpSave = Kp;
+            KiSave = Ki;
+            halfTSave = halfT;
+            q0Save = q0; q1Save = q1; q2Save = q2; q3Save = q3;
+            exIntSave = exInt; eyIntSave = eyInt; ezIntSave = ezInt;
+        }
+
         ////这个方法不可以每一次计算都会修改全局的数值，所以调用次数需要慎用
         public double AHRSupdate(double gx, double gy, double gz, double ax, double ay, double az, double mx, double my, double mz)
         {
@@ -147,15 +176,10 @@ namespace socketServer
             double pitch = Math.Asin(2.0f * (q0 * q2 - q1 * q3)) * 57.3;
             double yaw = Math.Atan2(2.0f * (q1 * q2 - q0 * q3), 2.0f * (q0 * q0 + q1 * q1) - 1) * 57.3;
             //Console.WriteLine("yaw = " + (yaw));
-            return (yaw); //返回偏航角
+            double heading = (yaw + 180 );
+            return heading; //返回偏航角
         }
 
-        //因为本程序的机制是多从重复计算，而这个程序每一次计算都会改变状态，所以需要一个方法在运行一整个阶段的上面方法之后做一个清空
-        public void makeMehtod3Clear()
-        {
-            q0 = 1; q1 = 0; q2 = 0; q3 = 0;        // quaternion elements representing the estimated orientation
-            exInt = 0; eyInt = 0; ezInt = 0;        // scaled integral error
-        }
 
         public double IMUupdate(double gx, double gy, double gz, double ax, double ay, double az)
         {

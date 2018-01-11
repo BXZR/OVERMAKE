@@ -81,10 +81,10 @@
             <ComboBoxItem Content="MSBasedCompass"/>
             <ComboBoxItem Content="MatrixRotateMA"/>
             <ComboBoxItem Content="AHRS(client)"/>
+            <ComboBoxItem Content="AHRS(server)" Foreground="Black"/>
             <ComboBoxItem Content="AHRSIMUSelect(Client)"/>
-            <ComboBoxItem Content="IMU(client)" Foreground="Red"/>
             <ComboBoxItem Content="CompensateCompass" Foreground="Red"/>
-            <ComboBoxItem Content="AHRS(server)" Foreground="Red"/>
+            <ComboBoxItem Content="IMU(client)" Foreground="Red"/>
             <ComboBoxItem Content="IMU(server)" Foreground="Red"/>
         </ComboBox>
         <Button x:Name="button9" Content="3DView" Margin="0,420,25,0" Click="button9_Click" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Top"/>

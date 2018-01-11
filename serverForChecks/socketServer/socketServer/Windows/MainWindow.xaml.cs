@@ -189,6 +189,7 @@ namespace socketServer
             stepCount2 += stepExtra.peackBuff.Count;
             stepExtra.makeFlash();
             SystemSave.makeFlash();
+            theAngelController.makeMethod34Save();//对于这个连续的服务器端的AHRS需要这样做才能保持连续性能
         }
 
 
@@ -629,6 +630,36 @@ namespace socketServer
             }
             else if (HeadingMehtod.SelectedIndex == 4)
             {
+                //AHRS 方法server
+                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0, mx = 0, my = 0, mz = 0;
+                // Console.WriteLine(AX.Count +"-------------");
+                theAngelController.makeMehtod34Clear();
+                List<double> headings = new List<double>();
+                for (int i = 0; i < theInformationController.accelerometerX.Count; i++)
+                {
+                    double degree = 0;
+                    ax = theInformationController.accelerometerX[i];
+                    ay = theInformationController.accelerometerY[i];
+                    az = theInformationController.accelerometerZ[i];
+                    gx = theInformationController.gyroX[i];
+                    gy = theInformationController.gyroY[i];
+                    gz = theInformationController.gyroZ[i];
+                    mx = theInformationController.magnetometerX[i];
+                    my = theInformationController.magnetometerY[i];
+                    mz = theInformationController.magnetometerZ[i];
+                    degree = theAngelController.AHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz);
+                    degree = headingOffsetExtraCanculate(degree, false);
+                    headings.Add(degree);
+                }
+                headings = theFilter.theFilerWork(headings);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    theStepAngeUse.Add(headings[indexBuff[i]]);
+                }
+            }
+            else if (HeadingMehtod.SelectedIndex == 5)
+            {
+
                 List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
                 //记录移动的方向
@@ -650,7 +681,21 @@ namespace socketServer
 
               
             }
-            else if (HeadingMehtod.SelectedIndex == 5)
+
+            else if (HeadingMehtod.SelectedIndex == 6)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    int indexUse = indexBuff[i];
+                    double degree = theAngelController.getYawWithAM(
+                        AX[indexUse], AY[indexUse], AZ[indexUse], MX[indexUse], MY[indexUse], MZ[indexUse]
+                        );
+                    degree = headingOffsetExtraCanculate(degree, false);
+                    theStepAngeUse.Add(degree);
+                }
+            }
+
+            else if (HeadingMehtod.SelectedIndex == 7)
             {
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
                 try
@@ -675,67 +720,30 @@ namespace socketServer
                     }
                 }
             }
-
-            else if (HeadingMehtod.SelectedIndex == 6)
-            {
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    int indexUse = indexBuff[i];
-                    double degree = theAngelController.getYawWithAM(
-                        AX[indexUse], AY[indexUse], AZ[indexUse], MX[indexUse], MY[indexUse], MZ[indexUse]
-                        );
-                    degree = headingOffsetExtraCanculate(degree, false);
-                    theStepAngeUse.Add(degree);
-                }
-            }
-            else if (HeadingMehtod.SelectedIndex == 7)
-            {
-                //方法3，AHRS方法
-
-                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0, mx = 0, my = 0, mz = 0;
-                // Console.WriteLine(AX.Count +"-------------");
-
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    double degree = 0;
-                    ax = AX[indexBuff[i]];
-                    ay = AY[indexBuff[i]];
-                    az = AZ[indexBuff[i]];
-                    gx = GX[indexBuff[i]];
-                    gy = GY[indexBuff[i]];
-                    gz = GZ[indexBuff[i]];
-                    mx = MX[indexBuff[i]];
-                    my = MY[indexBuff[i]];
-                    mz = MZ[indexBuff[i]];
-                    degree = theAngelController.AHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz);
-                    degree = headingOffsetExtraCanculate(degree, false);
-                    theStepAngeUse.Add(degree);
-                }
-                // theAngelController.makeMehtod3Clear();
-            }
             else if (HeadingMehtod.SelectedIndex == 8)
             {
-                //方法3，IMU方法
-                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0;//, mx = 0, my = 0, mz = 0;
-                // Console.WriteLine(AX.Count +"-------------");
-
-                for (int i = 0; i < indexBuff.Count; i++)
+                //IMU 方法server
+                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0;
+                theAngelController.makeMehtod34Clear();
+                List<double> headings = new List<double>();
+                for (int i = 0; i < theInformationController.accelerometerX.Count; i++)
                 {
                     double degree = 0;
-                    ax = AX[indexBuff[i]];
-                    ay = AY[indexBuff[i]];
-                    az = AZ[indexBuff[i]];
-                    gx = GX[indexBuff[i]];
-                    gy = GY[indexBuff[i]];
-                    gz = GZ[indexBuff[i]];
-                    //mx = MX[indexBuff[i]];
-                    //my = MY[indexBuff[i]];
-                    //mz = MZ[indexBuff[i]];
+                    ax = theInformationController.accelerometerX[i];
+                    ay = theInformationController.accelerometerY[i];
+                    az = theInformationController.accelerometerZ[i];
+                    gx = theInformationController.gyroX[i];
+                    gy = theInformationController.gyroY[i];
+                    gz = theInformationController.gyroZ[i];
                     degree = theAngelController.IMUupdate(gx, gy, gz, ax, ay, az);
                     degree = headingOffsetExtraCanculate(degree, false);
-                    theStepAngeUse.Add(degree);
+                    headings.Add(degree);
                 }
-                // theAngelController.makeMehtod3Clear();
+                headings = theFilter.theFilerWork(headings);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    theStepAngeUse.Add(headings[indexBuff[i]]);
+                }
             }
 
             //记录最新的移动方向

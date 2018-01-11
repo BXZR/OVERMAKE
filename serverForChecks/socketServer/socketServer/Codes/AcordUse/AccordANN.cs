@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace socketServer.Codes.AcordUse
 {
+    //专门操作Accord.net机器学习库的类
+    //这个类主管ANN
     class AccordANN 
     {
         private bool isBuilt = false;

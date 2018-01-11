@@ -65,8 +65,9 @@ namespace socketServer
                 if (timestep == 0)
                     return "---";//万金油
                 double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
-
-                double fakeStepLength = 0.4 * VK + 0.4 * FK + 0.3;
+                 //结合systemSave的CommonFormulaWeights来做TrainBase数值
+                 double [] weights = SystemSave.CommonFormulaWeights[0];
+                 double fakeStepLength = weights[0] * VK + weights[1] * FK + weights[2];
                 string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + fakeStepLength.ToString("f3");
                 return saveStringItem;
  

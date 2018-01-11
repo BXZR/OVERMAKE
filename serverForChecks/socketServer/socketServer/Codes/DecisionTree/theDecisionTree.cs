@@ -158,12 +158,14 @@ namespace socketServer.Codes.DecisionTree
         {
             for (int i = 0; i < AX.Count; i++)
             {
+                //属性的分类数量
                 AXMode.Add(SystemSave. getTypeIndex(AX[i]));
                 AYMode.Add(SystemSave.getTypeIndex(AY[i]));
                 AZMode.Add(SystemSave.getTypeIndex(AZ[i]));
                 GXMode.Add(SystemSave.getTypeIndex(GX[i]));
                 GYMode.Add(SystemSave.getTypeIndex(GY[i]));
                 GZMode.Add(SystemSave.getTypeIndex(GZ[i]));
+                //目标的分类数量
                 SLMode.Add(SystemSave.getTypeIndex(SL[i]));
                 StairMode.Add(SystemSave.getTypeIndexForStair(SM[i]));
             }

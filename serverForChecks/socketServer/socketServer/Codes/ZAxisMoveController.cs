@@ -39,6 +39,7 @@ namespace socketServer.Codes
             return theStairMode;
         }
 
+
         public List<double> DecisitionTreeMethod(List<int> indexBuff, List<double> ax, List<double> ay, List<double> az, List<double> gx, List<double> gy, List<double> gz)
         {
             List<double> theStairMode = new List<double>();
@@ -50,18 +51,12 @@ namespace socketServer.Codes
             return theStairMode;
         }
 
-        private AccordANN theZMoveANN = null;
         public List<double> ANNZMove(List<int> indexBuff, List<double> ax, List<double> ay, List<double> az, List<double> gx, List<double> gy, List<double> gz)
         {
-            if (theZMoveANN == null)
-            {
-                theZMoveANN = new AcordUse.AccordANN();
-                theZMoveANN.BuildANNForStair();
-            }
             List<double> theStairMode = new List<double>();
             for (int i = 0; i < indexBuff.Count; i++)
             {
-                int mode = theZMoveANN.getModeWithANNForStair(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                int mode = SystemSave.AccordANNforSLForZAxis.getModeWithANNForStair(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
                 theStairMode.Add(transToHeightMove(mode));
             }
             return theStairMode;

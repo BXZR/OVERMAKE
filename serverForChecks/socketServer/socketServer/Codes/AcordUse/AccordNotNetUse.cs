@@ -12,6 +12,7 @@ using System.Windows;
 namespace socketServer.Codes
 {
     //专门操作Accord.net机器学习库的类
+    //这个类主管线性回归
     class AccordNotNetUse
     {
 
@@ -140,7 +141,9 @@ namespace socketServer.Codes
             //Console.WriteLine("WeightA = " + WeightA + "  WeightB = " + WeightB + "  WeightC = " + WeightC);
             return new double[] { WeightA  , WeightB , WeightC };
         }
-//官方示例svm ---------------------------------------------------------------------------------------------------------------------
+
+
+//官方示例svm =========================================================================================================
         public void deom()
         {
             double[][] inputs =

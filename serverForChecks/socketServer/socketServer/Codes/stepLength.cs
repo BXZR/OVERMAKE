@@ -212,6 +212,9 @@ namespace socketServer
             {
                 if (accordUsing == null)
                 {
+                    //因为只有步长使用了线性回归，所以直接在这里进行判断和处理也就可以了
+                    //这里与ANN和决策树的不同在于ANN和决策树收到面板中设定的公式族群数量的制约，需要刷新
+                    //但是线性回归的方法完全根据tranBase文件来的，得到参数之后就不更改了，所以直接放在这里似乎更方便
                     accordUsing = new Codes.AccordNotNetUse();
                     accordUsing.BuildWeights();
                 }
@@ -236,7 +239,6 @@ namespace socketServer
 
         //使用accord的人工神经网络的做法
         //实际上这里有很大的空间进行重构
-        private AccordANN theAccordANN = null;
         public double getStepLengthWithANN(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
         {
             // Console.WriteLine("method");
@@ -244,12 +246,6 @@ namespace socketServer
                 return stepLengthBasic();//万金油
             else
             {
-                if (theAccordANN == null)
-                {
-                    theAccordANN = new AccordANN();
-                    theAccordANN.BuildANNForSL();
-                }
-
                 double VK = MathCanculate.getVariance(theA, indexNow, indexPre);
 
                 long timestep = timeUse[indexNow] - timeUse[indexPre];
@@ -259,7 +255,7 @@ namespace socketServer
                              // Console.WriteLine("timeStep is "+ timestep);
                 double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                int indexUse = theAccordANN .getModeWithANNForSL(VK, FK);
+                int indexUse = SystemSave.AccordANNforSL.getModeWithANNForSL(VK, FK);
                 double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];
 
                 if (stepLength > 2)//一步走两米，几乎不可能

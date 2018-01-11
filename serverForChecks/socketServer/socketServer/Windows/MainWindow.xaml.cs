@@ -320,15 +320,22 @@ namespace socketServer
             //人工神经网络方法
             if (ZAxisSelect.SelectedIndex == 2)
             {
-                //这些数据在一些复杂的方法中会用到，因此计算出来备用
-                List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
-                List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
-                List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
-                List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
-                List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+                if (SystemSave.AccordANNforSLForZAxis == null)
+                {
+                    theStairMode = theZMoveController.noneMethod(indexBuff);
+                }
+                else 
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
 
-                theStairMode = theZMoveController.ANNZMove(indexBuff, ax, ay, az, gx, gy, gz);
+                    theStairMode = theZMoveController.ANNZMove(indexBuff, ax, ay, az, gx, gy, gz);
+                }
             }
             //记录最新的移动步长
             if (theStairMode.Count > 0)
@@ -429,10 +436,17 @@ namespace socketServer
                 {
                     if (i >= 1)
                     {
-                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-
-                        double stepLength = theStepLengthController.getStepLengthWithANN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
-                        theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        if (SystemSave.AccordANNforSL == null)
+                        {
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+ 
+                        }
+                        else
+                        {
+                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+                            double stepLength = theStepLengthController.getStepLengthWithANN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                            theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
                     }
                     else
                         theStepLengthUse.Add(theStepLengthController.getStepLength1());
@@ -1334,8 +1348,18 @@ namespace socketServer
             {
                 string informationS = "使用决策树进行模式判断需要首先建立一棵决策树。\n";
                 informationS += "为了减少计算量本程序决策树的设定只有一次。\n";
-                informationS += "建立决策树的过程如下：\nsettings ——> StepLength ——> Build Decision Tree\n";
-                informationS += "如果没有创建决策树，步长估计方法为立即数";
+                informationS += "建立决策树的过程如下：\nSettings ——> StepLengthMore ——> Flash Or Build Decision Tree For Step Length\n";
+                informationS += "如果没有创建决策树，步长估计方法为立即数方法";
+                informationS += "如果修改设定，请重建决策树刷新设定";
+                MessageBox.Show(informationS);
+            }
+            if (StepLengthMethod.SelectedIndex == 5 && SystemSave.AccordANNforSL == null)
+            {
+                string informationS = "使用人工神经网络进行模式判断需要首先建立人工神经网络。\n";
+                informationS += "为了减少计算量本程序决策树的设定只有一次。\n";
+                informationS += "建立人工神经网络的过程如下：\nSettings ——> StepLengthMore ——> Flash Or Build ANN For SL\n";
+                informationS += "如果没有创建人工神经网络，步长估计方法为立即数方法";
+                informationS += "如果修改设定，请重建人工神经网络刷新设定";
                 MessageBox.Show(informationS);
             }
         }
@@ -1354,8 +1378,15 @@ namespace socketServer
             if(ZAxisSelect.SelectedIndex == 1 && SystemSave.StairTree == null)
             {
                 string informationS = "选用了决策树的方法进行分类估计\n但是现在需要的决策树尚未建立\n";
-                informationS += "\n建立决策树的过程如下：\nsettings ——> ZAxisMove ——> Create Decision Tree For ZAxis\n";
-                informationS += "\n如果没有建立决策树，此方法不生效";
+                informationS += "\n建立决策树的过程如下：\nsettings ——> ZAxisMove ——> Flash Or Build Decision Tree For ZAxis\n";
+                informationS += "\n如果没有建立决策树，此方法不计算Z轴移动";
+                MessageBox.Show(informationS);
+            }
+            if (ZAxisSelect.SelectedIndex == 2 && SystemSave.AccordANNforSLForZAxis == null)
+            {
+                string informationS = "选用了人工神经网络的方法进行分类估计\n但是现在需要的人工神经网络尚未建立\n";
+                informationS += "\n建立人工神经网络的过程如下：\nsettings ——> ZAxisMove ——> Flash Or Build ANN For ZAxis\n";
+                informationS += "\n如果没有建立人工神经网络，此方法不计算Z轴移动";
                 MessageBox.Show(informationS);
             }
         }

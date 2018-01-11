@@ -1,4 +1,5 @@
 ﻿using socketServer.Codes;
+using socketServer.Codes.AcordUse;
 using socketServer.Codes.DecisionTree;
 using socketServer.Windows;
 using System.Collections.Generic;
@@ -251,20 +252,20 @@ namespace socketServer
         //public static double[] gamas = { 0.1, 0.2, 0.3, 0.4 };
         public static List<double []> CommonFormulaWeights = new List<double[]>()
         {
-            new double []{ 0.7,0.3,0.4},
-            new double []{ 0.8,0.4,0.2 },
-            new double []{ 0.9,0.5,0.3 },
-            new double []{ 1.0, 0.6,0.4 },
+            new double []{ 0.4,0.4,0.3},
+            new double []{ 0.4,0.4,0.3},
+            new double []{ 0.4,0.4,0.3},
+            new double []{ 0.4,0.4,0.3},
         };
 
         //选择不同方法族的时候用来计算的缓存，临时计算使用线性回归得到的公式族群中各个公式的参数
         //以计算结果作为显示的结果存在
         public static List<double[]> CommonFormulaWeightsCanculate = new List<double[]>()
         {
-            new double []{ 0.7,0.3,0.4},
-            new double []{ 0.8,0.4,0.2 },
-            new double []{ 0.9,0.5,0.3 },
-            new double []{ 1.0, 0.6,0.4 },
+            new double []{ 0.4,0.4,0.3},
+            new double []{ 0.4,0.4,0.3},
+            new double []{ 0.4,0.4,0.3},
+            new double []{ 0.4,0.4,0.3},
         };
 
         public static List<double[]> CommonFormulaWeightesInBuffWithLinear(int count = 0 )
@@ -284,5 +285,9 @@ namespace socketServer
         public static int accordANNHiddenLayerCount = 5;
         //整体ANN训练的次数
         public static int accordANNTrainTime = 10;
+        //用来进行步长处理的ANN控制单元
+        public static AccordANN AccordANNforSL = null;
+        //用来进行Z轴移动处理的ANN控制单元
+        public static AccordANN AccordANNforSLForZAxis = null;
     }
 }

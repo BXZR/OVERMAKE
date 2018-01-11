@@ -78,10 +78,10 @@
                             </ComboBox>
                         </Grid>
                     </GroupBox>
-                    <Label x:Name="label_Copy23" Content="SystemMode" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="0,4,127,0" HorizontalAlignment="Right" Width="93" FontWeight="Bold" Foreground="Red"/>
-                    <ComboBox x:Name="SystemModeSelect" Margin="0,6,12,0" VerticalAlignment="Top" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged" HorizontalAlignment="Right" Width="109">
-                        <ComboBoxItem Content="experimental" ToolTip="实验室环境下的计算，不考虑传感器欺骗等因素，因此抗干扰能力较弱效率较高。"/>
-                        <ComboBoxItem Content="practical" ToolTip="实际环境之下的计算，考虑实际情况的特殊性，有一些额外的抗干扰的算法，因此抗干扰能力较强，但是效率因此较低。"/>
+                    <Label x:Name="label_Copy23" Content="SystemMode" RenderTransformOrigin="2.363,-0.692" Height="31" VerticalAlignment="Top" Margin="0,4,121,0" HorizontalAlignment="Right" Width="92" FontWeight="Bold" Foreground="#FF3A00FF"/>
+                    <ComboBox x:Name="SystemModeSelect" Margin="0,6,12,0" VerticalAlignment="Top" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged" HorizontalAlignment="Right" Width="109" Foreground="#FF3A00FF" FontWeight="Bold">
+                        <ComboBoxItem Content="experimental" ToolTip="实验室环境下的计算，不考虑传感器欺骗等因素，因此抗干扰能力较弱效率较高。" Foreground="#FF3A00FF" FontWeight="Bold"/>
+                        <ComboBoxItem Content="practical" ToolTip="实际环境之下的计算，考虑实际情况的特殊性，有一些额外的抗干扰的算法，因此抗干扰能力较强，但是效率因此较低。" Foreground="#FF3A00FF" FontWeight="Bold"/>
                     </ComboBox>
                 </Grid>
             </TabItem>
@@ -123,7 +123,7 @@
                     </ComboBox>
                     <Label
                         Width="166" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy15" Margin="19,87,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode"/>
-                    <Label x:Name="TipsForHeading" Content="------------------------------------------------------------------------------------------------------------------------------------------------------------------" Margin="0,359,0,0" VerticalAlignment="Top" Foreground="Red" Height="24" IsHitTestVisible="False"/>
+                    <Label x:Name="TipsForHeading" Content="" Margin="0,359,0,0" VerticalAlignment="Top" Foreground="Red" Height="24" IsHitTestVisible="False"/>
                     <Label
                         Width="254" VerticalAlignment="Top" RenderTransformOrigin="0.872,-5.077" x:Name="label_Copy16" Margin="19,123,0,0" Height="26" HorizontalAlignment="Left" Content="HeadingCanculateMode(3D) StartAngle"/>
                     <TextBox x:Name="HCM1Start" Height="23" Margin="278,123,25,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
@@ -196,19 +196,19 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="button1" Content="Build Decision Tree For Step Length" Margin="21,47,214,0" VerticalAlignment="Top" Click="button1_Click"/>
+                    <Button x:Name="button1" Content="Flash Or Build Decision Tree For Step Length" Margin="21,47,173,0" VerticalAlignment="Top" Click="button1_Click" Height="30"/>
                     <Label
                         Width="225" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Weight For Decision Tree Method" FontWeight="Bold"/>
-                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="306,47,0,0" VerticalAlignment="Top" Width="157" Click="button3_Click"/>
-                    <ListBox x:Name="CommonFamily" Height="124" Margin="0,200,26,0" VerticalAlignment="Top" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="216">
+                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="337,47,0,0" VerticalAlignment="Top" Width="126" Click="button3_Click" Height="30"/>
+                    <ListBox x:Name="CommonFamily" Height="124" Margin="0,182,26,0" VerticalAlignment="Top" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="216">
                         <ListBoxItem Content="A = 1 B = 2 C = 3"/>
                         <ListBoxItem Content="A = 3 B = 454 C = 3"/>
                     </ListBox>
                     <Label
-                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="15,106,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Family Config" FontWeight="Bold"/>
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="10,101,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common formula Family Config" FontWeight="Bold"/>
                     <Label
-                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,138,85,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
-                    <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,142,29,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">
+                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,133,85,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
+                    <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,137,29,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">
                         <ComboBoxItem Content="1"/>
                         <ComboBoxItem Content="2"/>
                         <ComboBoxItem Content="3"/>
@@ -216,9 +216,10 @@
                         <ComboBoxItem Content="5"/>
                     </ComboBox>
                     <Label
-                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,168,76,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
+                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,155,76,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
                     <Label
-                        Width="217" x:Name="CommonFormulaFamilyLabel" Margin="15,0,0,36" HorizontalAlignment="Left" Content="" Foreground="#FF2E00FF" Height="214" VerticalAlignment="Bottom"/>
+                        Width="217" x:Name="CommonFormulaFamilyLabel" Margin="15,0,0,31" HorizontalAlignment="Left" Content="" Foreground="#FF2E00FF" Height="219" VerticalAlignment="Bottom"/>
+                    <Button x:Name="button3" Content="Flash Or Build ANN For SL" Margin="0,324,26,0" VerticalAlignment="Top" Click="button3_Click_4" HorizontalAlignment="Right" Width="215" Height="27"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">
@@ -228,10 +229,11 @@
                     </Grid.ColumnDefinitions>
                     <Label x:Name="label" Content="StairHeight" HorizontalAlignment="Left" Margin="14,50,0,0" Width="87" Height="31" VerticalAlignment="Top"/>
                     <TextBox x:Name="StairHeight" HorizontalAlignment="Left" Height="23" Margin="121,54,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="247"/>
-                    <Button x:Name="button2" Content="Create Decision Tree For ZAxis" HorizontalAlignment="Left" Margin="14,88,0,0" VerticalAlignment="Top" Width="276" Click="button2_Click" Height="22"/>
-                    <Button x:Name="DrawTreeButton2" Content="Draw the Tree" Margin="313,88,28,0" VerticalAlignment="Top" Click="button3_Click_1"/>
+                    <Button x:Name="button2" Content="Flash Or Build Decision Tree For ZAxis" HorizontalAlignment="Left" Margin="14,88,0,0" VerticalAlignment="Top" Width="276" Click="button2_Click" Height="30"/>
+                    <Button x:Name="DrawTreeButton2" Content="Draw the Tree" Margin="313,88,28,0" VerticalAlignment="Top" Click="button3_Click_1" Height="30"/>
                     <Label
                         Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy1" Margin="10,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Canculate the Z Axis Moving" FontWeight="Bold"/>
+                    <Button x:Name="button5" Content="Flash Or Build ANN For ZAxis" HorizontalAlignment="Left" Margin="14,129,0,0" VerticalAlignment="Top" Width="276" Click="button5_Click" Height="27"/>
                 </Grid>
             </TabItem>
         </TabControl>

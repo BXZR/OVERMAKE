@@ -65,6 +65,8 @@ namespace socketServer
                 // serverSocket.Listen(10);    //设定最多10个排队连接请求  
                 // MessageBox.Show("启动监听" + serverSocket.LocalEndPoint.ToString() + "成功" + "\ntype: server");
                 //通过Clientsoket发送数据  
+
+                //不论哪一种模式，实际上server都是唯一的一个，至于分开，都是从内部开始的线程之间的问题
                 SystemSave.theServrForAll = this;
             }
             catch(Exception E)
@@ -131,7 +133,7 @@ namespace socketServer
             }
             IPAddress ip = IPAddress.Parse(IP);
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Console.WriteLine("ServerIP is " + ip);
+            //Console.WriteLine("ServerIP is " + ip);
             serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
             serverSocket.Listen(10);    //设定最多10个排队连接请求  
             opened = true;//标记，用与表示开启
@@ -139,17 +141,30 @@ namespace socketServer
             theServerThread = new Thread(ListenClientConnect);//新建服务器主要线程
             theServerThread .Start();//真正开启服务器
   
-            return "服务器正式启动\n端口:"+myProt +"  IP:"+IP;
+            return "服务器正式启动(端口:"+myProt +"  IP:"+IP+")";
         }
 
         public string closeServer()
         {
             //如果socket没有建立，或者没有总控单元，那么所有工作都不会开始
-            if (serverSocket == null || theInformationController == null)
+            if (serverSocket == null || theInformationController == null )
             {
-                Log.saveLog(LogType.error, "Server 关闭出错: 丢失引用" );
+               // Log.saveLog(LogType.information, "Server 已经关闭，不必再次关闭" );
                 return "socket关闭失败，丢失引用或者根本就没开启";
             }
+            //关掉客户端线程
+            for (int i = 0; i < theClientThreads.Count; i++)
+            {
+                if (theClientThreads[i] == null)
+                    continue;
+                theClientThreads[i].Abort();
+            }
+            theClientThreads.Clear();
+            //关掉服务器线程和socket
+            serverSocket.Close();
+            serverSocket = null; //防止多次关闭
+            theServerThread.Abort();
+
             //关闭所有的客户端socket
             for (int i = 0; i < clientSockets.Count; i++ )
             {
@@ -167,19 +182,11 @@ namespace socketServer
                     // Console.WriteLine("srever socket 不必重复删除");
                 }
             }
-            //关掉客户端线程
-            for (int i = 0; i < theClientThreads.Count; i++)
-            {
-                if (theClientThreads[i] == null)
-                    continue;
-                theClientThreads[i].Abort();
-            }
-             //关掉服务器线程和socket
-            serverSocket.Close();
-            theServerThread.Abort();
+            clientSockets.Clear();
+           
             opened = false;
 
-            Log.saveLog(LogType.information, "Server成功关闭");
+            Log.saveLog(LogType.information, "Serve已经关闭");
             return "服务器socket关闭成功";
         }
          
@@ -190,7 +197,7 @@ namespace socketServer
             //Console.WriteLine("opened = "+ opened);
             while (opened)
             {
-                Log.saveLog(LogType.information, "Server以"+ mode+ "形式开始");
+                Log.saveLog(LogType.information, "Server以"+ mode+ "形式开始侦听");
                 Console.WriteLine("Server started with mode " + mode);
                 try
                 {
@@ -217,7 +224,7 @@ namespace socketServer
                 }
                 catch(Exception E)
                 {
-                    Log.saveLog(LogType.error, "Server 关闭出错: " + E.Message);
+                    Log.saveLog(LogType.error, "Server 出错： " + E.Message+" 已经强制关闭");
                     Console.WriteLine("Server is closed with error");
                     //如果服务器崩了，就直接关闭
                     closeServer();
@@ -270,15 +277,15 @@ namespace socketServer
                         myClientSocket.Close();
                         return;//，这层死循环可以结束了
                     }
-            }
+             }
                 catch //如果发送信息居然失败了，就关掉这个客户端连接
-            {
+             {
                     Log.saveLog(LogType.error, "传送信息失败 socket已经关闭");
                     Console.WriteLine("传送信息失败\n这个socket已经关闭");
                 //myClientSocket.Shutdown(SocketShutdown.Receive);
                 myClientSocket.Close();
                 return;
-            }
+             }
         }
         }
 

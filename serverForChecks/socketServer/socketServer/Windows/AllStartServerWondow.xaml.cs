@@ -39,6 +39,7 @@ namespace socketServer.Windows
                 //制作显示用的label
                 string informationS = "";
                 informationS += theServerForAll.startTheServer();
+                Log.saveLog(LogType.information, informationS);
                 informationS += "\n------------------------------------------------------------";
                 informationS += "\n正在侦听来自手机客户端的连接......";
                 informationS += "\n一个新的连接到来时将会打开一个新的窗口进行实验";
@@ -79,7 +80,12 @@ namespace socketServer.Windows
         private void Window_Closed(object sender, EventArgs e)
         {
             if (SystemSave.theServrForAll != null)
+            {
                 SystemSave.theServrForAll.closeServer();
+                SystemSave.theServrForAll = null;//取消引用防止多次关闭
+            }
+            //窗口关闭的时候做一次Log的保存
+            Log.writeLogToFile();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

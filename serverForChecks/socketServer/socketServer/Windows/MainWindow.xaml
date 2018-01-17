@@ -7,7 +7,6 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Content="save" HorizontalAlignment="Right" Margin="0,82,123,0" x:Name="button1" Width="75" Click="button1_Click" Height="22" VerticalAlignment="Top" />
         <Button Content="start" Height="23" HorizontalAlignment="Right" Margin="0,46,123,0" x:Name="theStartButton" VerticalAlignment="Top" Width="75" Click="button2_Click" />
         <Button Content="stop" Height="23" HorizontalAlignment="Right" Margin="0,46,25,0" x:Name="theStopButton" VerticalAlignment="Top" Width="75" Click="button3_Click_1" IsEnabled="False" />
         <Button Content="step" Height="23" HorizontalAlignment="Right" Margin="0,453,25,0" x:Name="button4" VerticalAlignment="Top" Width="75" Click="button4_Click" IsEnabled="False" />
@@ -71,6 +70,7 @@
             <ComboBoxItem Content="Scarlet approach"/>
             <ComboBoxItem Content="Kim approach"/>
             <ComboBoxItem Content="ComMoveWithLeg"/>
+            <ComboBoxItem Content="AIntegration"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,11,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="MethodNowTips" Margin="10,10,969,0" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
@@ -89,12 +89,17 @@
         </ComboBox>
         <Button x:Name="button9" Content="3DView" Margin="0,420,25,0" Click="button9_Click" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Top"/>
         <Label x:Name="Charts_Copy8" Content="SystemControl" Margin="0,488,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <Button x:Name="theAppendix" Content="Appendix" Margin="0,82,25,0" VerticalAlignment="Top" Click="theAppendix_Click" Height="22" HorizontalAlignment="Right" Width="75"/>
         <Label x:Name="ZAxisMethod" Content="ZAxisMethod" Margin="0,347,44,0" HorizontalAlignment="Right" Width="163" Foreground="#FF4600FF" FontWeight="Bold" Height="26" VerticalAlignment="Top"/>
         <ComboBox x:Name="ZAxisSelect" Margin="0,378,25,0" VerticalAlignment="Top" SelectedIndex="0" HorizontalAlignment="Right" Width="173" SelectionChanged="ZAxisSelect_SelectionChanged">
             <ComboBoxItem Content="NoCanculate"/>
             <ComboBoxItem Content="DecisionTree"/>
             <ComboBoxItem Content="ANN"/>
+        </ComboBox>
+        <Label x:Name="Charts_Copy1" Content="SystemMode" Margin="0,74,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Right" Margin="0,100,25,0" VerticalAlignment="Top" Width="173" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged">
+            <ComboBoxItem Content="experiment" ToolTip="针对行人的实验环境，环境很好"/>
+            <ComboBoxItem Content="practical" ToolTip="针对行人的实际环境，较为苛刻"/>
+            <ComboBoxItem Content="car" ToolTip="针对车进行的计算"/>
         </ComboBox>
     </Grid>
 </Window>

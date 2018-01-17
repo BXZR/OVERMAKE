@@ -297,8 +297,6 @@ namespace socketServer
         //在实验的时候原地晃手机是可以的，但是在实际使用的时候原地晃手机不可以这样，者可以通过一个模式进行判断
         public List<int> FixedStepCalculate(information theInformationController, Filter theFilter , List<int> indexBuff)
         {
-            if (SystemSave.SystemModeInd == 0)
-                return indexBuff;
            //Console.WriteLine("-------------------------------------------");
            // Console.WriteLine("indexBuff Count pre= " + indexBuff.Count);
             List<int> toRemove = new List<int>();
@@ -345,6 +343,22 @@ namespace socketServer
         public string[] getMoreInformation()
         {
             return methodInformations;
+        }
+
+        //------------------------------------针对车的额外处理方法----------------------------------------------//
+        //最基本的波峰波谷的方法
+        //单纯地从数据量，也就是时间上面进行拆分
+        public List<int> stepDectionExtrationForCar(List<double> AZValues)
+        {
+            List<int> indexs = new List<int>();
+            for (int i = 0; i < AZValues.Count; i++)
+            {
+                //40在这里也算是也各参数，显示用的参数
+                if (i % 5 == 0)
+                    indexs.Add(i);
+            }
+            //Console.WriteLine("car step count = "+ indexs.Count);
+            return indexs;
         }
 
     }

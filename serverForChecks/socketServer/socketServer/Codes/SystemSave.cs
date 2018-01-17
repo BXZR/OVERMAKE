@@ -16,7 +16,7 @@ namespace socketServer
         public static int serverPort = 8886;//程序服务器的端口
         public static int lengthForBuffer = 2048;//服务器缓冲区大小（1024不够用）
         public static theServer theServrForAll;//所有窗口共享唯一的一个网络服务器
-        public static int SystemModeInd = 0;//系统模式，有实验模式和实际模式
+        public static int SystemModeInd = 0;//系统模式  0行人实验模式 1实际模式 2车的计算模式 
         public static int SystemServerMode = 1;//1 单人使用 2 多人使用
         public static int FilterMode = 1;//滤波模式 0 不用滤波 1 一般滤波 2 复杂滤波
         public static double systemFlashTimer = 0.5;//系统绘制和计算的时间间隔，时间越短刷新越快灵敏越高开销越大

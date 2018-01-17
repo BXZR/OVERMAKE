@@ -253,36 +253,47 @@ namespace socketServer
         //判断走了一步的方法///////////////////////////////////////////////////////////
         void stepDectionUse()
         {
-            if (stepCheckMethod.SelectedIndex == 0)
+            //0-1两种模式是针对行人的
+            if (SystemSave.SystemModeInd <= 1)
             {
-                //方法1：波峰波谷大法，我个人推荐的方法
-                //必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
-                //根据下标获得需要的旋转角和步长
-                //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
-                //计算移动的时候用的是去除不可能项的步数
-                indexBuff = stepExtra.stepDectionExtration0(theFilteredAZ, thePeackFinder);
+                if (stepCheckMethod.SelectedIndex == 0)
+                {
+                    //方法1：波峰波谷大法，我个人推荐的方法
+                    //必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+                    //根据下标获得需要的旋转角和步长
+                    //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
+                    //计算移动的时候用的是去除不可能项的步数
+                    indexBuff = stepExtra.stepDectionExtration0(theFilteredAZ, thePeackFinder);
 
-            }
-            else if (stepCheckMethod.SelectedIndex == 1)
-            {
-                indexBuff = stepExtra.stepDectionExtration4(theFilteredAZ, thePeackFinder);
-            }
-            else if (stepCheckMethod.SelectedIndex == 2)
-            {
-                indexBuff = stepExtra.stepDectionExtration3(theFilteredAZ, thePeackFinder);
-            }
-            else if (stepCheckMethod.SelectedIndex == 3)
-            {
-                //方法3：重复性判断方法，相对比较严格（感觉不是人能用的）
-                indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
-            }
-            else if (stepCheckMethod.SelectedIndex == 4)
-            {
-                //方法4零点交叉
-                indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
-            }
-            indexBuff = stepExtra.FixedStepCalculate(theInformationController,theFilter,indexBuff);
+                }
+                else if (stepCheckMethod.SelectedIndex == 1)
+                {
+                    indexBuff = stepExtra.stepDectionExtration4(theFilteredAZ, thePeackFinder);
+                }
+                else if (stepCheckMethod.SelectedIndex == 2)
+                {
+                    indexBuff = stepExtra.stepDectionExtration3(theFilteredAZ, thePeackFinder);
+                }
+                else if (stepCheckMethod.SelectedIndex == 3)
+                {
+                    //方法3：重复性判断方法，相对比较严格（感觉不是人能用的）
+                    indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
+                }
+                else if (stepCheckMethod.SelectedIndex == 4)
+                {
+                    //方法4零点交叉
+                    indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
+                }
+
+            //    //带约束的行人模式之下需要额外的计算来更加严格地剔除错误的步子
+            if (SystemSave.SystemModeInd == 1)
+                indexBuff = stepExtra.FixedStepCalculate(theInformationController, theFilter, indexBuff);
         }
+            else if (SystemSave.SystemModeInd == 2)
+            {
+                indexBuff = stepExtra.stepDectionExtrationForCar(theFilteredAZ);
+            }
+}
 
         //判断走楼梯的模式的方法
         //开销很大...
@@ -360,150 +371,213 @@ namespace socketServer
             List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
             List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
 
-            for (int i = 0; i < indexBuff.Count; i++)
+            if (SystemSave.SystemModeInd <= 1)
             {
                 //方法0，最土鳖的方法直接就是立即数
                 if (StepLengthMethod.SelectedIndex == 0)
                 {
-                    theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
                 }
                 //方法1
                 else if (StepLengthMethod.SelectedIndex == 1)
                 {
-                    if (i >= 1)
+                    for (int i = 0; i < indexBuff.Count; i++)
                     {
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        if (i >= 1)
+                        {
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法2，一般公式
                 else if (StepLengthMethod.SelectedIndex == 2)
                 {
-
-                    if (i >= 1)
+                    for (int i = 0; i < indexBuff.Count; i++)
                     {
-                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
-                        //    Console.WriteLine(theInformationController.timeStep[v]);
-                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+                        if (i >= 1)
+                        {
+                            // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                            //    Console.WriteLine(theInformationController.timeStep[v]);
+                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
 
-                        double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
-                        theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                            theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法3，一般公式 + 决策树
                 else if (StepLengthMethod.SelectedIndex == 3)
                 {
-                    if (i >= 1)
+                    for (int i = 0; i < indexBuff.Count; i++)
                     {
-                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
-                        //    Console.WriteLine(theInformationController.timeStep[v]);
-                        if (SystemSave.StepLengthTree == null || SystemSave.StepLengthTree.IsStarted == false)
+                        if (i >= 1)
                         {
-                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                            // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                            //    Console.WriteLine(theInformationController.timeStep[v]);
+                            if (SystemSave.StepLengthTree == null || SystemSave.StepLengthTree.IsStarted == false)
+                            {
+                                theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                            }
+                            else
+                            {
+                                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                                int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                                // Console.WriteLine("modeNow = " + mode);
+                                double stepLength = theStepLengthController.getStepLength2WithMode(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
+                                theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            }
                         }
                         else
                         {
-                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-                            int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
-                            // Console.WriteLine("modeNow = " + mode);
-                            double stepLength = theStepLengthController.getStepLength2WithMode(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
-                            theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
                         }
-                    }
-                    else
-                    {
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
                 //方法4，一般公式 + 线性回归
                 else if (StepLengthMethod.SelectedIndex == 4)
                 {
-                    if (i >= 1)
+                    for (int i = 0; i < indexBuff.Count; i++)
                     {
-                        List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
+                        if (i >= 1)
+                        {
+                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
 
-                        double stepLength = theStepLengthController.getStepLengthWithKLinear(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
-                        theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            double stepLength = theStepLengthController.getStepLengthWithKLinear(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                            theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
 
                 //方法5，一般公式 + ANN
                 else if (StepLengthMethod.SelectedIndex == 5)
                 {
-                    if (i >= 1)
+                    for (int i = 0; i < indexBuff.Count; i++)
                     {
-                        if (SystemSave.AccordANNforSL == null)
+                        if (i >= 1)
                         {
-                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
- 
+                            if (SystemSave.AccordANNforSL == null)
+                            {
+                                theStepLengthUse.Add(theStepLengthController.getStepLength1());
+
+                            }
+                            else
+                            {
+                                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                                double stepLength = theStepLengthController.getStepLengthWithANN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                                theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            }
                         }
                         else
-                        {
-                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-                            double stepLength = theStepLengthController.getStepLengthWithANN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
-                            theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
-                        }
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
 
                 //方法5，身高相关
                 else if (StepLengthMethod.SelectedIndex == 6)
                 {
-                    theStepLengthUse.Add(theStepLengthController.getStepLength3());
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        theStepLengthUse.Add(theStepLengthController.getStepLength3());
+                    }
                 }
                 //方法6，身高相关2，这个看上去更专业一点
                 else if (StepLengthMethod.SelectedIndex == 7)
                 {
-                    if (i >= 1)
+                    for (int i = 0; i < indexBuff.Count; i++)
                     {
-                        List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-                        theStepLengthUse.Add(theStepLengthController.getStepLength11(indexBuff[i - 1], indexBuff[i], timeUse2));
+                        if (i >= 1)
+                        {
+                            List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                            theStepLengthUse.Add(theStepLengthController.getStepLength11(indexBuff[i - 1], indexBuff[i], timeUse2));
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
                 }
                 //方法6，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
                 else if (StepLengthMethod.SelectedIndex == 8)
                 {
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        if (i >= 1)
+                            theStepLengthUse.Add(theStepLengthController.getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
                 }
                 //方法7 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
                 else if (StepLengthMethod.SelectedIndex == 9)
                 {
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        if (i >= 1)
+                            theStepLengthUse.Add(theStepLengthController.getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
                 }
                 //方法8，加速度平均开三次根号的做法
                 else if (StepLengthMethod.SelectedIndex == 10)
                 {
-                    if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
-                    else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        if (i >= 1)
+                            theStepLengthUse.Add(theStepLengthController.getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
                 }
 
                 //方法9，使用关于腿长的倒置钟摆的方法（很好玩的方法）
                 else if (StepLengthMethod.SelectedIndex == 11)
                 {
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        if (i >= 1)
+                        {
+                            List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                            theStepLengthUse.Add(theStepLengthController.getStepLength8(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
+                }
+                //方法10，单纯的某方向的二次积分的方法
+                else if (StepLengthMethod.SelectedIndex == 12)
+                {
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        if (i >= 1)
+                        {
+                            List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                            theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], ax, timeUse2));
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
+                }
+            }
+            //针对车的第一种方法就是加速度积分
+            else if (SystemSave.SystemModeInd == 2)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
                     if (i >= 1)
                     {
-                        List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-                        theStepLengthUse.Add(theStepLengthController.getStepLength8(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
+                        List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                        theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], ax , timeUse2));
                     }
                     else
-                        theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                        theStepLengthUse.Add(0);
                 }
             }
             //记录最新的移动步长
@@ -861,25 +935,32 @@ namespace socketServer
         //一种是钉死窗口滑动，检查这个窗口的数值
         void stepModeCheck(List<int> indexBuff)
         {
-            if (indexBuff.Count > 1)
+            if (SystemSave.SystemModeInd <= 1)
             {
-                List<double> X = theFilter.theFilerWork(theInformationController.accelerometerX);
-                List<double> Y = theFilter.theFilerWork(theInformationController.accelerometerY);
-                List<double> Z = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                double slopeWithPeack =  theStepModeCheckController.getModeCheckWithPeack
-                    (
-                      X, Y ,Z ,
-                    indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count-1]
-                    );
-                this.slopNow = slopeWithPeack;
-                SystemSave.slopNow = slopeWithPeack;
-                double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
-                theStage = theStage.ChangeState(slopeWithwindow  , indexBuff , theFilteredAZ);
-                stepSlopLabel.Content ="[" +theStage.getInformation() +"]" + "  Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
+                if (indexBuff.Count > 1)
+                {
+                    List<double> X = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> Y = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> Z = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    double slopeWithPeack = theStepModeCheckController.getModeCheckWithPeack
+                        (
+                          X, Y, Z,
+                        indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count - 1]
+                        );
+                    this.slopNow = slopeWithPeack;
+                    SystemSave.slopNow = slopeWithPeack;
+                    double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
+                    theStage = theStage.ChangeState(slopeWithwindow, indexBuff, theFilteredAZ);
+                    stepSlopLabel.Content = "[" + theStage.getInformation() + "]" + "  Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
+                }
+                else
+                {
+                    stepSlopLabel.Content = "[" + theStage.getInformation() + "]" + "  Slop： 0/0";
+                }
             }
-            else
-            { 
-               stepSlopLabel.Content  = "[" + theStage.getInformation() + "]" + "  Slop： 0/0";
+            else if (SystemSave.SystemModeInd == 2)
+            {
+                stepSlopLabel.Content = "";
             }
         }
 
@@ -912,16 +993,16 @@ namespace socketServer
 
         /******************************按钮事件控制单元***********************************************/
 
-        //保存数据控制的按钮
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            if (theFileSaver == null)
-                return;
-            string saveStringUse = "";
-            for (int i = 0; i < SystemSave.savedPositions.Count; i++)
-                saveStringUse += SystemSave.savedPositions[i].toStringFull() + "\n";
-            theFileSaver.saveInformation(saveStringUse);
-        }
+        ////保存数据控制的按钮
+        //private void button1_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (theFileSaver == null)
+        //        return;
+        //    string saveStringUse = "";
+        //    for (int i = 0; i < SystemSave.savedPositions.Count; i++)
+        //        saveStringUse += SystemSave.savedPositions[i].toStringFull() + "\n";
+        //    theFileSaver.saveInformation(saveStringUse);
+        //}
 
         //封装的更高一级的开始
         public void pressStartButton()
@@ -1379,14 +1460,14 @@ namespace socketServer
             }
         }
 
-        private void theAppendix_Click(object sender, RoutedEventArgs e)
-        {
-            if (SystemSave.theAppendixWindow == null)
-            {
-                SystemSave.theAppendixWindow = new Windows.Appendix();
-                SystemSave.theAppendixWindow.Show();
-            }
-        }
+        //private void theAppendix_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (SystemSave.theAppendixWindow == null)
+        //    {
+        //        SystemSave.theAppendixWindow = new Windows.Appendix();
+        //        SystemSave.theAppendixWindow.Show();
+        //    }
+        //}
 
         private void ZAxisSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1424,6 +1505,27 @@ namespace socketServer
                 SystemSave.startPositionZ = temp.Z;
             }
             SystemSave.savedPositions.Clear();
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SystemSave.SystemModeInd = comboBox.SelectedIndex;
+
+            //对于车子来说，不用判步也不用轴（轴固定），也没有步长和Z轴向的移动（当然也是可以扩展的）
+            if (SystemSave.SystemModeInd == 2)
+            {
+                stepCheckAxisUse.IsEnabled = false;
+                stepCheckMethod.IsEnabled = false;
+                StepLengthMethod.IsEnabled = false;
+                ZAxisSelect.IsEnabled = false;
+            }
+            else
+            {
+                stepCheckAxisUse.IsEnabled = true;
+                stepCheckMethod.IsEnabled = true;
+                StepLengthMethod.IsEnabled = true;
+                ZAxisSelect.IsEnabled = true;
+            }
         }
     }
 }

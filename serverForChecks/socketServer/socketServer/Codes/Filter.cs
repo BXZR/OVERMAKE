@@ -56,39 +56,58 @@ namespace socketServer
             }
             return outList;
     }
+
         //对外平滑方法
-        //countForCheck使用其它队列匹配使用（可选）
-        //因为网络数据包传输的问题，有时候没有办法得到完整的包，所以时间戳的数量不够
-        //这个问题出现的原因因该是阻塞，所以  outList = theFliterMethod2(outList,4); 运行的次数不会太多，算是应急处理
-        public List<long> theFilerWork(List<long> IN, float theValueUse = 0.4f ,bool isSimple = false , int  countForCheck = -1)
+        public List<long> theFilerWork(List<long> IN, float theValueUse = 0.4f)
         {
-            if (isSimple == false)
-                return theFilerWork(IN, theValueUse);
+           // for (int i = 0; i < IN .Count; i++)
+           //     Console.WriteLine("++++++-" + IN[i]);
 
-            //对于时间戳这种做个简单的平均就可以了
-            else
-            { 
-            //为了保护数据，完全新建
             List<long> outList = new List<long>();
-            for (int i = 0; i < IN.Count; i++)
-                outList.Add(IN[i]);
 
-                //做普匹配的检查
-                //之所以这样设计是因为存在网络丢包的问题，发现数据包B(包含时间戳)的数据量要比前面的数据包A要少，也就是数据丢失了
-                //算是一个简单的容错自动替换策略（待优化）
-                //实际上这个操作不是十分常见，一般来说前一种滤波整合方法足够用
-                if (countForCheck > 0 && countForCheck > outList.Count)
-                {
-                    outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount - 1);
-                }
-                else
-                {
-                    Log.saveLog(LogType.information, "滤波时使用容错自动替换策略（待优化）");
-                    outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
-                }
-                return outList;
+            switch (SystemSave.FilterMode)
+            {
+                case 0: { outList = IN; } break;
+                case 1:
+                    {
+                        for (int i = 0; i < IN.Count; i++)
+                            outList.Add(IN[i]);
+
+                        outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
+                       // outList = GetKalMan(outList);
+                    }
+                    break;
+                case 2:
+                    {
+                        for (int i = 0; i < IN.Count; i++)
+                            outList.Add(IN[i]);
+
+                        outList = theFliterMethod1(outList, theValueUse);
+                        outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
+                       // outList = GetKalMan(outList);
+                       // outList = ButterworthFilter(outList);
+                    }
+                    break;
+                case 3:
+                    {
+                        //Console.WriteLine("filter method3 ");
+                        for (int i = 0; i < IN.Count; i++)
+                            outList.Add(IN[i]);
+
+                        outList = theFliterMethod1(outList, theValueUse);
+                        //倒叙滤波的效果似乎更好一点，但是更加基于贪心的做法
+                        outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
+                       // outList = GetKalMan(outList);
+                       // outList = ButterworthFilter(outList);
+                    }
+                    break;
             }
+
+          // for (int i = 0; i < outList.Count; i++)
+          //     Console.WriteLine("-----"+outList[i]);
+            return outList;
         }
+
 
 
 
@@ -115,7 +134,14 @@ namespace socketServer
             }
              return IN;
         }
-
+        private List<long> theFliterMethod1(List<long> IN, float theValueA = 0.4f)
+        {
+            for (int i = 1; i < IN.Count; i++)
+            {
+                IN[i] =(long)( IN[i] * (1 - theValueA) + theValueA * IN[i - 1]);
+            }
+            return IN;
+        }
 
         //滤波方法2----------------------------------------------------------------------------------------------
         //A、方法：
@@ -153,7 +179,7 @@ namespace socketServer
         private List<long> theFliterMethodAverage(List<long> IN, int smoothCount = 5)
         {
             List<long> OUT = new List<long>();
-            int countUse = 1;//计数器，为了明显用1作为开头了
+            int countUse = 0;//计数器
             long numPlus = 0;//这几个数的总和
             for (int i = 1; i < IN.Count; i++)
             {
@@ -209,10 +235,6 @@ namespace socketServer
             return OUT;
         }
 
-
-
-        //滤波方法2----------------------------------------------------------------------------------------------
-
         //滤波方法3，究极的卡尔曼滤波
         double[] CanShu = { 23, 9, 16, 16, 1, 0, 0, 0 };
         double[] Observ = { 22, 24, 24, 25, 24, 26, 21, 26, };
@@ -241,7 +263,36 @@ namespace socketServer
            // Average = KamanSum / Observe.Length;
             return outList;
         }
+        long[] CanShuLong = { 23, 9, 16, 16, 1, 0, 0, 0 };
+        long[] ObservLong = { 22, 24, 24, 25, 24, 26, 21, 26, };
+        //double[] Observ = { 25, 26 };
+        public List<long> GetKalMan(List<long> IN)
+        {
+            List<long> outList = new List<long>();
+            double KamanX = CanShuLong[0];
+            double KamanP = CanShuLong[1];
+            double KamanQ = CanShuLong[2];
+            double KamanR = CanShuLong[3];
+            double KamanY = CanShuLong[4];
+            double KamanKg = CanShuLong[5];
+            double KamanSum = CanShuLong[6];
+            for (int i = 0; i < IN.Count; i++)
+            {
+                KamanY = KamanX;
+                KamanP = KamanP + KamanQ;
+                KamanKg = KamanP / (KamanP + KamanR);
+                KamanX = (KamanY + KamanKg * (IN[i] - KamanY));
+                KamanSum += KamanX;
+                outList.Add((long)KamanX);
+                //this.richTextBox1.Text += KamanX.ToString() + "\n";
+                KamanP = (1 - KamanKg) * KamanP;
+            }
+            // Average = KamanSum / Observe.Length;
+            return outList;
+        }
 
+
+        //----------------------巴特沃斯滤波----------------------------//
 
         double[] InSave = new double[] { 0, 0 };
         double[] OutSave = new double[] { 0, 0 };
@@ -267,6 +318,29 @@ namespace socketServer
 
                 outList.Add(value);
                // Console.WriteLine(string.Format("In = {0} Out = {1}" , In[i] , value));
+            }
+            return outList;
+        }
+        public List<long> ButterworthFilter(List<long> In)
+        {
+            //制作公式参数
+            makeButterworthWeights(20, 30);
+            //制作数据副本
+            List<long> outList = new List<long>();
+            //处理数据
+            for (int i = 0; i < In.Count; i++)
+            {
+                long value =(long)( BWeights[0] * In[i] + BWeights[1] * InSave[1] + BWeights[2] * InSave[0] - AWeights[0] * OutSave[1] - AWeights[1] * OutSave[0]);
+
+                //输入序列保存 
+                InSave[0] = InSave[1];
+                InSave[1] = In[i];
+                //输出序列保存
+                OutSave[0] = OutSave[1];
+                OutSave[1] = value;
+
+                outList.Add(value);
+                // Console.WriteLine(string.Format("In = {0} Out = {1}" , In[i] , value));
             }
             return outList;
         }

@@ -26,7 +26,8 @@ namespace socketServer
             "纵向加速度差值开四次根号的方法",
             "加速度做平均然后除以阶段加速度的极差的做法",
             "加速度平均开三次根号的方法",
-            "利用腿和重心移动的关系推断步长"
+            "利用腿和重心移动的关系推断步长",
+            "加速度积分是为步长(平放)"
         };
 
 
@@ -59,11 +60,11 @@ namespace socketServer
                 //有除零异常说明时间非常短，可以认为根本就没走
                 if (timestep == 0)
                     return 0;//万金油
-                  Console.WriteLine("timeStep is "+ timestep);
+                 // Console.WriteLine("timeStep is "+ timestep);
                 double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 double stepLength = SystemSave.CommonFormulaWeights[0][0] * VK + SystemSave.CommonFormulaWeights[0][1] * FK + SystemSave.CommonFormulaWeights[0][2];
-                Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
+                //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油
                 else
@@ -331,6 +332,30 @@ namespace socketServer
             stepLength = 2 * Math.Sqrt(beSqrt);
             //Console.WriteLine("step Length with leg = "+stepLength);
             return stepLength;
+        }
+
+        double VNow = 0;
+        double VnowSave = 0;
+        //单纯的加速度二次积分方法求位移这个实际上更加推荐在车上使用
+        public double getStepLength9(int indexPre, int indexNow, List<double> A, List<long> timeStep)
+        {
+            VNow = 0;
+            double AAverage = 0;
+            for (int i = indexPre; i < indexNow; i++)
+                AAverage += A[i];
+            AAverage /= (indexNow - indexPre);
+
+            long timeUse = timeStep[indexNow] - timeStep[indexPre];
+            double time = (timeUse / 1000);//因为时间戳是毫秒作为单位的
+
+            
+            double SL = VNow * time + 0.5 * AAverage * time * time;
+
+            if (SL > 1)
+                Console.WriteLine("indexnow = "+indexNow +"  indexpre = " + indexPre +" time = "+ time +" aaverage = "+ AAverage );
+            VNow += AAverage * time;
+
+            return SL;
         }
 
         //微软研究得到的平均步长

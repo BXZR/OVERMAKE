@@ -155,7 +155,6 @@ namespace socketServer
             SystemSave.startPositionZ = Convert.ToDouble(StartPositionZ.Text);
             SystemSave.routeLineScale = routeLineScaleSlider.Value; //Convert.ToDouble(routeLineScale.Text);
 
-            SystemSave.SystemModeInd = SystemModeSelect.SelectedIndex;
             SystemSave.stepLengthForImmediate = Convert.ToDouble(immediateSL.Text);
             SystemSave.legLengthInHeight  = Convert.ToDouble(LegInStature.Text);
             SystemSave.changeGateForImmediate2 = Convert.ToDouble(headingChangeGate.Text);
@@ -225,8 +224,6 @@ namespace socketServer
             StartPositionZ.Text = SystemSave.startPositionZ.ToString();
             routeLineScaleSlider.Value = SystemSave.routeLineScale;
 
-            SystemModeSelect.SelectedIndex = SystemSave.SystemModeInd;
-
             //加载绘制颜色
             theDrawColorButton.Foreground = new SolidColorBrush(SystemSave.theOldColor);
             //记录一次最初的数值
@@ -292,7 +289,6 @@ namespace socketServer
         private static string ValueStartPositionZ;
 
         private static double ValuerRouteLineScale;
-        private static int ValueSystemMode;
 
         private static int ValueUseFilters;
         private static string ValueImmeDiateSL;
@@ -348,7 +344,6 @@ namespace socketServer
               ValueStartPositionZ = SystemSave.startPositionZ.ToString();
               
               ValuerRouteLineScale = SystemSave.routeLineScale;
-              ValueSystemMode = SystemSave.SystemModeInd;
               ValueUseFilters = SystemSave.FilterMode;
               ValueImmeDiateSL = SystemSave.stepLengthForImmediate.ToString();
               ValueLegInStature = SystemSave.legLengthInHeight.ToString();
@@ -425,7 +420,6 @@ namespace socketServer
             StartPositionZ.Text = ValueStartPositionZ;
             routeLineScaleSlider.Value = ValuerRouteLineScale;
 
-            SystemModeSelect.SelectedIndex = ValueSystemMode;
             immediateSL.Text = ValueImmeDiateSL;
             LegInStature.Text = ValueLegInStature;
 
@@ -591,10 +585,6 @@ namespace socketServer
             }
         }
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         private void button3_Click_3(object sender, RoutedEventArgs e)
         {

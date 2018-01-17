@@ -34,7 +34,7 @@ namespace socketServer
             List<double> AHRS = theFilter.theFilerWork(theInformationController.AHRSZFromClient);
             List<double> IMU = theFilter.theFilerWork(theInformationController.IMUZFromClient);
             //List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
-            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep,0.4f,true, AX.Count);
+            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
             //加工成字符串
             for (int i = 1; i < indexBuff.Count; i++)
             {

@@ -33,10 +33,10 @@ namespace socketServer.Codes.stages
                 return false;
 
             List<double> theValues = new List<double>();
-            Console.WriteLine("-------------------------------------------");
+           // Console.WriteLine("-------------------------------------------");
             for (int i = indexBuff.Count - 1; i >= indexBuff.Count - 3; i--)
             { 
-                Console.WriteLine("used[i] = "+UsedZ[i]);
+               // Console.WriteLine("used[i] = "+UsedZ[i]);
                 if (Math.Abs( UsedZ[i]) < 0.9)
                     return false;
                 theValues.Add(UsedZ[i]);

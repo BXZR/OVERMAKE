@@ -4,6 +4,7 @@ using socketServer.Codes.DecisionTree;
 using socketServer.Windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -736,6 +737,56 @@ namespace socketServer
             SystemSave.AccordANNforSLForZAxis.BuildANNForStair();
             MessageBox.Show("楼梯计算相关的ANN已经新建或重建");
             Log.saveLog(LogType.information, "楼梯计算相关的ANN已经新建或重建");
+        }
+
+        private void button6_Click(object sender, RoutedEventArgs e)
+        {
+            File.Delete(SystemSave.SystemLogPath);
+            MessageBox.Show("Log数据清除成功");
+        }
+
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver.deleteDirFiles(SystemSave.RoutePictureSavePath);
+            MessageBox.Show("路线图清除成功");
+        }
+
+        private void button8_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver.deleteDirFiles(SystemSave.DataPicturePath);
+            MessageBox.Show("数据图清除成功");
+        }
+
+        private void button9_Click(object sender, RoutedEventArgs e)
+        {
+            File.Delete(SystemSave.TrainBasedFilePath);
+            MessageBox.Show("TrainBase数据清除成功");
+        }
+
+        private void button10_Click(object sender, RoutedEventArgs e)
+        {
+            ////保存数据控制的按钮
+            FileSaver theFileSaver = new FileSaver();
+            string saveStringUse = "";
+            for (int i = 0; i < SystemSave.savedPositions.Count; i++)
+                saveStringUse += SystemSave.savedPositions[i].toStringFull() + "\n";
+            theFileSaver.saveInformation(saveStringUse);
+            MessageBox.Show("坐标数据保存成功");
+        }
+
+        private void button11_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver.deleteDirFiles(SystemSave.InformationFilePath);
+            MessageBox.Show("坐标数据清除成功");
+        }
+
+        private void button12_Click(object sender, RoutedEventArgs e)
+        {
+            if (SystemSave.theAppendixWindow == null)
+            {
+                SystemSave.theAppendixWindow = new Windows.Appendix();
+                SystemSave.theAppendixWindow.Show();
+            }
         }
     }
 }

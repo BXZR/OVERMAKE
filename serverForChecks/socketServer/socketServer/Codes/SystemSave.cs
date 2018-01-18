@@ -119,7 +119,7 @@ namespace socketServer
         //构建决策树所需要的文件路径
         //事实上所有的数据集都用这个文件
         public static string TrainBasedFilePath = @"DataForPDR/TrainBase/TrainBase.txt";
-        public static string InformationFilePath = @"DataForPDR/informationSave/information_";
+        public static string InformationFilePath = @"DataForPDR/informationSave/";
         public static string DataPicturePath = @"DataForPDR/DataImage/";
         public static string RoutePictureSavePath = @"DataForPDR/RouteImage/";
         public static string SystemLogPath = @"DataForPDR/Log/Log.txt";

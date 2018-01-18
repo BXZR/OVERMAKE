@@ -334,28 +334,60 @@ namespace socketServer
             return stepLength;
         }
 
-        double VNow = 0;
-        double VnowSave = 0;
+        public double VNowForCar = 0;
+        public double VNowForCarSave = 0;
         //单纯的加速度二次积分方法求位移这个实际上更加推荐在车上使用
+        //如果不滤波，indexPre和indexNow差距太小，会使得步长计算得0
         public double getStepLength9(int indexPre, int indexNow, List<double> A, List<long> timeStep)
         {
-            VNow = 0;
-            double AAverage = 0;
-            for (int i = indexPre; i < indexNow; i++)
-                AAverage += A[i];
-            AAverage /= (indexNow - indexPre);
+            double SL = 0;
 
+            //样条方法进行积分-----------------------------------------------------------------------------------
             long timeUse = timeStep[indexNow] - timeStep[indexPre];
-            double time = (timeUse / 1000);//因为时间戳是毫秒作为单位的
+            double time = ((double)timeUse / 1000) / (indexNow - indexPre);//因为时间戳是毫秒作为单位的
 
-            
-            double SL = VNow * time + 0.5 * AAverage * time * time;
+            int lowerACount = 0;
+            for (int i = indexPre; i < indexNow; i++)
+            {
+                if (A[i] > 0 && A[i] < 0.02)
+                    continue;
 
-            if (SL > 1)
-                Console.WriteLine("indexnow = "+indexNow +"  indexpre = " + indexPre +" time = "+ time +" aaverage = "+ AAverage );
-            VNow += AAverage * time;
+                VNowForCar += A[i] * time;
+                SL += VNowForCar * time;
+                if (A[i] < 0)
+                    lowerACount++;
+            }
+            Console.WriteLine("---------------");
+            Console.WriteLine(lowerACount + " AX is lower than 0 in " + (indexNow - indexPre) + " values.");
+            Console.WriteLine("time per value = " + time);
+            Console.WriteLine("Vnow = " + VNowForCar);
+            Console.WriteLine("SL = " + SL);
+            //辛普森方法进行积分-----------------------------------------------------------------------------------
+            //int n = 4;
+            //double h = (indexNow - indexPre) / n;
+            //double ans = A[indexPre] + A[indexNow];
 
+            //for (int i = 1; i < n; i += 2)
+            //    ans += 4 * A[indexPre +(int)( i * h)];
+
+            //for (int i = 2; i < n; i += 2)
+            //    ans += 2 * A[indexPre + (int)(i * h)];
+
+            //VNowForCar += ans * h / 3;
+            //double timeUse = (double)(timeStep[indexNow] - timeStep[indexPre]) / 1000;
+            //SL += VNowForCar * timeUse;
+
+            //Console.WriteLine("h = "+h);
+            //Console.WriteLine("VNow = "+VNowForCar);
+            //Console.WriteLine("VNowForCarAdd = "+ ans * h / 3);
+            //Console.WriteLine("ans = "+ ans);
+            //Console.WriteLine("timeUse = "+ timeUse);
             return SL;
+        }
+        //如果是开车就需要做一下这个额外操作
+        public void makeFlashForCar()
+        {
+            VNowForCarSave += VNowForCar;
         }
 
         //微软研究得到的平均步长

@@ -354,7 +354,7 @@ namespace socketServer
             for (int i = 0; i < AZValues.Count; i++)
             {
                 //40在这里也算是也各参数，显示用的参数
-                if (i % 5 == 0)
+                if (i % 10 == 0)
                     indexs.Add(i);
             }
             //Console.WriteLine("car step count = "+ indexs.Count);

@@ -190,6 +190,8 @@ namespace socketServer
             stepExtra.makeFlash();
             SystemSave.makeFlash();
             theAngelController.makeMethod34Save();//对于这个连续的服务器端的AHRS需要这样做才能保持连续性能
+            if (SystemSave.SystemModeInd == 2)
+                theStepLengthController.makeFlashForCar();
         }
 
 
@@ -363,16 +365,16 @@ namespace socketServer
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
         void stepLengthGet(List<int> indexBuff, List<double> AZUse)
         {
-            //这些数据在一些复杂的方法中会用到，因此计算出来备用
-            List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
-            List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
-            List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
-            List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
-            List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
-            List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
-
             if (SystemSave.SystemModeInd <= 1)
             {
+                //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
                 //方法0，最土鳖的方法直接就是立即数
                 if (StepLengthMethod.SelectedIndex == 0)
                 {
@@ -551,7 +553,7 @@ namespace socketServer
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
-                //方法10，单纯的某方向的二次积分的方法
+                //方法10，单纯的某方向的二次积分的方法（更加适合于车）
                 else if (StepLengthMethod.SelectedIndex == 12)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -569,11 +571,14 @@ namespace socketServer
             //针对车的第一种方法就是加速度积分
             else if (SystemSave.SystemModeInd == 2)
             {
+                //theStepLengthController.VNowForCarSave是从上一个阶段继承过来的数值
+                theStepLengthController.VNowForCar = theStepLengthController.VNowForCarSave;//重新叠加速度，为此需要清空
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     if (i >= 1)
                     {
-                        List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                        List<double> ax = theInformationController.accelerometerX;
+                        List<long> timeUse2 = theInformationController.timeStep;
                         theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], ax , timeUse2));
                     }
                     else
@@ -992,17 +997,6 @@ namespace socketServer
         }
 
         /******************************按钮事件控制单元***********************************************/
-
-        ////保存数据控制的按钮
-        //private void button1_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (theFileSaver == null)
-        //        return;
-        //    string saveStringUse = "";
-        //    for (int i = 0; i < SystemSave.savedPositions.Count; i++)
-        //        saveStringUse += SystemSave.savedPositions[i].toStringFull() + "\n";
-        //    theFileSaver.saveInformation(saveStringUse);
-        //}
 
         //封装的更高一级的开始
         public void pressStartButton()
@@ -1460,14 +1454,6 @@ namespace socketServer
             }
         }
 
-        //private void theAppendix_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (SystemSave.theAppendixWindow == null)
-        //    {
-        //        SystemSave.theAppendixWindow = new Windows.Appendix();
-        //        SystemSave.theAppendixWindow.Show();
-        //    }
-        //}
 
         private void ZAxisSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

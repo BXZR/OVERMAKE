@@ -14,8 +14,16 @@
         <Button
             Width="107" VerticalAlignment="Bottom" x:Name="saveRestartButton" Margin="132,0,0,8" Loaded="saveRestart_Loaded" Height="22" HorizontalAlignment="Left" Content="Save and restart" Click="button_Copy_Click"/>
         <Button x:Name="button" Content="Get raw value" HorizontalAlignment="Left" Margin="10,0,0,8" Width="108" Click="button_Click" Height="22" VerticalAlignment="Bottom"/>
-        <TabControl x:Name="tabControl" Height="436" VerticalAlignment="Top" Margin="0,-39,0,0" SelectionChanged="tabControl_SelectionChanged">
+        <TabControl x:Name="tabControl" Height="436" VerticalAlignment="Top" Margin="0,-39,0,0" SelectionChanged="tabControl_SelectionChanged" Background="#FFE8E8E8">
             <TabItem Header="System Config">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFB6B8E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FFE5E5E5" Margin="0,2">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -81,6 +89,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Step Dection">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFB6B8E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -106,6 +122,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Heading">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFB6B8E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,-1">
                     <TextBox
                         VerticalAlignment="Top" Text="TextBox" TextWrapping="Wrap" x:Name="packageOffset" Margin="164,159,187,0" Height="23"/>
@@ -130,6 +154,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="StepLengthNormal">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFB6B8E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -184,6 +216,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="StepLengthMore">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFB6B8E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -218,7 +258,15 @@
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">
-                <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFB6B8E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="#FFE8E8E8" Margin="0,2,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -229,6 +277,32 @@
                     <Label
                         Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy1" Margin="10,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Canculate the Z Axis Moving" FontWeight="Bold"/>
                     <Button x:Name="button5" Content="Flash Or Build ANN For ZAxis" HorizontalAlignment="Left" Margin="14,129,0,0" VerticalAlignment="Top" Width="276" Click="button5_Click" Height="27"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Extra">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFB6B8E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="#FFE5E5E5" Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox x:Name="groupBox3" Header="AboutFiles" VerticalAlignment="Top" Height="246" Margin="10,10,293,0">
+                        <Grid HorizontalAlignment="Left" Height="222" Margin="10,0,0,0" VerticalAlignment="Top" Width="161">
+                            <Button x:Name="button6" Content="ClearLogData" HorizontalAlignment="Left" Margin="17,78,0,0" VerticalAlignment="Top" Width="127" Click="button6_Click"/>
+                            <Button x:Name="button7" Content="ClearRouteMap" HorizontalAlignment="Left" Margin="17,112,0,0" VerticalAlignment="Top" Width="127" Click="button7_Click"/>
+                            <Button x:Name="button8" Content="ClearDataImage" HorizontalAlignment="Left" Margin="17,145,0,0" VerticalAlignment="Top" Width="127" Click="button8_Click"/>
+                            <Button x:Name="button9" Content="ClearTrainBaseData" HorizontalAlignment="Left" Margin="17,179,0,0" VerticalAlignment="Top" Width="127" Click="button9_Click"/>
+                            <Button x:Name="button10" Content="SavePosition" HorizontalAlignment="Left" Margin="17,15,0,0" VerticalAlignment="Top" Width="127" Click="button10_Click"/>
+                            <Button x:Name="button11" Content="ClearPosition" HorizontalAlignment="Left" Margin="17,46,0,0" VerticalAlignment="Top" Width="127" Click="button11_Click"/>
+                        </Grid>
+                    </GroupBox>
+                    <Button x:Name="button12" Content="Appendix" HorizontalAlignment="Left" Margin="42,270,0,0" VerticalAlignment="Top" Width="118" Click="button12_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -15,6 +15,9 @@ namespace socketServer
      //对外平滑方法
     public List <double> theFilerWork(List<double> IN , float  theValueUse = 0.4f)
     {
+            // for (int i = 0; i < IN .Count; i++)
+             //    Console.WriteLine("++++++-" + IN[i]);
+
             List<double> outList = new List<double> ();
 
             switch (SystemSave.FilterMode)
@@ -54,10 +57,30 @@ namespace socketServer
                     }
                     break;
             }
+
+            // for (int i = 0; i < outList.Count; i++)
+            //     Console.WriteLine("-----"+outList[i]);
+
             return outList;
     }
 
+        //最简单粗暴的滤波接口
+        public List<double> theFilerWorkSample(List<double> IN)
+        {
+            List<double> outList = new List<double>();
+            for (int i = 0; i < IN.Count; i++)
+                outList.Add(IN[i]);
+            outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
+            for(int i =0; i< outList.Count;i++)
+            {
+                if (Math.Abs(outList[i]) < 0.01)
+                    outList[i] = 0;
+            }
+            return outList;
+        }
+
         //对外平滑方法
+        //对时间做复杂的滤波会出问题，暂时先用简单的方略
         public List<long> theFilerWork(List<long> IN, float theValueUse = 0.4f)
         {
            // for (int i = 0; i < IN .Count; i++)
@@ -74,7 +97,6 @@ namespace socketServer
                             outList.Add(IN[i]);
 
                         outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
-                       // outList = GetKalMan(outList);
                     }
                     break;
                 case 2:
@@ -84,8 +106,6 @@ namespace socketServer
 
                         outList = theFliterMethod1(outList, theValueUse);
                         outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
-                       // outList = GetKalMan(outList);
-                       // outList = ButterworthFilter(outList);
                     }
                     break;
                 case 3:
@@ -97,8 +117,6 @@ namespace socketServer
                         outList = theFliterMethod1(outList, theValueUse);
                         //倒叙滤波的效果似乎更好一点，但是更加基于贪心的做法
                         outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
-                       // outList = GetKalMan(outList);
-                       // outList = ButterworthFilter(outList);
                     }
                     break;
             }
@@ -160,7 +178,7 @@ namespace socketServer
         private List<double> theFliterMethodAverage(List<double> IN, int smoothCount = 5)
         {
             List<double> OUT = new List<double>();
-            int countUse = 1;//计数器，为了明显用1作为开头了
+            int countUse = 0;//计数器，为了明显用1作为开头了
             double numPlus = 0;//这几个数的总和
             for (int i = 1; i < IN.Count; i++)
             {
@@ -199,7 +217,7 @@ namespace socketServer
         private List<double> theFliterMethodAverageRevert(List<double> IN, int smoothCount = 5)
         {
             List<double> OUT = new List<double>();
-            int countUse = 1;//计数器，为了明显用1作为开头了
+            int countUse = 0;//计数器，为了明显用1作为开头了
             double numPlus = 0;//这几个数的总和
             for (int i = IN.Count ; i >= 0 ; i--)
             {
@@ -219,7 +237,7 @@ namespace socketServer
         private List<long> theFliterMethodAverageRevert(List<long> IN, int smoothCount = 5)
         {
             List<long> OUT = new List<long>();
-            int countUse = 1;//计数器，为了明显用1作为开头了
+            int countUse = 0;//计数器，为了明显用1作为开头了
             long numPlus = 0;//这几个数的总和
             for (int i = IN.Count; i >= 0; i--)
             {

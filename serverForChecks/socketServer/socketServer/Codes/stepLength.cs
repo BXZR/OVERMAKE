@@ -340,48 +340,23 @@ namespace socketServer
         //如果不滤波，indexPre和indexNow差距太小，会使得步长计算得0
         public double getStepLength9(int indexPre, int indexNow, List<double> A, List<long> timeStep)
         {
-            double SL = 0;
-
-            //样条方法进行积分-----------------------------------------------------------------------------------
-            long timeUse = timeStep[indexNow] - timeStep[indexPre];
-            double time = ((double)timeUse / 1000) / (indexNow - indexPre);//因为时间戳是毫秒作为单位的
-
-            int lowerACount = 0;
+            //数据前期处理
+            List<double> speed = new List<double>();
+            List<double> AValue = new List<double>();
+            List<long> times = new List<long>();
             for (int i = indexPre; i < indexNow; i++)
             {
-                if (A[i] > 0 && A[i] < 0.02)
-                    continue;
-
-                VNowForCar += A[i] * time;
-                SL += VNowForCar * time;
-                if (A[i] < 0)
-                    lowerACount++;
+                AValue.Add(A[i]);
+                times.Add(timeStep[i]);
+                speed.Add(VNowForCar);
             }
-            Console.WriteLine("---------------");
-            Console.WriteLine(lowerACount + " AX is lower than 0 in " + (indexNow - indexPre) + " values.");
-            Console.WriteLine("time per value = " + time);
-            Console.WriteLine("Vnow = " + VNowForCar);
-            Console.WriteLine("SL = " + SL);
-            //辛普森方法进行积分-----------------------------------------------------------------------------------
-            //int n = 4;
-            //double h = (indexNow - indexPre) / n;
-            //double ans = A[indexPre] + A[indexNow];
+            //积分计算
+            //最后一个参数0用来切换不同的积分方法
+            //实际上这是一种伪二重积分，但是采样时间足够短并且要求精度不是很高的时候原则上是可以用的
+            double VADD = IntegralController.getInstance().makeIntegral(AValue, times , 0) ;
+            double SL = IntegralController.getInstance().makeIntegral(speed, times, 0);
+            VNowForCar += VADD;
 
-            //for (int i = 1; i < n; i += 2)
-            //    ans += 4 * A[indexPre +(int)( i * h)];
-
-            //for (int i = 2; i < n; i += 2)
-            //    ans += 2 * A[indexPre + (int)(i * h)];
-
-            //VNowForCar += ans * h / 3;
-            //double timeUse = (double)(timeStep[indexNow] - timeStep[indexPre]) / 1000;
-            //SL += VNowForCar * timeUse;
-
-            //Console.WriteLine("h = "+h);
-            //Console.WriteLine("VNow = "+VNowForCar);
-            //Console.WriteLine("VNowForCarAdd = "+ ans * h / 3);
-            //Console.WriteLine("ans = "+ ans);
-            //Console.WriteLine("timeUse = "+ timeUse);
             return SL;
         }
         //如果是开车就需要做一下这个额外操作

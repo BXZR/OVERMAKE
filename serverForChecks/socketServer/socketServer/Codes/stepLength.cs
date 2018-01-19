@@ -353,7 +353,7 @@ namespace socketServer
             //积分计算
             //最后一个参数0用来切换不同的积分方法
             //实际上这是一种伪二重积分，但是采样时间足够短并且要求精度不是很高的时候原则上是可以用的
-            double VADD = IntegralController.getInstance().makeIntegral(AValue, times , 0) ;
+            double VADD = IntegralController.getInstance().makeIntegral(AValue, times ,2) ;
             double SL = IntegralController.getInstance().makeIntegral(speed, times, 0);
             VNowForCar += VADD;
 

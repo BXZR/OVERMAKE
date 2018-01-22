@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer.Windows"
         mc:Ignorable="d"
-        Title="commonWeightSetting" Height="127.811" Width="481.953" Background="#FFE5E5E5">
+        Title="commonWeightSetting" Height="127.811" Width="481.953" Background="#FFE5E5E5" ResizeMode="NoResize">
     <Grid>
         <Label x:Name="label" Content="α =" HorizontalAlignment="Left" Margin="29,18,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="AT" HorizontalAlignment="Left" Height="23" Margin="64,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="84"/>

@@ -119,9 +119,11 @@ namespace socketServer.Codes
             for (int i = 0; i < indexUse.Count; i++)
             {
                 string[] informaitonUse = informationSplit[i].Split(',');
-               // if (informaitonUse.Length < 14)
-               //     break;//这句话实际上不会被调用的
+                // if (informaitonUse.Length < 14)
+                //     break;//这句话实际上不会被调用的
 
+                //Console.WriteLine("informaitonUse[12] = " + informaitonUse[12]);
+                //Console.WriteLine("informaitonUse[13] = " + informaitonUse[13]);
                 inputsFromFile[i] = new double[] { Convert.ToDouble(informaitonUse[12]), Convert.ToDouble(informaitonUse[13]) };
                 outputsFromFile[i] = Convert.ToDouble(informaitonUse[14]);
             }

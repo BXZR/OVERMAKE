@@ -27,11 +27,13 @@ public class controller : MonoBehaviour {
 		theServer.clientMain ();//客户端的网络连接
 		theGeter.makeStart();
 		Invoke ("showTitle" , 0.7f);
-		InvokeRepeating ("makeInformation", 0.5f, 0.05f);
+		float timer = 1f / (float)server.HZ;
+
+		InvokeRepeating ("makeInformation", 0.5f, timer);
 		//瓶颈就在于这个发送时间不能太长也不能太短
-		InvokeRepeating ("sendInformation" , 0.5f , 0.5f);
-		InvokeRepeating ("showInformation" , 0.5f , 0.1f);//显示时间会比手机的时间间隔长一点，算是一个简单的优化
-		InvokeRepeating ("showStepCount", 0.5f, 0.05f);
+		InvokeRepeating ("sendInformation" , 0.5f , timer*10);
+		InvokeRepeating ("showInformation" , 0.5f , timer *2);//显示时间会比手机的时间间隔长一点，算是一个简单的优化
+		InvokeRepeating ("showStepCount", 0.5f, timer);
 	}
 
 	void showTitle()

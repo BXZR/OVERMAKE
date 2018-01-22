@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer"
         mc:Ignorable="d"
-        Title="ChartWindow" Height="552" Width="840.446">
+        Title="ChartWindow" Height="552" Width="840.446" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

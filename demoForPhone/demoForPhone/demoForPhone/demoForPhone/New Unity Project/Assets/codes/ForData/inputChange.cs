@@ -15,4 +15,9 @@ public class inputChange : MonoBehaviour {
 	{
 		server.myProt = Convert.ToInt32(this.GetComponent <InputField> ().text);
 	}
+	public void changeServerHZ()
+	{
+		server.HZ = Convert.ToInt32 (this.GetComponent <InputField> ().text);
+		server.HZ = Mathf.Clamp(server.HZ , 0 ,1000);
+	}
 }

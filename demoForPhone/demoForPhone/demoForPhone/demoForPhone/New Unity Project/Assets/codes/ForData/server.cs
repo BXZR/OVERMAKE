@@ -13,6 +13,7 @@ public class server : MonoBehaviour {
 	private static byte[] result = new byte[1024];  
 	public static int myProt = 8886;   //端口  
 	public static string  serverIP = "219.216.73.162";
+	public static int HZ = 20;//采样频率
 	static Socket serverSocket;  
 	static Thread myThread;
 	static Socket clientSocketInServer;

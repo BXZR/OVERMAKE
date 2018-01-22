@@ -7,6 +7,7 @@ public class informationShower : MonoBehaviour {
 	//这个类专门用于显示界面信息
 	public Text titleLabelText;//用于显示title的text
 	public Text informationLabelText;//用于显示title的text
+	public Text serverInformationText ;//用来显示server基本信息的labeltext
 	public Text stepCountShowText ;//显示总步数的label
 	public Scrollbar theShowBar ;//显示用的slider
 	private string showInformation = "";//显示在面板的传感器信息
@@ -16,6 +17,7 @@ public class informationShower : MonoBehaviour {
 	public  void showTitle()
 	{
 		titleLabelText.text = "<color=#FF0F00>"  + systemValues .GPSUSELabel  +"</color>   <color=#FFFF00>"+ systemValues.linkServerLabel+"</color> ";
+		serverInformationText.text = "服务器IP: " + server.serverIP + "\n服务器端口: " + server.myProt + "\n采样频率: " + server.HZ;
 	}
 
 	public  void  showValues(string showInformation)

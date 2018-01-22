@@ -19,29 +19,50 @@ namespace socketServer.Codes.stages
             "使用手机加速度传感器XYZ轴平方和开根号进行计算",
             "使用手机加速度传感器XYZ轴中方差最大的值进行计算",
         };
-        public List<double> AZ(information theInformationController , Filter theFilter)
+        public List<double> AZ(information theInformationController , Filter theFilter ,bool useFilter = true)
         {
-            return theFilter.theFilerWork(theInformationController.accelerometerZ);
+            if(useFilter)
+                return theFilter.theFilerWork(theInformationController.accelerometerZ);
+            return theInformationController.accelerometerZ;
         }
-        public List<double> AY(information theInformationController, Filter theFilter)
+        public List<double> AY(information theInformationController, Filter theFilter, bool useFilter = true)
         {
-            return theFilter.theFilerWork(theInformationController.accelerometerY);
+            if (useFilter)
+                return theFilter.theFilerWork(theInformationController.accelerometerY);
+            return theInformationController.accelerometerY;
         }
-        public List<double> AX(information theInformationController, Filter theFilter)
+        public List<double> AX(information theInformationController, Filter theFilter, bool useFilter = true)
         {
-            return theFilter.theFilerWork(theInformationController.accelerometerX);
+            if(useFilter)
+                 return theFilter.theFilerWork(theInformationController.accelerometerX);
+            return theInformationController.accelerometerX;
         }
-        public List<double> ABXYZ(information theInformationController, Filter theFilter)
+        public List<double> ABXYZ(information theInformationController, Filter theFilter, bool useFilter = true)
         {
-            return theFilter.theFilerWork(theInformationController.getOperatedValues());
+            List<double> work = theInformationController.getOperatedValues();
+            if (useFilter)
+                return theFilter.theFilerWork(work);
+            return work;
         }
 
-        public List<double> XYZMaxVariance(information theInformationController, Filter theFilter)
+        public List<double> XYZMaxVariance(information theInformationController, Filter theFilter, bool useFilter = true)
         {
             List<double> Variances = new List<double>();
-            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
-            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
-            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> AX; 
+            List<double> AY;
+            List<double> AZ;
+            if (useFilter)
+            {
+                AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+                AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+                AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            }
+            else
+            {
+                AX = theInformationController.accelerometerX;
+                AY = theInformationController.accelerometerY;
+                AZ = theInformationController.accelerometerZ;
+            }
             List<List<double>> Axis = new List<List<double>>();
             Axis.Add(AX);
             Axis.Add(AY);

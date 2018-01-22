@@ -40,8 +40,6 @@ namespace socketServer.Codes
         private double DemoSimpleValues(List<double> values, List<long> timeStep)
         {
             double allvalues = 0;
-
-
             long timeUse = timeStep[timeStep.Count-1] - timeStep[0];
             double time = ((double)timeUse / 1000) / timeStep.Count;//因为时间戳是毫秒作为单位的
 
@@ -98,8 +96,9 @@ namespace socketServer.Codes
             double allvalues = 0;
 
             long timeUse = timeStep[timeStep.Count - 1] - timeStep[0];
+            //Console.WriteLine("timeUse = " + timeUse);
             double time = ((double)timeUse / 1000) / timeStep.Count;//因为时间戳是毫秒作为单位的
-
+            //Console.WriteLine("time = " + time);
             //看上去就是附带做了一次一阶线性滤波
             //或者也可以直接理解为梯形法
             for (int i = 1; i < timeStep.Count; i++)

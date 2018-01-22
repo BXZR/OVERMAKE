@@ -223,30 +223,30 @@ namespace socketServer
         }
 
         //更换使用的判断走看了一步的轴的方法///////////////////////////////////////////////////////////
-        List<double> stepCheckAxis()
+        List<double> stepCheckAxis( bool useFilter = true)
         {
             List<double> theFilteredAZ = new List<double>();
             switch (stepCheckAxisUse.SelectedIndex)//选择不同的轴向
             {
                 case 0:
                     //基础方法:用Z轴加速度来做
-                    theFilteredAZ = theStepAxis.AZ(theInformationController , theFilter);
+                    theFilteredAZ = theStepAxis.AZ(theInformationController , theFilter, useFilter);
                     break;
                 case 1:
                     //实验用方法：X轴向
-                    theFilteredAZ = theStepAxis.AX(theInformationController, theFilter);
+                    theFilteredAZ = theStepAxis.AX(theInformationController, theFilter, useFilter);
                     break;
                 case 2:
                     //实验用方法：X轴向
-                    theFilteredAZ = theStepAxis.AY(theInformationController, theFilter);
+                    theFilteredAZ = theStepAxis.AY(theInformationController, theFilter, useFilter);
                     break;
                 case 3:
                     //基础方法:用三个轴的加速度平方和开根号得到
-                    theFilteredAZ = theStepAxis.ABXYZ(theInformationController, theFilter);
+                    theFilteredAZ = theStepAxis.ABXYZ(theInformationController, theFilter, useFilter);
                     break;
                 case 4:
                     //基础方法:用三个轴的加速度最大方差得到
-                    theFilteredAZ = theStepAxis.XYZMaxVariance(theInformationController, theFilter);
+                    theFilteredAZ = theStepAxis.XYZMaxVariance(theInformationController, theFilter, useFilter);
                     break;
             }
             return theFilteredAZ;
@@ -399,14 +399,13 @@ namespace socketServer
                 //方法2，一般公式
                 else if (StepLengthMethod.SelectedIndex == 2)
                 {
+                    List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         if (i >= 1)
                         {
                             // for (int v = 0; v < theInformationController.timeStep.Count; v++)
                             //    Console.WriteLine(theInformationController.timeStep[v]);
-                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
-
                             double stepLength = theStepLengthController.getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                             theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                         }
@@ -417,6 +416,7 @@ namespace socketServer
                 //方法3，一般公式 + 决策树
                 else if (StepLengthMethod.SelectedIndex == 3)
                 {
+                    List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         if (i >= 1)
@@ -429,7 +429,6 @@ namespace socketServer
                             }
                             else
                             {
-                                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                                 int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
                                 // Console.WriteLine("modeNow = " + mode);
                                 double stepLength = theStepLengthController.getStepLength2WithMode(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
@@ -445,12 +444,11 @@ namespace socketServer
                 //方法4，一般公式 + 线性回归
                 else if (StepLengthMethod.SelectedIndex == 4)
                 {
+                    List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         if (i >= 1)
                         {
-                            List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
-
                             double stepLength = theStepLengthController.getStepLengthWithKLinear(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                             theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                         }
@@ -462,6 +460,7 @@ namespace socketServer
                 //方法5，一般公式 + ANN
                 else if (StepLengthMethod.SelectedIndex == 5)
                 {
+                    List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         if (i >= 1)
@@ -473,7 +472,6 @@ namespace socketServer
                             }
                             else
                             {
-                                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                                 double stepLength = theStepLengthController.getStepLengthWithANN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
                                 theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                             }
@@ -494,11 +492,11 @@ namespace socketServer
                 //方法6，身高相关2，这个看上去更专业一点
                 else if (StepLengthMethod.SelectedIndex == 7)
                 {
+                    List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         if (i >= 1)
                         {
-                            List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                             theStepLengthUse.Add(theStepLengthController.getStepLength11(indexBuff[i - 1], indexBuff[i], timeUse2));
                         }
                         else
@@ -542,11 +540,11 @@ namespace socketServer
                 //方法9，使用关于腿长的倒置钟摆的方法（很好玩的方法）
                 else if (StepLengthMethod.SelectedIndex == 11)
                 {
+                    List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         if (i >= 1)
                         {
-                            List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                             theStepLengthUse.Add(theStepLengthController.getStepLength8(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
                         }
                         else
@@ -556,34 +554,33 @@ namespace socketServer
                 //方法10，单纯的某方向的二次积分的方法（更加适合于车）
                 else if (StepLengthMethod.SelectedIndex == 12)
                 {
+                    
+                    List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
                         if (i >= 1)
                         {
-                            //List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
-                            //theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], ax, timeUse2));
-                            List<double> axNoFilter = theInformationController.accelerometerX;
-                            List<long> timeNoFilter = theInformationController.timeStep;
-                            theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], axNoFilter, timeNoFilter));
+                            //对于行人来说每一段都应该清零一下
+                            theStepLengthController.flashSpeedForIntegral(true);//重置当前记录下来的速度，在行人阶段其实就是清0
+                            theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
                         }
                         else
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
             }
+ //-------------------------------------------------------------------人车处理分界线------------------------------------------------------------------------//
             //针对车的第一种方法就是加速度积分
             else if (SystemSave.SystemModeInd == 2)
             {
+                List<double> axNoFilter = stepCheckAxis(false);//不滤波的各种轴向切换
+                List<long> timeNoFilter = theInformationController.timeStep;
+                theStepLengthController.flashSpeedForIntegral();//重置当前记录下来的速度
                 //theStepLengthController.VNowForCarSave是从上一个阶段继承过来的数值
-                theStepLengthController.VNowForCar = theStepLengthController.VNowForCarSave;//重新叠加速度，为此需要清空
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     if (i >= 1)
-                    {
-                        List<double> ax = theInformationController.accelerometerX;
-                        List<long> timeUse2 = theInformationController.timeStep;
-                        theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], ax , timeUse2));
-                    }
+                        theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], axNoFilter, timeNoFilter));
                     else
                         theStepLengthUse.Add(0);
                 }

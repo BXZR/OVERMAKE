@@ -60,7 +60,7 @@ namespace socketServer
                 //有除零异常说明时间非常短，可以认为根本就没走
                 if (timestep == 0)
                     return 0;//万金油
-                 // Console.WriteLine("timeStep is "+ timestep);
+                             // Console.WriteLine("timeStep is "+ timestep);
                 double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 double stepLength = SystemSave.CommonFormulaWeights[0][0] * VK + SystemSave.CommonFormulaWeights[0][1] * FK + SystemSave.CommonFormulaWeights[0][2];
@@ -83,13 +83,13 @@ namespace socketServer
         }
 
         //身高加权，更复杂的公式
-        public double getStepLength11(int indexPre , int indexNow, List<long> timeUse )
+        public double getStepLength11(int indexPre, int indexNow, List<long> timeUse)
         {
             long timestep = timeUse[indexNow] - timeUse[indexPre];
             //有除零异常说明时间非常短，可以认为根本就没走
             if (timestep == 0)
                 return 0;//万金油
-            double SF  = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
+            double SF = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
             //Console.WriteLine("SF = "+ SF);
             double SL = 0.7 + SystemSave.StaturaMethod2_A * (SystemSave.Stature - 1.75) + SystemSave.StaturaMethod2_B * (SF - 1.79) * SystemSave.Stature / 1.75;
             return SL;
@@ -229,7 +229,7 @@ namespace socketServer
                              // Console.WriteLine("timeStep is "+ timestep);
                 double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
-                double stepLength = accordUsing.linearStepLength(VK,FK);
+                double stepLength = accordUsing.linearStepLength(VK, FK);
                 //Console.WriteLine("VK =" + VK + " FK =" + FK + " length = " + stepLength);
                 if (stepLength > 2)//一步走两米，几乎不可能
                     return stepLengthBasic();//万金油
@@ -270,7 +270,7 @@ namespace socketServer
         private double StepLengthMethod1(double angelPast = 0, double angelNow = 0)
         {
             if (Math.Abs(angelPast - angelNow) > SystemSave.changeGateForImmediate2)
-                return stepLengthBasic()  * SystemSave.percentWhenMeetChangeGate;
+                return stepLengthBasic() * SystemSave.percentWhenMeetChangeGate;
             else
                 return stepLengthBasic();
         }
@@ -286,7 +286,7 @@ namespace socketServer
         //例如目前在选择加速度的积分的时候只是简单地做一般加速度的积分，没有考虑波形
         //但是如果是用波峰波谷，则可以用上升和下降来做，也是使用peacksearch的类似方法，凡是貌似有一点不值得
         //大腿移动扇形方法
-        public double getStepLength8(int indexPre , int indexNow , List<double> AZ , List<long> timeStep)
+        public double getStepLength8(int indexPre, int indexNow, List<double> AZ, List<long> timeStep)
         {
             double stepLength = 0;
             //获得中心的数值，淡然如果纠结于细节的话其实这种方法并不正确
@@ -295,17 +295,17 @@ namespace socketServer
             double S = 0;
             double V = 0;
             //Console.WriteLine("indexPre = "+ indexPre +" indexHalf = "+ idexHalf);
-            for (int i = indexPre ; i < idexHalf; i++)
+            for (int i = indexPre; i < idexHalf; i++)
             {
                 if (i == 0)
                     continue;
 
-                double Dt = timeStep[i] - timeStep[i-1];
+                double Dt = timeStep[i] - timeStep[i - 1];
                 //有除零异常说明时间非常短，可以认为根本就没走
                 if (Dt <= 0)
                     return stepLengthBasic();//万金油返回值
 
-                double timeUse = (Dt/1000);//因为时间戳是毫秒作为单位的
+                double timeUse = (Dt / 1000);//因为时间戳是毫秒作为单位的
                 //简单的保险,因为第一个数据会超级大
                 if (timeUse > 2)
                 {
@@ -314,13 +314,13 @@ namespace socketServer
                 //加速度的二重积分就是距离
                 //Console.WriteLine("timeUse = "+ timeUse);
                 V += AZ[i] * timeUse;
-                S += V * timeUse + 0.5 * AZ[i] * timeUse  * timeUse;
+                S += V * timeUse + 0.5 * AZ[i] * timeUse * timeUse;
                 //Console.WriteLine("S = " + S +"   V = "+V ) ;
             }
 
             S = Math.Abs(S);//取绝对值
             //stepLength = 2 * Math.Sqrt( 2 * S * SystemSave.getLegLength() - S*S) *1.25;
-            double beSqrt =  (2 * S * SystemSave.getLegLength() - S * S);
+            double beSqrt = (2 * S * SystemSave.getLegLength() - S * S);
             //Console.WriteLine("S = " + S + "  beSqrt = " + beSqrt + "  leg = " + SystemSave.getLegLength());
 
             //一个很土的防护措施
@@ -334,36 +334,65 @@ namespace socketServer
             return stepLength;
         }
 
+        //有关积分步长的方法组--------------------------------------------------------------------------
         public double VNowForCar = 0;
         public double VNowForCarSave = 0;
         //单纯的加速度二次积分方法求位移这个实际上更加推荐在车上使用
         //如果不滤波，indexPre和indexNow差距太小，会使得步长计算得0
         public double getStepLength9(int indexPre, int indexNow, List<double> A, List<long> timeStep)
         {
-            //数据前期处理
+            //数据前期处理（保存空间先做出来）
             List<double> speed = new List<double>();
             List<double> AValue = new List<double>();
             List<long> times = new List<long>();
             for (int i = indexPre; i < indexNow; i++)
             {
-                AValue.Add(A[i]);
-                times.Add(timeStep[i]);
-                speed.Add(VNowForCar);
+                //从下面实验猜测滚雪球速度爆炸的错误原因：
+                //利用这个门限（0.75）可以有效防止静止的时候速度的变化
+                //在不动的状态之下速度有变化是因为来自传感器的神抖动（很小的误差加速度的积累造成惊人误差）
+                //手机静止下来但是同样还是有速度，或许应该更多的在于采样频率和传感器本身的特性
+                if (Math.Abs (A[i]) > 0.4)
+                    AValue.Add(A[i]);//对于Z轴手机会自动为-1，需要注意
+                else
+                    AValue.Add(0);
+
+                //正在考虑用时间戳来做还是用约定好的时间来做，似乎各有利弊
+                //在这里时间的影响很惊人
+                //时间戳的方法原理上应该是更值得使用的，老变化的问题应该是来自与手机机器的问题
+                //times.Add(timeStep[i]);
+                times.Add((long)((double)i*0.05*1000));
             }
+            //Console.WriteLine("theSpeed is = " + VNowForCar);
+
             //积分计算
             //最后一个参数0用来切换不同的积分方法
             //实际上这是一种伪二重积分，但是采样时间足够短并且要求精度不是很高的时候原则上是可以用的
-            double VADD = IntegralController.getInstance().makeIntegral(AValue, times ,3) ;
-            double SL = IntegralController.getInstance().makeIntegral(speed, times, 3);
+            double VADD = IntegralController.getInstance().makeIntegral(AValue, times, 3);
+            Console.WriteLine("VADD = "+ VADD);
             VNowForCar += VADD;
+            for (int i = indexPre; i < indexNow; i++)
+            {
+                //重新纪录速度
+                speed.Add(VNowForCar);
+            }
+            double SL = IntegralController.getInstance().makeIntegral(speed, times, 3);
 
             return SL;
         }
         //如果是开车就需要做一下这个额外操作
         public void makeFlashForCar()
         {
-            VNowForCarSave += VNowForCar;
+            VNowForCarSave = VNowForCar;
         }
+        //速度“归位”
+        public void flashSpeedForIntegral(bool flashZero = false)
+        {
+            if(flashZero == false)
+                VNowForCar = VNowForCarSave ;
+            else
+                VNowForCar = 0; //如在行人模式之下，仅仅是需要积分两步之间的加速度的积分，所以速度不需要累加
+        }
+        //有关积分步长的方法组--------------------------------------------------------------------------
 
         //微软研究得到的平均步长
         //在这里是为了保证架构做的基础实现

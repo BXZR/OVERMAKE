@@ -28,6 +28,7 @@ namespace socketServer.Codes
                 case 0: { allValue = DemoSimpleValues(values , timeSteps); } break;
                 case 1: { allValue = DemoSimpson(values, timeSteps); } break;
                 case 2: { allValue = Simpson(values, timeSteps); } break;
+                case 3: { allValue = DemoSimpleValues2(values, timeSteps); } break;
                 default:{ allValue = DemoSimpleValues(values, timeSteps); }break;
             }
 
@@ -40,10 +41,10 @@ namespace socketServer.Codes
         {
             double allvalues = 0;
 
+
             long timeUse = timeStep[timeStep.Count-1] - timeStep[0];
             double time = ((double)timeUse / 1000) / timeStep.Count;//因为时间戳是毫秒作为单位的
 
-            int lowerACount = 0;
             for (int i = 0; i < timeStep.Count; i++)
                 allvalues += values[i] * time;
 
@@ -89,6 +90,22 @@ namespace socketServer.Codes
             h = (double)(timeStep[timeStep.Count - 1] - timeStep[0]) / (n * 1000);
             allValue *= h / 6;
             return allValue;
+        }
+
+        //针对速度的加速度积分方法(看造型也是样条的方法)
+        private double DemoSimpleValues2(List<double> values, List<long> timeStep)
+        {
+            double allvalues = 0;
+
+            long timeUse = timeStep[timeStep.Count - 1] - timeStep[0];
+            double time = ((double)timeUse / 1000) / timeStep.Count;//因为时间戳是毫秒作为单位的
+
+            //看上去就是附带做了一次一阶线性滤波
+            //或者也可以直接理解为梯形法
+            for (int i = 1; i < timeStep.Count; i++)
+                allvalues += (values[i]+ values[i-1])* time * 0.5; 
+
+            return allvalues;
         }
 
    }

@@ -560,8 +560,11 @@ namespace socketServer
                     {
                         if (i >= 1)
                         {
-                            List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
-                            theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], ax, timeUse2));
+                            //List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                            //theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], ax, timeUse2));
+                            List<double> axNoFilter = theInformationController.accelerometerX;
+                            List<long> timeNoFilter = theInformationController.timeStep;
+                            theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], axNoFilter, timeNoFilter));
                         }
                         else
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
@@ -1500,14 +1503,14 @@ namespace socketServer
             //对于车子来说，不用判步也不用轴（轴固定），也没有步长和Z轴向的移动（当然也是可以扩展的）
             if (SystemSave.SystemModeInd == 2)
             {
-                stepCheckAxisUse.IsEnabled = false;
+                //stepCheckAxisUse.IsEnabled = false;
                 stepCheckMethod.IsEnabled = false;
                 StepLengthMethod.IsEnabled = false;
                 ZAxisSelect.IsEnabled = false;
             }
             else
             {
-                stepCheckAxisUse.IsEnabled = true;
+               // stepCheckAxisUse.IsEnabled = true;
                 stepCheckMethod.IsEnabled = true;
                 StepLengthMethod.IsEnabled = true;
                 ZAxisSelect.IsEnabled = true;

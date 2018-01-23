@@ -576,12 +576,16 @@ namespace socketServer
             {
                 List<double> AxisForCarNoFilter= stepCheckAxis(false);//不滤波的各种轴向切换
                 List<long> timeNoFilter = theInformationController.timeStep;
-                theCarController.flashSpeedForIntegral();//重置当前记录下来的速度
+
+                List<double> AxisForCar = theFilter.theFilerWork(AxisForCarNoFilter) ; 
+                List<long> TimeForCar = theFilter.theFilerWork(timeNoFilter);
+                theCarController.flashSpeedForIntegral(false);//重置当前记录下来的速度
                 //theStepLengthController.VNowForCarSave是从上一个阶段继承过来的数值
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     if (i >= 1)
-                        theStepLengthUse.Add(theCarController.getCarSpeed(indexBuff[i - 1], indexBuff[i], AxisForCarNoFilter, timeNoFilter));
+                        //theStepLengthUse.Add(theCarController.getCarSpeed(indexBuff[i - 1], indexBuff[i], AxisForCarNoFilter, timeNoFilter));
+                        theStepLengthUse.Add(theCarController.getCarSpeed(indexBuff[i - 1], indexBuff[i], AxisForCar , TimeForCar));
                     else
                         theStepLengthUse.Add(0);
                 }
@@ -606,7 +610,6 @@ namespace socketServer
             {
                 return heading;
             }
-
 
             if (SystemSave.UseHeadingOffset)
             {
@@ -921,8 +924,6 @@ namespace socketServer
             theStepLabel.Content += "\n\n上下位移计算方法：" + ZAxisSelect.SelectionBoxItem;
             theStepLabel.Content += "\n思想： " + theZMoveController.getMoreInformation(ZAxisSelect.SelectedIndex);
 
-
-            
         }
 
         //显示分辨率
@@ -1493,6 +1494,7 @@ namespace socketServer
                 SystemSave.startPositionZ = temp.Z;
             }
             SystemSave.savedPositions.Clear();
+            theCarController.flashZero();
         }
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

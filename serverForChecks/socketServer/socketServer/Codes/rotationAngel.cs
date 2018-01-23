@@ -99,7 +99,7 @@ namespace socketServer
         ////这个方法不可以每一次计算都会修改全局的数值，所以调用次数需要慎用
         public double AHRSupdate(double gx, double gy, double gz, double ax, double ay, double az, double mx, double my, double mz)
         {
-            //Console.WriteLine(string .Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}" , gx,gy,gz,ax,ay,az,mx,my,mz));
+            //Console.WriteLine(string .Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", gx,gy,gz,ax,ay,az,mx,my,mz));
             double norm;
             double hx, hy, hz, bx, bz;
             double vx, vy, vz, wx, wy, wz;
@@ -318,7 +318,6 @@ namespace socketServer
 
            // Console.WriteLine("HX = " + HX + " HY = " + HY);
             //Console.WriteLine("Heading = " + heading);
-
 
             ////看网上的说法还需要分开做一个象限的计算
             if (HX > 0 && HY > 0)

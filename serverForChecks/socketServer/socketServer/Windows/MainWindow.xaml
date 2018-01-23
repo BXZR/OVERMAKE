@@ -35,7 +35,7 @@
             <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="11,32,0,0" Grid.Column="1"/>
             <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="212" Height="33" VerticalAlignment="Top" Foreground="#FFD12179" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Margin="0,0,20,0" Grid.Column="1"/>
             <Label x:Name="resolutionLabel" Content="1m = 12.00 pixels" Grid.Column="1" Margin="0,0,0,-2" FontWeight="Bold" HorizontalAlignment="Right" Width="118" Height="26" VerticalAlignment="Bottom"/>
-            <Button x:Name="clearDraw" Content="ClearDraw" Margin="13,0,0,-2" Grid.Column="1" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Click="clearDraw_Click"/>
+            <Button x:Name="clearDraw" Content="ClearDraw" Margin="13,0,0,1" Grid.Column="1" HorizontalAlignment="Left" Width="75" Click="clearDraw_Click" Height="22" VerticalAlignment="Bottom"/>
         </Grid>
         <Button Content="angel" Height="23" HorizontalAlignment="Right" Margin="0,453,123,0" x:Name="button6" VerticalAlignment="Top" Width="75" Click="button6_Click" IsEnabled="False" />
         <Label x:Name="Charts" Content="ImageDisplay" Margin="0,416,105,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Foreground="#FF4600FF" FontWeight="Bold"/>

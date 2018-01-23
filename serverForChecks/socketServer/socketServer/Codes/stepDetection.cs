@@ -85,16 +85,13 @@ namespace socketServer
                             isSampled = true;
                             break;
                         }
-
                     }
                     else
                     {
                         //"波谷"
-     
                     }
                 }
             }
-           
        }
 
         //最基本的波峰波谷的方法
@@ -231,11 +228,9 @@ namespace socketServer
             0.2-0.4     弱相关
             0.0-0.2     极弱相关或无相关 
          */
-
         private int showPWindowCount = 2;//匹配成功显示的曲线窗口数量
         bool contrast2(List<double> data1, List<double> data2)
         {
-
             if (data1.Count == 0)
                 return false;
 
@@ -277,7 +272,6 @@ namespace socketServer
         //对比两个字符串的相似度
         private static decimal getsimilaritywith(string sourcestring, string str)
         {
-
             decimal kq = 2;
             decimal kr = 1;
             decimal ks = 1;

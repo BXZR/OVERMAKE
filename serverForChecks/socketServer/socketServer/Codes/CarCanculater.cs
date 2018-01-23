@@ -11,6 +11,8 @@ namespace socketServer.Codes
 
     class CarCanculater
     {
+
+//--------------------------------------------预存数据和刷新---------------------------------------------//
         //积分车速
         public double VNowForCar = 0;
         //积分车速的分段保存
@@ -30,6 +32,13 @@ namespace socketServer.Codes
                 VNowForCar = 0; //如在行人模式之下，仅仅是需要积分两步之间的加速度的积分，所以速度不需要累加
         }
 
+        //完全速度归位
+        public void flashZero()
+        {
+            VNowForCar = 0;
+            VNowForCarSave = 0;
+        }
+
 
 //--------------------------------------------数据分段计算策略---------------------------------------------//
 
@@ -37,10 +46,11 @@ namespace socketServer.Codes
         public List<int> stepDectionExtrationForCar(List<double> AZValues)
         {
             List<int> indexs = new List<int>();
-            for (int i = 0; i < AZValues.Count; i++)
+            //从1开始是因为前几个数据实在是诡异的干扰，反正车的定位也不在乎这一点差异，就直接舍弃算了
+            for (int i = 1; i < AZValues.Count; i++)
             {
                 //40在这里也算是也各参数，显示用的参数
-                if (i % 20 == 0)
+                if (i % 5 == 0)
                     indexs.Add(i);
             }
             //Console.WriteLine("car step count = "+ indexs.Count);
@@ -49,6 +59,7 @@ namespace socketServer.Codes
 
 //--------------------------------------------车速处理---------------------------------------------//
         //对于车来说，积分是一个很难的事情，因为所有的数据都不得不使用
+        //积分趋势是对的，但是数值还需要再想想怎么做
         public double getCarSpeed(int indexPre, int indexNow, List<double> A, List<long> timeStep)
         {
             //数据前期处理（保存空间先做出来）
@@ -67,9 +78,10 @@ namespace socketServer.Codes
                 //在不动的状态之下速度有变化是因为来自传感器的神抖动（很小的误差加速度的积累造成惊人误差）
                 //手机静止下来但是同样还是有速度，或许应该更多的在于采样频率和传感器本身的特性
                 double toAdd = 0;
-                if (Math.Abs(A[i]) > 0.02)//简单去除一下扰动
-                    toAdd = A[i];//对于Z轴手机会自动为-1，需要注意
-
+                if (Math.Abs(A[i]) > 1)//简单去除一下扰动
+                {//留着括号以备不时之需
+                    toAdd = A[i];
+                }
                 //正在考虑用时间戳来做还是用约定好的时间来做，似乎各有利弊
                 //在这里时间的影响很惊人
                 //时间戳的方法原理上应该是更值得使用的，老变化的问题应该是来自与手机机器的问题
@@ -80,6 +92,9 @@ namespace socketServer.Codes
                 AAverage += A[i];
                 AAverage2 += toAdd;
             }
+
+            //Console.WriteLine("AAll1 = "+ AAverage);
+            //Console.WriteLine("AAll2 = " + AAverage2);
             AAverage /= A.Count;
             AAverage2 /= A.Count;
 
@@ -93,14 +108,13 @@ namespace socketServer.Codes
             //实际上这是一种伪二重积分，但是采样时间足够短并且要求精度不是很高的时候原则上是可以用的
             double VADD = IntegralController.getInstance().makeIntegral(AValue, times, 3);
             //Console.WriteLine("VADD = "+ VADD);
-            double VNowForCar = VADD;
+            VNowForCar += VADD;
             for (int i = indexPre; i < indexNow; i++)
             {
                 //重新纪录速度
                 speed.Add(VNowForCar);
             }
             double SL = IntegralController.getInstance().makeIntegral(speed, times, 3);
-
             return SL;
         }
 

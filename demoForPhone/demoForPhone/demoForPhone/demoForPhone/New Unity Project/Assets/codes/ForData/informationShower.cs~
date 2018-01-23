@@ -17,7 +17,6 @@ public class informationShower : MonoBehaviour {
 	public  void showTitle()
 	{
 		titleLabelText.text = "<color=#FF0F00>"  + systemValues .GPSUSELabel  +"</color>   <color=#FFFF00>"+ systemValues.linkServerLabel+"</color> ";
-		serverInformationText.text = "服务器IP: " + server.serverIP + "\n服务器端口: " + server.myProt + "\n采样频率: " + server.HZ;
 	}
 
 	public  void  showValues(string showInformation)
@@ -44,8 +43,9 @@ public class informationShower : MonoBehaviour {
 			stepCountShowText.text = "没有消息";
 		}
 	}
-	void Start () {
-		
+	void Start () 
+	{
+		serverInformationText.text = "服务器IP: " + server.serverIP + "\n服务器端口: " + server.myProt + "\n采样频率: " + server.HZ;
 	}
 	
 	// Update is called once per frame

@@ -118,6 +118,7 @@
     </ApplicationDefinition>
     <Compile Include="Codes\AcordUse\AccordANN.cs" />
     <Compile Include="Codes\AcordUse\AccordNotNetUse.cs" />
+    <Compile Include="Codes\CarCanculater.cs" />
     <Compile Include="Codes\DecisionTree\theDecisionTree.cs" />
     <Compile Include="Codes\DecisionTree\theDecisionTreeNode.cs" />
     <Compile Include="Codes\MathUse\IntegralController.cs" />

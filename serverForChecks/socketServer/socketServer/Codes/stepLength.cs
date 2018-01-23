@@ -335,11 +335,9 @@ namespace socketServer
         }
 
         //有关积分步长的方法组--------------------------------------------------------------------------
-        public double VNowForCar = 0;
-        public double VNowForCarSave = 0;
-        //单纯的加速度二次积分方法求位移这个实际上更加推荐在车上使用
-        //如果不滤波，indexPre和indexNow差距太小，会使得步长计算得0
-        public double getStepLength9(int indexPre, int indexNow, List<double> A, List<long> timeStep)
+        //实际上......单纯的加速度二次积分方法求位移这个实际上更加推荐在车上使用
+        //对于行人来说，积分结果只需要一个量级就好，之后给参数加权就可以，所以没必要过分严肃
+        public double getStepLength9(int indexPre, int indexNow, List<double> A, List<long> timeStep )
         {
             //数据前期处理（保存空间先做出来）
             List<double> speed = new List<double>();
@@ -347,52 +345,23 @@ namespace socketServer
             List<long> times = new List<long>();
             for (int i = indexPre; i < indexNow; i++)
             {
-                //从下面实验猜测滚雪球速度爆炸的错误原因：
-                //利用这个门限（0.75）可以有效防止静止的时候速度的变化
-                //在不动的状态之下速度有变化是因为来自传感器的神抖动（很小的误差加速度的积累造成惊人误差）
-                //手机静止下来但是同样还是有速度，或许应该更多的在于采样频率和传感器本身的特性
-                if (Math.Abs (A[i]) > 0.4)
-                    AValue.Add(A[i]);//对于Z轴手机会自动为-1，需要注意
-                else
-                    AValue.Add(0);
-
-                //正在考虑用时间戳来做还是用约定好的时间来做，似乎各有利弊
-                //在这里时间的影响很惊人
-                //时间戳的方法原理上应该是更值得使用的，老变化的问题应该是来自与手机机器的问题
-                //times.Add(timeStep[i]);
-                times.Add((long)((double)i*0.05*1000));
+                double toAdd = 0;
+                if (Math.Abs (A[i]) > 0.02)//简单去除一下扰动
+                    toAdd = A[i];
+                //对于行人而言用时间戳即可
+                times.Add(timeStep[i]);
+                AValue.Add(toAdd);
             }
-            //Console.WriteLine("theSpeed is = " + VNowForCar);
-
-            //积分计算
-            //最后一个参数0用来切换不同的积分方法
+            //积分计算，最后一个参数0用来切换不同的积分方法
             //实际上这是一种伪二重积分，但是采样时间足够短并且要求精度不是很高的时候原则上是可以用的
             double VADD = IntegralController.getInstance().makeIntegral(AValue, times, 3);
-            Console.WriteLine("VADD = "+ VADD);
-            VNowForCar += VADD;
+            double VNowForCar = VADD;
             for (int i = indexPre; i < indexNow; i++)
-            {
-                //重新纪录速度
                 speed.Add(VNowForCar);
-            }
             double SL = IntegralController.getInstance().makeIntegral(speed, times, 3);
-
-            return SL;
+            return Math.Abs(SL);//行人步长均为正数
         }
-        //如果是开车就需要做一下这个额外操作
-        public void makeFlashForCar()
-        {
-            VNowForCarSave = VNowForCar;
-        }
-        //速度“归位”
-        public void flashSpeedForIntegral(bool flashZero = false)
-        {
-            if(flashZero == false)
-                VNowForCar = VNowForCarSave ;
-            else
-                VNowForCar = 0; //如在行人模式之下，仅仅是需要积分两步之间的加速度的积分，所以速度不需要累加
-        }
-        //有关积分步长的方法组--------------------------------------------------------------------------
+        //有关积分步长的方法组OVER--------------------------------------------------------------------------
 
         //微软研究得到的平均步长
         //在这里是为了保证架构做的基础实现

@@ -40,6 +40,7 @@ namespace socketServer
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         ZAxisMoveController theZMoveController;//Z轴向移动的控制单元
+        CarCanculater theCarController;//控制车速的控制单元
 
         //公有的存储空间
         List<double> theStepAngeUse = new List<double>();
@@ -191,7 +192,7 @@ namespace socketServer
             SystemSave.makeFlash();
             theAngelController.makeMethod34Save();//对于这个连续的服务器端的AHRS需要这样做才能保持连续性能
             if (SystemSave.SystemModeInd == 2)
-                theStepLengthController.makeFlashForCar();
+                theCarController.makeFlashForCar();
         }
 
 
@@ -293,7 +294,8 @@ namespace socketServer
         }
             else if (SystemSave.SystemModeInd == 2)
             {
-                indexBuff = stepExtra.stepDectionExtrationForCar(theFilteredAZ);
+                //在这里的滤波仅仅是一个与之前程序配合的做法，但是也是主要的BUG所在
+                indexBuff = theCarController.stepDectionExtrationForCar(theFilteredAZ);
             }
 }
 
@@ -560,8 +562,7 @@ namespace socketServer
                     {
                         if (i >= 1)
                         {
-                            //对于行人来说每一段都应该清零一下
-                            theStepLengthController.flashSpeedForIntegral(true);//重置当前记录下来的速度，在行人阶段其实就是清0
+                            //对于行人来说每一段都应该清零一下 重置当前记录下来的速度，在行人阶段其实就是清0,所以传入true
                             theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
                         }
                         else
@@ -573,14 +574,14 @@ namespace socketServer
             //针对车的第一种方法就是加速度积分
             else if (SystemSave.SystemModeInd == 2)
             {
-                List<double> axNoFilter = stepCheckAxis(false);//不滤波的各种轴向切换
+                List<double> AxisForCarNoFilter= stepCheckAxis(false);//不滤波的各种轴向切换
                 List<long> timeNoFilter = theInformationController.timeStep;
-                theStepLengthController.flashSpeedForIntegral();//重置当前记录下来的速度
+                theCarController.flashSpeedForIntegral();//重置当前记录下来的速度
                 //theStepLengthController.VNowForCarSave是从上一个阶段继承过来的数值
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
                     if (i >= 1)
-                        theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], axNoFilter, timeNoFilter));
+                        theStepLengthUse.Add(theCarController.getCarSpeed(indexBuff[i - 1], indexBuff[i], AxisForCarNoFilter, timeNoFilter));
                     else
                         theStepLengthUse.Add(0);
                 }
@@ -1068,6 +1069,7 @@ namespace socketServer
             theTrainFileMake = new TrainFileMaker();
             theStepAxis = new stepAxis();
             theZMoveController = new ZAxisMoveController();
+            theCarController = new CarCanculater();
             //制作提示信息
             makeToolTips();
             //相关工程更新

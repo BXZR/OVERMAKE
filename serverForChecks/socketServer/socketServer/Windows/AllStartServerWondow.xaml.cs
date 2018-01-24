@@ -41,7 +41,7 @@ namespace socketServer.Windows
                 informationS += theServerForAll.startTheServer();
                 Log.saveLog(LogType.information, informationS);
                 informationS += "\n------------------------------------------------------------";
-                informationS += "\n正在侦听来自手机客户端的连接......";
+                informationS += "\n正在侦听来自客户端的连接......";
                 informationS += "\n一个新的连接到来时将会打开一个新的窗口进行实验";
                 informationS += "\n进行实验时请尽量保持此窗口不关闭";
                 informationS += "\n------------------------------------------------------------";

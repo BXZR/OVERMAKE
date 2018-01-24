@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer.Windows"
         mc:Ignorable="d"
-        Title="PDR With Smartphone" Height="433.439" Width="407.346" ResizeMode="NoResize" Closed="Window_Closed" Loaded="Window_Loaded">
+        Title="Dead Reckoning System" Height="433.439" Width="407.346" ResizeMode="NoResize" Closed="Window_Closed" Loaded="Window_Loaded">
     <Grid Background="#FFDADADA">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -13,7 +13,7 @@
         <Button x:Name="button" Content="Mutiple User Mode" Margin="0,0,126,16" Click="button_Click" Height="32" VerticalAlignment="Bottom" ToolTip="复数实验者分别在各自的窗口进行实验" HorizontalAlignment="Right" Width="124"/>
         <Button x:Name="button2" Content="Single User Mode" Margin="0,0,262,16" Click="button2_Click" ToolTip="单独使用者在单个窗口进行实验" HorizontalAlignment="Right" Width="119" Height="32" VerticalAlignment="Bottom"/>
         <Label x:Name="theShowLabel" Content="information" Margin="20,131,20,66" Background="#FFF3F3F3" Foreground="#FF1207FF" HorizontalContentAlignment="Center"/>
-        <Label x:Name="theShowLabel_Copy" Content="PDR With Smartphone" Margin="61,10,41,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="34" VerticalAlignment="Top" FontSize="16"/>
+        <Label x:Name="theShowLabel_Copy" Content="Dead Reckoning System" Margin="61,10,41,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="34" VerticalAlignment="Top" FontSize="16"/>
         <GroupBox x:Name="groupBox" Header="Basic Config" Margin="10,46,10,0" VerticalAlignment="Top" Height="74" BorderBrush="Black">
             <Grid Margin="-1,2,-1,-4">
                 <Label x:Name="theShowLabel_Copy1" Content="ServerIP" Margin="4,-1,0,0" Background="{x:Null}" Foreground="#FF1207FF" HorizontalContentAlignment="Center" FontWeight="Bold" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81"/>

@@ -131,6 +131,7 @@
     <Compile Include="Codes\stages\StageWalk.cs" />
     <Compile Include="Codes\stepAxis.cs" />
     <Compile Include="Codes\ZAxisMoveController.cs" />
+    <Compile Include="Codes\Protocol.cs" />
     <Compile Include="Windows\AllStartServerWondow.xaml.cs">
       <DependentUpon>AllStartServerWondow.xaml</DependentUpon>
     </Compile>

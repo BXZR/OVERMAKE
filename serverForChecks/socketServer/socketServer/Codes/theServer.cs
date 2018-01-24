@@ -34,6 +34,7 @@ namespace socketServer
         information theInformationController = null; //信息处理控制单元，必须要有，这个才是核心
         //这个适用于多个客户端的情况
         List<information> theInformationControllers;//信息处理单元组
+        private Protocol theProtocolController;//协议解析单元
         List<string> theIPS;//用字符串IP作为区分
 
         public theServer(string theIPUse = "", int port = 8886 )
@@ -45,6 +46,7 @@ namespace socketServer
                 theInformationControllers = new List<socketServer.information>();
                 theIPS = new List<string>();
                 theInformationController = new socketServer.information();
+                theProtocolController = new socketServer.Protocol();
                 //设定IP地址的策略
                 //首先看传入的IPUse是不是空，如果不是就用IPUse
                 //如果IPUse为空，就是用SystemSave的IP，并且这个可以在设置面板设置
@@ -83,11 +85,12 @@ namespace socketServer
             try
             {
                 theInformationController = theInformationControllerIn;
+                theProtocolController = new socketServer.Protocol();
                 //设定IP地址的策略
                 //首先看传入的IPUse是不是空，如果不是就用IPUse
                 //如果IPUse为空，就是用SystemSave的IP，并且这个可以在设置面板设置
                 //实际上SystemSave的IP在是真正需要使用的IP，theIPUse 只是一个扩展的功能
-                if(string .IsNullOrEmpty (theIPUse) == false)
+                if (string .IsNullOrEmpty (theIPUse) == false)
                 { 
                     IP = theIPUse;
                     myProt = port;
@@ -255,14 +258,14 @@ namespace socketServer
                     if (information != "bye" && information != "get")
                     {
                         //接纳和处理信息
-                        getandMakeInformation(information , theInformationController);
-                        string sendString = makeSendToClients();
+                        theProtocolController.getandMakeInformation(information , theInformationController);
+                        string sendString = theProtocolController.makeSendToClients();
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else if (information == "get")
                     {
                         //3D显示客户端的需要
-                        string sendString = makeSendToClients();
+                        string sendString = theProtocolController.makeSendToClients();
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
                     }
                     else if (information == "bye")//客户端请求关闭连接
@@ -295,7 +298,7 @@ namespace socketServer
             MainWindow aNewMainWindow = new MainWindow();
             aNewMainWindow.makeStart(theInformationController, false);
             //在这里对应不同客户端窗口的信息title(可以扩展一下)
-            aNewMainWindow.Title = "PDR With SmartPhone No. " + theInformationControllers.Count;
+            aNewMainWindow.Title = "Dead Reckoning System Main No. " + theInformationControllers.Count;
             aNewMainWindow.Show();
             return aNewMainWindow;
         }
@@ -335,13 +338,13 @@ namespace socketServer
                     if (information != "bye" && information != "get")
                     {
                         //接纳和处理信息
-                        getandMakeInformation(information, theInformationController);
-                        string theSendString = makeSendToClients(theMainWindowForthisClient);
+                        theProtocolController.getandMakeInformation(information, theInformationController);
+                        string theSendString = theProtocolController.makeSendToClients(theMainWindowForthisClient);
                         myClientSocket.Send(Encoding.UTF8.GetBytes(theSendString));//发送一个步数信息
                     }
                     else if (information == "get")
                     {
-                        string theSendString = makeSendToClients(theMainWindowForthisClient);
+                        string theSendString = theProtocolController.makeSendToClients(theMainWindowForthisClient);
                         myClientSocket.Send(Encoding.UTF8.GetBytes(theSendString));//发送一个步数信息
                     }
                     else if (information == "bye")//客户端请求关闭连接
@@ -373,105 +376,6 @@ namespace socketServer
                 return;
             }
         }
-        }
-
-        private string makeSendToClients(MainWindow theWindow = null)
-        {
-            string sendString = "";
-            if (theWindow == null)
-            {
-                sendString = SystemSave.allStepCount.ToString();
-                sendString += ";" + SystemSave.stepLengthNow.ToString("f2");
-                sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
-                sendString += ";" + SystemSave.slopNow.ToString("f2");
-                sendString += ";" + SystemSave.heightNow.ToString("f2");
-            }
-            else
-            {
-                sendString += theWindow.allStepCount.ToString();
-                sendString += ";" + theWindow.stepLengthNow.ToString("f2");
-                sendString += ";" + theWindow.stepAngleNow.ToString("f2");
-                sendString += ";" + theWindow.slopNow.ToString("f2");
-                sendString += ";" + theWindow.heightNow.ToString("f2");
-            }
-            return sendString; 
-
-        }
-
-        //对获取的字符串进行切割的做法打包方法
-        private void getandMakeInformation(string information , information theInformationController)
-        {
-            //Console.WriteLine("\n------------------\n"+information+ "\n------------------\n");
-            //其实这个方法有非常冗余的封装，但是为了保证可扩展性可读性，暂时先不改了
-            //获取了消息information,处理过程需要新一层的封装了
-            //把信息存入到缓存里面去
-            //要保存多个数据，这里就需要做一下切分，也就是所谓的协议
-            //暂定的协议： 
-            //传输内容的大项目用';'切分
-            //传输内容的小项目用','切分
-            string[] theSplited = information.Split(';');
-            //因为信息的第一项是用来做报头了
-            if (theSplited[0] == "A")
-            {
-                for (int i = 1; i < theSplited.Length; i++)
-                {
-                    //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
-                    switch (i)
-                    {
-                        //第一大项： Y轴加速度
-                        case 1: { theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]); } break;
-                        //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
-                        case 2: { theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]); } break;//正北0度                                                                                 //第三大项： X轴加速度
-                        //第三大项： X轴加速度
-                        case 3: { theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]); } break;
-                        //第四大项： Z轴加速度
-                        case 4: { theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]); } break;
-                        //第五大项： X轴陀螺仪
-                        case 5: { theInformationController.addInformation(UseDataType.gyroX, theSplited[5]); } break;
-                        //第六大项： Y轴陀螺仪
-                        case 6: { theInformationController.addInformation(UseDataType.gyroY, theSplited[6]); } break;
-                        //第七大项： Z轴陀螺仪
-                        case 7: { theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]); } break;
-                        //第八大项： X轴磁力计
-                        case 8: { theInformationController.addInformation(UseDataType.magnetometerX, theSplited[8]); } break;
-                        //第九大项： y轴磁力计
-                        case 9: { theInformationController.addInformation(UseDataType.magnetometerY, theSplited[9]); } break;
-                        //第十大项： z轴磁力计
-                        case 10: { theInformationController.addInformation(UseDataType.magnetometerZ, theSplited[10]); } break;
-                        //GPS
-                        case 11: { theInformationController.addInformation(UseDataType.GPS, theSplited[11]); } break;
-                        //时间戳
-                        case 12: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]); } break;
-                        //AHRSZ信息
-                        case 13: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); } break;
-                        //IMU信息
-                        case 14: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); } break;
-                    }
-                }
-            }
-            else if (theSplited[0] == "B")
-            {
-                //如果网络带宽实在是不行，就考虑用这种分片的方法分着发送。
-                //这一点在客户端上也留有接口
-                /*
-                for (int i = 1; i < theSplited.Length; i++)
-                {
-                    //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
-                    switch (i)
-                    {
-                        //GPS
-                        case 1: { theInformationController.addInformation(UseDataType.GPS, theSplited[1]); } break;
-                        //时间戳
-                        case 2: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]); } break;
-                        //AHRSZ信息
-                        case 3: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[3]); } break;
-                        //IMU信息
-                        case 4: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[4]); } break;
-
-                    }
-                }
-                */
-            }
         }
 
     }

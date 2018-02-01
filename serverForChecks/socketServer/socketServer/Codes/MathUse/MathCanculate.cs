@@ -145,6 +145,5 @@ namespace socketServer.Codes
             quickSort(theP, low + 1, last);
         }
 
-
     }
 }

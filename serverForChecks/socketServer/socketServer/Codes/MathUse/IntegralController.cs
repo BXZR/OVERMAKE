@@ -29,6 +29,7 @@ namespace socketServer.Codes
                 case 1: { allValue = DemoSimpson(values, timeSteps); } break;
                 case 2: { allValue = Simpson(values, timeSteps); } break;
                 case 3: { allValue = DemoSimpleValues2(values, timeSteps); } break;
+                case 4: { allValue = AverageWithError(values, timeSteps); } break;
                 default:{ allValue = DemoSimpleValues(values, timeSteps); }break;
             }
 
@@ -105,6 +106,23 @@ namespace socketServer.Codes
                 allvalues += (values[i]+ values[i-1])* time * 0.5; 
 
             return allvalues;
+        }
+
+        //带误差的方法，取所有获得的数据取平均计算矩形面积
+        //简单粗暴误差大，但是如果能够去除掉足够小的噪声的话，或许还是可以用的
+        private double AverageWithError(List<double> values, List<long> timeStep)
+        {
+            long timeUse = timeStep[timeStep.Count - 1] - timeStep[0];
+            double theAverage = 0;
+
+            if (values.Count == 0)
+                return 0;
+
+            for (int i = 0; i < values.Count; i++)
+                theAverage += values[i];
+            theAverage /= values.Count;
+
+            return (theAverage * ((double)timeUse / 1000));
         }
 
    }

@@ -12,6 +12,20 @@ namespace socketServer.Codes
     class CarCanculater
     {
 
+
+        //加速度积分模式
+        int AIntegralMode = 3;
+        //速度积分模式
+        int VIntegralMode = 3;
+        public string getTipInformation()
+        {
+            string TipInformation = "加速度积分方式：";
+            TipInformation += IntegralController.getInstance().getIntegralInformation(AIntegralMode);
+            TipInformation += "\n速度积分方式：";
+            TipInformation +=IntegralController.getInstance().getIntegralInformation(VIntegralMode);
+            return TipInformation;
+        }
+
 //--------------------------------------------预存数据和刷新---------------------------------------------//
         //积分车速
         public double VNowForCar = 0;
@@ -106,7 +120,7 @@ namespace socketServer.Codes
             //积分计算
             //最后一个参数0用来切换不同的积分方法
             //实际上这是一种伪二重积分，但是采样时间足够短并且要求精度不是很高的时候原则上是可以用的
-            double VADD = IntegralController.getInstance().makeIntegral(AValue, times, 3);
+            double VADD = IntegralController.getInstance().makeIntegral(AValue, times, AIntegralMode);
             //Console.WriteLine("VADD = "+ VADD);
             VNowForCar += VADD;
             for (int i = indexPre; i < indexNow; i++)
@@ -114,7 +128,7 @@ namespace socketServer.Codes
                 //重新纪录速度
                 speed.Add(VNowForCar);
             }
-            double SL = IntegralController.getInstance().makeIntegral(speed, times, 3);
+            double SL = IntegralController.getInstance().makeIntegral(speed, times, VIntegralMode);
             return SL;
         }
 

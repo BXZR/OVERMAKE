@@ -889,41 +889,60 @@ namespace socketServer
         //生成输出在tips里面的显示信息
         void makeLabelMehtod(int stepcounts2 = 0)
         {
-            allStepCount = allStepCountSave + indexBuff.Count;
-            SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
-            if (stepCheckMethod.SelectedIndex == 0)
+            //如果不是车的模式，也就是两种行人模式，那么就正常显示各种东西就可以了
+            if (SystemSave.SystemModeInd < 2)
             {
-                theStepLabel.Content = "（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
-                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount +"/"+ allStepCountSave + "    总步数：" + SystemSave.allStepCount +"/"+allStepCount ;
-                //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
+                allStepCount = allStepCountSave + indexBuff.Count;
+                SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
+                if (stepCheckMethod.SelectedIndex == 0)
+                {
+                    theStepLabel.Content = "（当前分组）原始数据步数：" + PeackSearcher.TheStepCount + "    去除不可能项步数：" + thePeackFinder.peackBuff.Count;
+                    theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "/" + allStepCountSave + "    总步数：" + SystemSave.allStepCount + "/" + allStepCount;
+                    //先做thePositionController.getPositions(theStepAngeUse, theStepLengthUse);用来刷新内部缓存
+                }
+                else if (stepCheckMethod.SelectedIndex == 1)
+                {
+                    theStepLabel.Content = "（当前分组）" + "  上界： " + SystemSave.uperGateForShow.ToString("f2") + "  下界： " + SystemSave.downGateForShow.ToString("f2") + "  总步数： " + thePeackFinder.peackBuff.Count;
+                    theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "/" + allStepCountSave + "    总步数：" + SystemSave.allStepCount + "/" + allStepCount;
+                }
+                else if (stepCheckMethod.SelectedIndex == 2)
+                {
+                    theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2) + "/" + (stepcounts2 + stepCount2);
+                }
+                else if (stepCheckMethod.SelectedIndex == 3)
+                {
+                    theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2) + "/" + (stepcounts2 + stepCount2);
+                }
+                theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
+                theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+                theStepLabel.Content += "\n-----------------------------------------------------------------------------";
+                theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
+                theStepLabel.Content += "\n\n判步方法：" + stepCheckMethod.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + stepExtra.getMoreInformation(stepCheckMethod.SelectedIndex);
+                theStepLabel.Content += "\n\n步长计算方法：" + StepLengthMethod.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theStepLengthController.getMoreInformation(StepLengthMethod.SelectedIndex);
+                theStepLabel.Content += "\n\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theAngelController.getMoreInformation(HeadingMehtod.SelectedIndex);
+                theStepLabel.Content += "\n\n上下位移计算方法：" + ZAxisSelect.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theZMoveController.getMoreInformation(ZAxisSelect.SelectedIndex);
             }
-            else if (stepCheckMethod.SelectedIndex == 1)
+            //如果是车的模式只需要显示车相关的内容就可以了吧
+            else if (SystemSave.SystemModeInd == 2)
             {
-                theStepLabel.Content = "（当前分组）"+"  上界： "+ SystemSave.uperGateForShow.ToString("f2") +"  下界： "+ SystemSave.downGateForShow.ToString("f2")+ "  总步数： " + thePeackFinder.peackBuff.Count ;
-                theStepLabel.Content += "\n历史存储步数：" + SystemSave.stepCount + "/" + allStepCountSave + "    总步数：" + SystemSave.allStepCount + "/" + allStepCount;
+                allStepCount = allStepCountSave + indexBuff.Count;
+                SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
+                theStepLabel.Content = "当前阶段位移计算次数：" + stepcounts2 + "    总位移计算次数：" + (SystemSave.stepCount2 + stepcounts2) + "/" + (stepcounts2 + stepCount2);
+                theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
+                theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
+                theStepLabel.Content += "\n-----------------------------------------------------------------------------";
+                theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
+                theStepLabel.Content += "\n\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theAngelController.getMoreInformation(HeadingMehtod.SelectedIndex);
+                theStepLabel.Content += "\n\n单位位移计算方法：";
+                theStepLabel.Content += "\n" + theCarController.getTipInformation() ;
             }
-            else if (stepCheckMethod.SelectedIndex == 2)
-            {
-                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2)+"/"+(stepcounts2 + stepCount2);
-            }
-            else if (stepCheckMethod.SelectedIndex == 3)
-            {
-                theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2) + "/" + (stepcounts2 + stepCount2);
-            }
-            theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
-            theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
-            theStepLabel.Content += "\n-----------------------------------------------------------------------------";
-            theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
-            theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
-            theStepLabel.Content += "\n\n判步方法：" + stepCheckMethod.SelectionBoxItem;
-            theStepLabel.Content += "\n思想： "+stepExtra.getMoreInformation(stepCheckMethod.SelectedIndex);
-            theStepLabel.Content += "\n\n步长计算方法：" + StepLengthMethod.SelectionBoxItem;
-            theStepLabel.Content += "\n思想： " + theStepLengthController.getMoreInformation(StepLengthMethod.SelectedIndex);
-            theStepLabel.Content += "\n\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
-            theStepLabel.Content += "\n思想： " + theAngelController .getMoreInformation(HeadingMehtod.SelectedIndex);
-            theStepLabel.Content += "\n\n上下位移计算方法：" + ZAxisSelect.SelectionBoxItem;
-            theStepLabel.Content += "\n思想： " + theZMoveController.getMoreInformation(ZAxisSelect.SelectedIndex);
-
         }
 
         //显示分辨率

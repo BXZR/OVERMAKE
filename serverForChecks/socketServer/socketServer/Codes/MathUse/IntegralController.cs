@@ -17,6 +17,21 @@ namespace socketServer.Codes
             return theIntergral;
         }
 
+        public string getIntegralInformation(int mode = 0)
+        {
+            string infotmationReturn = "";
+            switch (mode)
+            {
+                case 0: { infotmationReturn = "样条积分方法"; } break;
+                case 1: { infotmationReturn = "辛普森积分方法"; } break;
+                case 2: { infotmationReturn = "辛普森积分方法形式2"; } break;
+                case 3: { infotmationReturn = "样条积分方法形式2"; } break;
+                case 4: { infotmationReturn = "取平均数的积分方法(误差大)"; } break;
+                default: { infotmationReturn = "样条积分方法"; } break;
+            }
+            return infotmationReturn;
+        }
+
         //这个类专门用来处理积分积分相关的问题
         //采样时间足够短并且要求精度不是很高的时候原则上是可以用的
         public double makeIntegral(List<double> values, List<long> timeSteps , int mode = 0)

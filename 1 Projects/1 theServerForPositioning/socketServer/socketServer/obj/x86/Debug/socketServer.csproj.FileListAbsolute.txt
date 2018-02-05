@@ -1,0 +1,67 @@
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\bin\Debug\socketServer.exe
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\bin\Debug\socketServer.pdb
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\MainWindow.baml
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\App.g.cs
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\socketServer_MarkupCompile.cache
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\socketServer.g.resources
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\socketServer.exe
+C:\Users\Administrator\AppData\Local\Temporary Projects\socketServer\obj\x86\Debug\socketServer.pdb
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.exe
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.pdb
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.exe
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.pdb
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.baml
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\App.g.cs
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer_MarkupCompile.cache
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.g.resources
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
+C:\Users\Administrator\Desktop\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.exe
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.pdb
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.exe
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.pdb
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.baml
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.g.cs
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\App.g.cs
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer_MarkupCompile.cache
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.g.resources
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
+D:\UnityProgramSpaceFor5.6\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.exe
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.pdb
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.exe
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.pdb
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.baml
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.g.cs
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\App.g.cs
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer_MarkupCompile.cache
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.g.resources
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
+E:\毕设题目-201709081657\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.exe
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.pdb
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.exe
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.pdb
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.baml
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.g.cs
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\App.g.cs
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer_MarkupCompile.cache
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.g.resources
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
+E:\OVERMAKES\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.exe
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.pdb
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.exe
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\bin\Debug\socketServer.pdb
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.baml
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\MainWindow.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\App.g.cs
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer_MarkupCompile.cache
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.g.resources
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.Properties.Resources.resources
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csproj.GenerateResource.Cache
+D:\gitWorks\OVERMAKE\serverForChecks\socketServer\socketServer\obj\x86\Debug\socketServer.csprojResolveAssemblyReference.cache

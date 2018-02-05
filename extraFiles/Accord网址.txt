@@ -1,5 +1,0 @@
-https://github.com/accord-net/framework/wiki/Regression
-
-Accord.MachineLearning
-
-https://github.com/accord-net/framework/wiki

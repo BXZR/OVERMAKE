@@ -120,6 +120,7 @@ void Position::CanculatePositionWithBuffer(double ax, double ay, double az, doub
 		//计算Y轴新坐标
 		positionNowY += cos(HeadingNow) * MoveLengthNow;
 		theBuffer.FlashBuffer();//清空缓冲区等待接下来的计算
+		std::cout << "canculate" << endl;
 	}
 
 }

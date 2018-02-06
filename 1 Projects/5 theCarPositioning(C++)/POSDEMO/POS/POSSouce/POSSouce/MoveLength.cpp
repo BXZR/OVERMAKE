@@ -39,7 +39,17 @@ double MoveLength::getMoveLength(double ax, double ay, double az ,double timeUse
 {
 	return canculateLengthMethod1( ax , timeUse);
 }
-
+//timeUse是采样频率,ax,ay,az分别是三轴加速度
+//现在还没有定是哪一个轴，所以参数全部都传过来了
+//demo的话，用ax作为计算的基准
+//length是数组长度
+double MoveLength::getMoveLength(double* ax, double* ay, double* az, double timeUse , int length)
+{
+	double SL = 0;
+	for(int i = 0 ; i < length ; i++)
+	  SL += canculateLengthMethod1(ax[i], timeUse);
+	return SL;
+}
 
 //--------------------------------内部使用辅助方法---------------------------------------//
 //积分的计算方法1，样条方法，作为雏形先暂时这样使用

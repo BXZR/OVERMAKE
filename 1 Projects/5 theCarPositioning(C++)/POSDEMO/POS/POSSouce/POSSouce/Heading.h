@@ -9,6 +9,7 @@ public :
 	//构造方法，用来设定halfT的数值
 	Heading(double halfT);
 	double getHeading(double gx, double gy, double gz, double ax, double ay, double az, double mx, double my, double mz);
+	double getHeading(double* Data);
 private:
 	//各种随着计算需要不断更新的参数
 	double Kp ; 

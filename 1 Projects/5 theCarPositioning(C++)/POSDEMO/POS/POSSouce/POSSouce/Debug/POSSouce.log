@@ -1,5 +1,12 @@
 ﻿  Position.cpp
-c:\users\suck_dynasty\desktop\pos\possouce\possouce\position.cpp(95): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\suck_dynasty\desktop\pos\possouce\possouce\position.cpp(144): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
+  MoveLength.cpp
+  Heading.cpp
+  Buffer.cpp
+  正在生成代码...
+  正在编译...
+  POSSouce.cpp
+  正在生成代码...
   POSSouce.vcxproj -> C:\Users\suck_dynasty\Desktop\POS\POSSouce\Debug\POSSouce.exe
   POSSouce.vcxproj -> C:\Users\suck_dynasty\Desktop\POS\POSSouce\Debug\POSSouce.pdb (Partial PDB)

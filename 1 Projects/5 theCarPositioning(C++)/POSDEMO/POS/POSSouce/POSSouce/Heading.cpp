@@ -22,13 +22,19 @@ Heading::Heading(double halfTNew)
 }
 
 //统一外包计算航向的方法，在这里切换算法
-double Heading::getHeading(double gx, double gy, double gz, double ax, double ay, double az, double mx, double my, double mz)
+double Heading::getHeading(double ax, double ay, double az, double gx, double gy, double gz,  double mx, double my, double mz)
 {
-	return AHRSupdate( gx,  gy, gz,  ax, ay, az,mx, my, mz );
+	return AHRSupdate(ax, ay, az,  gx,  gy, gz, mx, my, mz );
+}
+//统一外包计算航向的方法，在这里切换算法
+//传入的是double数组（按照参数顺序排列）
+double Heading::getHeading(double* Data)
+{
+	return AHRSupdate(Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], Data[6], Data[7], Data[8] );
 }
 //--------------------------------航向计算方法---------------------------------------//
 //航向计算方法，AHRS
-double Heading::AHRSupdate(double gx, double gy, double gz, double ax, double ay, double az, double mx, double my, double mz)
+double Heading::AHRSupdate(double ax, double ay, double az,  double gx, double gy, double gz, double mx, double my, double mz)
 {
 	//Console.WriteLine(string .Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}" , gx,gy,gz,ax,ay,az,mx,my,mz));
 	double norm;

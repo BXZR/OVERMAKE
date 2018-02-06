@@ -10,6 +10,9 @@ class MoveLength
 	double getMoveLength(double ax ,double ay ,double az);
 	//计算位移大小方法，直接给出采样频率
 	double getMoveLength(double ax, double ay, double az,double timeUse);
+	//计算位移大小方法，直接给出采样频率,参数是缓冲区数组
+	//因为传入的是缓冲区数组，所以需要一个长度作为循环标记
+	double getMoveLength(double* ax, double* ay, double* az, double timeUse, int length);
 	//构造，初速度是0
 	MoveLength();
 	//构造，初速度是VZero

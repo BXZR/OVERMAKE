@@ -589,7 +589,17 @@ namespace socketServer
 
         private void button3_Click_3(object sender, RoutedEventArgs e)
         {
-            ServerIPText.Text = SystemSave.getIPAddress();
+            string textSave = ServerIPText.Text;
+            try
+            {
+                ServerIPText.Text = SystemSave.getIPAddress();
+            }
+            catch
+            {
+                ServerIPText.Text = textSave;
+                MessageBox.Show("获取本地IP地址失败，请检查网络连接情况或者其他配置。");
+                
+            }
         }
 
 

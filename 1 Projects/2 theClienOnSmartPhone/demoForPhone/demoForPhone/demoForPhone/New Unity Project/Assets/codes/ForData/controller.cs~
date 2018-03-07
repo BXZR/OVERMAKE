@@ -80,7 +80,17 @@ public class controller : MonoBehaviour {
 	void Update () 
 	{
 		
-		if (Input.GetKeyDown (KeyCode.Escape))
-			Application.Quit();
+		if (Input.GetKeyDown (KeyCode.Escape)) 
+		{
+			//菜单界面直接退出
+			if (Application.loadedLevelName == "SelectScene")
+				Application.Quit ();
+			else 
+			{
+				//直接退回到开始界面
+				//资源等等的回收和处理问题由client的OnDestroy自行处理在这里不用管
+				UnityEngine.SceneManagement.SceneManager.LoadScene ("SelectScene");
+			}
+		}
 	}
 }

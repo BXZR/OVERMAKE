@@ -124,20 +124,35 @@ namespace socketServer.Codes.DecisionTree
             string[] line = infotmationGet.Split('\n');
             for (int i = 0; i < line.Length; i++)
             {
-
                 string[] rows = line[i].Split(',');
                 if (string.IsNullOrEmpty(line[i]))
                     continue;
-
-                // Console.WriteLine(rows[0] + "------" + i);
-                AX.Add(Convert.ToDouble(rows[0]));
-                AY.Add(Convert.ToDouble(rows[1]));
-                AZ.Add(Convert.ToDouble(rows[2]));
-                GX.Add(Convert.ToDouble(rows[3]));
-                GY.Add(Convert.ToDouble(rows[4]));
-                GZ.Add(Convert.ToDouble(rows[5]));
-                SL.Add(Convert.ToDouble(rows[15]));
-                SM.Add(Convert.ToInt32(rows[16]));
+                //一行的数据有可能无法被当做数据项使用，而且这种情况也很常见
+                try
+                {
+                    // Console.WriteLine(rows[0] + "------" + i);
+                    AX.Add(Convert.ToDouble(rows[0]));
+                    AY.Add(Convert.ToDouble(rows[1]));
+                    AZ.Add(Convert.ToDouble(rows[2]));
+                    GX.Add(Convert.ToDouble(rows[3]));
+                    GY.Add(Convert.ToDouble(rows[4]));
+                    GZ.Add(Convert.ToDouble(rows[5]));
+                    SL.Add(Convert.ToDouble(rows[15]));
+                    SM.Add(Convert.ToInt32(rows[16]));
+                }
+                catch
+                {
+                    //这只是权宜之计
+                    //AX.Add(Convert.ToDouble(0));
+                    //AY.Add(Convert.ToDouble(0));
+                    //AZ.Add(Convert.ToDouble(0));
+                    //GX.Add(Convert.ToDouble(0));
+                    //GY.Add(Convert.ToDouble(0));
+                    //GZ.Add(Convert.ToDouble(0));
+                    //SL.Add(Convert.ToDouble(0));
+                    //SM.Add(Convert.ToInt32(0));
+                    continue;//这一行被放弃
+                }
             }
            // Console.WriteLine("Data loaded for tree");
         }
@@ -176,11 +191,12 @@ namespace socketServer.Codes.DecisionTree
         //计算信息获取度
         private void makeBasicValue()
         {
-            //我这里将数据分成了四种情况，因此可以直接进行处理
+            //我这里将数据分成了多种情况，也就是最终需要分成的类型数量，因此可以直接进行处理
             //但是为了保证可兼容性，在这里直接做复杂一点的处理
             //为了表达简单，用的方法相当土鳖
 
             //SLMode是目标，所以用这个来计算
+            //其实仍然是从头到尾的遍历
             for (int i = 0; i < aimMode.Count; i++)
             {
                 if (typesForAll.Contains(aimMode[i]) == false)
@@ -189,10 +205,20 @@ namespace socketServer.Codes.DecisionTree
                     typesForAll.Add(aimMode[i]);
                     countOfTypesForAll.Add(0);
                 }
+                else
+                {
+                    //否则对应index的countOfTypesForAll需要累加
+                    countOfTypesForAll[typesForAll.IndexOf(aimMode[i])]++;
+                }
             }
             //Console.WriteLine("get type count = " + typesForAll.Count);
-            // Console.WriteLine("countOfTypesForAll = " + countOfTypesForAll.Count);
+            //Console.WriteLine("countOfTypesForAll = " + countOfTypesForAll.Count);
 
+            /*
+             * 这个是“对应index的countOfTypesForAll需要累加”的原始土鳖方法
+             * 暂时保留之.......
+             * 优势，简单易读
+             * 劣势，效率太糟糕
             for (int i = 0; i < aimMode.Count; i++)
             {
                 for (int j = 0; j < typesForAll.Count; j++)
@@ -203,6 +229,7 @@ namespace socketServer.Codes.DecisionTree
                     }
                 }
             }
+            */
 
             //for (int i = 0; i < countOfTypesForAll.Count; i++)
             //Console.WriteLine("countOfTypesForAll"+i+"  "+ countOfTypesForAll[i]);
@@ -222,6 +249,7 @@ namespace socketServer.Codes.DecisionTree
         //全局唯一计算一次其余的分项就可以了
         private void makeEffectValues()
         {
+            //这些是针对非目标属性的那些用来分辨的属性来做的
             //要选择当前所有还需要分的属性中最重要的那个属性
             //Map是当前属性存储的集合
             for (int mapIndex = 0; mapIndex < MAP.Count; mapIndex++)
@@ -229,13 +257,17 @@ namespace socketServer.Codes.DecisionTree
                 List<int> types = new List<int>();//有多少种类型
                 List<int> countOfTypes = new List<int>();//每一种类型有多少
 
-                for (int i = 0; i < MAP[mapIndex].Count; i++)
-                {
-                    if (types.Contains(MAP[mapIndex][i]) == false)
-                    {
-                        types.Add(MAP[mapIndex][i]);
-                    }
-                }
+                //types为map每一个元素的去重复
+                //方法1 linQ
+                types = MAP[mapIndex].Distinct().ToList(); 
+                //方法2 土鳖赋值方法
+                //for (int i = 0; i < MAP[mapIndex].Count; i++)
+                //{
+                //    if (types.Contains(MAP[mapIndex][i]) == false)
+                //    {
+                //        types.Add(MAP[mapIndex][i]);
+                //    }
+                //}
 
                 //for (int i = 0; i < types.Count; i++)
                 //   Console.WriteLine("branceType = "+ types[i]);
@@ -251,28 +283,35 @@ namespace socketServer.Codes.DecisionTree
                 //每一种小的类型分别有多少
                 for (int k = 0; k < MAP[mapIndex].Count; k++)
                 {
-                    for (int i = 0; i < types.Count; i++)
-                    {
-                        //对于每一个数据多需要做处理
-                        if (MAP[mapIndex][k] == types[i])//如果当前数据由某一个类型
-                        {
-                            startIndex = i;//基础index
-                                           //找到这个该数据在本小类中的类型
-                                           //Console.WriteLine("theType of this :" + types[i]);
-                        }
-                    }
+                    //方法1 List的内置方法
+                    startIndex = types.IndexOf(MAP[mapIndex][k]);
+                    //方法2 土鳖查找法
+                    //for (int i = 0; i < types.Count; i++)
+                    //{
+                    //    //对于每一个数据多需要做处理
+                    //    if (MAP[mapIndex][k] == types[i])//如果当前数据由某一个类型
+                    //    {
+                    //        startIndex = i;//基础index
+                    //                       //找到这个该数据在本小类中的类型
+                    //                       //Console.WriteLine("theType of this :" + types[i]);
+                    //    }
+                    //}
                     //计算偏移量
                     //这与我的数据排布方式有关
-                    for (int j = 0; j < typesForAll.Count; j++)
-                    {
-                        //横向处理
-                        if (aimMode[k] == typesForAll[j])
-                        {
-                            offsetIndex = j;
-                            //找到这个该数据在本小类中的类型
-                            //Console.WriteLine("All Type of this :" + typesForAll[j]);
-                        }
-                    }
+                    //方法1 List的内置方法
+                    offsetIndex = typesForAll.IndexOf(aimMode[k]);
+                    //计算偏移量也可以用List的做法处理
+                    //方法2 土鳖查找法
+                    //for (int j = 0; j < typesForAll.Count; j++)
+                    //{
+                    //    //横向处理
+                    //    if (aimMode[k] == typesForAll[j])
+                    //    {
+                    //        offsetIndex = j;
+                    //        //找到这个该数据在本小类中的类型
+                    //        //Console.WriteLine("All Type of this :" + typesForAll[j]);
+                    //    }
+                    //}
                     int indexUse = typesForAll.Count * startIndex + offsetIndex;
                     countOfTypes[indexUse]++;
                 }
@@ -360,9 +399,11 @@ namespace socketServer.Codes.DecisionTree
             //那么这一分支或许可以剪枝
             if (theFatherPoint.aimMode.Count == 1 && SystemSave.isCutForDecisionTree)
             {
-                Console.WriteLine("在" + theFatherPoint.name + "处剪枝");
+                //Console.WriteLine("在" + theFatherPoint.name + "处剪枝");
                 return;
             }
+
+            //根本就没有排序，而是查找最大项实现的，因为目标只有最大项
             double max = -9999;
             int index = 0;
             for (int i = 0; i < theFatherPoint.inforValues.Count; i++)
@@ -376,13 +417,17 @@ namespace socketServer.Codes.DecisionTree
             //找到所有的类型:对于这个影响能力最大的属性来说，他有多少种类型
             //每一种类型都将会是一个分支
             List<int> types = new List<int>();
-            for (int i = 0; i < theFatherPoint.MAP[index].Count; i++)
-            {
-                if (types.Contains(theFatherPoint.MAP[index][i]) == false)
-                {
-                    types.Add(theFatherPoint.MAP[index][i]);
-                }
-            } 
+            //types就是theFatherPoint.MAP[index]的去重复版本
+            //方法1，linq
+            types = theFatherPoint.MAP[index].Distinct().ToList();
+            //方法2，循环检查（土鳖）
+            //for (int i = 0; i < theFatherPoint.MAP[index].Count; i++)
+            //{
+            //    if (types.Contains(theFatherPoint.MAP[index][i]) == false)
+            //    {
+            //        types.Add(theFatherPoint.MAP[index][i]);
+            //    }
+            //} 
             //Console.WriteLine("------------------------------------------------");
             //Console.WriteLine("Father is "+ theFatherPoint.name);
             for (int i = 0; i < types.Count; i++)

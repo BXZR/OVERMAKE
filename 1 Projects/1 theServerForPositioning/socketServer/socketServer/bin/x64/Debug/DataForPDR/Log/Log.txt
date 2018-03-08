@@ -1958,3 +1958,68 @@
 [error 2018:03:07:04:46:22]: Server 关闭出错: 无法访问已释放的对象。
 对象名:“System.Net.Sockets.Socket”。
 [information 2018:03:07:04:46:22]: Serve已经关闭
+[information 2018:03:07:10:27:46]: 开始进行刷新程序
+[information 2018:03:07:10:27:47]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:07:10:27:47]: Server以1形式开始侦听
+[information 2018:03:07:10:31:33]: 开始进行刷新程序
+[information 2018:03:07:10:31:33]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:07:10:31:33]: Server以1形式开始侦听
+[information 2018:03:07:10:32:21]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:07:10:32:21]: Server以2形式开始侦听
+[information 2018:03:07:10:32:25]: Serve已经关闭
+[information 2018:03:07:10:32:34]: 步长计算相关的ANN已经新建或重建
+[information 2018:03:07:10:34:47]: 开始进行刷新程序
+[information 2018:03:07:10:34:47]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:07:10:34:47]: Server以1形式开始侦听
+[information 2018:03:07:10:34:52]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:07:10:34:58]: Serve已经关闭
+[information 2018:03:07:10:35:50]: 开始进行刷新程序
+[information 2018:03:07:10:35:50]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:07:10:35:50]: Server以1形式开始侦听
+[information 2018:03:07:10:36:05]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:07:10:36:09]: 保存设置数据
+[information 2018:03:07:10:36:15]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:07:10:36:19]: 保存设置数据
+[information 2018:03:07:10:36:20]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[error 2018:03:07:10:36:24]: Server 出错： 正在中止线程。 已经强制关闭
+[information 2018:03:07:10:36:24]: Serve已经关闭
+[information 2018:03:08:09:49:33]: 开始进行刷新程序
+[information 2018:03:08:09:49:33]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:08:09:49:33]: Server以1形式开始侦听
+[information 2018:03:08:09:49:44]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:08:09:49:51]: Serve已经关闭
+[information 2018:03:08:10:57:47]: 开始进行刷新程序
+[information 2018:03:08:10:57:47]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:08:10:57:47]: Server以1形式开始侦听
+[information 2018:03:08:10:57:51]: Serve已经关闭
+[information 2018:03:08:11:07:26]: 开始进行刷新程序
+[information 2018:03:08:11:07:26]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:08:11:07:26]: Server以1形式开始侦听
+[information 2018:03:08:11:07:41]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:08:11:07:43]: 步长计算相关的ANN已经新建或重建
+[information 2018:03:08:11:07:45]: Serve已经关闭
+[information 2018:03:08:11:16:33]: 开始进行刷新程序
+[information 2018:03:08:11:16:33]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:08:11:16:33]: Server以1形式开始侦听
+[information 2018:03:08:11:16:40]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:08:11:16:42]: 步长计算相关的ANN已经新建或重建
+[information 2018:03:08:11:16:45]: Serve已经关闭
+[information 2018:03:08:11:17:52]: 开始进行刷新程序
+[information 2018:03:08:11:17:52]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:08:11:17:52]: Server以1形式开始侦听
+[information 2018:03:08:11:17:57]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:08:11:18:08]: Serve已经关闭
+[information 2018:03:08:11:37:57]: 开始进行刷新程序
+[information 2018:03:08:11:37:58]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:08:11:37:58]: Server以1形式开始侦听
+[information 2018:03:08:11:39:39]: 开始进行刷新程序
+[information 2018:03:08:11:39:39]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:08:11:39:39]: Server以1形式开始侦听
+[information 2018:03:08:11:39:46]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:08:11:39:49]: 步长计算相关的ANN已经新建或重建
+[information 2018:03:08:11:39:56]: 保存设置数据
+[information 2018:03:08:11:39:58]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:08:11:40:06]: Serve已经关闭
+[information 2018:03:08:11:42:44]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:08:11:44:33]: 楼梯计算相关的ANN已经新建或重建
+[information 2018:03:08:11:44:35]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树

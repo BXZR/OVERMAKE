@@ -185,7 +185,7 @@ namespace socketServer.Codes.DecisionTree
                     Titles.Add(titlesIn[i]);
             }
 
-            //从自身代表的属性的mode找到所有father中有的steoLengthMode，这些对应的就是这个节点对应的stepLengthMode
+            //从自身代表的属性的mode找到所有father中有的stepLengthMode，这些对应的就是这个节点对应的stepLengthMode
             //theModesOfThis 如果为空，就说明是root节点，还没有选定属性，所以没有theModesOfThis
             //但是跟节点包含所有的信息
             if (theModesOfThis != null)

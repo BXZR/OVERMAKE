@@ -1,0 +1,35 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class check : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
+		
+	}
+
+	//求一个数里面二进制有多少个1
+	int  FFF(int a)
+	{
+
+		int count =0; 
+		while(a>0) 
+		{ 
+			count++; 
+			a = a&(a-1);
+			print ("a = " + a);
+		} 
+		return count; 
+
+	}
+
+
+
+	// Update is called once per frame
+	void Update () 
+	{
+		if (Input.GetKeyDown (KeyCode.A))
+			print ("FFF(911)" + FFF(911)); //输出是7
+	}
+}

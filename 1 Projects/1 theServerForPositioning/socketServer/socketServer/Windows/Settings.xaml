@@ -292,7 +292,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox x:Name="groupBox3" Header="AboutFiles" VerticalAlignment="Top" Height="246" Margin="10,10,293,0">
+                    <GroupBox x:Name="groupBox3" Header="FileOperations" VerticalAlignment="Top" Height="246" Margin="10,10,293,0">
                         <Grid HorizontalAlignment="Left" Height="222" Margin="10,0,0,0" VerticalAlignment="Top" Width="161">
                             <Button x:Name="button6" Content="ClearLogData" HorizontalAlignment="Left" Margin="17,78,0,0" VerticalAlignment="Top" Width="127" Click="button6_Click"/>
                             <Button x:Name="button7" Content="ClearRouteMap" HorizontalAlignment="Left" Margin="17,112,0,0" VerticalAlignment="Top" Width="127" Click="button7_Click"/>

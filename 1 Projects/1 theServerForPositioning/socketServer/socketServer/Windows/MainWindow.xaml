@@ -15,11 +15,17 @@
                 <ColumnDefinition Width="409*"/>
                 <ColumnDefinition Width="480*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Data Tip" Height="304" Margin="0,23,6,0" x:Name="theStepLabel" VerticalAlignment="Top" />
-            <TextBox x:Name="POSITION" Margin="3,332,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2" FontSize="10" FontWeight="Bold"/>
-            <Canvas x:Name="theCanvas" Margin="0,32,10,0" RenderTransformOrigin="0.504,0.503" HorizontalAlignment="Right" Width="452" Height="480" VerticalAlignment="Top" UseLayoutRounding="False" Grid.Column="1">
+            <Canvas x:Name="theCanvas" Margin="0,33,10,0" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" Grid.Column="1" HorizontalAlignment="Right" Width="452" Height="479" VerticalAlignment="Top">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="1" ScaleX="1"/>
+                        <SkewTransform AngleY="0" AngleX="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
                 <Canvas.Background>
-                    <ImageBrush ImageSource="/socketServer;component/pictures/back3.png"/>
+                    <ImageBrush ImageSource="/socketServer;component/pictures/back3.png" TileMode="Tile"/>
                 </Canvas.Background>
                 <Canvas.LayoutTransform>
                     <TransformGroup>
@@ -31,6 +37,8 @@
                 </Canvas.LayoutTransform>
                 <Image x:Name="HeadingImage" Source="/socketServer;component/pictures/headArrow.png" RenderTransformOrigin="0.5,0.577" Height="32" Canvas.Left="213" Canvas.Top="230" Width="39"/>
             </Canvas>
+            <Label Content="Data Tip" Height="304" Margin="0,23,6,0" x:Name="theStepLabel" VerticalAlignment="Top" />
+            <TextBox x:Name="POSITION" Margin="3,332,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2" FontSize="10" FontWeight="Bold"/>
             <Button x:Name="button2" Content="Save Route Map" Margin="109,2,237,0" VerticalAlignment="Top" Click="button2_Click_1" Grid.Column="1"/>
             <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="11,32,0,0" Grid.Column="1"/>
             <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="212" Height="33" VerticalAlignment="Top" Foreground="#FFD12179" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Margin="0,0,20,0" Grid.Column="1"/>
@@ -101,5 +109,6 @@
             <ComboBoxItem Content="PDR(practical)" ToolTip="针对行人的实际环境，较为苛刻"/>
             <ComboBoxItem Content="CDR(Car)" ToolTip="针对车进行的航迹推算"/>
         </ComboBox>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="1005,9,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
     </Grid>
 </Window>

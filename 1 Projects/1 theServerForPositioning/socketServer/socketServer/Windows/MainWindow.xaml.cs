@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -1349,7 +1350,6 @@ namespace socketServer
                 SystemSave.theSettingWindow.startSet(this);
                 SystemSave.theSettingWindow.Show();
             }
-
         }
 
         //查询状态的方法
@@ -1500,6 +1500,12 @@ namespace socketServer
 
         }
 
+
+        void ScaleCanvasBackPicture()
+        {
+
+        }
+
         //清空一下绘画的内容，重新定位到中心点，但是这个中心点的坐标已经修改为位移之后的坐标
         //一个很有意思的扩展项
         private void clearDraw_Click(object sender, RoutedEventArgs e)
@@ -1535,6 +1541,11 @@ namespace socketServer
                 StepLengthMethod.IsEnabled = true;
                 ZAxisSelect.IsEnabled = true;
             }
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            thePictureMaker.ScaleCanvasBack(theCanvas  , 0.4f);
         }
     }
 }

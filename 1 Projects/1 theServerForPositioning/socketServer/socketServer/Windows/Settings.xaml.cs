@@ -25,7 +25,7 @@ namespace socketServer
     public partial class Settings : Window
     {
         public MainWindow theMainWindow = null;//保留引用，还需要调用方法的
-
+        static BitmapImage theBackImageGet = null;//获取到的背景图
         public Settings()
         {
             InitializeComponent();
@@ -167,6 +167,10 @@ namespace socketServer
 
             SystemSave.StaturaMethod2_A = Convert.ToDouble(saturate2AText.Text);
             SystemSave.StaturaMethod2_B = Convert.ToDouble(saturate2BText.Text);
+
+            ImageBrush ib = new ImageBrush();
+            ib.ImageSource = theMapImage.Source;
+            theMainWindow.theCanvas.Background  = ib; ;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -252,6 +256,9 @@ namespace socketServer
             makeCommonFamilyWeights();//计算获取参数的方法
             else
             makeCommonFormulaWeightsFamily();//初始的公式族的内容(直接读取systemSave文件的做法)
+
+            if (theBackImageGet != null)
+                theMapImage.Source = theBackImageGet;
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -796,6 +803,27 @@ namespace socketServer
             {
                 SystemSave.theAppendixWindow = new Windows.Appendix();
                 SystemSave.theAppendixWindow.Show();
+            }
+        }
+
+        private void button13_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog theSelectPictureWindow = new Microsoft.Win32.OpenFileDialog();
+            theSelectPictureWindow.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG" +
+                        "|All Files (*.*)|*.*";
+            theSelectPictureWindow.Multiselect = false;
+            if (theSelectPictureWindow.ShowDialog() == true)
+            {
+                try
+                {
+                    BitmapImage image = new BitmapImage(new Uri(theSelectPictureWindow.FileName, UriKind.RelativeOrAbsolute));
+                    theMapImage.Source = image;
+                    theBackImageGet = image;
+                }
+                catch
+                {
+                    MessageBox.Show("Couldn't load the image file " + theSelectPictureWindow.FileName);
+                }
             }
         }
     }

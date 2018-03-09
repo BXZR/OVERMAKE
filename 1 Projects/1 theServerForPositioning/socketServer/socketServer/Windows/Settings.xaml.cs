@@ -797,14 +797,7 @@ namespace socketServer
             MessageBox.Show("坐标数据清除成功");
         }
 
-        private void button12_Click(object sender, RoutedEventArgs e)
-        {
-            if (SystemSave.theAppendixWindow == null)
-            {
-                SystemSave.theAppendixWindow = new Windows.Appendix();
-                SystemSave.theAppendixWindow.Show();
-            }
-        }
+
 
         private void button13_Click(object sender, RoutedEventArgs e)
         {
@@ -825,6 +818,27 @@ namespace socketServer
                     MessageBox.Show("Couldn't load the image file " + theSelectPictureWindow.FileName);
                 }
             }
+        }
+
+        private void button12_Click_1(object sender, RoutedEventArgs e)
+        {
+            pictureMaker thePictureMaker = new pictureMaker();
+            thePictureMaker.createPictureFromData();
+        }
+
+        private void button14_Click(object sender, RoutedEventArgs e)
+        {
+            demoForTensorFlow.lineNear();
+        }
+
+        private void button15_Click(object sender, RoutedEventArgs e)
+        {
+            new Codes.AccordNotNetUse().Linear();
+        }
+
+        private void button16_Click(object sender, RoutedEventArgs e)
+        {
+            new Codes.AcordUse.AccordANN().checkClass();
         }
     }
 }

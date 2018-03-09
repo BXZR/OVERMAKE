@@ -1542,11 +1542,6 @@ namespace socketServer
                 ZAxisSelect.IsEnabled = true;
             }
         }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            thePictureMaker.ScaleCanvasBack(theCanvas  , 0.4f);
-        }
     }
 }
 

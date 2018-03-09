@@ -160,24 +160,27 @@ namespace socketServer
         }
 
         //修改Canvas图片的分辨率，但是要保证Canvas不变化，所以需要使用bitmmap来做
+        //目前暂时也没什么好方法来处理
+        //牵扯的东西比较多
+        //1 背景图的放大缩小，尤其是缩小
+        //2 背景图的拖拽移动和当前的绘制方式是不一样的，所以暂时不能用
         public void ScaleCanvasBack(System.Windows.Controls.Canvas theCanvas  , float scale)
         {
             theCanvas.Children.Clear();
 
             //RenderTargetBitmap bmp = new RenderTargetBitmap(100, 100, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
-           // bmp.Render(theCanvas);
-           // var enc = new System.Windows.Media.Imaging.PngBitmapEncoder();
-           // enc.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bmp));
+            //bmp.Render(theCanvas);
+            //var enc = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            //enc.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bmp));
 
             //using (var stm = System.IO.File.Create("B.png"))
-           // {
-           //     enc.Save(stm);
-           // }
-            
+            //{
+            //    enc.Save(stm);
+            //}
 
-           // System.Windows.Media.ImageBrush ib = new System.Windows.Media.ImageBrush();
-           // ib.ImageSource = bmp;
-          //  theCanvas.Background = ib;
+            //System.Windows.Media.ImageBrush ib = new System.Windows.Media.ImageBrush();
+            //ib.ImageSource = bmp;
+            //theCanvas.Background = ib;
         }
 
  

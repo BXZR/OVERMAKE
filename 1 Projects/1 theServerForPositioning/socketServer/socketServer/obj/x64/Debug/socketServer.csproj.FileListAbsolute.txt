@@ -42,7 +42,6 @@ D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketSer
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\socketServer.csprojResolveAssemblyReference.cache
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\MainWindow.baml
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\AllStartServerWondow.g.cs
-D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\Appendix.g.cs
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\ChartWindow.g.cs
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\commonWeightSetting.g.cs
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\insectUnityPlay.g.cs
@@ -54,7 +53,6 @@ D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketSer
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\socketServer_MarkupCompile.cache
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\socketServer_MarkupCompile.lref
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\AllStartServerWondow.baml
-D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\Appendix.baml
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\ChartWindow.baml
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\commonWeightSetting.baml
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\insectUnityPlay.baml

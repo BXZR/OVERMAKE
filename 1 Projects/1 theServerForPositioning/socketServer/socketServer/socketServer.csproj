@@ -135,9 +135,6 @@
     <Compile Include="Windows\AllStartServerWondow.xaml.cs">
       <DependentUpon>AllStartServerWondow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Appendix.xaml.cs">
-      <DependentUpon>Appendix.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\ChartWindow.xaml.cs">
       <DependentUpon>ChartWindow.xaml</DependentUpon>
     </Compile>
@@ -173,10 +170,6 @@
       <DependentUpon>TreeViewWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\AllStartServerWondow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Appendix.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

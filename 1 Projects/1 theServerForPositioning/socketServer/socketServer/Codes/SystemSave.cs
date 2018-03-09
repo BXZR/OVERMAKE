@@ -32,7 +32,6 @@ namespace socketServer
 
         //有些窗口应该保持单例模式
         public static Settings theSettingWindow = null;//全局唯一设定窗口
-        public static Appendix theAppendixWindow = null;//全局唯一附录窗口
 
         //如果正在上楼梯，这个标记实际上需要根据数据得到
         //这个标记的作用是开/关Z轴的计算

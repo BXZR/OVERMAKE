@@ -94,7 +94,7 @@ public class AHRS
 		double pitch = Math.Asin(2.0f*(q0* q2 - q1* q3)) * 57.3;
 	//	double yaw = Math.Atan2(2.0f * (q1 * q2 - q0 * q3), 2.0f * (q0 * q0 + q1 * q1) - 1) * 57.3;
 		double yaw  = Math.Atan2(-2 * q1 * q2 - 2 * q0 * q3, 2 * q2 * q2 + 2 * q3 * q3 - 1) * 57.3;  
-		return yaw; //返回偏航角
+		return double.IsNaN(yaw) ? 0 : yaw; //返回偏航角
 	}
 	//这是第二种AHRS的方法
 	public double AHRSupdate2(double gx, double gy, double gz, double ax, double ay, double az, double mx, double my, double mz)
@@ -173,7 +173,8 @@ public class AHRS
 		double roll = Math.Atan2(2.0f * (q0 * q1 + q2 * q3), 1 - 2.0f * (q1 * q1 + q2 * q2))* 57.3;
 		double pitch = Math.Asin(2.0f*(q0* q2 - q1* q3)) * 57.3;
 		double yaw = Math.Atan2(2.0f * (q1 * q2 - q0 * q3), 2.0f * (q0 * q0 + q1 * q1) - 1) * 57.3;
-		return yaw+180; //返回偏航角
+		yaw += 180;
+		return double.IsNaN(yaw) ? 0 : yaw; //返回偏航角
 	}
 
 }

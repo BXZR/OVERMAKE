@@ -8,7 +8,7 @@ public class controller : MonoBehaviour {
 	server theServer;//socket控制单元
 	informationShower theInformationShower;
 	informationGeter theGeter;//信息采集单元
-
+	OperateServer theOperateServer;//客户端操作服务端需要传送的信息的库
 	void Start () 
 	{
 
@@ -24,6 +24,7 @@ public class controller : MonoBehaviour {
 		theServer = this.GetComponent <server> ();	
 		theInformationShower = this.GetComponent <informationShower> ();
 		theGeter = this.GetComponent <informationGeter> ();
+		theOperateServer = this.GetComponent <OperateServer> ();
 		theServer.clientMain ();//客户端的网络连接
 		theGeter.makeStart();
 		Invoke ("showTitle" , 0.7f);
@@ -72,11 +73,20 @@ public class controller : MonoBehaviour {
 	{
 		if (systemValues.isPaused)
 			return;
-		string sendString = theGeter.getSendInformation ();
+	    string sendString = theGeter.getSendInformation ();
 		theServer.send (sendString);
+
 		//sendString = theGeter.getSendInformation2 ();
 		//theServer.send (sendString);
 	}
+
+	public void sendClientOperateServerString(int index )
+	{
+		string operateSend = theOperateServer.getSentInformation (index);
+		print ("OperateSend => "+ operateSend);
+		theServer.send (operateSend);
+	}
+
 	void Update () 
 	{
 		

@@ -30,6 +30,9 @@ namespace socketServer
             //暂定的协议： 
             //传输内容的大项目用';'切分
             //传输内容的小项目用','切分
+            if (string.IsNullOrEmpty(information))
+                return;
+
             string[] theSplited = information.Split(';');
             //因为信息的第一项是用来做报头了
             //多段的报头，操作标记，数位标记等等，中间以“+”分割
@@ -65,9 +68,9 @@ namespace socketServer
                         //时间戳
                         case 12: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]); } break;
                         //AHRSZ信息
-                        case 13: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); } break;
+                        case 13: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); Console.WriteLine("13 => " + theSplited[13]); } break;
                         //IMU信息
-                        case 14: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); } break;
+                        case 14: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); Console.WriteLine("14 => " + theSplited[14]); } break;
                     }
                 }
             }
@@ -117,6 +120,35 @@ namespace socketServer
                 sendString += ";" + theWindow.heightNow.ToString("f2");
             }
             return sendString;
+        }
+
+
+        //客户端对服务端的操作是有一个集合的，而这个集合就是在这个地方
+        //这种操作的信息格式与一般data的信息内容差不多
+        //格式为 “信息头;操作内容;参数”
+        public void clientOperateServer(string informartionIn, MainWindow theMainwindow)
+        {
+            string[] theSplited = informartionIn.Split(';');
+            //数据长度不对，不允许操作
+            if (theSplited.Length < 2)
+                return;
+            //获得操作类型
+            string operateType = theSplited[1];
+            //获得操作参数
+            //string[] para = new  string[theSplited.Length-2];
+            //theSplited.CopyTo(para ,2);
+            //正式开始操作
+            switch(operateType)
+            {
+                //绘制重定位，当前位置变为地图中心，消除掉轨迹内容，从当前位置开始重新定位
+                case "flashPosition":
+                    {
+                        Console.WriteLine("start operte with client's conmmand");
+                        theMainwindow.operateFlashPosition();
+                        Console.WriteLine("theClientoperate: flashPosition");
+                    }
+                    break;
+            }
         }
 
 

@@ -69,6 +69,8 @@ public class server : MonoBehaviour {
 			clientSocket.Send (Encoding.UTF8.GetBytes (sendMessage));
 			//print ("向服务器发送消息\n" + sendMessage);  
 			//通过clientSocket接收数据  
+			try
+			{
 			int receiveLength = clientSocket.Receive(result);  
 			string reveiveString = Encoding.UTF8.GetString (result, 0, receiveLength);
 			//从服务器获得的信息简单处理
@@ -85,6 +87,11 @@ public class server : MonoBehaviour {
 				systemValues.slopNow =  Convert.ToDouble (split[3]);
 				systemValues.heightNow = Convert.ToDouble (split[4]);
 				systemValues.canFlashPosition = true;//走了一步需要更新坐标
+			}
+			}
+			catch(Exception C) 
+			{
+				return;
 			}
 		}
 	}

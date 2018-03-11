@@ -20,7 +20,8 @@ namespace socketServer
         public static int SystemServerMode = 1;//1 单人使用 2 多人使用
         public static int FilterMode = 1;//滤波模式 0 不用滤波 1 一般滤波 2 复杂滤波
         public static double systemFlashTimer = 0.5;//系统绘制和计算的时间间隔，时间越短刷新越快灵敏越高开销越大
-        //两种模式的区别就是实验模式之下在原地晃手机就可以移动，但是这种情况在实际模式之下不被允许
+                                                    //两种模式的区别就是实验模式之下在原地晃手机就可以移动，但是这种情况在实际模式之下不被允许
+
 
         //重力加速度
         public static double g = 9.8;
@@ -32,6 +33,9 @@ namespace socketServer
 
         //有些窗口应该保持单例模式
         public static Settings theSettingWindow = null;//全局唯一设定窗口
+        //为了能够逆向操作，需要保留这个引用
+        //只有单人模式有效
+        public static MainWindow theMainWindowForSingle = null;
 
         //如果正在上楼梯，这个标记实际上需要根据数据得到
         //这个标记的作用是开/关Z轴的计算

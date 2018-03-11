@@ -1100,6 +1100,7 @@ namespace socketServer
             //单人可以出这个效果，多人使用共用server不必再次绑定
             if (isSingle)
             {
+                SystemSave.theMainWindowForSingle = this;
                 string showInformation = theServerController.startTheServer();
                 Log.saveLog(LogType.information, showInformation);
                 return showInformation;
@@ -1510,16 +1511,7 @@ namespace socketServer
         //一个很有意思的扩展项
         private void clearDraw_Click(object sender, RoutedEventArgs e)
         {
-            theInformationController.flashInformation();
-            if (thePositionController.theTransformPosition.Count > 0)
-            {
-                transForm temp = thePositionController.theTransformPosition[thePositionController.theTransformPosition.Count - 1];
-                SystemSave.startPositionX = temp.X;
-                SystemSave.startPositionY = temp.Y;
-                SystemSave.startPositionZ = temp.Z;
-            }
-            SystemSave.savedPositions.Clear();
-            theCarController.flashZero();
+            operateFlashPosition();
         }
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1541,6 +1533,24 @@ namespace socketServer
                 StepLengthMethod.IsEnabled = true;
                 ZAxisSelect.IsEnabled = true;
             }
+        }
+
+        //-------------------------------这个部分包含的操作可能也会被客户端通过网络方式调用（自己扯的RPC机制）-------------------------------------------//
+        //所有这一类的方法都以“operateXXXXXX”作为命名方式
+
+        //绘制重定位，当前位置变为地图中心，消除掉轨迹内容，从当前位置开始重新定位
+        public void operateFlashPosition()
+        {
+            theInformationController.flashInformation();
+            if (thePositionController.theTransformPosition.Count > 0)
+            {
+                transForm temp = thePositionController.theTransformPosition[thePositionController.theTransformPosition.Count - 1];
+                SystemSave.startPositionX = temp.X;
+                SystemSave.startPositionY = temp.Y;
+                SystemSave.startPositionZ = temp.Z;
+            }
+            SystemSave.savedPositions.Clear();
+            theCarController.flashZero();
         }
     }
 }

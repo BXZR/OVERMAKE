@@ -26,6 +26,7 @@ namespace socketServer
         private bool opened = true;//是否开启
         private int mode = 1;//1 单人使用 2 多人使用
 
+
         public bool Opened//opened状态只读，可查询
         {
             get{ return opened;}
@@ -119,6 +120,8 @@ namespace socketServer
         {
             mode = modeIn;
         }
+
+
 
         //开启服务器的接收内容，实际上是开启上层的消息接收内容
         //专门开一个新的线程用于管理这些信息的接收
@@ -240,7 +243,7 @@ namespace socketServer
         //非常关键的复用方法
         //这个方法里面包含最基本的协议头部分析和处理
         //这是对获得的数据的第一次解析，用来分析用什么模块来处理这些数据并做简单的处理\
-        private void getInformationWithOperate(byte[] result, Socket myClientSocket, information theInformationController)
+        private void getInformationWithOperate(byte[] result, Socket myClientSocket, information theInformationController , MainWindow theMainWindowForOperate = null)
         {
             //通过clientSocket接收数据  
             int receiveNumber = myClientSocket.Receive(result);
@@ -251,6 +254,7 @@ namespace socketServer
             //这是一个多段标记，标记头以“+”
             //初步解析，解析出来标记用以分类，看看用哪一种具体的操作
             string theInformationTitle = theProtocolController.getInformaitonTitle(information);
+            Console.WriteLine("switch title => "+ theInformationTitle);
             switch (theInformationTitle)
             {
                 //正常数据以smartPhoneData作为报文头部
@@ -276,6 +280,21 @@ namespace socketServer
                         //3D显示客户端的需要
                         string sendString = theProtocolController.makeSendToClients();
                         myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
+                    }
+                    
+                    break;
+                //如果是客户端对服务端的操作
+                case "operate":
+                    {
+                        if (theMainWindowForOperate == null)
+                        {
+                            Console.WriteLine("There is no main window to operate ,so operate fail");
+                            return;
+                        }
+                        Console.WriteLine("make operate for server with client's command");
+                        Console.WriteLine("the command is " + information);
+                        myClientSocket.Send(Encoding.UTF8.GetBytes("the server has got the command"));//发送一个步数信息
+                        theProtocolController.clientOperateServer(information, theMainWindowForOperate);
                     }
                     break;
                 //默认操作其实也就是强制性关闭
@@ -304,14 +323,15 @@ namespace socketServer
             {
                 try
                 {
-                    getInformationWithOperate(result , myClientSocket , theInformationController);
+                    getInformationWithOperate(result , myClientSocket , theInformationController , SystemSave.theMainWindowForSingle); /////////////////
                 }
-                catch //如果发送信息居然失败了，就关掉这个客户端连接
+                catch(Exception E) //如果发送信息居然失败了，就关掉这个客户端连接
                  {
                     Log.saveLog(LogType.error, "传送信息失败 socket已经关闭");
                     Console.WriteLine("传送信息失败\n这个socket已经关闭");
-                //myClientSocket.Shutdown(SocketShutdown.Receive);
-                myClientSocket.Close();
+                    Console.WriteLine("错误信息：\n" + E.Message);
+                    //myClientSocket.Shutdown(SocketShutdown.Receive);
+                    myClientSocket.Close();
                 return;
                 }
            }
@@ -326,7 +346,7 @@ namespace socketServer
             MainWindow aNewMainWindow = new MainWindow();
             aNewMainWindow.makeStart(theInformationController, false);
             //在这里对应不同客户端窗口的信息title(可以扩展一下)
-            aNewMainWindow.Title = "Dead Reckoning System Main No. " + theInformationControllers.Count;
+            aNewMainWindow.Title = "Dead Reckoning System Main Window (No. " + theInformationControllers.Count+")";
             aNewMainWindow.Show();
             return aNewMainWindow;
         }
@@ -357,14 +377,15 @@ namespace socketServer
             {
                 try
                 {
-                    getInformationWithOperate(result, myClientSocket, theInformationController);
+                    getInformationWithOperate(result, myClientSocket, theInformationController , theMainWindowForthisClient);
                 }
                 catch(Exception E) //如果发送信息居然失败了，就关掉这个客户端连接
                 {
                     Log.saveLog(LogType.error, "传送信息失败: "+ E.Message);
                     Console.WriteLine("传送信息失败");
-                //myClientSocket.Shutdown(SocketShutdown.Both);
-                myClientSocket.Close();
+                    Console.WriteLine("错误信息：\n" + E.Message);
+                    //myClientSocket.Shutdown(SocketShutdown.Both);
+                    myClientSocket.Close();
                 return;
                 }
             }

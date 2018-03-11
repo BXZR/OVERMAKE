@@ -1,17 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\codes\ForData\informationGeter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\codes\ForData\methods\IMU.cs">
     <Files>
-      <File FileName="Assets\demoCode\GPSGSP.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForPlay\Player\playerMoceWithWeb.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForData\server.cs" Line="76" Column="39" />
-      <File FileName="Assets\codes\ForData\controller.cs" Line="75" Column="39" />
-      <File FileName="Assets\codes\ForData\informationGeter.cs" Line="84" Column="22" />
-      <File FileName="Assets\codes\ForData\informationShower.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForData\inputChange.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForData\methods\AHRS.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForSystem\buttons.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForSystem\sceneSkipButton.cs" Line="1" Column="1" />
+      <File FileName="Assets\codes\ForData\OperateServer.cs" Line="28" Column="2" />
+      <File FileName="Assets\codes\ForData\controller.cs" Line="85" Column="50" />
+      <File FileName="Assets\codes\ForData\server.cs" Line="94" Column="12" />
+      <File FileName="Assets\codes\ForData\informationGeter.cs" Line="153" Column="80" />
+      <File FileName="Assets\codes\ForData\methods\AHRS.cs" Line="97" Column="39" />
+      <File FileName="Assets\codes\ForData\methods\IMU.cs" Line="211" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

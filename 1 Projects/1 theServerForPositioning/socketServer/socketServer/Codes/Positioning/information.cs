@@ -193,7 +193,7 @@ namespace socketServer
                 catch
                 {
                     Log.saveLog(LogType.error, "信息不完整（timeStep）：" + splitInformation[i]);
-                    Console.WriteLine("信息不完整（timeStep）：" + splitInformation[i]);
+                    // Console.WriteLine("信息不完整（timeStep）：" + splitInformation[i]);
                     theTime = 0;
                 }
                 timeStep.Add(theTime);//这个是我用别人的手机指南针软件搞出来的角度与这个角度的差异，中间相差90度
@@ -218,7 +218,7 @@ namespace socketServer
                 catch
                 {
                     Log.saveLog(LogType.error, "信息不完整（timeCD）：" + splitInformation[i]);
-                    Console.WriteLine("信息不完整（timeCD）：" + splitInformation[i]);
+                   // Console.WriteLine("信息不完整（timeCD）：" + splitInformation[i]);
                     theCDData = 0;
                 }
                 compassDegree.Add(theCDData );//这个是我用别人的手机指南针软件搞出来的角度与这个角度的差异，中间相差90度

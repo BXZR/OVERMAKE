@@ -100,7 +100,7 @@ public class IMU  {
 		//double Yaw=  Math.Atan2 (2.0f * (q0 * q1 + q2 * q3), q0*q0 - q1*q1 - q2*q2 + q3*q3 )*57.3;
 		//double yaw2 = Math.Atan2(2.0 * q1* q2 + 2 * q0 * q3, -2.0 * q2*q2 - 2 * q3 * q3+ 1)*  57.3; // yaw
 		if(yaw<0)  yaw+=360.0;  //将 -+180度  转成0-360度
-		return yaw; //返回偏航角
+		return double.IsNaN(yaw) ? 0 : yaw; //返回偏航角
 
 	}
 //-------------------------------------------------------------------------------------------------------------------------//
@@ -201,8 +201,8 @@ public class IMU  {
 		if (yaw < 0)
 			yaw += 360;
 		yaw   = Math.Atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3; 
-
-		return yaw+180 ; //返回偏航角
+		yaw += 180;
+		return double.IsNaN(yaw) ? 0 : yaw; //返回偏航角
 	 
 
 		//特别注意这里不能用四元数转欧拉角的做法来处理

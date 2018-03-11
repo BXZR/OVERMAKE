@@ -77,6 +77,9 @@ public class informationGeter : MonoBehaviour {
 
 		sendString += ";" +informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ;
 
+		//print ("AHRSZ = "+ AHRSZ);
+		//print ("IMUZ = "+ IMUZ);
+
 		informationForGPSPosition= "";
 		informationForTimer = "";
 		AHRSZ = "";
@@ -156,7 +159,7 @@ public class informationGeter : MonoBehaviour {
 			informationForMZ += Input .compass.rawVector .z.ToString("f4")+",";
 
 			informationForGPSPosition += Input.location .lastData.longitude +","+Input .location .lastData .latitude+",";
-			long timeStamp = (long)(DateTime.Now - startTime).TotalMilliseconds; // 相差毫秒数
+			long timeStamp = ((long)(DateTime.Now - startTime).TotalMilliseconds)%100000; // 相差毫秒数
 			informationForTimer +=  timeStamp +",";
 
 			double SZUse =   theAHRSController .AHRSupdate2
@@ -164,6 +167,8 @@ public class informationGeter : MonoBehaviour {
 					Input .acceleration .x, Input .acceleration .y, Input .acceleration .z, 
 					Input .compass.rawVector .x, Input .compass.rawVector .y, Input .compass.rawVector .z
 				) ;
+
+			//print("SZUse = " + SZUse);
 			AHRSZ  +=  SZUse .ToString("f4")+",";
 
 			double IMUZUse = theIMUController.IMUupdate
@@ -171,6 +176,8 @@ public class informationGeter : MonoBehaviour {
 					Input.gyro.rotationRateUnbiased.x, Input.gyro.rotationRateUnbiased.y,Input.gyro.rotationRateUnbiased.z, 
 					Input .acceleration .x, Input .acceleration .y, Input .acceleration .z , Input .compass.trueHeading , Input .acceleration
 				);
+
+			//print("IMUZUse = " + IMUZUse);
 			IMUZ += IMUZUse.ToString("f4")+",";
 		}
 		catch(Exception d)

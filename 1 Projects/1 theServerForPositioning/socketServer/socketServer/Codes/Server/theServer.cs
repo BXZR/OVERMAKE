@@ -13,7 +13,7 @@ namespace socketServer
    public  partial class theServer
     {
 
-        private string IP = "219.216.78.119";//默认IP地址，可以换
+        private string IP = "-------";//默认IP地址，可以换
 
         private static int myProt = 8886;   //端口  
 
@@ -236,6 +236,61 @@ namespace socketServer
             }
         }
 
+        //socket获取的字符串统一处理方法
+        //非常关键的复用方法
+        //这个方法里面包含最基本的协议头部分析和处理
+        //这是对获得的数据的第一次解析，用来分析用什么模块来处理这些数据并做简单的处理\
+        private void getInformationWithOperate(byte[] result, Socket myClientSocket, information theInformationController)
+        {
+            //通过clientSocket接收数据  
+            int receiveNumber = myClientSocket.Receive(result);
+            // MessageBox.Show("接收客户端" + myClientSocket.RemoteEndPoint.ToString() + "\n消息" + Encoding.ASCII.GetString(result, 0, receiveNumber) + "\ntype: server");
+            //手机和PC的编码方法需要一样，否则诡异的乱码可能会出现
+            string information = Encoding.UTF8.GetString(result, 0, receiveNumber).ToString();
+            //第一个标记为title题头，象征着操作标记
+            //这是一个多段标记，标记头以“+”
+            //初步解析，解析出来标记用以分类，看看用哪一种具体的操作
+            string theInformationTitle = theProtocolController.getInformaitonTitle(information);
+            switch (theInformationTitle)
+            {
+                //正常数据以smartPhoneData作为报文头部
+                case "clientData":
+                    {
+                        //接纳和处理信息
+                        theProtocolController.getandMakeInformation(information, theInformationController);
+                        string sendString = theProtocolController.makeSendToClients();
+                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
+                    }
+                    break;
+                //离开的数据以bye作为报文头部
+                case "bye":
+                    {
+                        myClientSocket.Shutdown(SocketShutdown.Both);
+                        myClientSocket.Close();
+                        return;//，这层死循环可以结束了
+                    }
+                    break;
+                //获取数据用get作为报头
+                case "get":
+                    {
+                        //3D显示客户端的需要
+                        string sendString = theProtocolController.makeSendToClients();
+                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
+                    }
+                    break;
+                //默认操作其实也就是强制性关闭
+                //其他各种情况，暂时都认为是不合法的
+                default:
+                    {
+                        Console.WriteLine("receive wrong title " + theInformationTitle);
+                        Console.WriteLine("the whole information is " + information);
+                        myClientSocket.Shutdown(SocketShutdown.Both);
+                        myClientSocket.Close();
+                    }
+                    break;
+            }
+        }
+
 
         private void ReceiveMessage(object clientSocket)
         {
@@ -249,48 +304,21 @@ namespace socketServer
             {
                 try
                 {
-                    //通过clientSocket接收数据  
-                    int receiveNumber = myClientSocket.Receive(result);
-                    // MessageBox.Show("接收客户端" + myClientSocket.RemoteEndPoint.ToString() + "\n消息" + Encoding.ASCII.GetString(result, 0, receiveNumber) + "\ntype: server");
-                    //手机和PC的编码方法需要一样，否则诡异的乱码可能会出现
-                    string information = Encoding.UTF8.GetString(result, 0, receiveNumber).ToString();
-                    //以bye作为区分，如果是bye就认为客户端断开连接
-                    if (information != "bye" && information != "get")
-                    {
-                        //接纳和处理信息
-                        theProtocolController.getandMakeInformation(information , theInformationController);
-                        string sendString = theProtocolController.makeSendToClients();
-                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
-                    }
-                    else if (information == "get")
-                    {
-                        //3D显示客户端的需要
-                        string sendString = theProtocolController.makeSendToClients();
-                        myClientSocket.Send(Encoding.UTF8.GetBytes(sendString));//发送一个步数信息
-                    }
-                    else if (information == "bye")//客户端请求关闭连接
-                    {
-                        myClientSocket.Shutdown(SocketShutdown.Both);
-                        myClientSocket.Close();
-                        return;//，这层死循环可以结束了
-                    }
-                    else//其他各种情况，暂时都认为是不合法的
-                    {
-                        myClientSocket.Shutdown(SocketShutdown.Both);
-                        myClientSocket.Close();
-                        return;//，这层死循环可以结束了
-                    }
-             }
+                    getInformationWithOperate(result , myClientSocket , theInformationController);
+                }
                 catch //如果发送信息居然失败了，就关掉这个客户端连接
-             {
+                 {
                     Log.saveLog(LogType.error, "传送信息失败 socket已经关闭");
                     Console.WriteLine("传送信息失败\n这个socket已经关闭");
                 //myClientSocket.Shutdown(SocketShutdown.Receive);
                 myClientSocket.Close();
                 return;
-             }
+                }
+           }
         }
-        }
+
+
+      
 
         public delegate MainWindow showNewMainWindow(information theInformationController);
         public MainWindow showMainWindow(information theInformationController)
@@ -329,53 +357,17 @@ namespace socketServer
             {
                 try
                 {
-                    //通过clientSocket接收数据  
-                    int receiveNumber = myClientSocket.Receive(result);
-                    // MessageBox.Show("接收客户端" + myClientSocket.RemoteEndPoint.ToString() + "\n消息" + Encoding.ASCII.GetString(result, 0, receiveNumber) + "\ntype: server");
-                    //手机和PC的编码方法需要一样，否则诡异的乱码可能会出现
-                    string information = Encoding.UTF8.GetString(result, 0, receiveNumber).ToString();
-                    //以bye作为区分，如果是bye就认为客户端断开连接
-                    if (information != "bye" && information != "get")
-                    {
-                        //接纳和处理信息
-                        theProtocolController.getandMakeInformation(information, theInformationController);
-                        string theSendString = theProtocolController.makeSendToClients(theMainWindowForthisClient);
-                        myClientSocket.Send(Encoding.UTF8.GetBytes(theSendString));//发送一个步数信息
-                    }
-                    else if (information == "get")
-                    {
-                        string theSendString = theProtocolController.makeSendToClients(theMainWindowForthisClient);
-                        myClientSocket.Send(Encoding.UTF8.GetBytes(theSendString));//发送一个步数信息
-                    }
-                    else if (information == "bye")//客户端请求关闭连接
-                    {
-                        Console.WriteLine("get the 'bye'");
-                        //myClientSocket.Shutdown(SocketShutdown.Send);
-                        myClientSocket.Close();
-                        //关闭这个连接对应的主窗口
-                         System.Windows.Application.Current.Dispatcher.Invoke
-                        (System.Windows.Threading.DispatcherPriority.Normal, new closeMainWindow(closetheMainWindow), theMainWindowForthisClient);
-                        return;//，这层死循环可以结束了
-                    }
-                    else//其他各种情况，暂时都认为是不合法的
-                    {
-                        //myClientSocket.Shutdown(SocketShutdown.Send);
-                        myClientSocket.Close();
-                        //关闭这个连接对应的主窗口
-                        System.Windows.Application.Current.Dispatcher.Invoke
-                       (System.Windows.Threading.DispatcherPriority.Normal, new closeMainWindow(closetheMainWindow), theMainWindowForthisClient);
-                       return;//，这层死循环可以结束了
-                    }
-            }
+                    getInformationWithOperate(result, myClientSocket, theInformationController);
+                }
                 catch(Exception E) //如果发送信息居然失败了，就关掉这个客户端连接
-            {
+                {
                     Log.saveLog(LogType.error, "传送信息失败: "+ E.Message);
                     Console.WriteLine("传送信息失败");
                 //myClientSocket.Shutdown(SocketShutdown.Both);
                 myClientSocket.Close();
                 return;
+                }
             }
-        }
         }
 
     }

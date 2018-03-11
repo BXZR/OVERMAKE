@@ -73,6 +73,7 @@ public class server : MonoBehaviour {
 			string reveiveString = Encoding.UTF8.GetString (result, 0, receiveLength);
 			//从服务器获得的信息简单处理
 			systemValues.stepCountShow = reveiveString;
+			print ("receive = "+reveiveString);
 			string[] split = reveiveString.Split (';');
 			int stepCount = Convert.ToInt32 (split[0]);
 			//角度随时会变

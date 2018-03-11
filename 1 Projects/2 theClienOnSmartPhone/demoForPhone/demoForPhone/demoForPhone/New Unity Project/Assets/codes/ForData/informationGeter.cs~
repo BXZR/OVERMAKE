@@ -81,7 +81,7 @@ public class informationGeter : MonoBehaviour {
 		informationForTimer = "";
 		AHRSZ = "";
 		IMUZ = "";
-		return "A;"+sendString;
+		return "clientData+A;"+sendString;
 	}
 
 

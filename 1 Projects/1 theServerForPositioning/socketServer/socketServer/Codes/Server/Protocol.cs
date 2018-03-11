@@ -10,6 +10,14 @@ namespace socketServer
     //解析的是从客户端发送给服务端的字符串
     class Protocol
     {
+
+        //解析数据信息的标题
+        public string getInformaitonTitle(string threInformationGet = "")
+        {
+           return  threInformationGet.Split(';')[0].Split('+')[0].Trim();
+        }
+
+
         //对获取的字符串进行切割的做法打包方法
         //对获取数据的解析
          public  void getandMakeInformation(string information, information theInformationController)
@@ -24,7 +32,8 @@ namespace socketServer
             //传输内容的小项目用','切分
             string[] theSplited = information.Split(';');
             //因为信息的第一项是用来做报头了
-            if (theSplited[0] == "A")
+            //多段的报头，操作标记，数位标记等等，中间以“+”分割
+            if (theSplited[0].Split('+')[1]  == "A")
             {
                 for (int i = 1; i < theSplited.Length; i++)
                 {
@@ -62,7 +71,7 @@ namespace socketServer
                     }
                 }
             }
-            else if (theSplited[0] == "B")
+            else if (theSplited[0].Split('+')[1] == "B")
             {
                 //如果网络带宽实在是不行，就考虑用这种分片的方法分着发送。
                 //这一点在客户端上也留有接口

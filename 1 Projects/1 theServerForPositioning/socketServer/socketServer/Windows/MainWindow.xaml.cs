@@ -10,9 +10,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-
-
-
 namespace socketServer
 {
 
@@ -181,7 +178,8 @@ namespace socketServer
             //方法1的刷新和存储
             savedIndex = 0;
             //制作信息图像
-            thePictureMaker.createPictureFromData(theInformationController , SystemSave.DataPicturePath);
+            //thePictureMaker.createPictureFromData(theInformationController , SystemSave.DataPicturePath);
+            thePictureMaker.createPictureFromDataComplex(theInformationController, SystemSave.DataPicturePath);
             // thePictureMaker.createPictureFromDataComplex(theInformationController);//暂时先不必要用特别复杂的图像生成方法，会卡
             theInformationController.flashInformation();
             SystemSave.stepCount += thePeackFinder.peackBuff.Count;

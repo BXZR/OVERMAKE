@@ -145,5 +145,16 @@ namespace socketServer.Codes
             quickSort(theP, low + 1, last);
         }
 
+        //限制数值的在某一个范围
+        //Unity中Math.Clamp的做法
+        public static  int Clamp(int value, int min, int max)
+        {
+            if (value < min)
+                return min;
+            if (value > max)
+                return max;
+            return value;
+        }
+
     }
 }

@@ -68,9 +68,9 @@ namespace socketServer
                         //时间戳
                         case 12: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]); } break;
                         //AHRSZ信息
-                        case 13: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); Console.WriteLine("13 => " + theSplited[13]); } break;
+                        case 13: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); /*Console.WriteLine("13 => " + theSplited[13]);*/ } break;
                         //IMU信息
-                        case 14: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); Console.WriteLine("14 => " + theSplited[14]); } break;
+                        case 14: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); /*Console.WriteLine("14 => " + theSplited[14]);*/ } break;
                     }
                 }
             }
@@ -96,7 +96,7 @@ namespace socketServer
                     }
                 }
                 */
-            }
+                            }
         }
 
         //获得发送数据的内容并返回

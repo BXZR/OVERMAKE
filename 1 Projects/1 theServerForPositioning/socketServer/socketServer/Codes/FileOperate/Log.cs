@@ -35,8 +35,15 @@ namespace socketServer.Codes
 
         public static void writeLogToFile()
         {
-            theFileSaver.saveInformation(theLogBuffer, SystemSave.SystemLogPath);
-            theLogBuffer.Clear();
+            try
+            {
+                theFileSaver.saveInformation(theLogBuffer, SystemSave.SystemLogPath);
+                theLogBuffer.Clear();
+            }
+            catch
+            {
+                Console.WriteLine("暂时无法保存日志，因为初始化还没有完成");
+            }
         }
     }
 }

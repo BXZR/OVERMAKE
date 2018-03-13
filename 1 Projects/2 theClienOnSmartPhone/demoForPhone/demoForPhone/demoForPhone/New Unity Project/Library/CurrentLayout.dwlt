@@ -176,8 +176,8 @@ MonoBehaviour:
     y: 0
     width: 361
     height: 543
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -255,8 +255,8 @@ MonoBehaviour:
     y: 0
     width: 340
     height: 918
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 21}
@@ -427,14 +427,14 @@ MonoBehaviour:
     width: 975
     height: 522
   m_SceneLighting: 1
-  lastFramingTime: 9829.044538143859
+  lastFramingTime: 365.0325872809995
   m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 52.308723, y: 1.7628902, z: 53.124123}
+    m_Target: {x: 477.24692, y: 337.92468, z: 3.9788818}
     speed: 2
-    m_Value: {x: 52.308723, y: 1.7628902, z: 53.124123}
+    m_Value: {x: 477.24692, y: 337.92468, z: 3.9788818}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -457,13 +457,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.052763127, y: -0.03353362, z: 0.0017741539, w: -0.9980423}
+    m_Target: {x: -0.013817062, y: -0.00058676157, z: 0.000009449685, w: -0.9999044}
     speed: 2
-    m_Value: {x: -0.052763127, y: -0.03353362, z: 0.0017741539, w: -0.9980423}
+    m_Value: {x: -0.013817062, y: -0.00058676157, z: 0.000009449685, w: -0.9999044}
   m_Size:
-    m_Target: 1.3846622
+    m_Target: 643.32996
     speed: 2
-    m_Value: 1.3846622
+    m_Value: 643.32996
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -504,7 +504,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 96ecffff6eedffff54f0ffff5ef0ffff90f2ffff0cf3ffffc2f8ffffe0fbffff00000000
+    m_ExpandedIDs: 26acffff00adffffe6affffff0afffff22b2ffff9eb2ffffc6f7ffff08f8ffff46f8ffff54f8ffff56f8ffffacf9ffffe0fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -596,7 +596,7 @@ MonoBehaviour:
       width: 1158.4159
       height: 600
     m_MinimalGUI: 1
-  m_defaultScale: 1
+  m_defaultScale: 0.84166664
   m_TargetTexture: {fileID: 0}
   m_CurrentColorSpace: 0
   m_LastWindowPixelSize: {x: 975, y: 522}
@@ -640,20 +640,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scenes
+    - Assets/codes/ForData
   m_ViewMode: 1
   m_StartGridSize: 85
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/codes/ForData
   m_LastFoldersGridSize: 85
   m_LastProjectPath: D:\gitWorks\OVERMAKE\1 Projects\2 theClienOnSmartPhone\demoForPhone\demoForPhone\demoForPhone\New
     Unity Project
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 99}
-    m_SelectedIDs: 40250000
-    m_LastClickedID: 9536
-    m_ExpandedIDs: 00000000be240000ec240000062500006425000098250000a8250000ac250000b0250000ca2500007a2900007c2900007e29000000ca9a3bffffff7f
+    m_SelectedIDs: ec240000
+    m_LastClickedID: 9452
+    m_ExpandedIDs: 00000000be240000ec240000062500006425000098250000a8250000ac250000b0250000ca25000000270000022700000427000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -681,7 +681,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000be240000ec240000062500006425000098250000a8250000ac250000b0250000ca2500007a2900007c2900007e290000
+    m_ExpandedIDs: 00000000be240000ec240000062500006425000098250000a8250000ac250000b0250000ca250000002700000227000004270000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

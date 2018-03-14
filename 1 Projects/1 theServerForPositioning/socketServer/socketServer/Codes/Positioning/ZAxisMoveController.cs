@@ -16,6 +16,7 @@ namespace socketServer.Codes
             "不进行上下位移的计算",
             "使用决策树判断向上、向下还是平移",
             "使用人工神经网络判断向上、向下还是平移",
+             "使用KNN判断向上、向下还是平移"
         };
         //返回对这种方法的说明
         public string getMoreInformation(int index)
@@ -57,6 +58,17 @@ namespace socketServer.Codes
             for (int i = 0; i < indexBuff.Count; i++)
             {
                 int mode = SystemSave.AccordANNforSLForZAxis.getModeWithANNForStair(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                theStairMode.Add(transToHeightMove(mode));
+            }
+            return theStairMode;
+        }
+        //KNN和ANN完全不是一个东西
+        public List<double> KNNZMove(List<int> indexBuff, List<double> ax, List<double> ay, List<double> az, List<double> gx, List<double> gy, List<double> gz)
+        {
+            List<double> theStairMode = new List<double>();
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                int mode = SystemSave.theKNNControllerForStair.getKNNType(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
                 theStairMode.Add(transToHeightMove(mode));
             }
             return theStairMode;

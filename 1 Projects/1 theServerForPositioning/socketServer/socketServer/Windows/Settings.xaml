@@ -234,7 +234,7 @@
                     <Button x:Name="button1" Content="Flash Or Build Decision Tree For Step Length" Margin="21,45,173,0" VerticalAlignment="Top" Click="button1_Click" Height="30"/>
                     <Label
                         Width="225" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Controller For Formula Family" FontWeight="Bold"/>
-                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" HorizontalAlignment="Left" Margin="337,45,0,0" VerticalAlignment="Top" Width="126" Click="button3_Click" Height="30"/>
+                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" Margin="337,45,29,0" VerticalAlignment="Top" Click="button3_Click" Height="30"/>
                     <ListBox x:Name="CommonFamily" Height="124" Margin="0,227,25,0" VerticalAlignment="Top" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="216">
                         <ListBoxItem Content="A = 1 B = 2 C = 3"/>
                         <ListBoxItem Content="A = 3 B = 454 C = 3"/>
@@ -278,6 +278,7 @@
                     <Label
                         Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy1" Margin="10,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Canculate the Z Axis Moving" FontWeight="Bold"/>
                     <Button x:Name="button5" Content="Flash Or Build ANN For ZAxis" HorizontalAlignment="Left" Margin="14,129,0,0" VerticalAlignment="Top" Width="276" Click="button5_Click" Height="27"/>
+                    <Button x:Name="button18" Content="Flash Or Build KNN  Data For ZAxis" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Width="276" Height="29" Click="button18_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Extra">

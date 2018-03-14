@@ -88,7 +88,7 @@ namespace socketServer.Codes.DecisionTree
                 theRoot = new theDecisionTreeNode("Root", -1);
                 makeEffectValues();
                 //全局根节点的做法有一点特殊
-                theRoot.makeValues(MAP, inforValues, titles, -1,0,null , aimMode , aimMode);
+                theRoot.makeValues(MAP, inforValues, titles, -1, -1 ,null , aimMode , aimMode);
                 makePoint(theRoot);
                 isStarted = true;
             }

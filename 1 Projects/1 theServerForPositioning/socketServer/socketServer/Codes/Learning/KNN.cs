@@ -15,9 +15,9 @@ namespace socketServer.Codes.Learning
         public double gx;
         public double gy;
         public double gz;
-        public double SL;
+        public double AIM;
         public double distance = 9999;
-        public KNNPoint(double axIn, double ayIn, double azIn, double gxIn, double gyIn, double gzIn, double slIn)
+        public KNNPoint(double axIn, double ayIn, double azIn, double gxIn, double gyIn, double gzIn, double AIMIN)
         {
             ax = axIn;
             ay = ayIn;
@@ -25,7 +25,7 @@ namespace socketServer.Codes.Learning
             gx = gxIn;
             gy = gyIn;
             gz = gzIn;
-            SL = slIn;
+            AIM = AIMIN;
         }
     }
     //这个类抓门用来使用AKK进行分类
@@ -37,11 +37,15 @@ namespace socketServer.Codes.Learning
         List<KNNPoint> KNNPoints;
         List<int> typesInK;
 
-        public void makeKNN(int KIn = 20, string dataPath = "")
+        //这个方法有两种模式可以用
+        //默认，forSL true 用做步长分类
+        //forSL false 用作楼梯姿态分类
+        public void makeKNN(int KIn = 20, string dataPath = "" , bool forSL = true)
         {
             theKForKNN = KIn;
-            getData(dataPath);
+            getData(dataPath , forSL);
         }
+
 
         //获得实用ANN分析出来的SL(步长)Type
         public int getKNNType(double ax, double ay, double az, double gx, double gy, double gz)
@@ -84,7 +88,7 @@ namespace socketServer.Codes.Learning
             typesInK = new List<int>();
             for (int i = 0; i < theKForKNN; i++)
             {
-                typesInK.Add(SystemSave.getTypeIndex(KNNPoints[i].SL));
+                typesInK.Add(SystemSave.getTypeIndex(KNNPoints[i].AIM));
             }
         }
 
@@ -115,7 +119,7 @@ namespace socketServer.Codes.Learning
 
         //获得存储的数据
         //这个用于初始化就行
-        private void getData(string dataPath)
+        private void getData(string dataPath,bool forsl = true)
         {
             if (string.IsNullOrEmpty(dataPath))
                 return;
@@ -139,8 +143,12 @@ namespace socketServer.Codes.Learning
                     double gx = Convert.ToDouble(rows[3]);
                     double gy = Convert.ToDouble(rows[4]);
                     double gz = Convert.ToDouble(rows[5]);
-                    double sl = Convert.ToDouble(rows[15]);
-                    KNNPoint thePoint =   new KNNPoint(ax,ay,az,gx,gy,gz,sl);
+                    double aim = 0;
+                    if (forsl)
+                        aim  = Convert.ToDouble(rows[15]);
+                    else
+                        aim = Convert.ToDouble(rows[16]);
+                    KNNPoint thePoint =   new KNNPoint(ax,ay,az,gx,gy,gz,aim);
                     KNNPoints.Add(thePoint);
                 }
                 catch

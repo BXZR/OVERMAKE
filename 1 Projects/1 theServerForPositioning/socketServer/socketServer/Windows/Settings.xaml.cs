@@ -168,9 +168,12 @@ namespace socketServer
             SystemSave.StaturaMethod2_A = Convert.ToDouble(saturate2AText.Text);
             SystemSave.StaturaMethod2_B = Convert.ToDouble(saturate2BText.Text);
 
-            ImageBrush ib = new ImageBrush();
-            ib.ImageSource = theMapImage.Source;
-            theMainWindow.theCanvas.Background  = ib; ;
+            if (theMainWindow != null)
+            {
+                ImageBrush ib = new ImageBrush();
+                ib.ImageSource = theMapImage.Source;
+                theMainWindow.theCanvas.Background = ib;
+            }
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -850,6 +853,14 @@ namespace socketServer
             SystemSave.theKNNControllerForSL.makeKNN();
             MessageBox.Show("步长计算相关的KNN数据已经新建或重建");
             Log.saveLog(LogType.information, "步长计算相关的KNN数据已经新建或重建");
+        }
+
+        private void button18_Click(object sender, RoutedEventArgs e)
+        {
+            SystemSave.theKNNControllerForStair = new Codes.Learning.KNN();
+            SystemSave.theKNNControllerForStair.makeKNN(20,SystemSave.TrainBasedFilePath , false);
+            MessageBox.Show("Z轴向相关的KNN数据已经新建或重建");
+            Log.saveLog(LogType.information, "Z轴向相关的KNN数据已经新建或重建");
         }
     }
 }

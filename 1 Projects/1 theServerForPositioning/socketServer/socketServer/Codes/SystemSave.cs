@@ -300,5 +300,7 @@ namespace socketServer
         public static AccordANN AccordANNforSLForZAxis = null;
         //计算步长的KNN做法，控制单元
         public static KNN theKNNControllerForSL = null;
+        //计算上下楼梯的KNN做法，控制单元
+        public static KNN theKNNControllerForStair = null;
     }
 }

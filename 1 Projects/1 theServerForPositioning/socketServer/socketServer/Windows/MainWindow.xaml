@@ -103,6 +103,7 @@
             <ComboBoxItem Content="NoCanculate"/>
             <ComboBoxItem Content="DecisionTree"/>
             <ComboBoxItem Content="ANN"/>
+            <ComboBoxItem Content="KNN"/>
         </ComboBox>
         <Label x:Name="Charts_Copy1" Content="SystemMode" Margin="0,68,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <ComboBox x:Name="comboBox" HorizontalAlignment="Right" Margin="0,94,25,0" VerticalAlignment="Top" Width="173" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged">

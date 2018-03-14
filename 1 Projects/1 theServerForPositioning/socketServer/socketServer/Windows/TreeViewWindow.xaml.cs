@@ -30,6 +30,7 @@ namespace socketServer.Windows
         }
 
         theDecisionTree theTree;//决策树的引用
+        int maxDepth = 910;//记录一下最深层数
         //唯一的公有方法 : 绘图
         public void drawDecisionTree(int mode1)
         {
@@ -47,10 +48,11 @@ namespace socketServer.Windows
             
             Console.WriteLine("开始绘制");
             theDecisionTreeNode root = theTree.theRoot;
-            YLength = theDrawCanvas.Height*0.95 / theTree.getDepth();
+            maxDepth = theTree.getDepth();
+            YLength = theDrawCanvas.Height * 0.95 / maxDepth;
             //Console.WriteLine(theDrawCanvas.Width);
             //Console.WriteLine(theDrawCanvas.Height );
-            drawTree(root, theDrawCanvas.Width*0.02, theDrawCanvas.Width*0.98, theDrawCanvas.Width / 2, 0);
+            drawTree(root, theDrawCanvas.Width*0.02, theDrawCanvas.Width*0.98, theDrawCanvas.Width / 2,0);
         }
 
 
@@ -58,7 +60,7 @@ namespace socketServer.Windows
         //int startPosition, int endPosition表示绘制区间的开始和结尾
         //绘制区间是相对于空间canvas的
         List<int> nodeCountForEachDepth = new List<int>();
-        double YLength  =5;
+        double YLength  =2;
         private void drawTree(theDecisionTreeNode father , double startPosition , double endPosition,double fatherX , double fatherY)
         {
             double lengtForEach = (endPosition - startPosition) / father.childs.Count;
@@ -67,7 +69,8 @@ namespace socketServer.Windows
             {
                 //描点画线
                 double XforthisChild = startPosition + lengtForEach / 2 + lengtForEach*i;
-                double YfotthisChild = father.childs[i].depth * YLength;
+                //越是深层给的纵向空间也就越多
+                double YfotthisChild = father.childs[i].depth * YLength * getLengtWithScale(father.childs[i].depth);
                 //Console.WriteLine(string.Format("X1= {0} , Y1 = {1} , X2 = {2} , Y2 = {3}" , fatherX, fatherY, XforthisChild, YfotthisChild));
 
                 drawLine(fatherX, fatherY, XforthisChild, YfotthisChild);
@@ -81,6 +84,14 @@ namespace socketServer.Windows
             }
         }
 
+        //绘制的时候并不是等高度的
+        //每一层的高度都有所不同
+        private double getLengtWithScale(int depth)
+        {
+            double k = (0.3) / (maxDepth);
+            double b = 0.7;
+            return (depth * k + b);
+        }
 
         //显示label
         private void drawLabel(double X, double Y,string name)

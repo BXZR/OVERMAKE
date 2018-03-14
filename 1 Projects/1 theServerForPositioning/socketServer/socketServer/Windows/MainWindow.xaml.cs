@@ -352,6 +352,26 @@ namespace socketServer
                     theStairMode = theZMoveController.ANNZMove(indexBuff, ax, ay, az, gx, gy, gz);
                 }
             }
+            //KNN方法
+            if (ZAxisSelect.SelectedIndex == 3)
+            {
+                if (SystemSave.theKNNControllerForStair == null)
+                {
+                    theStairMode = theZMoveController.noneMethod(indexBuff);
+                }
+                else
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                    theStairMode = theZMoveController.KNNZMove(indexBuff, ax, ay, az, gx, gy, gz);
+                }
+            }
             //记录最新的移动步长
             if (theStairMode.Count > 0)
             {
@@ -1520,6 +1540,13 @@ namespace socketServer
                 string informationS = "选用了人工神经网络的方法进行分类估计\n但是现在需要的人工神经网络尚未建立\n";
                 informationS += "\n建立人工神经网络的过程如下：\nsettings ——> ZAxisMove ——> Flash Or Build ANN For ZAxis\n";
                 informationS += "\n如果没有建立人工神经网络，此方法不计算Z轴移动";
+                MessageBox.Show(informationS);
+            }
+            if (ZAxisSelect.SelectedIndex == 3 && SystemSave.theKNNControllerForStair == null)
+            {
+                string informationS = "选用了KNN的方法进行分类估计\n但是现在需要的KNN数据控制单元尚未建立\n";
+                informationS += "\n建立KNN数据控制单元的过程如下：\nsettings ——> ZAxisMove ——> Flash Or Build KNN  Data For ZAxis\n";
+                informationS += "\n如果没有建立KNN数据控制单元，此方法不计算Z轴移动";
                 MessageBox.Show(informationS);
             }
         }

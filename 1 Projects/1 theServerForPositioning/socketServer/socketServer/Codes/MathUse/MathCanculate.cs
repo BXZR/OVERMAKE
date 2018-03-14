@@ -116,6 +116,36 @@ namespace socketServer.Codes
             return VK;
         }
 
+
+        //排序
+        public static List<int> SortValues(List<int> theP)
+        {
+            quickSort(theP, 0, theP.Count - 1);
+            return theP;
+        }
+
+        private static void quickSort(List<int> theP, int low, int high)
+        {
+            if (low >= high)
+                return;
+
+            int first = low;
+            int last = high;
+            int keyValue = theP[low];
+            while (low < high)
+            {
+                while (low < high && theP[high] >= keyValue)
+                    high--;
+                theP[low] = theP[high];
+                while (low < high && theP[low] <= keyValue)
+                    low++;
+                theP[high] = theP[low];
+            }
+            theP[low] = keyValue;
+            quickSort(theP, first, low - 1);
+            quickSort(theP, low + 1, last);
+        }
+
         //排序
         public static List<double> SortValues(List<double> theP)
         {

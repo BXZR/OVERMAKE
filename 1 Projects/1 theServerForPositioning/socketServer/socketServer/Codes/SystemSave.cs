@@ -1,6 +1,7 @@
 ﻿using socketServer.Codes;
 using socketServer.Codes.AcordUse;
 using socketServer.Codes.DecisionTree;
+using socketServer.Codes.Learning;
 using socketServer.Windows;
 using System.Collections.Generic;
 using System.Windows.Media;
@@ -214,7 +215,7 @@ namespace socketServer
             //    return 2;
             //按照下面公式的数量进行分类
             //分类，同时分类的结果是选择的公式参数组的下标
-            double caluetoCheck = 1.0 / CommonFormulaWeights.Count;
+            double caluetoCheck = 1.2 / CommonFormulaWeights.Count;
             double checker = caluetoCheck;
             for (int i = 0; i < CommonFormulaWeights.Count; i++)
             {
@@ -291,10 +292,13 @@ namespace socketServer
         //ANN的隐层层数
         public static int accordANNHiddenLayerCount = 5;
         //整体ANN训练的次数
+        //保留这些控制单元，这样就局可以从全局角度干涉这些控制单元的计算过程，暂时认为可扩扩展性比起私有要好
         public static int accordANNTrainTime = 10;
         //用来进行步长处理的ANN控制单元
         public static AccordANN AccordANNforSL = null;
         //用来进行Z轴移动处理的ANN控制单元
         public static AccordANN AccordANNforSLForZAxis = null;
+        //计算步长的KNN做法，控制单元
+        public static KNN theKNNControllerForSL = null;
     }
 }

@@ -482,7 +482,7 @@ namespace socketServer
                     }
                 }
 
-                //方法5，身高相关
+                //方法6，身高相关
                 else if (StepLengthMethod.SelectedIndex == 6)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -490,7 +490,7 @@ namespace socketServer
                         theStepLengthUse.Add(theStepLengthController.getStepLength3());
                     }
                 }
-                //方法6，身高相关2，这个看上去更专业一点
+                //方法7，身高相关2，这个看上去更专业一点
                 else if (StepLengthMethod.SelectedIndex == 7)
                 {
                     List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
@@ -504,7 +504,7 @@ namespace socketServer
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
-                //方法6，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
+                //方法8，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
                 else if (StepLengthMethod.SelectedIndex == 8)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -515,7 +515,7 @@ namespace socketServer
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
-                //方法7 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
+                //方法9 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
                 else if (StepLengthMethod.SelectedIndex == 9)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -526,7 +526,7 @@ namespace socketServer
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
-                //方法8，加速度平均开三次根号的做法
+                //方法10，加速度平均开三次根号的做法
                 else if (StepLengthMethod.SelectedIndex == 10)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -538,7 +538,7 @@ namespace socketServer
                     }
                 }
 
-                //方法9，使用关于腿长的倒置钟摆的方法（很好玩的方法）
+                //方法11，使用关于腿长的倒置钟摆的方法（很好玩的方法）
                 else if (StepLengthMethod.SelectedIndex == 11)
                 {
                     List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
@@ -552,7 +552,7 @@ namespace socketServer
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
                     }
                 }
-                //方法10，单纯的某方向的二次积分的方法（更加适合于车）
+                //方法12，单纯的某方向的二次积分的方法（更加适合于车）
                 else if (StepLengthMethod.SelectedIndex == 12)
                 {
                     
@@ -563,6 +563,27 @@ namespace socketServer
                         {
                             //对于行人来说每一段都应该清零一下 重置当前记录下来的速度，在行人阶段其实就是清0,所以传入true
                             theStepLengthUse.Add(theStepLengthController.getStepLength9(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
+                }
+                //方法13，一般公式 + KNN
+                else if (StepLengthMethod.SelectedIndex == 13)
+                {
+                    List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        if (i >= 1)
+                        {
+                            if (SystemSave.theKNNControllerForSL == null)
+                                theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                            else
+                            {
+                                double stepLength = theStepLengthController.getStepLengthWithKNN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse,
+                                ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                                theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            }
                         }
                         else
                             theStepLengthUse.Add(theStepLengthController.getStepLength1());
@@ -1471,6 +1492,15 @@ namespace socketServer
                 informationS += "建立人工神经网络的过程如下：\nSettings ——> StepLengthMore ——> Flash Or Build ANN For SL\n";
                 informationS += "如果没有创建人工神经网络，步长估计方法为立即数方法";
                 informationS += "如果修改设定，请重建人工神经网络刷新设定";
+                MessageBox.Show(informationS);
+            }
+            if (StepLengthMethod.SelectedIndex == 13 && SystemSave.theKNNControllerForSL == null)
+            {
+                string informationS = "使用K近邻进行模式判断需要首先建立KNN控制单元。\n";
+                informationS += "为了减少计算量本程序KNN控制单元的设定只有一次。\n";
+                informationS += "建立KNN控制单元的过程如下：\nSettings ——> StepLengthMore ——> Flash Or Build KNN Data For SL\n";
+                informationS += "如果没有创建KNN控制单元，步长估计方法为立即数方法";
+                informationS += "如果修改设定，请重建KNN控制单元刷新设定";
                 MessageBox.Show(informationS);
             }
         }

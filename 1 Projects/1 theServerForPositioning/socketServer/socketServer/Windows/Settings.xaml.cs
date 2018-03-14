@@ -540,14 +540,17 @@ namespace socketServer
                         "SL= α * VK + β * FK + γ \n" +
                         "右侧容器每一项为一组公式参数\n" +
                         "以此建立一般公式的公式族\n\n" +
-                        "可直接使用族中首项公式计算步长\n" +
-                        "决策树和神经网络方法目标分类数\n" +
-                        "等于公式族中所有公式的数量\n" +
-                        "根据分类结果用不同公式计算步长\n\n" +
+
                          "用下拉框有限制地选择公式族大小\n" +
                         "双击容器项调整α，β，γ 参数数值\n" +
-                        "公式族中各初始参数由线性回归得到";
-                        
+                        "公式族中各初始参数由线性回归得到" +
+
+                    "可直接使用族中首项公式计算步长\n" +
+                    "公式族中所有公式的数量即为分类数量\n" +
+                    "根据分类结果用不同公式计算步长\n\n" +
+                    "分类思想适用于\n【决策树】【神经网络】【K近邻】";
+
+
                 }
             }
             catch
@@ -739,7 +742,6 @@ namespace socketServer
 
         private void button3_Click_4(object sender, RoutedEventArgs e)
         {
-
             //有一些东西是需要刷新的，例如修改了ANN的参数的时候，需要重新建立一下ANN（步长）
             //相对而言，上下楼梯的ANN类别数量是固定的，所以没有必要进行修正了
             SystemSave.AccordANNforSL = new AccordANN();
@@ -839,6 +841,15 @@ namespace socketServer
         private void button16_Click(object sender, RoutedEventArgs e)
         {
             new Codes.AcordUse.AccordANN().checkClass();
+        }
+
+        private void button17_Click(object sender, RoutedEventArgs e)
+        {
+            //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下AKNN数据（步长）
+            SystemSave.theKNNControllerForSL = new Codes.Learning.KNN();
+            SystemSave.theKNNControllerForSL.makeKNN();
+            MessageBox.Show("步长计算相关的KNN数据已经新建或重建");
+            Log.saveLog(LogType.information, "步长计算相关的KNN数据已经新建或重建");
         }
     }
 }

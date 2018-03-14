@@ -79,6 +79,7 @@
             <ComboBoxItem Content="Kim approach"/>
             <ComboBoxItem Content="ComMoveWithLeg"/>
             <ComboBoxItem Content="AIntegration"/>
+            <ComboBoxItem Content="Common formula with KNN"/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,11,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="MethodNowTips" Margin="10,10,969,0" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>

@@ -1,5 +1,6 @@
 ﻿using socketServer.Codes;
 using socketServer.Codes.AcordUse;
+using socketServer.Codes.Learning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace socketServer
             "加速度做平均然后除以阶段加速度的极差的做法",
             "加速度平均开三次根号的方法",
             "利用腿和重心移动的关系推断步长",
-            "加速度积分是为步长(平放)"
+            "加速度积分是为步长(平放)",
+            "用KNN结合加速计和陀螺仪从公式族中选择适合的公式"
         };
 
 
@@ -257,6 +259,35 @@ namespace socketServer
                 double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
 
                 int indexUse = SystemSave.AccordANNforSL.getModeWithANNForSL(VK, FK);
+                double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];
+
+                if (stepLength > 2)//一步走两米，几乎不可能
+                    return stepLengthBasic();//万金油
+                else
+                    return stepLength;
+            }
+        }
+
+
+        //KNN控制单元在SystemSave(中央控制类)中
+        //用K临近的方法找到当前情况最适合的公式计算（同样适用于公式族群的思想）
+        //有意思的是这可能是第一次陀螺仪的数据参与到步长的计算中来，可以玩一下
+        public double getStepLengthWithKNN(int indexPre, int indexNow, List<double> theA, List<long> timeUse, double ax, double ay, double az, double gx, double gy, double gz)
+        {
+            // Console.WriteLine("method");
+            if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
+                return stepLengthBasic();//万金油
+            else
+            {
+                double VK = MathCanculate.getVariance(theA, indexNow, indexPre);
+
+                long timestep = timeUse[indexNow] - timeUse[indexPre];
+                //有除零异常说明时间非常短，可以认为根本就没走
+                if (timestep == 0)
+                    return 0;//万金油
+                             // Console.WriteLine("timeStep is "+ timestep);
+                double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
+                int indexUse = SystemSave.theKNNControllerForSL.getKNNType(ax, ay, az, gx, gy, gz);
                 double stepLength = SystemSave.CommonFormulaWeights[indexUse][0] * VK + SystemSave.CommonFormulaWeights[indexUse][1] * FK + SystemSave.CommonFormulaWeights[indexUse][2];
 
                 if (stepLength > 2)//一步走两米，几乎不可能

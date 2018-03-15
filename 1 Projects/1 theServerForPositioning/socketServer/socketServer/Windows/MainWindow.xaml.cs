@@ -207,10 +207,10 @@ namespace socketServer
             }
             else
             {
+                savedIndex = thePositionController.theTransformPosition.Count - 1;
                 //实时绘制图像，但是并不重新绘制
                 for (int u = savedIndex; u < thePositionController.theTransformPosition.Count; u++)
                 {
-                    savedIndex = thePositionController.theTransformPosition.Count - 1;
                     drawPositionLineOnTime(
                         thePositionController.theTransformPosition[u].X, 
                         thePositionController.theTransformPosition[u].Y,

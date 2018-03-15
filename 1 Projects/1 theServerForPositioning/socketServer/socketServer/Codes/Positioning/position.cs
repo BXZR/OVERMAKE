@@ -134,6 +134,21 @@ namespace socketServer
             return theInformation;
         }
 
+        //矫正更新最终的位置
+        //其中Z轴不一定更新
+        //有一点问题就是两种绘制方式的协调并且调整位置不算新走的一步
+        public void setPosition(double X, double Y, double Z = 0)
+        {
+            for (int i = 0; i < theTransformPosition.Count; i++)
+            {
+                SystemSave.savedPositions.Add(theTransformPosition[i]);
+            }
+            int indexForLast = SystemSave.savedPositions.Count - 1;
+            transForm newPosition = new transForm(X, Y, Z, SystemSave.savedPositions[indexForLast].heading);
+            SystemSave.savedPositions[indexForLast] = newPosition;
+            theTransformPosition[theTransformPosition.Count - 1] = newPosition;
+        }
+
 
     }
 }

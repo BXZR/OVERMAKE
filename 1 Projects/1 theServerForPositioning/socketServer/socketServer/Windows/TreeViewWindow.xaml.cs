@@ -52,6 +52,7 @@ namespace socketServer.Windows
             YLength = theDrawCanvas.Height * 0.95 / maxDepth;
             //Console.WriteLine(theDrawCanvas.Width);
             //Console.WriteLine(theDrawCanvas.Height );
+            drawEclipse(theDrawCanvas.Width / 2, 0);
             drawTree(root, theDrawCanvas.Width*0.02, theDrawCanvas.Width*0.98, theDrawCanvas.Width / 2,0);
         }
 
@@ -127,12 +128,12 @@ namespace socketServer.Windows
         {
             var ellipse = new Ellipse()
             {
-                Width = 3,
-                Height = 3,
+                Width = 4,
+                Height = 4,
                 Fill = new SolidColorBrush(Colors.Red)
             };
-            Canvas.SetLeft(ellipse, X);
-            Canvas.SetTop(ellipse, Y);
+            Canvas.SetLeft(ellipse, X - ellipse.Width / 2);
+            Canvas.SetTop(ellipse, Y - ellipse.Height / 2);
             theDrawCanvas.Children.Add(ellipse);
         }
     }

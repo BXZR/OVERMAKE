@@ -749,7 +749,7 @@ namespace socketServer
             //相对而言，上下楼梯的ANN类别数量是固定的，所以没有必要进行修正了
             SystemSave.AccordANNforSL = new AccordANN();
             SystemSave.AccordANNforSL.BuildANNForSL();
-            MessageBox.Show("步长计算相关的ANN已经新建或重建");
+            MessageBox.Show("步长计算相关的ANN已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "步长计算相关的ANN已经新建或重建");
         }
 
@@ -757,7 +757,7 @@ namespace socketServer
         {
             SystemSave.AccordANNforSLForZAxis = new AccordANN();
             SystemSave.AccordANNforSLForZAxis.BuildANNForStair();
-            MessageBox.Show("楼梯计算相关的ANN已经新建或重建");
+            MessageBox.Show("楼梯计算相关的ANN已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "楼梯计算相关的ANN已经新建或重建");
         }
 
@@ -851,7 +851,7 @@ namespace socketServer
             //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下AKNN数据（步长）
             SystemSave.theKNNControllerForSL = new Codes.Learning.KNN();
             SystemSave.theKNNControllerForSL.makeKNN();
-            MessageBox.Show("步长计算相关的KNN数据已经新建或重建");
+            MessageBox.Show("步长计算相关的KNN数据已经新建或重建\n依据的文件："+ TrainBasePath.Text);
             Log.saveLog(LogType.information, "步长计算相关的KNN数据已经新建或重建");
         }
 
@@ -859,7 +859,7 @@ namespace socketServer
         {
             SystemSave.theKNNControllerForStair = new Codes.Learning.KNN();
             SystemSave.theKNNControllerForStair.makeKNN(20,SystemSave.TrainBasedFilePath , false);
-            MessageBox.Show("Z轴向相关的KNN数据已经新建或重建");
+            MessageBox.Show("Z轴向相关的KNN数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "Z轴向相关的KNN数据已经新建或重建");
         }
     }

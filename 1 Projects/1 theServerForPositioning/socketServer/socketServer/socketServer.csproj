@@ -116,8 +116,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Codes\AcordUse\AccordANN.cs" />
-    <Compile Include="Codes\AcordUse\AccordNotNetUse.cs" />
+    <Compile Include="Codes\Learning\AcordUse\AccordANN.cs" />
+    <Compile Include="Codes\Learning\AcordUse\AccordNotNetUse.cs" />
     <Compile Include="Codes\Learning\KNN.cs" />
     <Compile Include="Codes\Positioning\CarCanculater.cs" />
     <Compile Include="Codes\Learning\DecisionTree\theDecisionTree.cs" />

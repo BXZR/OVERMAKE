@@ -120,7 +120,8 @@ namespace socketServer.Codes.DecisionTree
         {
             if (string.IsNullOrEmpty(path))
                 return;
-            string infotmationGet = new FileSaver().readInformation(path);
+            string infotmationGet = FileSaver.readFromTrainBase();
+           // string infotmationGet = new FileSaver().readInformation(path);
             string[] line = infotmationGet.Split('\n');
             for (int i = 0; i < line.Length; i++)
             {

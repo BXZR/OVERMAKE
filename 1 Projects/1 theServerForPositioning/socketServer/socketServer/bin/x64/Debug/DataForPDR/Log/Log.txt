@@ -199,3 +199,75 @@
 [information 2018:03:14:06:01:45]: 服务器正式启动(端口:8886  IP:202.199.6.74)
 [information 2018:03:14:06:01:45]: Server以1形式开始侦听
 [information 2018:03:14:06:02:07]: Serve已经关闭
+[information 2018:03:15:09:28:17]: 开始进行刷新程序
+[information 2018:03:15:09:28:17]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:09:28:17]: Server以1形式开始侦听
+[information 2018:03:15:09:29:18]: Serve已经关闭
+[information 2018:03:15:09:43:41]: 开始进行刷新程序
+[information 2018:03:15:09:43:41]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:09:43:41]: Server以1形式开始侦听
+[information 2018:03:15:09:43:48]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:09:44:02]: Serve已经关闭
+[information 2018:03:15:09:45:12]: 开始进行刷新程序
+[information 2018:03:15:09:45:12]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:09:45:12]: Server以1形式开始侦听
+[information 2018:03:15:09:45:17]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:09:45:41]: 保存设置数据
+[information 2018:03:15:09:45:44]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:09:45:51]: 保存设置数据
+[information 2018:03:15:09:45:53]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:09:46:08]: Serve已经关闭
+[information 2018:03:15:09:46:41]: 开始进行刷新程序
+[information 2018:03:15:09:46:41]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:09:46:41]: Server以1形式开始侦听
+[information 2018:03:15:09:46:47]: 保存设置数据
+[information 2018:03:15:09:46:50]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:09:54:07]: Serve已经关闭
+[information 2018:03:15:09:57:50]: 开始进行刷新程序
+[information 2018:03:15:09:57:50]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:09:57:50]: Server以1形式开始侦听
+[information 2018:03:15:09:57:53]: Serve已经关闭
+[information 2018:03:15:10:02:18]: 楼梯计算相关的ANN已经新建或重建
+[information 2018:03:15:10:02:20]: Z轴向相关的KNN数据已经新建或重建
+[information 2018:03:15:10:02:22]: 保存设置数据
+[information 2018:03:15:10:02:24]: 开始进行刷新程序
+[information 2018:03:15:10:02:24]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:10:02:24]: Server以1形式开始侦听
+[information 2018:03:15:10:02:32]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:10:02:34]: 楼梯计算相关的ANN已经新建或重建
+[information 2018:03:15:10:02:38]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:10:02:39]: 楼梯计算相关的ANN已经新建或重建
+[information 2018:03:15:10:02:42]: Z轴向相关的KNN数据已经新建或重建
+[information 2018:03:15:10:02:44]: Serve已经关闭
+[information 2018:03:15:11:01:44]: 开始进行刷新程序
+[information 2018:03:15:11:01:45]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:11:01:45]: Server以1形式开始侦听
+[information 2018:03:15:11:02:01]: 保存设置数据
+[information 2018:03:15:11:02:06]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:11:02:09]: 步长计算相关的ANN已经新建或重建
+[information 2018:03:15:11:02:11]: 步长计算相关的KNN数据已经新建或重建
+[information 2018:03:15:11:02:14]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:11:02:16]: Serve已经关闭
+[information 2018:03:15:11:04:24]: 开始进行刷新程序
+[information 2018:03:15:11:04:24]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:11:04:24]: Server以1形式开始侦听
+[information 2018:03:15:11:04:40]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:11:04:44]: 保存设置数据
+[information 2018:03:15:11:04:48]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:11:04:50]: Serve已经关闭
+[information 2018:03:15:11:05:00]: 开始进行刷新程序
+[information 2018:03:15:11:05:00]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:11:05:00]: Server以1形式开始侦听
+[information 2018:03:15:11:05:05]: 保存设置数据
+[information 2018:03:15:11:05:10]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:11:05:24]: 步长计算相关的ANN已经新建或重建
+[information 2018:03:15:11:05:25]: 步长计算相关的KNN数据已经新建或重建
+[information 2018:03:15:11:05:26]: Serve已经关闭
+[information 2018:03:15:11:09:18]: 开始进行刷新程序
+[information 2018:03:15:11:09:18]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:15:11:09:18]: Server以1形式开始侦听
+[information 2018:03:15:11:09:26]: 保存设置数据
+[information 2018:03:15:11:09:29]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:03:15:11:09:32]: 步长计算相关的ANN已经新建或重建
+[information 2018:03:15:11:09:34]: 步长计算相关的KNN数据已经新建或重建
+[information 2018:03:15:11:10:10]: Serve已经关闭

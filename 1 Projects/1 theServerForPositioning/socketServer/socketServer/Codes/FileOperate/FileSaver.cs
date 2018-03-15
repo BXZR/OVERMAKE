@@ -100,6 +100,9 @@ namespace socketServer
             return information;
         }
 
+        //这个方法非常关键
+        //实际上目前（201803151005）所有的读文件计算的操作都基于训练集
+        //而读取训练集的方法只有这个
         public static string readFromTrainBase()
         {
             string path = SystemSave.TrainBasedFilePath;
@@ -118,9 +121,28 @@ namespace socketServer
             {
                 information = "";
             }
-            return information;
+            return randomSplitFormFile(information);
         }
 
+        //这里的字符串拆分实际上是多余的计算，但是者能够使得后面计算量锐减，还算合算.....吧
+        //如果训练集过大，会有很多问题存在，在这里不妨做一下随机筛选，或有奇效
+        //stepLengthForSkip表示每多少行随机选择一个行
+        public static  string randomSplitFormFile(string information,  int stepLengthForSkip = 5)
+        {
+            string informationReturn = "";
+            string[] line = information.Split('\n');
+            for (int i = 0; i < line.Length; i+= stepLengthForSkip)
+            {
+                if (i >= line.Length || (i+ stepLengthForSkip) >= line.Length)
+                    break;
+                int randomIndex = new Random().Next(i , (i+ stepLengthForSkip));
+                informationReturn += line[randomIndex]+"\n";
+            }
+                return information;
+        }
+
+
+        //删除文件
         public static void deleteDirFiles(string path)
         {
             DirectoryInfo dir = new DirectoryInfo(path);

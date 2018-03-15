@@ -125,8 +125,8 @@ namespace socketServer.Codes.Learning
                 return;
 
             KNNPoints = new List<Learning.KNNPoint>();
-
-            string infotmationGet = new FileSaver().readInformation(dataPath);
+            string infotmationGet = FileSaver.readFromTrainBase();
+            // string infotmationGet = new FileSaver().readInformation(dataPath);
             string[] line = infotmationGet.Split('\n');
             for (int i = 0; i < line.Length; i++)
             {

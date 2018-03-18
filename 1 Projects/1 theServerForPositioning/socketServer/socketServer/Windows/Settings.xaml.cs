@@ -862,5 +862,28 @@ namespace socketServer
             MessageBox.Show("Z轴向相关的KNN数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "Z轴向相关的KNN数据已经新建或重建");
         }
+
+        private void button19_Click(object sender, RoutedEventArgs e)
+        {
+            if (theMainWindow != null && theMainWindow.InformationController != null)
+            {
+                FileSaver theFileSaver = new socketServer.FileSaver();
+                Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
+                information theInformationController = theMainWindow.InformationController;
+                string theStringForSave = theExcel.getExcelString(theInformationController);
+                theFileSaver.saveInformation(theStringForSave, SystemSave.DataExcelPath);
+                MessageBox.Show("数据表格已经生成到" + SystemSave.DataExcelPath);
+            }
+            else
+            {
+                MessageBox.Show("初始化不完全，请稍后重试");
+            }
+        }
+
+        private void button20_Click(object sender, RoutedEventArgs e)
+        {
+            File.Delete(SystemSave.DataExcelPath);
+            MessageBox.Show("Excel数据清除成功");
+        }
     }
 }

@@ -22,6 +22,10 @@ namespace socketServer
     {
 
         information theInformationController;//信息总控单元，必须要有
+        public information InformationController
+        {
+            get { return theInformationController; }
+        }
         theServer theServerController;//网络服务控制单元，必须有
         FileSaver theFileSaver;//保存到文件中的控制器
         DispatcherTimer tm;//刷新控制单元这是一个组件，是针对时间的刷新

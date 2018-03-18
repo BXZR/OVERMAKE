@@ -34,6 +34,7 @@ namespace socketServer
         }
 
         //单个信息写入适合这种方法
+        //此外这个方法有扩展倾向
         bool locked  = false;
        public void saveInformation(string information , string fileName = "" )
         {

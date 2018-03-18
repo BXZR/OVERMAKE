@@ -30,12 +30,13 @@ public class informationShower : MonoBehaviour {
 	{
 		string[] Splits = systemValues.stepCountShow.Split(';');
 		string showInformation = "";
-		if (Splits.Length >= 4)
+		if (Splits.Length >= 5)
 		{
-			showInformation += "步数：" + Splits [0];
-			showInformation += "\n步长：" + Splits [1];
-			showInformation += "\n方向：" + Splits [2];
-			showInformation += "\nSlop：" + Splits [3];
+			showInformation += "步数：" + systemValues.stepCountNow;
+			showInformation += "\n步长：" + systemValues.stepLengthNow;
+			showInformation += "\n方向：" + systemValues.stepAngle ;
+			showInformation += "\nSlop：" + systemValues.slopNow ;
+			showInformation += "\n坐标：\n"+ systemValues.positionNow;
 			stepCountShowText.text = showInformation;
 		}
 		else 
@@ -45,6 +46,14 @@ public class informationShower : MonoBehaviour {
 	}
 	void Start () 
 	{
+		try
+		{
+			showTitle();
+		}
+		catch
+		{
+			print ("初始化未完成，无输出");
+		}
 	}
 	
 	// Update is called once per frame

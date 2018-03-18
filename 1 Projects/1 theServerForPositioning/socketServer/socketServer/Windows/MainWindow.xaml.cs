@@ -62,7 +62,7 @@ namespace socketServer
         public double slopNow = 0;
         public double heightNow = 0;
         public double stepCount2 = 0;
-
+        public string thePositionNow = "未知";
 
 
         public MainWindow()
@@ -118,6 +118,9 @@ namespace socketServer
             StairCheck(indexBuff);
             //计算坐标并获得显示的文本
             string informationForPosition = thePositionController.getPositions(theStepAngeUse, theStepLengthUse, theStairMode);
+            //记录一下当前的坐标字符串（最新）
+            savePositionStreing();
+            //输出坐标记录信息
             showPositiopnInformations(informationForPosition);
             //更新slope的数值
             stepModeCheck(indexBuff);
@@ -196,6 +199,14 @@ namespace socketServer
             theAngelController.makeMethod34Save();//对于这个连续的服务器端的AHRS需要这样做才能保持连续性能
             if (SystemSave.SystemModeInd == 2)
                 theCarController.makeFlashForCar();
+        }
+
+
+        //简单记录一下坐标字符串(如果有其他的信息需要记录就在这里扩展吧)
+        void savePositionStreing()
+        {
+            thePositionNow = thePositionController.getPosition();
+            SystemSave.positionNow = thePositionController.getPosition();
         }
 
 

@@ -62,7 +62,7 @@ namespace socketServer
         //获取到当前的坐标
         public string getPosition()
         {
-            return " (" + positionX.ToString("f4") + " , " + positionY.ToString("f4") + " , "  + positionZ.ToString("f4")+ ")"; 
+            return " (" + positionX.ToString("f2") + " , " + positionY.ToString("f2") + " , "  + positionZ.ToString("f2")+ ")"; 
         }
 
         /******************************方法2，先把顶点存到缓冲区的方法*********************************************************/

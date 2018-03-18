@@ -60,7 +60,7 @@ namespace socketServer
         public static double stepLengthNow = 9.5f;//记录最新的移动步长
         public static double slopNow = 0.00;//当前记录的最新的slop
         public static double heightNow = 0.00;//当前记录的最新Z轴向移动
-
+        public static string positionNow = "unknown";//记录当前的坐标
         //颜色设置
         public static Color theOldColor = Colors.Magenta;//绘制颜色（之前的旧轨迹）
         public static Color theNewColor = Colors.Black;//绘制颜色（当前的轨迹）

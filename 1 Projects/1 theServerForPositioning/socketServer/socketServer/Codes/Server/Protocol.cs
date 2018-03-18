@@ -110,6 +110,7 @@ namespace socketServer
                 sendString += ";" + SystemSave.stepAngleNow.ToString("f2");
                 sendString += ";" + SystemSave.slopNow.ToString("f2");
                 sendString += ";" + SystemSave.heightNow.ToString("f2");
+                sendString += ";" + SystemSave.positionNow;
             }
             else
             {
@@ -118,6 +119,7 @@ namespace socketServer
                 sendString += ";" + theWindow.stepAngleNow.ToString("f2");
                 sendString += ";" + theWindow.slopNow.ToString("f2");
                 sendString += ";" + theWindow.heightNow.ToString("f2");
+                sendString += ";相对坐标：\n" + theWindow.thePositionNow;
             }
             return sendString;
         }

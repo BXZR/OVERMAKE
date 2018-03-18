@@ -11,7 +11,7 @@ public class systemValues : MonoBehaviour {
 	public static  int stepCountAll = 0;//总步数，这个是从服务器传过来的
 	public static string titleLabel = "";//在titleLabel面板中显示的内容字符串
 	public static string linkServerLabel = "服务器未连接";
-	public static string GPSUSELabel = "GPS--";
+	public static string GPSUSELabel = "GPS不可用";
 	public static string  stepCountShow = "----";
 
 	public static float showValuesCountMax = 50f;//显示50条数据之后刷新
@@ -31,5 +31,6 @@ public class systemValues : MonoBehaviour {
 	public static  double stepAngle = 0;//当前角度
 	public static double slopNow = 0;//当前姿态的一个小小的推断，如果比较大就认为是在奔跑
 	public static double heightNow = 0;//当前姿态的一个小小的推断，如果比较大就认为是在奔跑
+	public static  string positionNow = "--";//当前坐标
 	public static bool canFlashPosition = false;//是否可以更新人物坐标
 }

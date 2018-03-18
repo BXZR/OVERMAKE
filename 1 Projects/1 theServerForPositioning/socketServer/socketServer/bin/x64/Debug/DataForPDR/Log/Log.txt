@@ -304,3 +304,64 @@
 [error 2018:03:18:03:38:20]: Server 关闭出错: 无法访问已释放的对象。
 对象名:“System.Net.Sockets.Socket”。
 [information 2018:03:18:03:38:20]: Serve已经关闭
+[information 2018:03:18:04:10:11]: 开始进行刷新程序
+[information 2018:03:18:04:10:11]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:18:04:10:11]: Server以1形式开始侦听
+[information 2018:03:18:04:10:30]: Server以1形式开始侦听
+[error 2018:03:18:04:10:44]: 传送信息失败 socket已经关闭
+[error 2018:03:18:04:10:48]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:03:18:04:10:48]: Serve已经关闭
+[information 2018:03:18:04:14:00]: 开始进行刷新程序
+[information 2018:03:18:04:14:01]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:18:04:14:01]: Server以1形式开始侦听
+[information 2018:03:18:04:14:25]: Server以1形式开始侦听
+[error 2018:03:18:04:14:47]: 传送信息失败 socket已经关闭
+[error 2018:03:18:04:14:49]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:03:18:04:14:49]: Serve已经关闭
+[information 2018:03:18:04:21:35]: 开始进行刷新程序
+[information 2018:03:18:04:21:35]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:18:04:21:35]: Server以1形式开始侦听
+[information 2018:03:18:04:21:58]: Server以1形式开始侦听
+[error 2018:03:18:04:22:43]: 传送信息失败 socket已经关闭
+[error 2018:03:18:04:25:35]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:03:18:04:25:35]: Serve已经关闭
+[information 2018:03:18:04:28:38]: 开始进行刷新程序
+[information 2018:03:18:04:28:38]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:18:04:28:38]: Server以1形式开始侦听
+[information 2018:03:18:04:28:51]: Server以1形式开始侦听
+[error 2018:03:18:04:29:01]: 传送信息失败 socket已经关闭
+[error 2018:03:18:04:29:05]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:03:18:04:29:05]: Serve已经关闭
+[information 2018:03:18:04:29:47]: 开始进行刷新程序
+[information 2018:03:18:04:29:47]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:18:04:29:47]: Server以1形式开始侦听
+[information 2018:03:18:04:29:58]: Server以1形式开始侦听
+[information 2018:03:18:04:30:26]: 缓冲区满，进行数据保存
+[information 2018:03:18:04:30:26]: 保存一张数据生成图
+[information 2018:03:18:04:30:51]: 缓冲区满，进行数据保存
+[information 2018:03:18:04:30:51]: 保存一张数据生成图
+[information 2018:03:18:04:30:59]: Serve已经关闭
+[information 2018:03:18:04:32:08]: 开始进行刷新程序
+[information 2018:03:18:04:32:08]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:18:04:32:08]: Server以1形式开始侦听
+[information 2018:03:18:04:32:18]: Server以1形式开始侦听
+[information 2018:03:18:04:32:40]: 缓冲区满，进行数据保存
+[information 2018:03:18:04:32:40]: 保存一张数据生成图
+[error 2018:03:18:04:32:43]: 传送信息失败 socket已经关闭
+[error 2018:03:18:04:32:45]: Server 出错： 正在中止线程。 已经强制关闭
+[error 2018:03:18:04:32:45]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:03:18:04:32:45]: Serve已经关闭
+[information 2018:03:18:04:36:39]: 开始进行刷新程序
+[information 2018:03:18:04:36:39]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:18:04:36:39]: Server以1形式开始侦听
+[information 2018:03:18:04:36:58]: Server以1形式开始侦听
+[error 2018:03:18:04:37:02]: 传送信息失败 socket已经关闭
+[error 2018:03:18:04:37:05]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:18:04:37:05]: Server 出错： 正在中止线程。 已经强制关闭
+[information 2018:03:18:04:37:05]: Serve已经关闭

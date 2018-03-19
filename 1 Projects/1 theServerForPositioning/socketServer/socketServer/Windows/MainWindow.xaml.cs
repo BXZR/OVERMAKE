@@ -968,6 +968,10 @@ namespace socketServer
                 {
                     theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2) + "/" + (stepcounts2 + stepCount2);
                 }
+                else if (stepCheckMethod.SelectedIndex == 4)
+                {
+                    theStepLabel.Content = "当前阶段步数：" + stepcounts2 + "    总步数：" + (SystemSave.stepCount2 + stepcounts2) + "/" + (stepcounts2 + stepCount2);
+                }
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
                 theStepLabel.Content += "\n-----------------------------------------------------------------------------";

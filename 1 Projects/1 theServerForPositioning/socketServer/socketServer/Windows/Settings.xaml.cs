@@ -850,7 +850,7 @@ namespace socketServer
         {
             //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下AKNN数据（步长）
             SystemSave.theKNNControllerForSL = new Codes.Learning.KNN();
-            SystemSave.theKNNControllerForSL.makeKNN();
+            SystemSave.theKNNControllerForSL.makeKNN(20, SystemSave.TrainBasedFilePath);
             MessageBox.Show("步长计算相关的KNN数据已经新建或重建\n依据的文件："+ TrainBasePath.Text);
             Log.saveLog(LogType.information, "步长计算相关的KNN数据已经新建或重建");
         }
@@ -884,6 +884,23 @@ namespace socketServer
         {
             File.Delete(SystemSave.DataExcelPath);
             MessageBox.Show("Excel数据清除成功");
+        }
+
+        private void button21_Click(object sender, RoutedEventArgs e)
+        {
+            SystemSave.theKMeansForStair = new Codes.Learning.KMeans();
+            SystemSave.theKMeansForStair.builtKMeans( SystemSave.TrainBasedFilePath, false);
+            MessageBox.Show("Z轴向相关的KMeans数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
+            Log.saveLog(LogType.information, "Z轴向相关的KMeans数据已经新建或重建");
+        }
+
+        private void button22_Click(object sender, RoutedEventArgs e)
+        {
+            //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下AKNN数据（步长）
+            SystemSave.theKmeansForSL = new Codes.Learning.KMeans();
+            SystemSave.theKmeansForSL.builtKMeans(SystemSave.TrainBasedFilePath);
+            MessageBox.Show("步长计算相关的KMeans数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
+            Log.saveLog(LogType.information, "步长计算相关的KMeans数据已经新建或重建");
         }
     }
 }

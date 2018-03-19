@@ -256,6 +256,7 @@
                         Width="217" x:Name="CommonFormulaFamilyLabel" Margin="15,0,0,10" HorizontalAlignment="Left" Content="" Foreground="#FF2E00FF" Height="219" VerticalAlignment="Bottom"/>
                     <Button x:Name="button3" Content="Flash Or Build ANN For SL" Margin="21,82,256,0" VerticalAlignment="Top" Click="button3_Click_4" Height="27"/>
                     <Button x:Name="button17" Content="Flash Or Build KNN Data For SL" Margin="250,82,29,0" VerticalAlignment="Top" Height="27" Click="button17_Click"/>
+                    <Button x:Name="button22" Content="Flash Or Build KMeans Data For SL" HorizontalAlignment="Left" Margin="250,119,0,0" VerticalAlignment="Top" Width="213" Height="26" Click="button22_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">
@@ -279,6 +280,7 @@
                         Width="187" VerticalAlignment="Top" x:Name="AminusWeight_Copy1" Margin="10,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Canculate the Z Axis Moving" FontWeight="Bold"/>
                     <Button x:Name="button5" Content="Flash Or Build ANN For ZAxis" HorizontalAlignment="Left" Margin="14,129,0,0" VerticalAlignment="Top" Width="276" Click="button5_Click" Height="27"/>
                     <Button x:Name="button18" Content="Flash Or Build KNN  Data For ZAxis" HorizontalAlignment="Left" Margin="14,170,0,0" VerticalAlignment="Top" Width="276" Height="29" Click="button18_Click"/>
+                    <Button x:Name="button21" Content="Flash Or Build KMeans Data For ZAxis" HorizontalAlignment="Left" Margin="14,213,0,0" VerticalAlignment="Top" Width="276" Height="32" Click="button21_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Extra">

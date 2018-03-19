@@ -119,6 +119,7 @@
     <Compile Include="Codes\FileOperate\ExcelUse.cs" />
     <Compile Include="Codes\Learning\AcordUse\AccordANN.cs" />
     <Compile Include="Codes\Learning\AcordUse\AccordNotNetUse.cs" />
+    <Compile Include="Codes\Learning\KMeans.cs" />
     <Compile Include="Codes\Learning\KNN.cs" />
     <Compile Include="Codes\Positioning\CarCanculater.cs" />
     <Compile Include="Codes\Learning\DecisionTree\theDecisionTree.cs" />

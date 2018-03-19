@@ -387,6 +387,26 @@ namespace socketServer
                     theStairMode = theZMoveController.KNNZMove(indexBuff, ax, ay, az, gx, gy, gz);
                 }
             }
+            //Means方法
+            if (ZAxisSelect.SelectedIndex == 4)
+            {
+                if (SystemSave.theKMeansForStair == null)
+                {
+                    theStairMode = theZMoveController.noneMethod(indexBuff);
+                }
+                else
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                    theStairMode = theZMoveController.KMeansZMove(indexBuff, ax, ay, az, gx, gy, gz);
+                }
+            }
             //记录最新的移动步长
             if (theStairMode.Count > 0)
             {
@@ -590,7 +610,7 @@ namespace socketServer
                 //方法12，单纯的某方向的二次积分的方法（更加适合于车）
                 else if (StepLengthMethod.SelectedIndex == 12)
                 {
-                    
+
                     List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -616,6 +636,27 @@ namespace socketServer
                             else
                             {
                                 double stepLength = theStepLengthController.getStepLengthWithKNN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse,
+                                ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                                theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            }
+                        }
+                        else
+                            theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                    }
+                }
+                //方法14， 一般公式 + KMeans
+                else if (StepLengthMethod.SelectedIndex == 14)
+                {
+                    List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                    for (int i = 0; i < indexBuff.Count; i++)
+                    {
+                        if (i >= 1)
+                        {
+                            if (SystemSave.theKmeansForSL == null)
+                                theStepLengthUse.Add(theStepLengthController.getStepLength1());
+                            else
+                            {
+                                double stepLength = theStepLengthController.getStepLengthWithKMeans(indexBuff[i - 1], indexBuff[i], AZUse, timeUse,
                                 ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
                                 theStepLengthUse.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
                             }
@@ -1542,6 +1583,15 @@ namespace socketServer
                 informationS += "如果修改设定，请重建KNN控制单元刷新设定";
                 MessageBox.Show(informationS);
             }
+            if (StepLengthMethod.SelectedIndex == 14 && SystemSave.theKmeansForSL == null)
+            {
+                string informationS = "使用K近邻进行模式判断需要首先建立Kmeans控制单元。\n";
+                informationS += "为了减少计算量本程序Kmeans控制单元的设定只有一次。\n";
+                informationS += "建立Kmeans控制单元的过程如下：\nSettings ——> StepLengthMore ——> Flash Or Build Kmeans Data For SL\n";
+                informationS += "如果没有创建Kmeans控制单元，步长估计方法为立即数方法";
+                informationS += "如果修改设定，请重建Kmeans控制单元刷新设定";
+                MessageBox.Show(informationS);
+            }
         }
 
 
@@ -1566,6 +1616,13 @@ namespace socketServer
                 string informationS = "选用了KNN的方法进行分类估计\n但是现在需要的KNN数据控制单元尚未建立\n";
                 informationS += "\n建立KNN数据控制单元的过程如下：\nsettings ——> ZAxisMove ——> Flash Or Build KNN  Data For ZAxis\n";
                 informationS += "\n如果没有建立KNN数据控制单元，此方法不计算Z轴移动";
+                MessageBox.Show(informationS);
+            }
+            if (ZAxisSelect.SelectedIndex == 4 && SystemSave.theKMeansForStair== null)
+            {
+                string informationS = "选用了KMeans的方法进行分类估计\n但是现在需要的KMeans数据控制单元尚未建立\n";
+                informationS += "\n建立KNN数据控制单元的过程如下：\nsettings ——> ZAxisMove ——> Flash Or Build KMeans Data For ZAxis\n";
+                informationS += "\n如果没有建立KMeans数据控制单元，此方法不计算Z轴移动";
                 MessageBox.Show(informationS);
             }
         }

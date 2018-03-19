@@ -80,6 +80,7 @@
             <ComboBoxItem Content="ComMoveWithLeg"/>
             <ComboBoxItem Content="AIntegration"/>
             <ComboBoxItem Content="Common formula with KNN"/>
+            <ComboBoxItem Content="Common formula with KMeans "/>
         </ComboBox>
         <Label x:Name="Charts_Copy5" Content="RouteMap" Margin="0,11,582,0" HorizontalAlignment="Right" Width="84" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <Label x:Name="Charts_Copy6" Content="MethodNowTips" Margin="10,10,969,0" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
@@ -104,6 +105,7 @@
             <ComboBoxItem Content="DecisionTree"/>
             <ComboBoxItem Content="ANN"/>
             <ComboBoxItem Content="KNN"/>
+            <ComboBoxItem Content="KMeans"/>
         </ComboBox>
         <Label x:Name="Charts_Copy1" Content="SystemMode" Margin="0,68,48,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
         <ComboBox x:Name="comboBox" HorizontalAlignment="Right" Margin="0,94,25,0" VerticalAlignment="Top" Width="173" SelectedIndex="0" SelectionChanged="comboBox_SelectionChanged">

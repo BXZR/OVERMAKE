@@ -303,5 +303,9 @@ namespace socketServer
         public static KNN theKNNControllerForSL = null;
         //计算上下楼梯的KNN做法，控制单元
         public static KNN theKNNControllerForStair = null;
+        //计算步长的KMeans控制单元
+        public static KMeans theKmeansForSL = null;
+        //计算上下楼梯的KMeans控制单元
+        public static KMeans theKMeansForStair = null;
     }
 }

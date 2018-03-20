@@ -273,7 +273,7 @@ namespace socketServer
                         myClientSocket.Close();
                         return;//，这层死循环可以结束了
                     }
-                    break;
+                //    break; //这个break永远不会被调用
                 //获取数据用get作为报头
                 case "get":
                     {

@@ -231,19 +231,19 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="button1" Content="Flash Or Build Decision Tree For Step Length" Margin="21,45,173,0" VerticalAlignment="Top" Click="button1_Click" Height="30"/>
+                    <Button x:Name="button1" Content="Flash Or Build Decision Tree For SL" Margin="15,45,260,0" VerticalAlignment="Top" Click="button1_Click" Height="30"/>
                     <Label
-                        Width="225" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,13,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Controller For Formula Family" FontWeight="Bold"/>
-                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" Margin="337,45,29,0" VerticalAlignment="Top" Click="button3_Click" Height="30"/>
-                    <ListBox x:Name="CommonFamily" Height="124" Margin="0,227,25,0" VerticalAlignment="Top" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="216">
+                        Width="225" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,10,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Controller For Formula Family" FontWeight="Bold"/>
+                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" Margin="15,80,345,0" VerticalAlignment="Top" Click="button3_Click" Height="27"/>
+                    <ListBox x:Name="CommonFamily" Margin="0,90,10,187" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="227">
                         <ListBoxItem Content="A = 1 B = 2 C = 3"/>
                         <ListBoxItem Content="A = 3 B = 454 C = 3"/>
                     </ListBox>
                     <Label
-                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="7,119,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common Formula Family Config" FontWeight="Bold"/>
+                        Width="211" VerticalAlignment="Top" x:Name="ScarletWeight_Copy3" Margin="249,10,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Common Formula Family Config" FontWeight="Bold" RenderTransformOrigin="1.194,-1.231"/>
                     <Label
-                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,164,84,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
-                    <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,166,28,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">
+                        Width="157" VerticalAlignment="Top" x:Name="label_Copy25" Margin="0,40,86,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Count "/>
+                    <ComboBox x:Name="CommonFamilyCountChoice" Margin="0,41,25,0" VerticalAlignment="Top" SelectedIndex="2" SelectionChanged="comboBox_SelectionChanged_1" HorizontalAlignment="Right" Width="56" RenderTransformOrigin="2.97,-0.303">
                         <ComboBoxItem Content="1"/>
                         <ComboBoxItem Content="2"/>
                         <ComboBoxItem Content="3"/>
@@ -251,12 +251,12 @@
                         <ComboBoxItem Content="5"/>
                     </ComboBox>
                     <Label
-                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,196,77,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
-                    <Label
-                        Width="217" x:Name="CommonFormulaFamilyLabel" Margin="15,0,0,10" HorizontalAlignment="Left" Content="" Foreground="#FF2E00FF" Height="219" VerticalAlignment="Bottom"/>
-                    <Button x:Name="button3" Content="Flash Or Build ANN For SL" Margin="21,82,256,0" VerticalAlignment="Top" Click="button3_Click_4" Height="27"/>
-                    <Button x:Name="button17" Content="Flash Or Build KNN Data For SL" Margin="250,82,29,0" VerticalAlignment="Top" Height="27" Click="button17_Click"/>
-                    <Button x:Name="button22" Content="Flash Or Build KMeans Data For SL" HorizontalAlignment="Left" Margin="250,119,0,0" VerticalAlignment="Top" Width="213" Height="26" Click="button22_Click"/>
+                        Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,64,78,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
+                    <Label x:Name="CommonFormulaFamilyLabel" Margin="255,200,10,0" Content="5555555555555555555555555" Foreground="#FF2E00FF"/>
+                    <Button x:Name="button3" Content="Flash Or Build ANN For SL" Margin="15,112,260,0" VerticalAlignment="Top" Click="button3_Click_4" Height="27"/>
+                    <Button x:Name="button17" Content="Flash Or Build KNN Data For SL" Margin="15,144,260,0" VerticalAlignment="Top" Height="27" Click="button17_Click"/>
+                    <Button x:Name="button22" Content="Flash Or Build KMeans Data For SL" Margin="15,176,260,0" VerticalAlignment="Top" Height="30" Click="button22_Click"/>
+                    <Label x:Name="MethodCanUseLabel" Margin="0,334,251,-1" Content="5555555555555555555555555" Foreground="#FF2E00FF"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">

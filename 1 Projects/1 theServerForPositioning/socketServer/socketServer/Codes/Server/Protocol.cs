@@ -38,65 +38,54 @@ namespace socketServer
             //多段的报头，操作标记，数位标记等等，中间以“+”分割
             if (theSplited[0].Split('+')[1]  == "A")
             {
-                for (int i = 1; i < theSplited.Length; i++)
-                {
-                    //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
-                    switch (i)
-                    {
-                        //第一大项： Y轴加速度
-                        case 1: { theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]); } break;
-                        //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
-                        case 2: { theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]); } break;//正北0度                                                                                 //第三大项： X轴加速度
-                        //第三大项： X轴加速度
-                        case 3: { theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]); } break;
-                        //第四大项： Z轴加速度
-                        case 4: { theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]); } break;
-                        //第五大项： X轴陀螺仪
-                        case 5: { theInformationController.addInformation(UseDataType.gyroX, theSplited[5]); } break;
-                        //第六大项： Y轴陀螺仪
-                        case 6: { theInformationController.addInformation(UseDataType.gyroY, theSplited[6]); } break;
-                        //第七大项： Z轴陀螺仪
-                        case 7: { theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]); } break;
-                        //第八大项： X轴磁力计
-                        case 8: { theInformationController.addInformation(UseDataType.magnetometerX, theSplited[8]); } break;
-                        //第九大项： y轴磁力计
-                        case 9: { theInformationController.addInformation(UseDataType.magnetometerY, theSplited[9]); } break;
-                        //第十大项： z轴磁力计
-                        case 10: { theInformationController.addInformation(UseDataType.magnetometerZ, theSplited[10]); } break;
-                        //GPS
-                        case 11: { theInformationController.addInformation(UseDataType.GPS, theSplited[11]); } break;
-                        //时间戳
-                        case 12: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]); } break;
-                        //AHRSZ信息
-                        case 13: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); /*Console.WriteLine("13 => " + theSplited[13]);*/ } break;
-                        //IMU信息
-                        case 14: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); /*Console.WriteLine("14 => " + theSplited[14]);*/ } break;
-                    }
-                }
+                //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
+                //第一大项： Y轴加速度
+                theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]);
+                //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
+                //正北0度   
+                theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]);    
+                //第三大项： X轴加速度
+                theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]);
+                //第四大项： Z轴加速度
+                theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]); 
+                //第五大项： X轴陀螺仪
+                theInformationController.addInformation(UseDataType.gyroX, theSplited[5]);  
+                //第六大项： Y轴陀螺仪
+                theInformationController.addInformation(UseDataType.gyroY, theSplited[6]); 
+                //第七大项： Z轴陀螺仪
+                theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]); 
+                //第八大项： X轴磁力计
+                theInformationController.addInformation(UseDataType.magnetometerX, theSplited[8]); 
+                //第九大项： y轴磁力计
+                theInformationController.addInformation(UseDataType.magnetometerY, theSplited[9]); 
+                //第十大项： z轴磁力计
+                theInformationController.addInformation(UseDataType.magnetometerZ, theSplited[10]); 
+                //GPS
+                theInformationController.addInformation(UseDataType.GPS, theSplited[11]); 
+                //时间戳
+                theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]);  
+                //AHRSZ信息
+                theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); /*Console.WriteLine("13 => " + theSplited[13]);*/ 
+                //IMU信息
+                theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); /*Console.WriteLine("14 => " + theSplited[14]);*/  
+
             }
             else if (theSplited[0].Split('+')[1] == "B")
             {
                 //如果网络带宽实在是不行，就考虑用这种分片的方法分着发送。
                 //这一点在客户端上也留有接口
+                //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
                 /*
-                for (int i = 1; i < theSplited.Length; i++)
-                {
-                    //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
-                    switch (i)
-                    {
-                        //GPS
-                        case 1: { theInformationController.addInformation(UseDataType.GPS, theSplited[1]); } break;
-                        //时间戳
-                        case 2: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]); } break;
-                        //AHRSZ信息
-                        case 3: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[3]); } break;
-                        //IMU信息
-                        case 4: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[4]); } break;
-
-                    }
-                }
+                    //GPS
+                    case 1: { theInformationController.addInformation(UseDataType.GPS, theSplited[1]); } break;
+                    //时间戳
+                    case 2: { theInformationController.addInformation(UseDataType.timeStamp, theSplited[2]); } break;
+                    //AHRSZ信息
+                    case 3: { theInformationController.addInformation(UseDataType.AHRSZ, theSplited[3]); } break;
+                    //IMU信息
+                    case 4: { theInformationController.addInformation(UseDataType.IMUZ, theSplited[4]); } break;
                 */
-                            }
+            }
         }
 
         //获得发送数据的内容并返回

@@ -525,3 +525,52 @@
 [error 2018:03:20:12:03:10]: Server 关闭出错: 无法访问已释放的对象。
 对象名:“System.Net.Sockets.Socket”。
 [information 2018:03:20:12:03:10]: Serve已经关闭
+[information 2018:03:21:11:34:49]: 开始进行刷新程序
+[information 2018:03:21:11:34:49]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:21:11:34:49]: Server以1形式开始侦听
+[information 2018:03:21:11:35:08]: Server以1形式开始侦听
+[error 2018:03:21:11:35:13]: 传送信息失败 socket已经关闭
+[error 2018:03:21:11:35:16]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:03:21:11:35:16]: Serve已经关闭
+[information 2018:03:21:11:50:02]: 开始进行刷新程序
+[information 2018:03:21:11:50:02]: 服务器正式启动(端口:8886  IP:202.199.6.74)
+[information 2018:03:21:11:50:02]: Server以1形式开始侦听
+[information 2018:03:21:11:56:31]: 开始进行刷新程序
+[error 2018:03:21:11:56:32]: 服务端开启失败
+[information 2018:03:21:11:50:23]: Server以1形式开始侦听
+[information 2018:03:21:11:50:47]: Server以1形式开始侦听
+[error 2018:03:21:11:50:58]: 传送信息失败 socket已经关闭
+[error 2018:03:21:11:51:04]: 传送信息失败 socket已经关闭
+[information 2018:03:21:11:51:48]: Server以1形式开始侦听
+[error 2018:03:21:11:51:55]: 传送信息失败 socket已经关闭
+[information 2018:03:21:11:52:15]: Server以1形式开始侦听
+[information 2018:03:21:11:52:31]: Server以1形式开始侦听
+[information 2018:03:21:11:52:37]: 缓冲区满，进行数据保存
+[information 2018:03:21:11:52:38]: 保存训练用的数据
+[information 2018:03:21:11:52:38]: 保存一张数据生成图
+[error 2018:03:21:11:52:55]: 传送信息失败 socket已经关闭
+[error 2018:03:21:11:52:58]: 传送信息失败 socket已经关闭
+[information 2018:03:21:11:56:40]: Server以1形式开始侦听
+[error 2018:03:21:11:56:51]: 传送信息失败 socket已经关闭
+[information 2018:03:21:11:56:55]: Server以1形式开始侦听
+[error 2018:03:21:11:57:01]: 传送信息失败 socket已经关闭
+[information 2018:03:21:11:58:06]: Server以1形式开始侦听
+[error 2018:03:21:11:58:13]: 传送信息失败 socket已经关闭
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:03:21:11:58:19]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:03:21:11:58:19]: Serve已经关闭

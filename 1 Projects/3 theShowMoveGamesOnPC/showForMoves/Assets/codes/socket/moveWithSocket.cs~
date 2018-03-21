@@ -13,22 +13,30 @@ public class moveWithSocket : MonoBehaviour {
 	public static int myProt = 8886;   //端口  
 	public static string  serverIP = "219.216.78.119";
 	static Socket serverSocket;  
-	static Thread myThread;
-	static Socket clientSocketInServer;
-	static Thread receiveThread;
-	static Socket myClientSocket;
-	static Socket clientSocket;
+	static Socket clientSocket = null;
 
 	private static bool play = true;
 	public static bool isOpened = false;
 
-
+	Thread theClientThread = null;
 	//------------------------------------------------下面这些是真正用到的，毕竟只是客户端----------------------------------------------------------------------//
 
 	public void clientMain(string message = "")
 	{
-		Thread th = new Thread (theClient);
-		th.Start ();
+		//清除一下上一次连接的结果
+		if (theClientThread != null) 
+		{
+			theClientThread.Abort ();
+			theClientThread = null;
+		}
+		if (clientSocket != null) 
+		{
+			clientSocket.Close ();
+			clientSocket = null;
+		}
+
+		theClientThread = new Thread (theClient);
+		theClientThread.Start ();
 	}  
 
 	public void theClient()
@@ -76,7 +84,7 @@ public class moveWithSocket : MonoBehaviour {
 			//通过clientSocket接收数据  
 			int receiveLength = clientSocket.Receive(result);  
 			string reveiveString = Encoding.UTF8.GetString (result, 0, receiveLength);
-			print ("receive = " + reveiveString);
+			//print ("receive = " + reveiveString);
 			string[] split = reveiveString.Split (';');
 			int stepCount = Convert.ToInt32 (split[0]);
 			if (stepCount > systemValues.stepCountNow) 
@@ -86,7 +94,9 @@ public class moveWithSocket : MonoBehaviour {
 				systemValues.stepAngle = Convert.ToDouble (split[2]);
 				systemValues.slopNow =  Convert.ToDouble (split[3]);
 				systemValues.height =  Convert.ToDouble (split[4]);
+				systemValues.thePosition = split [5];
 				systemValues.canFlashPosition = true;//走了一步需要更新坐标
+				systemValues.theServerDataLabel.showText();
 			}
 			//print ("SDSD");
 		}
@@ -97,11 +107,19 @@ public class moveWithSocket : MonoBehaviour {
 		play = false;
 		if(serverSocket !=null)
 			serverSocket.Close ();
+
+		try
+		{
 		if (clientSocket != null && isOpened) 
 		{
 			clientSocket.Send (Encoding.UTF8.GetBytes ("bye"));
 			clientSocket.Close ();
 			//receiveThread.Abort ();
+		}
+		}
+		catch
+		{
+			print ("socket is shut");
 		}
 		//myThread.Abort();
 	}

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\App.xaml
-71094331609
+8454750301
 
-50-1346097579
+51-141220794
 25-406471717
-Windows\AllStartServerWondow.xaml;Windows\ChartWindow.xaml;Windows\commonWeightSetting.xaml;Windows\insectUnityPlay.xaml;Windows\MainWindow.xaml;Windows\Settings.xaml;Windows\TreeViewWindow.xaml;
+Windows\AllStartServerWondow.xaml;Windows\ChartWindow.xaml;Windows\commonWeightSetting.xaml;Windows\Experiment.xaml;Windows\insectUnityPlay.xaml;Windows\MainWindow.xaml;Windows\Settings.xaml;Windows\TreeViewWindow.xaml;
 
-True
+False
 

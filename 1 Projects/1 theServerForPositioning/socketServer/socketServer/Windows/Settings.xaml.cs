@@ -146,8 +146,6 @@ namespace socketServer
             else
                 SystemSave.isCutForDecisionTree = false;
 
-            SystemSave.FilterMode = FilterModeSelects.SelectedIndex;
-
             SystemSave.DecisionTreeMethodID = TreeMethod.SelectedIndex;
             SystemSave.CanculateHeadingMode = HeadingCanculateMode.SelectedIndex;
 
@@ -225,8 +223,6 @@ namespace socketServer
             else
                 isPruning.IsChecked  = false;
 
-            FilterModeSelects.SelectedIndex = SystemSave.FilterMode;
-
             StartPositionX.Text = SystemSave.startPositionX.ToString();
             StartPositionY.Text = SystemSave.startPositionY.ToString();
             StartPositionZ.Text = SystemSave.startPositionZ.ToString();
@@ -301,7 +297,6 @@ namespace socketServer
 
         private static double ValuerRouteLineScale;
 
-        private static int ValueUseFilters;
         private static string ValueImmeDiateSL;
         private static string ValueLegInStature;
 
@@ -355,7 +350,7 @@ namespace socketServer
               ValueStartPositionZ = SystemSave.startPositionZ.ToString();
               
               ValuerRouteLineScale = SystemSave.routeLineScale;
-              ValueUseFilters = SystemSave.FilterMode;
+
               ValueImmeDiateSL = SystemSave.stepLengthForImmediate.ToString();
               ValueLegInStature = SystemSave.legLengthInHeight.ToString();
               
@@ -420,8 +415,6 @@ namespace socketServer
                 isPruning.IsChecked = true;
             else
                 isPruning.IsChecked = false;
-
-            FilterModeSelects.SelectedIndex = ValueUseFilters;
 
             TreeMethod.SelectedIndex =  ValueTreeMethod;
             HeadingCanculateMode.SelectedIndex = ValueHeadingCanculateMode;

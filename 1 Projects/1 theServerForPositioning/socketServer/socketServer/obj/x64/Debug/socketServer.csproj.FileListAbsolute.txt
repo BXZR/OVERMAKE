@@ -62,3 +62,5 @@ D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketSer
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\socketServer.Properties.Resources.resources
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\socketServer.theUnityUse.resources
 D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\socketServer.csproj.GenerateResource.Cache
+D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\Experiment.g.cs
+D:\gitWorks\OVERMAKE\1 Projects\1 theServerForPositioning\socketServer\socketServer\obj\x64\Debug\Windows\Experiment.baml

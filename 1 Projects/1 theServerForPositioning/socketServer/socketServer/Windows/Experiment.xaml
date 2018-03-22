@@ -1,0 +1,35 @@
+﻿<Window x:Class="socketServer.Windows.Experiment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:socketServer.Windows"
+        mc:Ignorable="d"
+        Title="Experiment &amp; Show" Height="439.686" Width="475.457" Background="#FFD8D8D8" ResizeMode="NoResize">
+    <Grid>
+        <TabControl x:Name="tabControl">
+            <TabItem Header="Filter">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="StepDection">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Heading">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="StepLength">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Positioning">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="DataShow">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="button" Content="theStepAngeData" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="149" Height="26" Click="button_Click"/>
+                    <Button x:Name="button1" Content="SelectedAxisData" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="149" Height="27" Click="button1_Click"/>
+                    <Button x:Name="button2" Content="3DViewDemo" HorizontalAlignment="Right" Margin="0,0,17,22" Width="105" Click="button2_Click" Height="27" VerticalAlignment="Bottom"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

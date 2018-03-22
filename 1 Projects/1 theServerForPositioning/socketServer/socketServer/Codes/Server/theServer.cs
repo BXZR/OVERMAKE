@@ -245,6 +245,10 @@ namespace socketServer
         //这是对获得的数据的第一次解析，用来分析用什么模块来处理这些数据并做简单的处理\
         private void getInformationWithOperate(byte[] result, Socket myClientSocket, information theInformationController , MainWindow theMainWindowForOperate = null)
         {
+
+            if (SystemSave.isPaused)
+                return;//暂停阶段是不接受信息的，因为不接收额外信息，所以也就有了暂停的效果
+
             //通过clientSocket接收数据  
             int receiveNumber = myClientSocket.Receive(result);
             // MessageBox.Show("接收客户端" + myClientSocket.RemoteEndPoint.ToString() + "\n消息" + Encoding.ASCII.GetString(result, 0, receiveNumber) + "\ntype: server");

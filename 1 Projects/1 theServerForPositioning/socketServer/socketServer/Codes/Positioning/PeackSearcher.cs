@@ -9,7 +9,7 @@ namespace socketServer
     //也就是用于判断走了一步
     //这个类之前可以考虑用一个滤波类做一下
 
-    class PeackSearcher
+   public  class PeackSearcher
     {
 
         private static int theCount = 0;//波峰的个数

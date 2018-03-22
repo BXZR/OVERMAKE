@@ -307,5 +307,10 @@ namespace socketServer
         public static KMeans theKmeansForSL = null;
         //计算上下楼梯的KMeans控制单元
         public static KMeans theKMeansForStair = null;
+
+
+        //计算标记：是否计算，也就是暂停/开始
+        //这种暂停是在server上（数据源头截断的）
+        public static bool isPaused = false;
     }
 }

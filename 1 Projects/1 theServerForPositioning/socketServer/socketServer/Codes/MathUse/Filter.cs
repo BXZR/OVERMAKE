@@ -10,10 +10,26 @@ namespace socketServer
     //处理的是用于步态检测用的y轴加速度
     class Filter
     {
- 
-     //滤波方法对不同的数据类型可以有同名方法
-     //对外平滑方法
-    public List <double> theFilerWork(List<double> IN , float  theValueUse = 0.4f)
+
+        //每一种方法的简短说明信息
+        private string[] methodInformations =
+        {
+            "不进行滤波",
+            "一阶平均+卡尔曼滤波",
+            "一阶滞后+一阶平均+卡尔曼+巴特沃斯滤波",
+            "一阶滞后+一阶平均+卡尔曼+巴特沃斯滤波（倒序）",
+
+        };
+
+        public string getInformation(int index)
+        {
+            return methodInformations[index];
+        }
+
+
+        //滤波方法对不同的数据类型可以有同名方法
+        //对外平滑方法
+        public List <double> theFilerWork(List<double> IN , float  theValueUse = 0.4f)
     {
             // for (int i = 0; i < IN .Count; i++)
              //    Console.WriteLine("++++++-" + IN[i]);

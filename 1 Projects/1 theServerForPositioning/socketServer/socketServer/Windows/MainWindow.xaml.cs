@@ -29,7 +29,7 @@ namespace socketServer
         theServer theServerController;//网络服务控制单元，必须有
         FileSaver theFileSaver;//保存到文件中的控制器
         DispatcherTimer tm;//刷新控制单元这是一个组件，是针对时间的刷新
-        PeackSearcher thePeackFinder;//寻找峰谷的控制单元，用于步态分析
+        public PeackSearcher thePeackFinder;//寻找峰谷的控制单元，用于步态分析
         Filter theFilter;//专门用于滤波的控制单元
         rotationAngel theAngelController;//角度控制单元
         position thePositionController;//最终定位的控制单元
@@ -45,14 +45,15 @@ namespace socketServer
         CarCanculater theCarController;//控制车速的控制单元
 
         //公有的存储空间
-        List<double> theStepAngeUse = new List<double>();
-        List<double> theStepLengthUse = new List<double>();
-        List<double> theFilteredD = new List<double>();
-        List<double> theStairMode = new List<double>();//Z轴向移动
+        //这些也就是计算结果的缓存了
+        public List<double> theStepAngeUse = new List<double>();
+        public List<double> theStepLengthUse = new List<double>();
+        public List<double> theFilteredD = new List<double>();
+        public List<double> theStairMode = new List<double>();//Z轴向移动
 
         int stepcounts = 0;//当前阶段的步数
-        List<int> indexBuff = new List<int>();//确认一步的下标存储
-        List<double> theFilteredAZ = new List<double>();//当前使用的轴
+        public List<int> indexBuff = new List<int>();//确认一步的下标存储
+        public List<double> theFilteredAZ = new List<double>();//当前使用的轴
 
         //需要单个窗口记录的信息这些信息将会被发送到对应的客户端
         public double allStepCount = 0;
@@ -99,7 +100,7 @@ namespace socketServer
             //可以考虑将informationController做成List然后所有内容循环处理
 
             //刷新存储空间
-            theFilteredAZ = stepCheckAxis();
+            theFilteredAZ = stepCheckAxis(stepCheckAxisUse.SelectedIndex);
             theFilteredD = theFilter.theFilerWork(theInformationController.compassDegree, 0.1f);
             theStepAngeUse = new List<double>();
             theStepLengthUse = new List<double>();
@@ -107,13 +108,13 @@ namespace socketServer
             //实现方法里面对这个list已经做出了相关操作，这里没必要做了
             stepcounts = 0;
             //判断走了一步并更新到缓存
-            stepDectionUse();
+            stepDectionUse(stepCheckMethod.SelectedIndex);
             //当前移动的步数
             stepcounts = indexBuff.Count;
             //获得移动方向
-            headingAngleGet();
+            headingAngleGet(HeadingMehtod.SelectedIndex );
             //计算步长
-            stepLengthGet(indexBuff, theFilteredAZ);
+            stepLengthGet(  StepLengthMethod.SelectedIndex ,indexBuff, theFilteredAZ);
             //计算上下楼梯的模式
             StairCheck(indexBuff);
             //计算坐标并获得显示的文本
@@ -238,10 +239,10 @@ namespace socketServer
         }
 
         //更换使用的判断走看了一步的轴的方法///////////////////////////////////////////////////////////
-        List<double> stepCheckAxis( bool useFilter = true)
+        List<double> stepCheckAxis( int stepAxisUseIndex , bool useFilter = true)
         {
             List<double> theFilteredAZ = new List<double>();
-            switch (stepCheckAxisUse.SelectedIndex)//选择不同的轴向
+            switch (stepAxisUseIndex)//选择不同的轴向
             {
                 case 0:
                     //基础方法:用Z轴加速度来做
@@ -268,12 +269,12 @@ namespace socketServer
         }
 
         //判断走了一步的方法///////////////////////////////////////////////////////////
-        void stepDectionUse()
+        void stepDectionUse(int stepDectionMehtodIndex)
         {
             //0-1两种模式是针对行人的
             if (SystemSave.SystemModeInd <= 1)
             {
-                if (stepCheckMethod.SelectedIndex == 0)
+                if (stepDectionMehtodIndex == 0)
                 {
                     //方法1：波峰波谷大法，我个人推荐的方法
                     //必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
@@ -283,20 +284,20 @@ namespace socketServer
                     indexBuff = stepExtra.stepDectionExtration0(theFilteredAZ, thePeackFinder);
 
                 }
-                else if (stepCheckMethod.SelectedIndex == 1)
+                else if (stepDectionMehtodIndex == 1)
                 {
                     indexBuff = stepExtra.stepDectionExtration4(theFilteredAZ, thePeackFinder);
                 }
-                else if (stepCheckMethod.SelectedIndex == 2)
+                else if (stepDectionMehtodIndex == 2)
                 {
                     indexBuff = stepExtra.stepDectionExtration3(theFilteredAZ, thePeackFinder);
                 }
-                else if (stepCheckMethod.SelectedIndex == 3)
+                else if (stepDectionMehtodIndex == 3)
                 {
                     //方法3：重复性判断方法，相对比较严格（感觉不是人能用的）
                     indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
                 }
-                else if (stepCheckMethod.SelectedIndex == 4)
+                else if (stepDectionMehtodIndex == 4)
                 {
                     //方法4零点交叉
                     indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
@@ -419,7 +420,7 @@ namespace socketServer
         //获取步长的方法//////////////////////////////////////////////////////////////////////////
         //这个方法在多个整体方法中是共用的
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
-        void stepLengthGet(List<int> indexBuff, List<double> AZUse)
+        void stepLengthGet(int stepLengthMethodIndex ,  List<int> indexBuff, List<double> AZUse)
         {
             if (SystemSave.SystemModeInd <= 1)
             {
@@ -432,7 +433,7 @@ namespace socketServer
                 List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
 
                 //方法0，最土鳖的方法直接就是立即数
-                if (StepLengthMethod.SelectedIndex == 0)
+                if (stepLengthMethodIndex == 0)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -440,7 +441,7 @@ namespace socketServer
                     }
                 }
                 //方法1
-                else if (StepLengthMethod.SelectedIndex == 1)
+                else if (stepLengthMethodIndex == 1)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -453,7 +454,7 @@ namespace socketServer
                     }
                 }
                 //方法2，一般公式
-                else if (StepLengthMethod.SelectedIndex == 2)
+                else if (stepLengthMethodIndex == 2)
                 {
                     List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -470,7 +471,7 @@ namespace socketServer
                     }
                 }
                 //方法3，一般公式 + 决策树
-                else if (StepLengthMethod.SelectedIndex == 3)
+                else if (stepLengthMethodIndex == 3)
                 {
                     List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -498,7 +499,7 @@ namespace socketServer
                     }
                 }
                 //方法4，一般公式 + 线性回归
-                else if (StepLengthMethod.SelectedIndex == 4)
+                else if (stepLengthMethodIndex == 4)
                 {
                     List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -514,7 +515,7 @@ namespace socketServer
                 }
 
                 //方法5，一般公式 + ANN
-                else if (StepLengthMethod.SelectedIndex == 5)
+                else if (stepLengthMethodIndex == 5)
                 {
                     List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -538,7 +539,7 @@ namespace socketServer
                 }
 
                 //方法6，身高相关
-                else if (StepLengthMethod.SelectedIndex == 6)
+                else if (stepLengthMethodIndex == 6)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -546,7 +547,7 @@ namespace socketServer
                     }
                 }
                 //方法7，身高相关2，这个看上去更专业一点
-                else if (StepLengthMethod.SelectedIndex == 7)
+                else if (stepLengthMethodIndex == 7)
                 {
                     List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -560,7 +561,7 @@ namespace socketServer
                     }
                 }
                 //方法8，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
-                else if (StepLengthMethod.SelectedIndex == 8)
+                else if (stepLengthMethodIndex == 8)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -571,7 +572,7 @@ namespace socketServer
                     }
                 }
                 //方法9 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
-                else if (StepLengthMethod.SelectedIndex == 9)
+                else if (stepLengthMethodIndex == 9)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -582,7 +583,7 @@ namespace socketServer
                     }
                 }
                 //方法10，加速度平均开三次根号的做法
-                else if (StepLengthMethod.SelectedIndex == 10)
+                else if (stepLengthMethodIndex == 10)
                 {
                     for (int i = 0; i < indexBuff.Count; i++)
                     {
@@ -594,7 +595,7 @@ namespace socketServer
                 }
 
                 //方法11，使用关于腿长的倒置钟摆的方法（很好玩的方法）
-                else if (StepLengthMethod.SelectedIndex == 11)
+                else if (stepLengthMethodIndex == 11)
                 {
                     List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -608,7 +609,7 @@ namespace socketServer
                     }
                 }
                 //方法12，单纯的某方向的二次积分的方法（更加适合于车）
-                else if (StepLengthMethod.SelectedIndex == 12)
+                else if (stepLengthMethodIndex == 12)
                 {
 
                     List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
@@ -624,7 +625,7 @@ namespace socketServer
                     }
                 }
                 //方法13，一般公式 + KNN
-                else if (StepLengthMethod.SelectedIndex == 13)
+                else if (stepLengthMethodIndex == 13)
                 {
                     List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -645,7 +646,7 @@ namespace socketServer
                     }
                 }
                 //方法14， 一般公式 + KMeans
-                else if (StepLengthMethod.SelectedIndex == 14)
+                else if (stepLengthMethodIndex == 14)
                 {
                     List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
                     for (int i = 0; i < indexBuff.Count; i++)
@@ -670,7 +671,7 @@ namespace socketServer
             //针对车的第一种方法就是加速度积分
             else if (SystemSave.SystemModeInd == 2)
             {
-                List<double> AxisForCarNoFilter= stepCheckAxis(false);//不滤波的各种轴向切换
+                List<double> AxisForCarNoFilter= stepCheckAxis(stepCheckAxisUse.SelectedIndex, false);//不滤波的各种轴向切换
                 List<long> timeNoFilter = theInformationController.timeStep;
 
                 List<double> AxisForCar = theFilter.theFilerWork(AxisForCarNoFilter) ; 
@@ -733,7 +734,7 @@ namespace socketServer
 
         //获取移动方向的方法/////////////////////////////////////////////////////
         //注意这里的if和for的顺序和steoLength结构不一样
-        void headingAngleGet()
+        void headingAngleGet(int methodIndexForHeading )
         {
             List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
             List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
@@ -745,7 +746,7 @@ namespace socketServer
             List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
             List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
 
-            if (HeadingMehtod.SelectedIndex == 0)
+            if (methodIndexForHeading == 0)
             {
                 //记录移动的方向 （方法1直接读取电子罗盘的信息）
                 for (int i = 0; i < indexBuff.Count; i++)
@@ -756,7 +757,7 @@ namespace socketServer
                 }
 
             }
-            else if (HeadingMehtod.SelectedIndex == 1)
+            else if (methodIndexForHeading == 1)
             {
                 //方法2 微软建议滤波法(这个方法其实也是一种读取电子罗盘的方法，只不过更加复杂一点点)
                 if (indexBuff.Count <= 1)//数据量不够就直接用方法1
@@ -785,7 +786,7 @@ namespace socketServer
                     }
                 }
             }
-            else if (HeadingMehtod.SelectedIndex == 2)
+            else if (methodIndexForHeading == 2)
             {
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
@@ -797,7 +798,7 @@ namespace socketServer
                     theStepAngeUse.Add(degree);
                 }
             }
-            else if (HeadingMehtod.SelectedIndex == 3)
+            else if (methodIndexForHeading == 3)
             {
                 List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
                 for (int i = 0; i < indexBuff.Count; i++)
@@ -807,7 +808,7 @@ namespace socketServer
                     theStepAngeUse.Add(degree);
                 }
             }
-            else if (HeadingMehtod.SelectedIndex == 4)
+            else if (methodIndexForHeading == 4)
             {
                 //AHRS 方法server
                 double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0, mx = 0, my = 0, mz = 0;
@@ -836,7 +837,7 @@ namespace socketServer
                     theStepAngeUse.Add(headings[indexBuff[i]]);
                 }
             }
-            else if (HeadingMehtod.SelectedIndex == 5)
+            else if (methodIndexForHeading == 5)
             {
 
                 List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
@@ -861,7 +862,7 @@ namespace socketServer
               
             }
 
-            else if (HeadingMehtod.SelectedIndex == 6)
+            else if (methodIndexForHeading == 6)
             {
                 for (int i = 0; i < indexBuff.Count; i++)
                 {
@@ -874,7 +875,7 @@ namespace socketServer
                 }
             }
 
-            else if (HeadingMehtod.SelectedIndex == 7)
+            else if (methodIndexForHeading == 7)
             {
                 List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
                 try
@@ -899,7 +900,7 @@ namespace socketServer
                     }
                 }
             }
-            else if (HeadingMehtod.SelectedIndex == 8)
+            else if (methodIndexForHeading == 8)
             {
                 //IMU 方法server
                 double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0;
@@ -1016,7 +1017,9 @@ namespace socketServer
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
                 theStepLabel.Content += "\n-----------------------------------------------------------------------------";
-                theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
+                theStepLabel.Content += "\n使用滤波方法：" + comboBox1.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theFilter.getInformation(SystemSave.FilterMode);
+                theStepLabel.Content += "\n\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
                 theStepLabel.Content += "\n\n判步方法：" + stepCheckMethod.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + stepExtra.getMoreInformation(stepCheckMethod.SelectedIndex);
@@ -1036,7 +1039,9 @@ namespace socketServer
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
                 theStepLabel.Content += "\n-----------------------------------------------------------------------------";
-                theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
+                theStepLabel.Content += "\n使用滤波方法：" + comboBox1.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theFilter.getInformation(SystemSave.FilterMode);
+                theStepLabel.Content += "\n\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
                 theStepLabel.Content += "\n\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theAngelController.getMoreInformation(HeadingMehtod.SelectedIndex);
@@ -1129,8 +1134,6 @@ namespace socketServer
                 //为了防止多次开启
                 theStartButton.IsEnabled = false;
                 theStopButton.IsEnabled = true;
-                button4.IsEnabled = true;
-                button6.IsEnabled = true;
             }
             catch
             {
@@ -1153,8 +1156,6 @@ namespace socketServer
             //为了防止多次开启
             theStartButton.IsEnabled = true;
             theStopButton.IsEnabled = false;
-            button4.IsEnabled = false;
-            button6.IsEnabled = false;
         }
 
 
@@ -1250,52 +1251,6 @@ namespace socketServer
             }
             //窗口关闭的时候做一次Log的保存
             Log.writeLogToFile();
-        }
-
-
-        //非自动测试触发的按钮
-        private void button4_Click(object sender, RoutedEventArgs e)
-        {
-            //展示“滤波”之后的加速度的曲线
-            List<double> theFiltered = theFilteredAZ;
-           // List<double> theFiltered = 
-            if (theFiltered == null)
-                return;
-            //查看滤波后的数据
-            //string IS = theFiltered.Count + "条数据\n";
-            //for (int i = 0; i < theFiltered.Count; i++)
-            //    IS += theFiltered[i] + "\n";
-            // theFileSaver.saveInformation(IS);
-            // MessageBox.Show("GET:\n"+IS);
-
-            //滤波之后做各种分析，第一项是步态分析，判断走了多少步
-            int stepCount = thePeackFinder.countStepWithStatic(theFiltered);
-
-            ChartWindow theChartWindow = new ChartWindow();
-
-            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered, stepCheckAxisUse.SelectionBoxItem.ToString());
-            theChartWindow.Show();
-            //MessageBox.Show("一共" + stepCount + "步");
-        }
-
-        //处理移动朝向方向的按钮逻辑
-        private void button6_Click(object sender, RoutedEventArgs e)
-        {
-            //为了保证数据干净，要做一次滤波
-            // List<double> theFiltered =  theFilter.theFilerWork(theInformationController.compassDegree);
-            List<double> theFiltered = theStepAngeUse;
-            if (theFiltered == null)
-                return;
-            //查看滤波后的数据
-            // string IS = theFiltered.Count + "条数据\n";
-            //for (int i = 0; i < theFiltered.Count; i++)
-            //    IS += theFiltered[i] + "\n";
-            // theFileSaver.saveInformation(IS);
-            // MessageBox.Show("GET:\n"+IS);
-
-            ChartWindow theChartWindow = new ChartWindow();
-            theChartWindow.CreateChartSpline(UseDataType.compassDegree, theFiltered);
-            theChartWindow.Show();
         }
 
 
@@ -1682,6 +1637,27 @@ namespace socketServer
             }
             SystemSave.savedPositions.Clear();
             theCarController.flashZero();
+        }
+
+        private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SystemSave.FilterMode = comboBox1.SelectedIndex;
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            SystemSave.isPaused = !SystemSave.isPaused;
+            if (SystemSave.isPaused)
+                button1.Content = "ReStart";
+            else
+                button1.Content = "Pause";
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.Experiment theExperimentWindow = new Windows.Experiment();
+            theExperimentWindow.theMainWindow = this;//绑定“数据源”
+            theExperimentWindow.Show();
         }
     }
 }

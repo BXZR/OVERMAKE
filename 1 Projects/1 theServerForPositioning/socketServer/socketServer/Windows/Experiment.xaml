@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer.Windows"
         mc:Ignorable="d"
-        Title="Experiment &amp; Show" Height="439.686" Width="475.457" Background="#FFD8D8D8" ResizeMode="NoResize">
+        Title="Experiment &amp; Show" Height="424.384" Width="760.715" Background="#FFD8D8D8" ResizeMode="NoResize">
     <Grid>
         <TabControl x:Name="tabControl">
-            <TabItem Header="Filter">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="StepLength">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="23"/>
+                    <DataGrid x:Name="SLDataGrid" Margin="12,52,10,0" VerticalAlignment="Top" Height="294"/>
+                    <Label x:Name="label" Content="Dada Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Right" Width="233"/>
+                </Grid>
             </TabItem>
             <TabItem Header="StepDection">
                 <Grid Background="#FFE5E5E5"/>
@@ -17,7 +21,7 @@
             <TabItem Header="Heading">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem Header="StepLength">
+            <TabItem Header="Filter">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Positioning">

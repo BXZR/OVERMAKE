@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace socketServer
 {
     //这个类专门用来处理步长
-    class stepLength
+   public  class stepLength
     {
 
         //每一种方法的简短说明信息

@@ -22,10 +22,7 @@ namespace socketServer
     {
 
         information theInformationController;//信息总控单元，必须要有
-        public information InformationController
-        {
-            get { return theInformationController; }
-        }
+
         theServer theServerController;//网络服务控制单元，必须有
         FileSaver theFileSaver;//保存到文件中的控制器
         DispatcherTimer tm;//刷新控制单元这是一个组件，是针对时间的刷新
@@ -43,6 +40,10 @@ namespace socketServer
         FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         ZAxisMoveController theZMoveController;//Z轴向移动的控制单元
         CarCanculater theCarController;//控制车速的控制单元
+
+        //有些东西只读
+        public stepLength TheStepLengthController{ get { return theStepLengthController; } }
+        public information InformationController { get { return theInformationController; } }
 
         //公有的存储空间
         //这些也就是计算结果的缓存了
@@ -239,7 +240,7 @@ namespace socketServer
         }
 
         //更换使用的判断走看了一步的轴的方法///////////////////////////////////////////////////////////
-        List<double> stepCheckAxis( int stepAxisUseIndex , bool useFilter = true)
+        public List<double> stepCheckAxis( int stepAxisUseIndex , bool useFilter = true)
         {
             List<double> theFilteredAZ = new List<double>();
             switch (stepAxisUseIndex)//选择不同的轴向
@@ -269,7 +270,7 @@ namespace socketServer
         }
 
         //判断走了一步的方法///////////////////////////////////////////////////////////
-        void stepDectionUse(int stepDectionMehtodIndex)
+       public void stepDectionUse(int stepDectionMehtodIndex)
         {
             //0-1两种模式是针对行人的
             if (SystemSave.SystemModeInd <= 1)
@@ -316,7 +317,7 @@ namespace socketServer
 
         //判断走楼梯的模式的方法
         //开销很大...
-        void StairCheck(List<int> indexBuff)
+        public void StairCheck(List<int> indexBuff)
         {
             //根本就不计算Z轴位移，其实也是另一种开关
             if (ZAxisSelect.SelectedIndex == 0)
@@ -420,7 +421,7 @@ namespace socketServer
         //获取步长的方法//////////////////////////////////////////////////////////////////////////
         //这个方法在多个整体方法中是共用的
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
-        void stepLengthGet(int stepLengthMethodIndex ,  List<int> indexBuff, List<double> AZUse)
+        public void stepLengthGet(int stepLengthMethodIndex ,  List<int> indexBuff, List<double> AZUse)
         {
             if (SystemSave.SystemModeInd <= 1)
             {
@@ -734,7 +735,7 @@ namespace socketServer
 
         //获取移动方向的方法/////////////////////////////////////////////////////
         //注意这里的if和for的顺序和steoLength结构不一样
-        void headingAngleGet(int methodIndexForHeading )
+       public  void headingAngleGet(int methodIndexForHeading )
         {
             List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
             List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);

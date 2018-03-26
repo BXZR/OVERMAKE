@@ -1657,6 +1657,7 @@ namespace socketServer
         private void button_Click(object sender, RoutedEventArgs e)
         {
             Windows.Experiment theExperimentWindow = new Windows.Experiment();
+            theExperimentWindow.Title = "Experiment for [" + this.Title+"]"; 
             theExperimentWindow.theMainWindow = this;//绑定“数据源”
             theExperimentWindow.Show();
         }

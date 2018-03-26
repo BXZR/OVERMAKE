@@ -12,7 +12,8 @@
                 <Grid Background="#FFE5E5E5">
                     <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="23"/>
                     <DataGrid x:Name="SLDataGrid" Margin="12,52,10,0" VerticalAlignment="Top" Height="294"/>
-                    <Label x:Name="label" Content="Dada Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Right" Width="233"/>
+                    <Label x:Name="label" Content="Data Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Right" Width="233"/>
+                    <Button x:Name="button4" Content="Average Data Chart" HorizontalAlignment="Left" Margin="278,24,0,0" VerticalAlignment="Top" Width="140" Click="button4_Click" IsEnabled="False"/>
                 </Grid>
             </TabItem>
             <TabItem Header="StepDection">

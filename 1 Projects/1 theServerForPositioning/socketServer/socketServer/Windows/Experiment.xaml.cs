@@ -28,6 +28,7 @@ namespace socketServer.Windows
             InitializeComponent();
         }
 
+//-----------------------------------------------------DATA Show选项卡的内容-------------------------------------------------------------------------------//
         private void button_Click(object sender, RoutedEventArgs e)
         {
             if (theMainWindow == null)
@@ -84,11 +85,13 @@ namespace socketServer.Windows
             new insectUnityPlay().Show();
         }
 
+        //--------------------------------------------------步长部分-----------------------------------------------------------------------------------//
 
+        List<classForStepLengthShow> DataForSLMethod = new List<Windows.classForStepLengthShow>();
         private void button3_Click_1(object sender, RoutedEventArgs e)
         {
             SLDataGrid.CanUserAddRows = false;
-            List<classForStepLengthShow> DataForSLMethod = new List<Windows.classForStepLengthShow>();
+            DataForSLMethod = new List<Windows.classForStepLengthShow>();
             //计算最后五步所有的计算步长的方法得到的步长
             for (int i = 0; i < theMainWindow.StepLengthMethod.Items.Count; i++)
             {
@@ -129,11 +132,11 @@ namespace socketServer.Windows
                     {
                         switch (j)
                         {
-                            case 0: { DATA.Step1SL = "---"; } break;
-                            case 1: { DATA.Step2SL = "---"; } break;
-                            case 2: { DATA.Step3SL = "---"; } break;
-                            case 3: { DATA.Step4SL = "---"; } break;
-                            case 4: { DATA.Step5SL = "---"; } break;
+                            case 0: { DATA.Step1SL = "0"; } break;
+                            case 1: { DATA.Step2SL = "0"; } break;
+                            case 2: { DATA.Step3SL = "0"; } break;
+                            case 3: { DATA.Step4SL = "0"; } break;
+                            case 4: { DATA.Step5SL = "0"; } break;
                         }
                     }
                 }
@@ -141,12 +144,36 @@ namespace socketServer.Windows
             }
 
             SLDataGrid.ItemsSource = DataForSLMethod ;
-  
+            button4.IsEnabled = true;
         }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> XLabels = new List<string>();
+            List<double> SLAverage = new List<double>();
+            for (int i = 0; i < DataForSLMethod.Count; i++)
+            {
+                double average = 0;
+                double SL1 = Convert.ToDouble(DataForSLMethod[i].Step1SL);
+                double SL2 = Convert.ToDouble(DataForSLMethod[i].Step2SL);
+                double SL3 = Convert.ToDouble(DataForSLMethod[i].Step3SL);
+                double SL4 = Convert.ToDouble(DataForSLMethod[i].Step4SL);
+                double SL5 = Convert.ToDouble(DataForSLMethod[i].Step5SL);
+                average = (SL1+SL2+SL3+SL4+SL5) / 5;
+                SLAverage.Add(average);
+
+                XLabels.Add(DataForSLMethod[i].MethodName);
+            }
+            ChartWindow theChartWindow = new ChartWindow();
+            theChartWindow.CreateChartColumn(SLAverage , XLabels , "各种步长方法最后五步平均值对比");
+            theChartWindow.Show();
+        }
+
+ //-------------------------------------------------------------------------------------------------------------------------------------------//
     }
 
 
-
+    //固定上限数量为五步，这个数值与后面的图标非常相关，极其需要设定
     class classForStepLengthShow
     {
         private string methodName = "S34343SASD";

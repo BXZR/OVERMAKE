@@ -27,6 +27,92 @@ namespace socketServer
         }
 
 
+
+
+        #region 柱状图
+        public void CreateChartColumn(List<double> theValues, List<string> XLabels = null,string titleName = "" , string SuffixIn = "m")
+        {
+            //创建一个图标
+            Chart chart = new Chart();
+            //设置图标的宽度和高度
+            chart.Width = 800;
+            chart.Height = 425;
+            chart.Margin = new Thickness(5, 5, 10, 5);
+            //是否启用打印和保持图片
+            chart.ToolBarEnabled = false;
+            //设置图标的属性
+            chart.ScrollingEnabled = false;//是否启用或禁用滚动
+            chart.View3D = true;//3D效果显示
+            //创建一个标题的对象
+            Title title = new Title();
+            title.Text = titleName;
+            title.Padding = new Thickness(0, 10, 5, 0);
+            //向图标添加标题
+            chart.Titles.Add(title);
+
+            //初始化一个新的Axis
+            Axis xaxis = new Axis();
+ 
+            //设置Axis的属性
+            //图表的X轴坐标按什么来分类，如时分秒
+            xaxis.IntervalType = IntervalTypes.Number;
+            xaxis.Interval = 1;
+            chart.AxesX.Add(xaxis);
+
+            Axis yAxis = new Axis();
+            //设置图标中Y轴的最小值永远为0           
+            yAxis.AxisMinimum = 0;
+            //设置图表中Y轴的后缀 
+            yAxis.Suffix = SuffixIn;
+            chart.AxesY.Add(yAxis);
+
+
+            // 创建一个新的数据线。               
+            DataSeries dataSeries = new DataSeries();
+            // 设置数据线的格式。
+            dataSeries.LegendText = titleName;
+
+
+            dataSeries.RenderAs = RenderAs.Column;//柱状图
+
+            dataSeries.XValueType = ChartValueTypes.Auto;
+            // 设置数据点              
+            DataPoint dataPoint;
+            for (int i = 0; i < theValues.Count; i++)
+            {
+                // 创建一个数据点的实例。                   
+                dataPoint = new DataPoint();
+                // 设置X轴点    
+                if (XLabels == null)
+                    dataPoint.AxisXLabel = i.ToString();
+                else
+                    dataPoint.AxisXLabel = XLabels[i];
+                //设置Y轴点                   
+                dataPoint.YValue = theValues[i];
+                dataPoint.MarkerSize = 8;
+                //dataPoint.Tag = tableName.Split('(')[0];
+                //设置数据点颜色                  
+                // dataPoint.Color = new SolidColorBrush(Colors.LightGray);                   
+                // dataPoint.MouseLeftButtonDown += new MouseButtonEventHandler(dataPoint_MouseLeftButtonDown);
+                //添加数据点                   
+                dataSeries.DataPoints.Add(dataPoint);
+            }
+
+            // 添加数据线到数据序列。                
+            chart.Series.Add(dataSeries);
+
+            //将生产的图表增加到Grid，然后通过Grid添加到上层Grid.           
+            Grid gr = new Grid();
+            gr.Children.Add(chart);
+
+            theChartGrid.Children.Add(gr);
+        }
+        #endregion
+
+
+
+
+
         #region 折线图
         public void CreateChartSpline(UseDataType IN, List<double> theValues ,string titleName = "")
         {

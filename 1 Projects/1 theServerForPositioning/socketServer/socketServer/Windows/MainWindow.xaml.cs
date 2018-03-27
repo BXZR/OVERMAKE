@@ -43,7 +43,9 @@ namespace socketServer
 
         //有些东西只读
         public stepLength TheStepLengthController{ get { return theStepLengthController; } }
+        public stepDetection TheStepCheck { get { return stepExtra; } }
         public information InformationController { get { return theInformationController; } }
+        public stepAxis TheStepAxis { get { return theStepAxis; } }
 
         //公有的存储空间
         //这些也就是计算结果的缓存了

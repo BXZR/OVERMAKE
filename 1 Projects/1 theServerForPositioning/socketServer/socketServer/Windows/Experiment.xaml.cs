@@ -112,7 +112,7 @@ namespace socketServer.Windows
                 Windows.classForStepLengthShow DATA = new Windows.classForStepLengthShow();
                 DATA.MethodName = theMainWindow.StepLengthMethod.Items[i].ToString().Split(':')[1];
                 DATA.MethodInformaton = theMainWindow.TheStepLengthController.getMoreInformation(i);
-                DATA.AverageTimeUse = milliseconds.ToString("f5");
+                DATA.TimeUse = milliseconds.ToString("f5");
 
                 int count = theMainWindow.theStepLengthUse.Count;
                 for (int j = 0; j < 5; j++)
@@ -169,7 +169,62 @@ namespace socketServer.Windows
             theChartWindow.Show();
         }
 
+
+      //------------------------------------------判步部分-------------------------------------------------------------------------------------------//
+        List<classForStepDection> DataForSDMethod = new List<classForStepDection>();
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            SDDataGrid.CanUserAddRows = false;
+            DataForSDMethod = new List<classForStepDection>();
+            //计算最后五步所有的计算步长的方法得到的步长
+            for (int t = 0; t < theMainWindow.stepCheckAxisUse.Items.Count; t++)
+            {
+                theMainWindow.theFilteredAZ = theMainWindow.stepCheckAxis(t);
+                for (int i = 0; i < theMainWindow.stepCheckMethod.Items.Count; i++)
+                {
+                    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                    stopwatch.Start(); //  开始监视代码
+                                       //----------------------------------------------------------------------------------------------------------------
+                    theMainWindow.theStepLengthUse.Clear();
+                    theMainWindow.stepDectionUse(i);
+                    //----------------------------------------------------------------------------------------------------------------
+                    stopwatch.Stop(); //  停止监视
+                    TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
+                    double hours = timeSpan.TotalHours; // 小时
+                    double minutes = timeSpan.TotalMinutes;  // 分钟
+                    double seconds = timeSpan.TotalSeconds;  //  秒数
+                    double milliseconds = theMainWindow.indexBuff.Count == 0 ? 0 : timeSpan.TotalMilliseconds / (double)theMainWindow.indexBuff.Count; //毫秒数
+
+                    classForStepDection DATA = new classForStepDection();
+                    DATA.MethodName = theMainWindow.stepCheckMethod.Items[i].ToString().Split(':')[1] +" / " + theMainWindow.stepCheckAxisUse.Items[t].ToString().Split(':')[1];
+                    DATA.MethodInformaton = theMainWindow.TheStepCheck.getMoreInformation(i);
+                    DATA.AxisInformation = theMainWindow.TheStepAxis.getMoreInformation(t);
+                    DATA.AverageTimeUse = milliseconds.ToString("f5");
+                    DATA.StepCount = theMainWindow.indexBuff.Count.ToString();
+                    DataForSDMethod.Add(DATA);
+                }
+            }
+
+            SDDataGrid.ItemsSource = DataForSDMethod;
+        }
+
  //-------------------------------------------------------------------------------------------------------------------------------------------//
+    }
+
+    //判断走了多少步的方法对比
+    class classForStepDection
+    {
+        private string methodName = "S34343SASD";
+        private string stepCount = "0";
+        private string averageTimeUse = " ";
+        private string methodInformaton = "";
+        private string axisInfromation = "";
+
+        public string MethodName { get { return methodName; } set { methodName = value; } }
+        public string StepCount { get { return stepCount; } set { stepCount  = value; } }
+        public string AverageTimeUse { get { return averageTimeUse; } set { averageTimeUse = value; } }
+        public string MethodInformaton { get { return methodInformaton; } set { methodInformaton = value; } }
+        public string AxisInformation { get { return axisInfromation; } set { axisInfromation = value; } }
     }
 
 
@@ -182,7 +237,7 @@ namespace socketServer.Windows
         private string step3SL = "0.54";
         private string step4SL = " ";
         private string step5SL =  " ";
-        private string averageTimeUse = " ";
+        private string timeUse = " ";
         private string methodInformaton = "";
 
 
@@ -192,7 +247,7 @@ namespace socketServer.Windows
         public string Step3SL { get { return step3SL; } set { step3SL = value; } }
         public string Step4SL { get { return step4SL; } set { step4SL = value; } }
         public string Step5SL { get { return step5SL; } set { step5SL = value; } }
-        public string AverageTimeUse { get { return averageTimeUse; } set { averageTimeUse = value; } }
+        public string TimeUse { get { return timeUse; } set { timeUse = value; } }
         public string MethodInformaton { get { return methodInformaton; } set { methodInformaton = value; } }
 
     }

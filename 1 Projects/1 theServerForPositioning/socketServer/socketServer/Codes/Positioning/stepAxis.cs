@@ -8,7 +8,7 @@ namespace socketServer.Codes.stages
 {
     //掌管使用的加速度的轴的类，封装一层是为了保证有扩展性和输出
 
-    class stepAxis
+   public  class stepAxis
     {
         //每一种方法的简短说明信息
         private string[] methodInformations =

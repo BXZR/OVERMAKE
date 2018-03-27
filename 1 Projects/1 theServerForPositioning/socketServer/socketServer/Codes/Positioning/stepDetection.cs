@@ -12,7 +12,7 @@ namespace socketServer
    //这个类的方法用于效果的对比，并且所有的内容都是静态（不收管理管理器约束并且随时更换）
    
    //这个类必须要有的：下标缓冲
-    class stepDetection
+  public  class stepDetection
     {
         public  List<int> peackBuff = new List<int>();//走了一步时候的下标，用于获取其他集合的数据，必要
 

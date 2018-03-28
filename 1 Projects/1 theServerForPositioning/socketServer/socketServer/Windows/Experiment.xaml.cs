@@ -176,39 +176,139 @@ namespace socketServer.Windows
         {
             SDDataGrid.CanUserAddRows = false;
             DataForSDMethod = new List<classForStepDection>();
-            //计算最后五步所有的计算步长的方法得到的步长
-            for (int t = 0; t < theMainWindow.stepCheckAxisUse.Items.Count; t++)
+            int theAxisIndex = theAxisComboxForStepDection.SelectedIndex;
+            theMainWindow.theFilteredAZ = theMainWindow.stepCheckAxis(theAxisIndex);
+            for (int i = 0; i < theMainWindow.stepCheckMethod.Items.Count; i++)
             {
-                theMainWindow.theFilteredAZ = theMainWindow.stepCheckAxis(t);
-                for (int i = 0; i < theMainWindow.stepCheckMethod.Items.Count; i++)
-                {
-                    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-                    stopwatch.Start(); //  开始监视代码
-                                       //----------------------------------------------------------------------------------------------------------------
-                    theMainWindow.theStepLengthUse.Clear();
-                    theMainWindow.stepDectionUse(i);
-                    //----------------------------------------------------------------------------------------------------------------
-                    stopwatch.Stop(); //  停止监视
-                    TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
-                    double hours = timeSpan.TotalHours; // 小时
-                    double minutes = timeSpan.TotalMinutes;  // 分钟
-                    double seconds = timeSpan.TotalSeconds;  //  秒数
-                    double milliseconds = theMainWindow.indexBuff.Count == 0 ? 0 : timeSpan.TotalMilliseconds / (double)theMainWindow.indexBuff.Count; //毫秒数
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start(); //  开始监视代码
+                //----------------------------------------------------------------------------------------------------------------
+                theMainWindow.theStepLengthUse.Clear();
+                theMainWindow.stepDectionUse(i);
+                //----------------------------------------------------------------------------------------------------------------
+                stopwatch.Stop(); //  停止监视
+                TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
+                double hours = timeSpan.TotalHours; // 小时
+                double minutes = timeSpan.TotalMinutes;  // 分钟
+                double seconds = timeSpan.TotalSeconds;  //  秒数
+                double milliseconds = theMainWindow.indexBuff.Count == 0 ? 0 : timeSpan.TotalMilliseconds / (double)theMainWindow.indexBuff.Count; //毫秒数
 
-                    classForStepDection DATA = new classForStepDection();
-                    DATA.MethodName = theMainWindow.stepCheckMethod.Items[i].ToString().Split(':')[1] +" / " + theMainWindow.stepCheckAxisUse.Items[t].ToString().Split(':')[1];
-                    DATA.MethodInformaton = theMainWindow.TheStepCheck.getMoreInformation(i);
-                    DATA.AxisInformation = theMainWindow.TheStepAxis.getMoreInformation(t);
-                    DATA.AverageTimeUse = milliseconds.ToString("f5");
-                    DATA.StepCount = theMainWindow.indexBuff.Count.ToString();
-                    DataForSDMethod.Add(DATA);
-                }
+                classForStepDection DATA = new classForStepDection();
+                DATA.MethodName = theMainWindow.stepCheckMethod.Items[i].ToString().Split(':')[1] +" / " + theMainWindow.stepCheckAxisUse.Items[theAxisIndex].ToString().Split(':')[1];
+                DATA.MethodInformaton = theMainWindow.TheStepCheck.getMoreInformation(i);
+                DATA.AxisInformation = theMainWindow.TheStepAxis.getMoreInformation(theAxisIndex);
+                DATA.AverageTimeUse = milliseconds.ToString("f5");
+                DATA.StepCount = theMainWindow.indexBuff.Count.ToString();
+                DataForSDMethod.Add(DATA);
             }
 
             SDDataGrid.ItemsSource = DataForSDMethod;
         }
 
- //-------------------------------------------------------------------------------------------------------------------------------------------//
+        //有些控件的内容需要加载的时候生成和处理
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            theAxisComboxForStepDection.Items.Clear();
+            for (int t = 0; t < theMainWindow.stepCheckAxisUse.Items.Count; t++)
+            {
+                ComboBoxItem T = new ComboBoxItem();
+                T.Content = theMainWindow.stepCheckAxisUse.Items[t].ToString().Split(':')[1];
+                theAxisComboxForStepDection.Items.Add(T);
+            }
+        }
+
+        //---------------------------------------------------------方向部分---------------------------------------------------------------------------//
+        //方向的按钮
+        List<classForHeading> DataForHeading = new List<classForHeading>();
+        private void button6_Click(object sender, RoutedEventArgs e)
+        {
+            HeadingDataGrid.CanUserAddRows = false;
+            DataForHeading = new List<classForHeading>();
+
+            //计算最后五步所有的计算步长的方法得到的步长
+            for (int i = 0; i < theMainWindow.HeadingMehtod.Items.Count; i++)
+            {
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start(); //  开始监视代码
+                //----------------------------------------------------------------------------------------------------------------
+                theMainWindow.theStepAngeUse.Clear();
+                theMainWindow.headingAngleGet(i);
+                //----------------------------------------------------------------------------------------------------------------
+                stopwatch.Stop(); //  停止监视
+                TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
+                double hours = timeSpan.TotalHours; // 小时
+                double minutes = timeSpan.TotalMinutes;  // 分钟
+                double seconds = timeSpan.TotalSeconds;  //  秒数
+                double milliseconds = theMainWindow.theStepLengthUse.Count == 0 ? 0 : timeSpan.TotalMilliseconds / (double)theMainWindow.theStepLengthUse.Count;  //  毫秒数
+
+
+                classForHeading DATA = new classForHeading();
+                DATA.MethodName = theMainWindow.HeadingMehtod.Items[i].ToString().Split(':')[1];
+                DATA.MethodInformaton = theMainWindow.TheAngelController.getMoreInformation(i);
+                DATA.TimeUse = milliseconds.ToString("f5");
+
+                int count = theMainWindow.theStepLengthUse.Count;
+                for (int j = 0; j < 5; j++)
+                {
+                    if (j < count)
+                    {
+                        switch (j)
+                        {
+                            case 0: { DATA.Step1H = theMainWindow.theStepAngeUse[j].ToString("f2"); } break;
+                            case 1: { DATA.Step2H = theMainWindow.theStepAngeUse[j].ToString("f2"); } break;
+                            case 2: { DATA.Step3H = theMainWindow.theStepAngeUse[j].ToString("f2"); } break;
+                            case 3: { DATA.Step4H = theMainWindow.theStepAngeUse[j].ToString("f2"); } break;
+                            case 4: { DATA.Step5H = theMainWindow.theStepAngeUse[j].ToString("f2"); } break;
+                        }
+                    }
+                    else
+                    {
+                        switch (j)
+                        {
+                            case 0: { DATA.Step1H = "0"; } break;
+                            case 1: { DATA.Step2H = "0"; } break;
+                            case 2: { DATA.Step3H = "0"; } break;
+                            case 3: { DATA.Step4H = "0"; } break;
+                            case 4: { DATA.Step5H = "0"; } break;
+                        }
+                    }
+                }
+                DataForHeading.Add(DATA);
+            }
+
+            HeadingDataGrid.ItemsSource = DataForHeading;
+            button7.IsEnabled = true;
+        }
+
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> XLabels = new List<string>();
+            List<List<double>> headings = new List<List<double>>();
+            for (int i = 0; i < DataForHeading.Count; i++)
+            {
+                List<double> theHeading = new List<double>();
+
+                double SH1 = Convert.ToDouble(DataForHeading[i].Step1H);
+                double SH2 = Convert.ToDouble(DataForHeading[i].Step2H);
+                double SH3 = Convert.ToDouble(DataForHeading[i].Step3H);
+                double SH4 = Convert.ToDouble(DataForHeading[i].Step4H);
+                double SH5 = Convert.ToDouble(DataForHeading[i].Step5H);
+
+                theHeading.Add(SH1);
+                theHeading.Add(SH2);
+                theHeading.Add(SH3);
+                theHeading.Add(SH4);
+                theHeading.Add(SH5);
+
+                headings.Add(theHeading);
+                XLabels.Add(DataForHeading[i].MethodName);
+            }
+            ChartWindow theChartWindow = new ChartWindow();
+            theChartWindow.CreateChartSplines(headings, XLabels, "各种方向方法最后五步方向变化对比","度");
+            theChartWindow.Show();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------------------//
     }
 
     //判断走了多少步的方法对比
@@ -247,6 +347,30 @@ namespace socketServer.Windows
         public string Step3SL { get { return step3SL; } set { step3SL = value; } }
         public string Step4SL { get { return step4SL; } set { step4SL = value; } }
         public string Step5SL { get { return step5SL; } set { step5SL = value; } }
+        public string TimeUse { get { return timeUse; } set { timeUse = value; } }
+        public string MethodInformaton { get { return methodInformaton; } set { methodInformaton = value; } }
+
+    }
+
+    //固定上限数量为五步，这个数值与后面的图标非常相关，极其需要设定
+    class classForHeading
+    {
+        private string methodName = "S34343SASD";
+        private string step1H = "1";
+        private string step2H = "0.55";
+        private string step3H = "0.54";
+        private string step4H = " ";
+        private string step5H = " ";
+        private string timeUse = " ";
+        private string methodInformaton = "";
+
+
+        public string MethodName { get { return methodName; } set { methodName = value; } }
+        public string Step1H { get { return step1H; } set { step1H = value; } }
+        public string Step2H { get { return step2H; } set { step2H = value; } }
+        public string Step3H { get { return step3H; } set { step3H = value; } }
+        public string Step4H { get { return step4H; } set { step4H = value; } }
+        public string Step5H { get { return step5H; } set { step5H = value; } }
         public string TimeUse { get { return timeUse; } set { timeUse = value; } }
         public string MethodInformaton { get { return methodInformaton; } set { methodInformaton = value; } }
 

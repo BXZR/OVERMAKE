@@ -364,5 +364,80 @@ namespace socketServer
         #endregion
 
 
+        #region 折线图究极版本
+        //绘制对比曲线使用的折线图
+        //超级无敌用于多项对比的方法
+        public void CreateChartSplines(List<List<double>> theValues, List<string> theValuesTitles ,string titleName = "" , string YName = "" )
+        {
+            //创建一个图标
+            Chart chart = new Chart();
+            //设置图标的宽度和高度
+            chart.Width = 800;
+            chart.Height = 425;
+            chart.Margin = new Thickness(5, 5, 10, 5);
+            //是否启用打印和保持图片
+            chart.ToolBarEnabled = false;
+            //设置图标的属性
+            chart.ScrollingEnabled = false;//是否启用或禁用滚动
+            chart.View3D = true;//3D效果显示
+            //创建一个标题的对象
+            Title title = new Title();
+            title.Text = titleName;
+            //设置标题的名称
+            title.Padding = new Thickness(0, 10, 5, 0);
+            //向图标添加标题
+            chart.Titles.Add(title);
+            //初始化一个新的Axis
+            Axis xaxis = new Axis();
+            //设置Axis的属性
+            //图表的X轴坐标按什么来分类，如时分秒
+            xaxis.IntervalType = IntervalTypes.Seconds;
+            //图表的X轴坐标间隔如2,3,20等，单位为xAxis.IntervalType设置的时分秒。
+            xaxis.Interval = 1;
+            //给图标添加Axis            
+            chart.AxesX.Add(xaxis);
+
+            Axis yAxis = new Axis();
+            //设置图标中Y轴的最小值永远为0           
+             yAxis.AxisMinimum = -360;
+             yAxis.AxisMaximum = 360;
+            //设置图表中Y轴的后缀 
+
+            chart.AxesY.Add(yAxis);
+            for (int i = 0; i < theValues.Count; i++)
+            {
+                // 创建一个新的数据线。               
+                DataSeries dataSeries = new DataSeries();
+                // 设置数据线的格式。
+                dataSeries.LegendText = theValuesTitles[i];
+
+                dataSeries.RenderAs = RenderAs.Spline;//折线图
+                dataSeries.XValueType = ChartValueTypes.Auto;
+
+                // 设置数据点              
+                DataPoint dataPoint;
+                for (int j = 0; j < theValues[i].Count; j++)
+                {
+                    // 创建一个数据点的实例。                   
+                    dataPoint = new DataPoint();
+                    // 设置X轴点                    
+                    dataPoint.XValue = (double)j;
+                    dataPoint.AxisXLabel = j.ToString();// theValuesTitles[i];
+                    //设置Y轴点                   
+                    dataPoint.YValue = theValues[i][j];
+                    dataPoint.MarkerSize = 8;
+                    dataSeries.DataPoints.Add(dataPoint);
+                }
+                // 添加数据线到数据序列。                
+                chart.Series.Add(dataSeries);
+            }
+            //将生产的图表增加到Grid，然后通过Grid添加到上层Grid.           
+            Grid gr = new Grid();
+            gr.Children.Add(chart);
+            theChartGrid.Children.Add(gr);
+        }
+        #endregion
+
+
     }
 }

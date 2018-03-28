@@ -46,6 +46,8 @@ namespace socketServer
         public stepDetection TheStepCheck { get { return stepExtra; } }
         public information InformationController { get { return theInformationController; } }
         public stepAxis TheStepAxis { get { return theStepAxis; } }
+        public rotationAngel TheAngelController { get { return theAngelController; } }
+
 
         //公有的存储空间
         //这些也就是计算结果的缓存了

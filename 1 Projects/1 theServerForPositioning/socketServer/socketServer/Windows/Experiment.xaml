@@ -5,26 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:socketServer.Windows"
         mc:Ignorable="d"
-        Title="Experiment &amp; Show" Height="424.384" Width="760.715" Background="#FFD8D8D8" ResizeMode="NoResize">
+        Title="Experiment &amp; Show" Height="424.384" Width="760.715" Background="#FFD8D8D8" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <TabControl x:Name="tabControl">
             <TabItem Header="StepLength">
                 <Grid Background="#FFE5E5E5">
-                    <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="32"/>
+                    <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Right" Margin="0,10,165,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="28"/>
                     <DataGrid x:Name="SLDataGrid" Margin="12,52,10,0" VerticalAlignment="Top" Height="294"/>
-                    <Label x:Name="label" Content="Data Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Right" Width="233"/>
-                    <Button x:Name="button4" Content="Average Data Chart" HorizontalAlignment="Left" Margin="278,10,0,0" VerticalAlignment="Top" Width="140" Click="button4_Click" IsEnabled="False" Height="32"/>
+                    <Label x:Name="label" Content="Data Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="233"/>
+                    <Button x:Name="button4" Content="Average Data Chart" Margin="0,10,10,0" VerticalAlignment="Top" Click="button4_Click" IsEnabled="False" Height="28" HorizontalAlignment="Right" Width="140"/>
                 </Grid>
             </TabItem>
             <TabItem Header="StepDection">
                 <Grid Background="#FFE5E5E5">
-                    <Button x:Name="button5" Content="Canculate Step Dection Check" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="267" Click="button5_Click" Height="32"/>
-                    <DataGrid x:Name="SDDataGrid" Margin="10,46,10,10"/>
-                    <Label x:Name="label_Copy" Content="Data Analys For Step Dection With Axis" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Right" Width="308"/>
+                    <Button x:Name="button5" Content="Canculate Step Dection Check" HorizontalAlignment="Right" Margin="0,9,10,0" VerticalAlignment="Top" Width="199" Click="button5_Click" Height="28" RenderTransformOrigin="0.879,-0.714"/>
+                    <DataGrid x:Name="SDDataGrid" Margin="10,56,10,20"/>
+                    <Label x:Name="label_Copy" Content="Data Analys For Step Dection With Axis" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="308"/>
+                    <ComboBox x:Name="theAxisComboxForStepDection" HorizontalAlignment="Right" Margin="0,9,214,0" VerticalAlignment="Top" Width="191" Height="28" SelectedIndex="0" FontSize="15"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Heading">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Label x:Name="label_Copy1" Content="Data Analys For Heading" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="204"/>
+                    <DataGrid x:Name="HeadingDataGrid" Margin="10,63,10,10"/>
+                    <Button x:Name="button6" Content="Canculate Heading Check" HorizontalAlignment="Right" Margin="0,11,271,0" VerticalAlignment="Top" Width="183" Height="28" Click="button6_Click"/>
+                    <Button x:Name="button7" Content="Heading  Change Chart" HorizontalAlignment="Right" Margin="0,10,78,0" VerticalAlignment="Top" Width="171" Height="29" Click="button7_Click" IsEnabled="False"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Filter">
                 <Grid Background="#FFE5E5E5"/>

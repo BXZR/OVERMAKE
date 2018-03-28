@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace socketServer
 {
     //这个类专门用来控制旋转信息的处理
-    class rotationAngel
+   public  class rotationAngel
     {
         private double theAngelNow = 0;//总记录的角度
 

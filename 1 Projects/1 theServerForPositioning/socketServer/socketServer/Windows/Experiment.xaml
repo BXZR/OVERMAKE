@@ -8,10 +8,10 @@
         Title="Experiment &amp; Show" Height="424.384" Width="760.715" Background="#FFD8D8D8" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <TabControl x:Name="tabControl">
-            <TabItem Header="StepLength">
+            <TabItem Header="StepLength" HorizontalAlignment="Left" Width="84">
                 <Grid Background="#FFE5E5E5">
                     <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Right" Margin="0,10,165,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="28"/>
-                    <DataGrid x:Name="SLDataGrid" Margin="12,52,10,0" VerticalAlignment="Top" Height="294"/>
+                    <DataGrid x:Name="SLDataGrid" Margin="10,56,10,0" VerticalAlignment="Top" Height="290"/>
                     <Label x:Name="label" Content="Data Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="233"/>
                     <Button x:Name="button4" Content="Average Data Chart" Margin="0,10,10,0" VerticalAlignment="Top" Click="button4_Click" IsEnabled="False" Height="28" HorizontalAlignment="Right" Width="140"/>
                 </Grid>
@@ -27,18 +27,24 @@
             <TabItem Header="Heading">
                 <Grid Background="#FFE5E5E5">
                     <Label x:Name="label_Copy1" Content="Data Analys For Heading" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="204"/>
-                    <DataGrid x:Name="HeadingDataGrid" Margin="10,63,10,10"/>
-                    <Button x:Name="button6" Content="Canculate Heading Check" HorizontalAlignment="Right" Margin="0,11,271,0" VerticalAlignment="Top" Width="183" Height="28" Click="button6_Click"/>
-                    <Button x:Name="button7" Content="Heading  Change Chart" HorizontalAlignment="Right" Margin="0,10,78,0" VerticalAlignment="Top" Width="171" Height="29" Click="button7_Click" IsEnabled="False"/>
+                    <DataGrid x:Name="HeadingDataGrid" Margin="10,56,10,11"/>
+                    <Button x:Name="button6" Content="Canculate Heading Check" HorizontalAlignment="Right" Margin="0,11,228,0" VerticalAlignment="Top" Width="226" Height="28" Click="button6_Click"/>
+                    <Button x:Name="button7" Content="Heading  Change Chart" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="201" Height="29" Click="button7_Click" IsEnabled="False"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Filter">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Label x:Name="label_Copy2" Content="Data Analys For Filter" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="233"/>
+                    <Button x:Name="button8" Content="Create Data For Filter" HorizontalAlignment="Right" Margin="0,11,166,0" VerticalAlignment="Top" Width="179" Height="28" Click="button8_Click"/>
+                    <DataGrid x:Name="FilterDataGrid" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="713" Height="297"/>
+                    <ComboBox x:Name="theAxisComboxForFilter" HorizontalAlignment="Right" Margin="0,11,365,0" VerticalAlignment="Top" Width="147" Height="29" SelectedIndex="0"/>
+                    <Button x:Name="button9" Content="Filtered Data" HorizontalAlignment="Right" Margin="0,11,22,0" VerticalAlignment="Top" Width="130" Height="28" Click="button9_Click"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Positioning">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem Header="DataShow">
+            <TabItem Header="ExtraShowing">
                 <Grid Background="#FFE5E5E5">
                     <Button x:Name="button" Content="theStepAngeData" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="149" Height="26" Click="button_Click"/>
                     <Button x:Name="button1" Content="SelectedAxisData" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="149" Height="27" Click="button1_Click"/>

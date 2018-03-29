@@ -367,7 +367,7 @@ namespace socketServer
         #region 折线图究极版本
         //绘制对比曲线使用的折线图
         //超级无敌用于多项对比的方法
-        public void CreateChartSplines(List<List<double>> theValues, List<string> theValuesTitles ,string titleName = "" , string YName = "" )
+        public void CreateChartSplines(List<List<double>> theValues, List<string> theValuesTitles ,string titleName = "" , string YName = "" , int max = 360 , int min = -360)
         {
             //创建一个图标
             Chart chart = new Chart();
@@ -399,8 +399,8 @@ namespace socketServer
 
             Axis yAxis = new Axis();
             //设置图标中Y轴的最小值永远为0           
-             yAxis.AxisMinimum = -360;
-             yAxis.AxisMaximum = 360;
+             yAxis.AxisMinimum = min;
+             yAxis.AxisMaximum = max;
             //设置图表中Y轴的后缀 
 
             chart.AxesY.Add(yAxis);

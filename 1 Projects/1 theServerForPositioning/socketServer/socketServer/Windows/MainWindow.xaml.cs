@@ -1022,7 +1022,7 @@ namespace socketServer
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
                 theStepLabel.Content += "\n-----------------------------------------------------------------------------";
-                theStepLabel.Content += "\n使用滤波方法：" + comboBox1.SelectionBoxItem;
+                theStepLabel.Content += "\n使用滤波方法：" + FilterMethods.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theFilter.getInformation(SystemSave.FilterMode);
                 theStepLabel.Content += "\n\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
@@ -1044,7 +1044,7 @@ namespace socketServer
                 theStepLabel.Content += "\n绘制图像： " + SystemSave.pictureNumber;
                 theStepLabel.Content += "    当前分组数据条目： " + theInformationController.accelerometerY.Count + "    总数据条目：" + SystemSave.getValuesCount(theInformationController.accelerometerY.Count);
                 theStepLabel.Content += "\n-----------------------------------------------------------------------------";
-                theStepLabel.Content += "\n使用滤波方法：" + comboBox1.SelectionBoxItem;
+                theStepLabel.Content += "\n使用滤波方法：" + FilterMethods.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theFilter.getInformation(SystemSave.FilterMode);
                 theStepLabel.Content += "\n\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
@@ -1646,7 +1646,7 @@ namespace socketServer
 
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SystemSave.FilterMode = comboBox1.SelectedIndex;
+            SystemSave.FilterMode = FilterMethods.SelectedIndex;
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)

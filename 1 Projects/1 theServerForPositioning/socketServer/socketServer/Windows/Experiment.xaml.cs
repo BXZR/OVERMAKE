@@ -205,17 +205,6 @@ namespace socketServer.Windows
             SDDataGrid.ItemsSource = DataForSDMethod;
         }
 
-        //有些控件的内容需要加载的时候生成和处理
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            theAxisComboxForStepDection.Items.Clear();
-            for (int t = 0; t < theMainWindow.stepCheckAxisUse.Items.Count; t++)
-            {
-                ComboBoxItem T = new ComboBoxItem();
-                T.Content = theMainWindow.stepCheckAxisUse.Items[t].ToString().Split(':')[1];
-                theAxisComboxForStepDection.Items.Add(T);
-            }
-        }
 
         //---------------------------------------------------------方向部分---------------------------------------------------------------------------//
         //方向的按钮
@@ -307,9 +296,125 @@ namespace socketServer.Windows
             theChartWindow.CreateChartSplines(headings, XLabels, "各种方向方法最后五步方向变化对比","度");
             theChartWindow.Show();
         }
+        //---------------------------------------------------------有关滤波部分--------------------------------------------------------------------------//
+        List<classForFilter> DataForFilter = new List<classForFilter>();
+        private void button8_Click(object sender, RoutedEventArgs e)
+        {
+            FilterDataGrid.CanUserAddRows = false;
+            DataForFilter = new List<classForFilter>();
+
+            int theAxisIndex = theAxisComboxForFilter.SelectedIndex;
+            List<double> dataRaw = theMainWindow.stepCheckAxis(theAxisIndex,false);
+            int countsForCheck = 20;
+
+            //计算最后20条数据的滤波结果
+            //滤波的设计使用SystemSave.FilterMode操纵的，这与其他的模块设计有一点不一样
+            //这样考虑是因为Filer是一个可以移动的小模块
+            for (int i = 0; i < theMainWindow.FilterMethods.Items.Count; i++)
+            {
+                //滤波器的前期准备
+                SystemSave.FilterMode = i;
+                classForFilter DATA = new classForFilter();
+                DATA.MethodName = theMainWindow.FilterMethods.Items[i].ToString().Split(':')[1];
+                DATA.MethodInformaton = new Filter().getInformation(i);
+
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start(); //  开始监视代码
+                //----------------------------------------------------------------------------------------------------------------
+
+                List<double> dataOver = new Filter().theFilerWork(dataRaw);
+                DATA.FilteredValues = new List<double>();
+                for(int w = 0; w < countsForCheck; w++)
+                {
+                    if (w >= dataOver.Count)
+                        DATA.FilteredValues.Add(0);
+                    else
+                        DATA.FilteredValues.Add(dataOver[w]);
+                }
+                //----------------------------------------------------------------------------------------------------------------
+                stopwatch.Stop(); //  停止监视
+                TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
+                double hours = timeSpan.TotalHours; // 小时
+                double minutes = timeSpan.TotalMinutes;  // 分钟
+                double seconds = timeSpan.TotalSeconds;  //  秒数
+                double milliseconds = theMainWindow.theStepLengthUse.Count == 0 ? 0 : timeSpan.TotalMilliseconds / (double)theMainWindow.theStepLengthUse.Count;  //  毫秒数
+                DATA.TimeUse = milliseconds.ToString("f5");
+
+                DATA.DataAverage = Codes.MathCanculate.getAverage(dataOver).ToString("f2");
+                DATA.DataCountBefore = dataRaw.Count.ToString() ;
+                DATA.DataCountOver = dataOver.Count.ToString();
+
+                DataForFilter.Add(DATA);
+            }
+
+            FilterDataGrid.ItemsSource = DataForFilter;
+            button7.IsEnabled = true;
+        }
+
+        private void button9_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> XLabels = new List<string>();
+            List<List<double>> FilteredValues = new List<List<double>>();
+            //第一项是不滤波的要跳过去
+            for (int i = 1; i <DataForFilter.Count; i++)
+            {
+              FilteredValues.Add(DataForFilter[i].FilteredValues);
+              XLabels.Add(DataForFilter[i].MethodName);
+            }
+            ChartWindow theChartWindow = new ChartWindow();
+            theChartWindow.CreateChartSplines(FilteredValues, XLabels, "滤波结果最后20条数据的对比", "m/s2" , 3, -3);
+            theChartWindow.Show();
+        }
 
         //-------------------------------------------------------------------------------------------------------------------------------------------//
+
+
+        //有些控件的内容需要加载的时候生成和处理
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            theAxisComboxForStepDection.Items.Clear();
+            for (int t = 0; t < theMainWindow.stepCheckAxisUse.Items.Count; t++)
+            {
+                ComboBoxItem T = new ComboBoxItem();
+                T.Content = theMainWindow.stepCheckAxisUse.Items[t].ToString().Split(':')[1];
+                theAxisComboxForStepDection.Items.Add(T);
+            }
+            //而这代码一致但是应该分开写，不知道什么时候就需要修
+            theAxisComboxForFilter.Items.Clear();
+            for (int t = 0; t < theMainWindow.stepCheckAxisUse.Items.Count; t++)
+            {
+                ComboBoxItem T = new ComboBoxItem();
+                T.Content = theMainWindow.stepCheckAxisUse.Items[t].ToString().Split(':')[1];
+                theAxisComboxForFilter.Items.Add(T);
+            }
+        }
+
     }
+
+
+
+    //判断各种滤波方法的组合效果
+    class classForFilter
+    {
+        private string methodName = "S34343SASD";
+        private string timeUse = " ";
+        private string methodInformaton = "";
+
+        private string dataCountBefore = "";
+        private string dataCountOver = "";
+        private string dataAverage = "";
+
+        public List<double> FilteredValues = new List<double>();
+        public string MethodName { get { return methodName; } set { methodName = value; } }
+        public string DataCountBefore { get { return dataCountBefore; } set { dataCountBefore = value; } }
+        public string DataCountOver { get { return dataCountOver; } set { dataCountOver = value; } }
+        public string TimeUse { get { return timeUse; } set { timeUse = value; } }
+        public string DataAverage { get { return dataAverage; } set { dataAverage = value; } }
+        public string MethodInformaton { get { return methodInformaton; } set { methodInformaton = value; } }
+
+    }
+
+
 
     //判断走了多少步的方法对比
     class classForStepDection

@@ -268,6 +268,27 @@ namespace socketServer
                     return stepLength;
             }
         }
+        //有时候只需要获得下标就好，因此需要一个额外的方法来处理这件事情
+        public int getStepLengthIndexWithANN(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
+        {
+            // Console.WriteLine("method");
+            if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
+                return 0;//万金油
+            else
+            {
+                double VK = MathCanculate.getVariance(theA, indexNow, indexPre);
+
+                long timestep = timeUse[indexNow] - timeUse[indexPre];
+                //有除零异常说明时间非常短，可以认为根本就没走
+                if (timestep == 0)
+                    return 0;//万金油
+                             // Console.WriteLine("timeStep is "+ timestep);
+                double FK = ((double)1000 / timestep);//因为时间戳是毫秒作为单位的
+
+                int indexUse = SystemSave.AccordANNforSL.getModeWithANNForSL(VK, FK);
+                return indexUse;
+            }
+        }
 
 
         //KNN控制单元在SystemSave(中央控制类)中

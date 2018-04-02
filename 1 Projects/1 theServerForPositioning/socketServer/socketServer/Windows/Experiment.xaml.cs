@@ -366,8 +366,120 @@ namespace socketServer.Windows
             theChartWindow.Show();
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------------------//
+        //----------------------------------------ANN层数对比------------------------------------------------------------------------------------------//
+        private void button10_Click(object sender, RoutedEventArgs e)
+        {
+            //数据准备：循环次数
+            int minForLayer = 0;
+            int maxForLayer = 0;
+            int minforTrain = 0;
+            int maxforTrain = 0;
+            try
+            {
+                minForLayer = Convert.ToInt32( ANNMin.Text);
+                maxForLayer = Convert.ToInt32(ANNMax.Text);
+                minforTrain = Convert.ToInt32(TrainMin.Text);
+                maxforTrain = Convert.ToInt32(TrainMax.Text);
+            }
+            catch
+            {
+                ANNMin.Text = "2";
+                ANNMax.Text = "8";
+                TrainMin.Text = "2";
+                TrainMax.Text = "8";
+                minForLayer = Convert.ToInt32(ANNMin.Text);
+                maxForLayer = Convert.ToInt32(ANNMax.Text);
+                minforTrain = Convert.ToInt32(TrainMin.Text);
+                maxforTrain = Convert.ToInt32(TrainMax.Text);
+                MessageBox.Show("存在非法输入，所以强制修改了");
+            }
+            //正式计算
+            List<ClassForANNLayers> layersInformation = new List<Windows.ClassForANNLayers>();
+            for (int t = minforTrain; t <= maxforTrain; t++)
+            {
+                for (int i = minForLayer; i <= maxForLayer; i++)
+                {
+                    ClassForANNLayers theANN = new ClassForANNLayers();
+                    theANN.LayerCount = i.ToString();
+                    theANN.TrainTimes = t.ToString();
+                    //计算创建时间
+                    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                    stopwatch.Start(); //  开始监视代码
+                   //----------------------------------------------------------------------------------------------------------------
+                    SystemSave.AccordANNforSL = new Codes.AcordUse.AccordANN();
+                    SystemSave.AccordANNforSL.BuildANNForSL(i, t);
+                    //----------------------------------------------------------------------------------------------------------------
+                    stopwatch.Stop(); //  停止监视
+                    TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
+                    double hours = timeSpan.TotalHours; // 小时
+                    double minutes = timeSpan.TotalMinutes;  // 分钟
+                    double seconds = timeSpan.TotalSeconds;  //  秒数
+                    double milliseconds = timeSpan.TotalMilliseconds;  //  毫秒数
+                    theANN.TimeUseForBuilt = milliseconds.ToString();
 
+                    stopwatch = new System.Diagnostics.Stopwatch();
+                    stopwatch.Start(); //  开始监视代码
+                    //----------------------------------------------------------------------------------------------------------------
+                    //计算ANN的计算时间
+                    //为了获取目标类型，用的是模拟mainwaindow的计算方法，只不过获得的都是类别下标index
+                    List<long> timeUse = new Filter().theFilerWork( theMainWindow.InformationController.timeStep);
+                    List<int> typesGet = new List<int>();
+                    for (int j = 0; j < theMainWindow.indexBuff.Count; j++)
+                    {
+                        if (j >= 1)
+                        {
+                            if (SystemSave.AccordANNforSL == null) { typesGet.Add(0); }
+                            else
+                            {
+                                int stepLengthType = theMainWindow.TheStepLengthController.getStepLengthIndexWithANN(theMainWindow.indexBuff[i - 1], theMainWindow.indexBuff[i], theMainWindow.theFilteredAZ, timeUse);
+                                typesGet.Add(stepLengthType);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                            }
+                        }
+                        else
+                            typesGet.Add(0);
+                    }
+                    //----------------------------------------------------------------------------------------------------------------
+                    stopwatch.Stop(); //  停止监视
+                    timeSpan = stopwatch.Elapsed; //  获取总时间
+                    hours = timeSpan.TotalHours; // 小时
+                    minutes = timeSpan.TotalMinutes;  // 分钟
+                    seconds = timeSpan.TotalSeconds;  //  秒数
+                    milliseconds = timeSpan.TotalMilliseconds;  //  毫秒数
+                    theANN.TimeUseForCanculate = milliseconds.ToString();
+
+                    int count = theMainWindow.theStepLengthUse.Count;
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (j < count)
+                        {
+                            switch (j)
+                            {
+                                case 0: { theANN.SLType1 = typesGet[j].ToString("f0"); } break;
+                                case 1: { theANN.SLType2 = typesGet[j].ToString("f0"); } break;
+                                case 2: { theANN.SLType3 = typesGet[j].ToString("f0"); } break;
+                                case 3: { theANN.SLType4 = typesGet[j].ToString("f0"); } break;
+                                case 4: { theANN.SLType5 = typesGet[j].ToString("f0"); } break;
+                            }
+                        }
+                        else
+                        {
+                            switch (j)
+                            {
+                                case 0: { theANN.SLType1 = "-"; } break;
+                                case 1: { theANN.SLType2 = "-"; } break;
+                                case 2: { theANN.SLType3 = "-"; } break;
+                                case 3: { theANN.SLType4 = "-"; } break;
+                                case 4: { theANN.SLType5 = "-"; } break;
+                            }
+                        }
+                    }
+                    layersInformation.Add(theANN);
+                }
+            }
+            ANNDataGrig.CanUserAddRows = false;
+            ANNDataGrig.ItemsSource = layersInformation;
+        }
+        //-------------------------------------------------------------------------------------------------------------------------------------------//
 
         //有些控件的内容需要加载的时候生成和处理
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -388,8 +500,32 @@ namespace socketServer.Windows
                 theAxisComboxForFilter.Items.Add(T);
             }
         }
-
     }
+
+    //ANN各种层数的计算对比类
+    class ClassForANNLayers
+    {
+        private string layerCount = "S34343SASD";
+        private string trainTimes = "regvfd";
+        private string timeUseForBuilt = " ";
+        private string timeUseForCanculate = " ";
+        private string SL1 = "";
+        private string SL2 = "";
+        private string SL3 = "";
+        private string SL4 = "";
+        private string SL5 = "";
+
+        public string LayerCount { get { return layerCount; } set { layerCount = value; } }
+        public string TrainTimes { get { return trainTimes; } set { trainTimes = value; } }
+        public string SLType1 { get { return SL1; } set { SL1 = value; } }
+        public string SLType2 { get { return SL2; } set { SL2 = value; } }
+        public string SLType3 { get { return SL3; } set { SL3 = value; } }
+        public string SLType4 { get { return SL4; } set { SL4 = value; } }
+        public string SLType5 { get { return SL5; } set { SL5 = value; } }
+        public string TimeUseForBuilt { get { return timeUseForBuilt; } set { timeUseForBuilt = value; } }
+        public string TimeUseForCanculate { get { return timeUseForCanculate; } set { timeUseForCanculate = value; } }
+    }
+
 
 
 

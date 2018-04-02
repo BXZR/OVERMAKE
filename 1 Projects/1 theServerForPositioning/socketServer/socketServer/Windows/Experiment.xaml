@@ -41,8 +41,23 @@
                     <Button x:Name="button9" Content="Filtered Data" HorizontalAlignment="Right" Margin="0,11,22,0" VerticalAlignment="Top" Width="130" Height="28" Click="button9_Click"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="ANN">
+                <Grid Background="#FFE5E5E5">
+                    <Label x:Name="label_Copy3" Content="Data Analys For ANN Canculate" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="264"/>
+                    <DataGrid x:Name="ANNDataGrig" Margin="40,129,35,0" VerticalAlignment="Top" Height="211"/>
+                    <TextBox x:Name="ANNMin" HorizontalAlignment="Left" Height="23" Margin="145,48,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="99"/>
+                    <TextBox x:Name="ANNMax" HorizontalAlignment="Left" Height="23" Margin="389,49,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.617,-0.739"/>
+                    <Button x:Name="button10" Content="Canculate With ANN Layers" Margin="550,58,25,0" VerticalAlignment="Top" Height="26" Click="button10_Click"/>
+                    <Label x:Name="label1_Copy1" Content="ANNLayersCountMin" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top" Width="135"/>
+                    <Label x:Name="label1_Copy2" Content="ANNLayersCountMax" HorizontalAlignment="Left" Margin="249,47,0,0" VerticalAlignment="Top" Width="135"/>
+                    <Label x:Name="label1_Copy3" Content="TrainingCountMin" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Width="135"/>
+                    <Label x:Name="label1_Copy4" Content="TrainingsCountMax" HorizontalAlignment="Left" Margin="249,73,0,0" VerticalAlignment="Top" Width="135"/>
+                    <TextBox x:Name="TrainMin" HorizontalAlignment="Left" Height="23" Margin="145,78,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="99"/>
+                    <TextBox x:Name="TrainMax" HorizontalAlignment="Left" Height="23" Margin="389,78,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="120"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="Positioning">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5" Margin="0,0,0,1"/>
             </TabItem>
             <TabItem Header="ExtraShowing">
                 <Grid Background="#FFE5E5E5">

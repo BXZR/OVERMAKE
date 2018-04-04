@@ -500,6 +500,57 @@ namespace socketServer.Windows
                 theAxisComboxForFilter.Items.Add(T);
             }
         }
+
+        private void button11_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver theFileSaver = new socketServer.FileSaver();
+            Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
+            string theStringForSave = theExcel.getExcelStringFromDataGrid(SLDataGrid);
+            string path = @"DataForPDR/Excel/Experiment-StepLength-" + SystemSave.getTimeString() + ".xls";
+            theFileSaver.saveInformation(theStringForSave, path);
+            MessageBox.Show("表格已导出到"+path);
+        }
+
+        private void button12_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver theFileSaver = new socketServer.FileSaver();
+            Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
+            string theStringForSave = theExcel.getExcelStringFromDataGrid(SDDataGrid);
+            string path = @"DataForPDR/Excel/Experiment-StepDetection-" + SystemSave.getTimeString() + ".xls";
+            theFileSaver.saveInformation(theStringForSave, path );
+            MessageBox.Show("表格已导出到" + path);
+
+        }
+
+        private void button13_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver theFileSaver = new socketServer.FileSaver();
+            Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
+            string theStringForSave = theExcel.getExcelStringFromDataGrid(HeadingDataGrid);
+            string path = @"DataForPDR/Excel/Experiment-Heading-" + SystemSave.getTimeString() + ".xls";
+            theFileSaver.saveInformation(theStringForSave, path);
+            MessageBox.Show("表格已导出到" + path);
+        }
+
+        private void button14_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver theFileSaver = new socketServer.FileSaver();
+            Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
+            string theStringForSave = theExcel.getExcelStringFromDataGrid(FilterDataGrid);
+            string path = @"DataForPDR/Excel/Experiment-Filter-" + SystemSave.getTimeString() + ".xls";
+            theFileSaver.saveInformation(theStringForSave, path);
+            MessageBox.Show("表格已导出到" + path);
+        }
+
+        private void button15_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver theFileSaver = new socketServer.FileSaver();
+            Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
+            string theStringForSave = theExcel.getExcelStringFromDataGrid(ANNDataGrig);
+            string path = @"DataForPDR/Excel/Experiment-ANNLayer-" + SystemSave.getTimeString() + ".xls";
+            theFileSaver.saveInformation(theStringForSave, path);
+            MessageBox.Show("表格已导出到" + path);
+        }
     }
 
     //ANN各种层数的计算对比类

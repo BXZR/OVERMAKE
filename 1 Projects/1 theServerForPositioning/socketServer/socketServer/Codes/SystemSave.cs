@@ -128,6 +128,10 @@ namespace socketServer
         public static string RoutePictureSavePath = @"DataForPDR/RouteImage/";
         public static string SystemLogPath = @"DataForPDR/Log/Log.txt";
         public static string DataExcelPath = @"DataForPDR/Excel/DataExcel.xls";
+        public static string getTimeString()
+        {
+            return System.DateTime.Now.ToString("yyyy - MM - dd - hh - mm - ss");
+        }
         //决策树算法类型 0:IC3  1:C4.5
         public static int DecisionTreeMethodID = 0;
         public static bool isCutForDecisionTree = false;//决策树是不是要剪枝？默认不剪枝，用来对比

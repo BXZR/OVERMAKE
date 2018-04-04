@@ -42,7 +42,7 @@ namespace socketServer
                 fileName = makeFileName();//如果没有指定就用默认的
             //Console.WriteLine(fileName +"---");
             FileStream aFile = new FileStream( fileName , FileMode.Append);
-            StreamWriter sw = new StreamWriter(aFile);
+            StreamWriter sw = new StreamWriter(aFile , Encoding.Unicode);
             //Console.WriteLine(information);
             sw.Write(information);
             sw.Close();

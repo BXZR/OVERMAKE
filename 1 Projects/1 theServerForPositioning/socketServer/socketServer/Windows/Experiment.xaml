@@ -10,10 +10,11 @@
         <TabControl x:Name="tabControl">
             <TabItem Header="StepLength" HorizontalAlignment="Left" Width="84">
                 <Grid Background="#FFE5E5E5">
-                    <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Right" Margin="0,10,165,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="28"/>
+                    <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Right" Margin="0,11,155,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="28"/>
                     <DataGrid x:Name="SLDataGrid" Margin="10,56,10,0" VerticalAlignment="Top" Height="290"/>
                     <Label x:Name="label" Content="Data Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="233"/>
-                    <Button x:Name="button4" Content="Average Data Chart" Margin="0,10,10,0" VerticalAlignment="Top" Click="button4_Click" IsEnabled="False" Height="28" HorizontalAlignment="Right" Width="140"/>
+                    <Button x:Name="button4" Content="Average Data Chart" Margin="0,11,10,0" VerticalAlignment="Top" Click="button4_Click" IsEnabled="False" Height="28" HorizontalAlignment="Right" Width="140"/>
+                    <Button x:Name="button11" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,29,0,0" VerticalAlignment="Top" Width="140" Click="button11_Click" Height="22"/>
                 </Grid>
             </TabItem>
             <TabItem Header="StepDection">
@@ -22,6 +23,7 @@
                     <DataGrid x:Name="SDDataGrid" Margin="10,56,10,20"/>
                     <Label x:Name="label_Copy" Content="Data Analys For Step Dection With Axis" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="308"/>
                     <ComboBox x:Name="theAxisComboxForStepDection" HorizontalAlignment="Right" Margin="0,9,214,0" VerticalAlignment="Top" Width="191" Height="28" SelectedIndex="0" FontSize="15"/>
+                    <Button x:Name="button12" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button12_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Heading">
@@ -30,6 +32,7 @@
                     <DataGrid x:Name="HeadingDataGrid" Margin="10,56,10,11"/>
                     <Button x:Name="button6" Content="Canculate Heading Check" HorizontalAlignment="Right" Margin="0,11,228,0" VerticalAlignment="Top" Width="226" Height="28" Click="button6_Click"/>
                     <Button x:Name="button7" Content="Heading  Change Chart" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="201" Height="29" Click="button7_Click" IsEnabled="False"/>
+                    <Button x:Name="button13" Content="Save  As Excel" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button13_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Filter">
@@ -38,7 +41,8 @@
                     <Button x:Name="button8" Content="Create Data For Filter" HorizontalAlignment="Right" Margin="0,11,166,0" VerticalAlignment="Top" Width="179" Height="28" Click="button8_Click"/>
                     <DataGrid x:Name="FilterDataGrid" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="713" Height="297"/>
                     <ComboBox x:Name="theAxisComboxForFilter" HorizontalAlignment="Right" Margin="0,11,365,0" VerticalAlignment="Top" Width="147" Height="29" SelectedIndex="0"/>
-                    <Button x:Name="button9" Content="Filtered Data" HorizontalAlignment="Right" Margin="0,11,22,0" VerticalAlignment="Top" Width="130" Height="28" Click="button9_Click"/>
+                    <Button x:Name="button9" Content="ss" HorizontalAlignment="Right" Margin="0,11,22,0" VerticalAlignment="Top" Width="130" Height="28" Click="button9_Click"/>
+                    <Button x:Name="button14" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button14_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ANN">
@@ -47,13 +51,14 @@
                     <DataGrid x:Name="ANNDataGrig" Margin="40,129,35,0" VerticalAlignment="Top" Height="211"/>
                     <TextBox x:Name="ANNMin" HorizontalAlignment="Left" Height="23" Margin="145,48,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="99"/>
                     <TextBox x:Name="ANNMax" HorizontalAlignment="Left" Height="23" Margin="389,49,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.617,-0.739"/>
-                    <Button x:Name="button10" Content="Canculate With ANN Layers" Margin="550,58,25,0" VerticalAlignment="Top" Height="26" Click="button10_Click"/>
+                    <Button x:Name="button10" Content="Canculate With ANN Layers" Margin="550,49,25,0" VerticalAlignment="Top" Height="26" Click="button10_Click"/>
                     <Label x:Name="label1_Copy1" Content="ANNLayersCountMin" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top" Width="135"/>
                     <Label x:Name="label1_Copy2" Content="ANNLayersCountMax" HorizontalAlignment="Left" Margin="249,47,0,0" VerticalAlignment="Top" Width="135"/>
                     <Label x:Name="label1_Copy3" Content="TrainingCountMin" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Width="135"/>
                     <Label x:Name="label1_Copy4" Content="TrainingsCountMax" HorizontalAlignment="Left" Margin="249,73,0,0" VerticalAlignment="Top" Width="135"/>
                     <TextBox x:Name="TrainMin" HorizontalAlignment="Left" Height="23" Margin="145,78,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="99"/>
                     <TextBox x:Name="TrainMax" HorizontalAlignment="Left" Height="23" Margin="389,78,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="120"/>
+                    <Button x:Name="button15" Content="Save As Excel" Margin="550,85,25,0" VerticalAlignment="Top" Click="button15_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Positioning">

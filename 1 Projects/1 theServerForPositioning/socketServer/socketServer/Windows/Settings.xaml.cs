@@ -899,9 +899,19 @@ namespace socketServer
         private void button23_Click(object sender, RoutedEventArgs e)
         {
             //重新确定当前位置的做法
-            double xNew = Convert.ToDouble(resetPositionX.Text);
-            double yNew = Convert.ToDouble(resetPositionY.Text);
-            double zNew = Convert.ToDouble(resetPositionZ.Text);
+
+            double xNew = 0;
+            try { xNew = Convert.ToDouble(resetPositionX.Text); }
+            catch  { xNew = 0;}
+         
+            double yNew = 0;
+            try { yNew = Convert.ToDouble(resetPositionY.Text); }
+            catch { xNew = 0; }
+
+            double zNew = 0;
+            try { zNew = Convert.ToDouble(resetPositionZ.Text); }
+            catch { zNew = 0; }
+
             theMainWindow.makeFlashForOperateNewPosition(xNew, yNew, zNew);
             
         }

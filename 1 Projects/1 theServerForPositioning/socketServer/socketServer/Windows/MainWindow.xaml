@@ -108,7 +108,7 @@
             <ComboBoxItem Content="PDR(practical)" ToolTip="针对行人的实际环境，较为苛刻"/>
             <ComboBoxItem Content="CDR(Car)" ToolTip="针对车进行的航迹推算"/>
         </ComboBox>
-        <Button x:Name="button" Content="Experiment&amp;Show" HorizontalAlignment="Right" Margin="0,97,21,0" VerticalAlignment="Top" Width="182" Height="26" Click="button_Click"/>
+        <Button x:Name="button" Content="Experiment&amp;Show" HorizontalAlignment="Right" Margin="0,97,21,0" VerticalAlignment="Top" Width="182" Height="22" Click="button_Click"/>
         <Button x:Name="button1" Content="Pause" HorizontalAlignment="Right" Margin="0,70,128,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
         <Label x:Name="Charts_Copy" Content="FilterMode" Margin="0,189,44,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold" RenderTransformOrigin="0.503,-0.038"/>
         <ComboBox x:Name="FilterMethods" Margin="0,215,21,0" VerticalAlignment="Top" SelectedIndex="1" SelectionChanged="comboBox1_SelectionChanged" HorizontalAlignment="Right" Width="173">

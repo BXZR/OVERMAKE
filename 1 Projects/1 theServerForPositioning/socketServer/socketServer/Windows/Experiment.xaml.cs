@@ -507,7 +507,7 @@ namespace socketServer.Windows
             Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
             string theStringForSave = theExcel.getExcelStringFromDataGrid(SLDataGrid);
             string path = @"DataForPDR/Excel/Experiment-StepLength-" + SystemSave.getTimeString() + ".xls";
-            theFileSaver.saveInformation(theStringForSave, path);
+            theFileSaver.saveInformationWithEncoding(theStringForSave, path);
             MessageBox.Show("表格已导出到"+path);
         }
 
@@ -517,7 +517,7 @@ namespace socketServer.Windows
             Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
             string theStringForSave = theExcel.getExcelStringFromDataGrid(SDDataGrid);
             string path = @"DataForPDR/Excel/Experiment-StepDetection-" + SystemSave.getTimeString() + ".xls";
-            theFileSaver.saveInformation(theStringForSave, path );
+            theFileSaver.saveInformationWithEncoding(theStringForSave, path );
             MessageBox.Show("表格已导出到" + path);
 
         }
@@ -528,7 +528,7 @@ namespace socketServer.Windows
             Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
             string theStringForSave = theExcel.getExcelStringFromDataGrid(HeadingDataGrid);
             string path = @"DataForPDR/Excel/Experiment-Heading-" + SystemSave.getTimeString() + ".xls";
-            theFileSaver.saveInformation(theStringForSave, path);
+            theFileSaver.saveInformationWithEncoding(theStringForSave, path);
             MessageBox.Show("表格已导出到" + path);
         }
 
@@ -538,7 +538,7 @@ namespace socketServer.Windows
             Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
             string theStringForSave = theExcel.getExcelStringFromDataGrid(FilterDataGrid);
             string path = @"DataForPDR/Excel/Experiment-Filter-" + SystemSave.getTimeString() + ".xls";
-            theFileSaver.saveInformation(theStringForSave, path);
+            theFileSaver.saveInformationWithEncoding(theStringForSave, path);
             MessageBox.Show("表格已导出到" + path);
         }
 
@@ -548,7 +548,7 @@ namespace socketServer.Windows
             Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
             string theStringForSave = theExcel.getExcelStringFromDataGrid(ANNDataGrig);
             string path = @"DataForPDR/Excel/Experiment-ANNLayer-" + SystemSave.getTimeString() + ".xls";
-            theFileSaver.saveInformation(theStringForSave, path);
+            theFileSaver.saveInformationWithEncoding(theStringForSave, path);
             MessageBox.Show("表格已导出到" + path);
         }
     }

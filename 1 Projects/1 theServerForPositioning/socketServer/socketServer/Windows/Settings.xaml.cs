@@ -895,5 +895,15 @@ namespace socketServer
             MessageBox.Show("步长计算相关的KMeans数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "步长计算相关的KMeans数据已经新建或重建");
         }
+
+        private void button23_Click(object sender, RoutedEventArgs e)
+        {
+            //重新确定当前位置的做法
+            double xNew = Convert.ToDouble(resetPositionX.Text);
+            double yNew = Convert.ToDouble(resetPositionY.Text);
+            double zNew = Convert.ToDouble(resetPositionZ.Text);
+            theMainWindow.makeFlashForOperateNewPosition(xNew, yNew, zNew);
+            
+        }
     }
 }

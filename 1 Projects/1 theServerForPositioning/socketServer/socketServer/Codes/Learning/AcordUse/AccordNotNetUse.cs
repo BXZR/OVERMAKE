@@ -106,11 +106,17 @@ namespace socketServer.Codes
                 string[] informaitonUse = informationSplit[i].Split(',');
                 if (informaitonUse.Length < 14)
                     break;
-
-                int thistype = SystemSave.getTypeIndex(Convert.ToDouble(informaitonUse[14]), allCount);
-                //Console.WriteLine("this type = "+ thistype);
-                if (thistype == aimType)
-                    indexUse.Add(i);
+                try
+                {
+                    int thistype = SystemSave.getTypeIndex(Convert.ToDouble(informaitonUse[14]), allCount);
+                    //Console.WriteLine("this type = "+ thistype);
+                    if (thistype == aimType)
+                        indexUse.Add(i);
+                }
+                catch
+                {
+                    continue;//急需要防止某一行崩坏的情况
+                }
             }
 
             Console.WriteLine("fixed count = "+ indexUse.Count);

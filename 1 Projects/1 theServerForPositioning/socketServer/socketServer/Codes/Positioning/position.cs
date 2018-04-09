@@ -16,12 +16,20 @@ namespace socketServer
         public double Z = 0;//Z是垂直于XY平面的轴，变现为高度的移动
         //需要注意的是这里设定的是XY平面是地面，这与Unity中的设定是不一样的
         public double heading;
+        public transForm()
+        {
+            X = 0;
+            Y = 0;
+            Z = 0;
+            heading = 0;
+        }
         public transForm(double XIn, double YIn , double headingIn)
         {
             X = XIn;
             Y = YIn;
             heading = headingIn;
         }
+
         public transForm(double XIn, double YIn, double ZIn , double headingIn)
         {
             X = XIn;
@@ -29,6 +37,20 @@ namespace socketServer
             Z = ZIn;
             heading = headingIn;
         }
+
+        //额外设定数值用下面的方法------------------------------------------------------------
+        public void SetTransFormPosition(double XIn, double YIn, double ZIn)
+        {
+            X = XIn;
+            Y = YIn;
+            Z = ZIn;
+        }
+        public void SetTransFormHeading(double headingIn)
+        {
+            heading = headingIn;
+        }
+        //-----------------------------------------------------------------------------------
+
         public string toString()
         {
             return ("X = " + X.ToString("f2") + " Y = " + Y.ToString("f2") );

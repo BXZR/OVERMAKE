@@ -175,8 +175,8 @@ namespace socketServer
         }
 
 
-        //刷新操作////////////////////////////////////////////////////////////////////////////////////
-        void makeFlash()
+//刷新操作////////////////////////////////////////////////////////////////////////////////////
+       private void makeFlash()
         {
             Log.saveLog(LogType.information, "缓冲区满，进行数据保存");
             //额外补充计算
@@ -206,7 +206,44 @@ namespace socketServer
             if (SystemSave.SystemModeInd == 2)
                 theCarController.makeFlashForCar();
         }
+        //人为的刷新，用来重新定位位置的时候用
+        //这个方法是可以外部调用的
+        public void makeFlashForOperateNewPosition(double xNew , double yNew , double zNew)
+        {
+            Log.saveLog(LogType.information, "强制刷新，修改当前位置");
+            //额外补充计算
+            canculateExtra();
+            //---------------------------------保存训练用的数据---------------------------------------------//
+            saveTrainBase(theFilteredAZ);
+            //------------------------------------------------------------------------------------------//
+            for (int i = 0; i < thePositionController.theTransformPosition.Count; i++)
+            {
+                SystemSave.savedPositions.Add(thePositionController.theTransformPosition[i]);
+            }
+            //强制插入新的位置
+            transForm theNewPosition = new socketServer.transForm();
+            theNewPosition.SetTransFormPosition(xNew , yNew , zNew);
+            if(SystemSave.savedPositions.Count ==0)
+                theNewPosition.SetTransFormHeading(0);
+            else
+                theNewPosition.SetTransFormHeading(SystemSave.savedPositions[SystemSave.savedPositions.Count-1].heading);
+            SystemSave.savedPositions.Add(theNewPosition);
 
+            //方法1的刷新和存储
+            savedIndex = 0;
+            theInformationController.flashInformation();
+            SystemSave.stepCount += thePeackFinder.peackBuff.Count;
+            this.allStepCountSave += thePeackFinder.peackBuff.Count;
+            //方法2的刷新和存储
+            SystemSave.stepCount2 += stepExtra.peackBuff.Count;
+            stepCount2 += stepExtra.peackBuff.Count;
+            stepExtra.makeFlash();
+            SystemSave.makeFlash();
+            theAngelController.makeMethod34Save();//对于这个连续的服务器端的AHRS需要这样做才能保持连续性能
+            if (SystemSave.SystemModeInd == 2)
+                theCarController.makeFlashForCar();
+        }
+ //刷新操作OVER////////////////////////////////////////////////////////////////////////////////////
 
         //简单记录一下坐标字符串(如果有其他的信息需要记录就在这里扩展吧)
         void savePositionStreing()

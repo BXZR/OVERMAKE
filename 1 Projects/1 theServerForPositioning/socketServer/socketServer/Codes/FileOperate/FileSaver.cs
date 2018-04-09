@@ -36,21 +36,35 @@ namespace socketServer
         //单个信息写入适合这种方法
         //此外这个方法有扩展倾向
         bool locked  = false;
-       public void saveInformation(string information , string fileName = "" )
+       public void saveInformation(string information , string fileName = ""  )
         {
             if (string.IsNullOrEmpty(fileName))
                 fileName = makeFileName();//如果没有指定就用默认的
             //Console.WriteLine(fileName +"---");
             FileStream aFile = new FileStream( fileName , FileMode.Append);
-            StreamWriter sw = new StreamWriter(aFile , Encoding.Unicode);
+            StreamWriter sw = new StreamWriter(aFile);
+            //Console.WriteLine(information);
+            sw.Write(information);
+            sw.Close();
+            sw.Dispose();
+        }
+        public void saveInformationWithEncoding(string information, string fileName = "")
+        {
+            if (string.IsNullOrEmpty(fileName))
+                fileName = makeFileName();//如果没有指定就用默认的
+            //Console.WriteLine(fileName +"---");
+            FileStream aFile = new FileStream(fileName, FileMode.Append);
+            StreamWriter sw = new StreamWriter(aFile, Encoding.Unicode);
             //Console.WriteLine(information);
             sw.Write(information);
             sw.Close();
             sw.Dispose();
         }
 
-       //适合一口气写入所有缓冲区内容到文件的方法
-       public void saveInformation2(string information, string fileName = "" )
+
+
+        //适合一口气写入所有缓冲区内容到文件的方法
+        public void saveInformation2(string information, string fileName = "" )
         {
             if (string.IsNullOrEmpty(fileName))
                 fileName = makeFileName();//如果没有指定就用默认的

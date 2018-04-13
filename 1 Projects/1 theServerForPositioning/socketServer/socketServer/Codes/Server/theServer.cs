@@ -258,7 +258,7 @@ namespace socketServer
             //这是一个多段标记，标记头以“+”
             //初步解析，解析出来标记用以分类，看看用哪一种具体的操作
             string theInformationTitle = theProtocolController.getInformaitonTitle(information);
-            Console.WriteLine("switch title => "+ theInformationTitle);
+            //Console.WriteLine("switch title => "+ theInformationTitle);
             switch (theInformationTitle)
             {
                 //正常数据以smartPhoneData作为报文头部

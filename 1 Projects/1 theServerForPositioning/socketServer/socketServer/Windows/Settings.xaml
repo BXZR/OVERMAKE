@@ -289,7 +289,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox x:Name="groupBox3" Header="FileOperations" VerticalAlignment="Top" Height="188" Margin="17,10,218,0">
+                    <GroupBox x:Name="groupBox3" Header="FileOperations" VerticalAlignment="Top" Height="188" Margin="10,10,218,0">
                         <Grid Height="174" Margin="10,0,-2,0" VerticalAlignment="Top">
                             <Button x:Name="button6" Content="ClearLogData" HorizontalAlignment="Left" Margin="12,43,0,0" VerticalAlignment="Top" Width="99" Click="button6_Click"/>
                             <Button x:Name="button7" Content="ClearRouteMap" HorizontalAlignment="Left" Margin="12,108,0,0" VerticalAlignment="Top" Width="203" Click="button7_Click"/>
@@ -301,13 +301,13 @@
                             <Button x:Name="button20" Content="ClearDataExcel" HorizontalAlignment="Left" Margin="116,76,0,0" VerticalAlignment="Top" Width="99" Click="button20_Click"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="groupBox3_Copy" Header="MapOperations" VerticalAlignment="Top" Height="188" Margin="288,10,16,0">
+                    <GroupBox x:Name="groupBox3_Copy" Header="MapOperations" VerticalAlignment="Top" Height="188" Margin="288,10,10,0">
                         <Grid Height="153" Margin="6,10,4,0" VerticalAlignment="Top">
                             <Button x:Name="button13" Content="ChangeMap" Margin="10,125,10,0" VerticalAlignment="Top" Click="button13_Click" Height="21"/>
                             <Image x:Name="theMapImage" Margin="10,10,10,33" Source="/socketServer;component/pictures/back3.png" Stretch="Fill"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="groupBox3_Copy1" Header="ExtraSets" VerticalAlignment="Top" Height="152" Margin="17,203,25,0">
+                    <GroupBox x:Name="groupBox3_Copy1" Header="ExtraSets" VerticalAlignment="Top" Height="112" Margin="10,203,10,0">
                         <Grid Margin="0,10,-2,-1">
                             <Label x:Name="label1" Content="X: " HorizontalAlignment="Left" Margin="56,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.5,1.038"/>
                             <TextBox x:Name="resetPositionX" HorizontalAlignment="Left" Height="23" Margin="85,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="-0.917,6"/>
@@ -318,10 +318,14 @@
                             <Button x:Name="button23" Content="Reset Position" HorizontalAlignment="Left" Margin="132,41,0,0" VerticalAlignment="Top" Width="164" Click="button23_Click"/>
                         </Grid>
                     </GroupBox>
-                    <Button x:Name="button12" Content="CreateDataPicture" HorizontalAlignment="Left" Margin="0,360,0,0" VerticalAlignment="Top" Width="110" Click="button12_Click_1"/>
-                    <Button x:Name="button14" Content="tensorFlowSharp" HorizontalAlignment="Left" Margin="110,360,0,0" VerticalAlignment="Top" Width="110" Click="button14_Click"/>
-                    <Button x:Name="button15" Content="AccordLinear" HorizontalAlignment="Right" Margin="0,360,110,0" VerticalAlignment="Top" Width="110" Click="button15_Click"/>
-                    <Button x:Name="button16" Content="AccordANN" Margin="0,360,0,0" VerticalAlignment="Top" Click="button16_Click" HorizontalAlignment="Right" Width="110"/>
+                    <GroupBox x:Name="appendexDemo" Header="GroupBox" Margin="10,320,10,0" VerticalAlignment="Top" Height="56" BorderBrush="#FF96D8FF">
+                        <Grid Height="36" Margin="0,0,-2,-2" VerticalAlignment="Top">
+                            <Button x:Name="button12" Content="DataPicture" HorizontalAlignment="Left" Margin="15,6,0,0" VerticalAlignment="Top" Width="105" Click="button12_Click_1"/>
+                            <Button x:Name="button15" Content="AccordLinear" HorizontalAlignment="Right" Margin="0,6,122,0" VerticalAlignment="Top" Width="105" Click="button15_Click"/>
+                            <Button x:Name="button16" Content="AccordANN" Margin="0,6,12,0" VerticalAlignment="Top" Click="button16_Click" HorizontalAlignment="Right" Width="105"/>
+                            <Button x:Name="button14" Content="tensorFlowSharp" HorizontalAlignment="Left" Margin="125,6,0,0" VerticalAlignment="Top" Width="105" Click="button14_Click"/>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -485,235 +485,12 @@ namespace socketServer
         }
 
 
-        //移动方向的“滤镜”
-        //如果选择了额外的heading计算的方案，可能需要额外的计算。
-        //这些计算统一在这里处理
-
-        private double headingOffsetExtraCanculate(double heading , bool Can = true)
-        {
-            //当然也可以选择不计算
-            if (Can == false)
-            {
-                return heading;
-            }
-
-            if (SystemSave.UseHeadingOffset)
-            {
-                heading += SystemSave.angleOffset;
-            }
-            if (SystemSave.CanculateHeadingMode ==1)
-            {
-                if (SystemSave.sampleTime > 0 && SystemSave.CHM1Sampled == false)
-                {
-                    SystemSave.headingOffsetFor3DHeading = get3DHeadingPffset();
-                    if (SystemSave.headingOffsetFor3DHeading > -1000)
-                    {
-                        SystemSave.sampleTime--;
-                        if (SystemSave.sampleTime < 0)
-                        {
-                            SystemSave.CHM1Sampled = true;
-                        }
-                    }
-                }
-                //Console.WriteLine("3D heading offset is Added");
-                return heading + SystemSave.headingOffsetFor3DHeading;
-            }
-            return heading;
-        }
 
         //获取移动方向的方法/////////////////////////////////////////////////////
         //注意这里的if和for的顺序和steoLength结构不一样
        public  void headingAngleGet(int methodIndexForHeading )
         {
-            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
-            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
-            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
-            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
-            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
-            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
-            List<double> MX = theFilter.theFilerWork(theInformationController.magnetometerX);
-            List<double> MY = theFilter.theFilerWork(theInformationController.magnetometerY);
-            List<double> MZ = theFilter.theFilerWork(theInformationController.magnetometerZ);
-
-            if (methodIndexForHeading == 0)
-            {
-                //记录移动的方向 （方法1直接读取电子罗盘的信息）
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    double degree = theFilteredD[indexBuff[i]];
-                    degree = headingOffsetExtraCanculate(degree);
-                    theStepAngeUse.Add(degree);
-                }
-
-            }
-            else if (methodIndexForHeading == 1)
-            {
-                //方法2 微软建议滤波法(这个方法其实也是一种读取电子罗盘的方法，只不过更加复杂一点点)
-                if (indexBuff.Count <= 1)//数据量不够就直接用方法1
-                {
-                    for (int i = 0; i < indexBuff.Count; i++)
-                    {
-                        double degree = theFilteredD[indexBuff[i]];
-                        degree = headingOffsetExtraCanculate(degree);
-                        theStepAngeUse.Add(degree);
-                    }
-                }
-                else
-                {
-                    theStepAngeUse.Add(theFilteredD[indexBuff[0]]);//第一个是定的
-                    for (int j = 1; j < indexBuff.Count; j++)
-                    {
-                        List<double> checkUse = new List<double>();
-                        int preIndex = indexBuff[j - 1];
-                        int nowIndex = indexBuff[j];
-                        for (int i = preIndex; i <= nowIndex; i++)
-                            checkUse.Add(theFilteredD[i]);
-
-                        double degree = theAngelController.getAngelNow(checkUse);
-                        degree = headingOffsetExtraCanculate(degree);
-                        theStepAngeUse.Add(degree);
-                    }
-                }
-            }
-            else if (methodIndexForHeading == 2)
-            {
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    int indexUse = indexBuff[i];
-                    double degree = theAngelController.getAngelNowWithMatrixRotate(
-                        AX[indexUse], AY[indexUse], AZ[indexUse], MX[indexUse], MY[indexUse], MZ[indexUse]
-                        );
-                    degree = headingOffsetExtraCanculate(degree, false);
-                    theStepAngeUse.Add(degree);
-                }
-            }
-            else if (methodIndexForHeading == 3)
-            {
-                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    double degree = AHRSZ[indexBuff[i]];
-                    degree = headingOffsetExtraCanculate(degree);
-                    theStepAngeUse.Add(degree);
-                }
-            }
-            else if (methodIndexForHeading == 4)
-            {
-                //AHRS 方法server
-                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0, mx = 0, my = 0, mz = 0;
-                // Console.WriteLine(AX.Count +"-------------");
-                theAngelController.makeMehtod34Clear();
-                List<double> headings = new List<double>();
-                for (int i = 0; i < theInformationController.accelerometerX.Count; i++)
-                {
-                    double degree = 0;
-                    ax = theInformationController.accelerometerX[i];
-                    ay = theInformationController.accelerometerY[i];
-                    az = theInformationController.accelerometerZ[i];
-                    gx = theInformationController.gyroX[i];
-                    gy = theInformationController.gyroY[i];
-                    gz = theInformationController.gyroZ[i];
-                    mx = theInformationController.magnetometerX[i];
-                    my = theInformationController.magnetometerY[i];
-                    mz = theInformationController.magnetometerZ[i];
-                    degree = theAngelController.AHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz);
-                    degree = headingOffsetExtraCanculate(degree, false);
-                    headings.Add(degree);
-                }
-                headings = theFilter.theFilerWork(headings);
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    theStepAngeUse.Add(headings[indexBuff[i]]);
-                }
-            }
-            else if (methodIndexForHeading == 5)
-            {
-
-                List<double> AHRSZ = theFilter.theFilerWork(theInformationController.AHRSZFromClient, 0.1f);
-                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
-                //记录移动的方向
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    if (i <= 1)
-                    {
-                        double degree = AHRSZ[indexBuff[i]];
-                        degree = headingOffsetExtraCanculate(degree, false);
-                        theStepAngeUse.Add(degree);
-                    }
-                    else
-                    {
-                        double degree = theAngelController.AHRSIMUSelect(indexBuff[i - 1], indexBuff[i], AHRSZ, IMUZ);
-                        degree = headingOffsetExtraCanculate(degree, false);
-                        theStepAngeUse.Add(degree);
-                    }
-                }
-
-              
-            }
-
-            else if (methodIndexForHeading == 6)
-            {
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    int indexUse = indexBuff[i];
-                    double degree = theAngelController.getYawWithAM(
-                        AX[indexUse], AY[indexUse], AZ[indexUse], MX[indexUse], MY[indexUse], MZ[indexUse]
-                        );
-                    degree = headingOffsetExtraCanculate(degree, false);
-                    theStepAngeUse.Add(degree);
-                }
-            }
-
-            else if (methodIndexForHeading == 7)
-            {
-                List<double> IMUZ = theFilter.theFilerWork(theInformationController.IMUZFromClient, 0.1f);
-                try
-                {
-                    for (int i = 0; i < indexBuff.Count; i++)
-                    {
-                        //Console.WriteLine("--------" + AHRSZ[indexBuff[i]] + "--------" + IMUZ[indexBuff[i]]);
-                        double degree = IMUZ[indexBuff[i]];
-                        degree = headingOffsetExtraCanculate(degree);
-                        theStepAngeUse.Add(degree);
-                    }
-
-                }
-                catch
-                {
-                    // Console.WriteLine("imuMethod crashed using compass reading");
-                    for (int i = 0; i < indexBuff.Count; i++)
-                    {
-                        double degree = theFilteredD[indexBuff[i]];
-                        degree = headingOffsetExtraCanculate(degree);
-                        theStepAngeUse.Add(degree);
-                    }
-                }
-            }
-            else if (methodIndexForHeading == 8)
-            {
-                //IMU 方法server
-                double ax = 0, ay = 0, az = 0, gx = 0, gy = 0, gz = 0;
-                theAngelController.makeMehtod34Clear();
-                List<double> headings = new List<double>();
-                for (int i = 0; i < theInformationController.accelerometerX.Count; i++)
-                {
-                    double degree = 0;
-                    ax = theInformationController.accelerometerX[i];
-                    ay = theInformationController.accelerometerY[i];
-                    az = theInformationController.accelerometerZ[i];
-                    gx = theInformationController.gyroX[i];
-                    gy = theInformationController.gyroY[i];
-                    gz = theInformationController.gyroZ[i];
-                    degree = theAngelController.IMUupdate(gx, gy, gz, ax, ay, az);
-                    degree = headingOffsetExtraCanculate(degree, false);
-                    headings.Add(degree);
-                }
-                headings = theFilter.theFilerWork(headings);
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    theStepAngeUse.Add(headings[indexBuff[i]]);
-                }
-            }
+            theStepAngeUse = theAngelController.CanculateHeading(InformationController, methodIndexForHeading,indexBuff,theFilteredD);
 
             //记录最新的移动方向
             if (theStepAngeUse.Count > 0)
@@ -721,7 +498,6 @@ namespace socketServer
                 this.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
                 SystemSave.stepAngleNow = theStepAngeUse[theStepAngeUse.Count - 1];
             }
-
         }
 
         //保存训练用的数据////////////////////////////////////////////////////////////////////////////////////
@@ -1276,27 +1052,7 @@ namespace socketServer
             Log.saveLog(LogType.information, "保存一张路径的截图");
         }
 
-        //获得信息处理单元
-        public double get3DHeadingPffset()
-        {
-            //如果没有数据就得不到最新的偏移量
-            if (theInformationController == null)
-                return -9999;
-            double count = theInformationController.compassDegree.Count;
-            if (count <= 0)
-                return -9999;
 
-            int indexForStep = indexBuff.Count - 1;
-            int index = indexBuff[indexForStep];
-            List<double> theFCompass = theFilter.theFilerWork(theInformationController.compassDegree);
-            List<double> theFAHRS = theFilter.theFilerWork(theInformationController.AHRSZFromClient);
-            if(HeadingMehtod.SelectedIndex == 0 || HeadingMehtod.SelectedIndex == 1)
-                return 0 - theFCompass[index];
-            else if(HeadingMehtod.SelectedIndex == 2)
-                return 0 - theFAHRS[index];
-
-            return 0;
-        }
 
         private void StepLengthMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

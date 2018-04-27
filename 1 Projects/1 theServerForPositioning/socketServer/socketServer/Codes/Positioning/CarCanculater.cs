@@ -11,8 +11,6 @@ namespace socketServer.Codes
 
     class CarCanculater
     {
-
-
         //加速度积分模式
         int AIntegralMode = 3;
         //速度积分模式
@@ -25,8 +23,6 @@ namespace socketServer.Codes
             TipInformation +=IntegralController.getInstance().getIntegralInformation(VIntegralMode);
             return TipInformation;
         }
-
-
 
         public List<double> CarCanculate(List<int> indexBuff , List<double> AxisForCarNoFilter, information theInformationController)
         {

@@ -33,9 +33,260 @@ namespace socketServer
              "用KMeans结合加速计和陀螺仪从公式族中选择适合的公式"
         };
 
+        //真正的外部调用方法
+        //所有的计算都在SLController里面，保持封装
+        public List<double> SLCanculate(information theInformationController , int stepLengthMethodIndex, List<int> indexBuff, List<double> AZUse , List<double> theStepAngeUse)
+        {
+            List<double> SL = new List<double>();
+            Filter theFilter = new socketServer.Filter();
+            //这些数据在一些复杂的方法中会用到，因此计算出来备用
+            List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+            //方法0，最土鳖的方法直接就是立即数
+            if (stepLengthMethodIndex == 0)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    SL.Add(getStepLength1());
+                }
+            }
+            //方法1
+            else if (stepLengthMethodIndex == 1)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        SL.Add(getStepLength1(theStepAngeUse[i - 1], theStepAngeUse[i]));//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法2，一般公式
+            else if (stepLengthMethodIndex == 2)
+            {
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                        //    Console.WriteLine(theInformationController.timeStep[v]);
+                        double stepLength = getStepLength2(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                        SL.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法3，一般公式 + 决策树
+            else if (stepLengthMethodIndex == 3)
+            {
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        // for (int v = 0; v < theInformationController.timeStep.Count; v++)
+                        //    Console.WriteLine(theInformationController.timeStep[v]);
+                        if (SystemSave.StepLengthTree == null || SystemSave.StepLengthTree.IsStarted == false)
+                        {
+                            SL.Add(getStepLength1());
+                        }
+                        else
+                        {
+                            int mode = SystemSave.StepLengthTree.searchModeWithTree(ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                            // Console.WriteLine("modeNow = " + mode);
+                            double stepLength = getStepLength2WithMode(indexBuff[i - 1], indexBuff[i], AZUse, timeUse, mode);
+                            SL.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                    }
+                    else
+                    {
+                        SL.Add(getStepLength1());
+                    }
+                }
+            }
+            //方法4，一般公式 + 线性回归
+            else if (stepLengthMethodIndex == 4)
+            {
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        double stepLength = getStepLengthWithKLinear(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                        SL.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+
+            //方法5，一般公式 + ANN
+            else if (stepLengthMethodIndex == 5)
+            {
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        if (SystemSave.AccordANNforSL == null)
+                        {
+                            SL.Add(getStepLength1());
+
+                        }
+                        else
+                        {
+                            double stepLength = getStepLengthWithANN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse);
+                            SL.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+
+            //方法6，身高相关
+            else if (stepLengthMethodIndex == 6)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    SL.Add(getStepLength3());
+                }
+            }
+            //方法7，身高相关2，这个看上去更专业一点
+            else if (stepLengthMethodIndex == 7)
+            {
+                List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        SL.Add(getStepLength11(indexBuff[i - 1], indexBuff[i], timeUse2));
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法8，加速度开四次根号 Square  acceleration formula  （Weinberg approach）
+            else if (stepLengthMethodIndex == 8)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                        SL.Add(getStepLength4(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法9 说是可以克服每一个行人的不同特征，其实就是加速度平均上的计算 （Scarlet approach）
+            else if (stepLengthMethodIndex == 9)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                        SL.Add(getStepLength5(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法10，加速度平均开三次根号的做法
+            else if (stepLengthMethodIndex == 10)
+            {
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                        SL.Add(getStepLength6(indexBuff[i - 1], indexBuff[i], AZUse));
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+
+            //方法11，使用关于腿长的倒置钟摆的方法（很好玩的方法）
+            else if (stepLengthMethodIndex == 11)
+            {
+                List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        SL.Add(getStepLength8(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法12，单纯的某方向的二次积分的方法（更加适合于车）
+            else if (stepLengthMethodIndex == 12)
+            {
+
+                List<long> timeUse2 = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        //对于行人来说每一段都应该清零一下 重置当前记录下来的速度，在行人阶段其实就是清0,所以传入true
+                        SL.Add(getStepLength9(indexBuff[i - 1], indexBuff[i], AZUse, timeUse2));
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法13，一般公式 + KNN
+            else if (stepLengthMethodIndex == 13)
+            {
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        if (SystemSave.theKNNControllerForSL == null)
+                            SL.Add(getStepLength1());
+                        else
+                        {
+                            double stepLength = getStepLengthWithKNN(indexBuff[i - 1], indexBuff[i], AZUse, timeUse,
+                            ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                           SL.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            //方法14， 一般公式 + KMeans
+            else if (stepLengthMethodIndex == 14)
+            {
+                List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        if (SystemSave.theKmeansForSL == null)
+                            SL.Add(getStepLength1());
+                        else
+                        {
+                            double stepLength = getStepLengthWithKMeans(indexBuff[i - 1], indexBuff[i], AZUse, timeUse,
+                            ax[indexBuff[i]], ay[indexBuff[i]], az[indexBuff[i]], gx[indexBuff[i]], gy[indexBuff[i]], gz[indexBuff[i]]);
+                            SL.Add(stepLength);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                        }
+                    }
+                    else
+                        SL.Add(getStepLength1());
+                }
+            }
+            return SL;
+        }
 
 
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+ //----------------------------------------------------------------------------------------------------------------------------------------------------------------------//
         //外部方法0，必须对应methodType方法0，这个在mainWindow处会有判断
         //同时也是外部方法1，传参就是方法1
         public double getStepLength1(double angelPast = 0, double angelNow = 0)
@@ -47,7 +298,7 @@ namespace socketServer
         //不论应用的是哪一个轴向，至少需要传入一个用来计算的轴向
         //indexPre 和 indexNow 指的是传入的theA的下标，需要算theA的方差，而这这两个下标就是范围
         //论文公式方法
-        public double getStepLength2(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
+        private double getStepLength2(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
         {
             // Console.WriteLine("method");
             if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
@@ -77,7 +328,7 @@ namespace socketServer
 
 
         //外部方法3，男女身高加权
-        public double getStepLength3()
+        private double getStepLength3()
         {
             //男女加权不同，仅此而已
             if (SystemSave.isMale)
@@ -86,7 +337,7 @@ namespace socketServer
         }
 
         //身高加权，更复杂的公式
-        public double getStepLength11(int indexPre, int indexNow, List<long> timeUse)
+        private double getStepLength11(int indexPre, int indexNow, List<long> timeUse)
         {
             long timestep = timeUse[indexNow] - timeUse[indexPre];
             //有除零异常说明时间非常短，可以认为根本就没走
@@ -100,7 +351,7 @@ namespace socketServer
 
 
         //方法4，纵向加速度差值开四次根号的方法
-        public double getStepLength4(int indexPre, int indexNow, List<double> theA)
+        private double getStepLength4(int indexPre, int indexNow, List<double> theA)
         {
             double stepLength = 0;
             double aMax = -9999;
@@ -123,7 +374,7 @@ namespace socketServer
         }
 
         //方法5，对加速度做平均然后除以阶段加速度的极差的做法
-        public double getStepLength5(int indexPre, int indexNow, List<double> theA)
+        private double getStepLength5(int indexPre, int indexNow, List<double> theA)
         {
             //为了预防除零异常
             if (indexPre >= indexNow)
@@ -152,7 +403,7 @@ namespace socketServer
 
         }
         //方法6 算法也是一种加速度和步长的关系的算法，单纯的加速度平均开三次根号的做法
-        public double getStepLength6(int indexPre, int indexNow, List<double> theA)
+        private double getStepLength6(int indexPre, int indexNow, List<double> theA)
         {
             //为了预防除零异常
             if (indexPre >= indexNow)
@@ -172,7 +423,7 @@ namespace socketServer
 
         //论文公式方法，算法7
         //实际上这是一个公用的方法，不论用什么方法，只需要传入mode就可以使用systemSave储存的参数了
-        public double getStepLength2WithMode(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null, int modeUse = 1)
+        private double getStepLength2WithMode(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null, int modeUse = 1)
         {
             int indexUse = modeUse;
             // Console.WriteLine("method");
@@ -207,7 +458,7 @@ namespace socketServer
         //论文公式方法
         //使用训练集线性回归得到公式
         private AccordNotNetUse accordUsing = null;
-        public double getStepLengthWithKLinear(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
+        private double getStepLengthWithKLinear(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
         {
             // Console.WriteLine("method");
             if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
@@ -243,7 +494,7 @@ namespace socketServer
 
         //使用accord的人工神经网络的做法
         //实际上这里有很大的空间进行重构
-        public double getStepLengthWithANN(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
+        private double getStepLengthWithANN(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
         {
             // Console.WriteLine("method");
             if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
@@ -269,7 +520,7 @@ namespace socketServer
             }
         }
         //有时候只需要获得下标就好，因此需要一个额外的方法来处理这件事情
-        public int getStepLengthIndexWithANN(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
+        public  int getStepLengthIndexWithANN(int indexPre, int indexNow, List<double> theA, List<long> timeUse = null)
         {
             // Console.WriteLine("method");
             if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
@@ -294,7 +545,7 @@ namespace socketServer
         //KNN控制单元在SystemSave(中央控制类)中
         //用K临近的方法找到当前情况最适合的公式计算（同样适用于公式族群的思想）
         //有意思的是这可能是第一次陀螺仪的数据参与到步长的计算中来，可以玩一下
-        public double getStepLengthWithKNN(int indexPre, int indexNow, List<double> theA, List<long> timeUse, double ax, double ay, double az, double gx, double gy, double gz)
+        private double getStepLengthWithKNN(int indexPre, int indexNow, List<double> theA, List<long> timeUse, double ax, double ay, double az, double gx, double gy, double gz)
         {
             // Console.WriteLine("method");
             if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
@@ -322,7 +573,7 @@ namespace socketServer
         //KMeans控制单元在SystemSave(中央控制类)中
         //用K临近的方法找到当前情况最适合的公式计算（同样适用于公式族群的思想）
         //有意思的是这可能是第一次陀螺仪的数据参与到步长的计算中来，可以玩一下
-        public double getStepLengthWithKMeans(int indexPre, int indexNow, List<double> theA, List<long> timeUse, double ax, double ay, double az, double gx, double gy, double gz)
+        private double getStepLengthWithKMeans(int indexPre, int indexNow, List<double> theA, List<long> timeUse, double ax, double ay, double az, double gx, double gy, double gz)
         {
             // Console.WriteLine("method");
             if (indexNow >= theA.Count || indexPre >= theA.Count || indexNow <= indexPre || timeUse == null)//也就是说传入的数值是错误的，或者数据不够
@@ -368,7 +619,7 @@ namespace socketServer
         //例如目前在选择加速度的积分的时候只是简单地做一般加速度的积分，没有考虑波形
         //但是如果是用波峰波谷，则可以用上升和下降来做，也是使用peacksearch的类似方法，凡是貌似有一点不值得
         //大腿移动扇形方法
-        public double getStepLength8(int indexPre, int indexNow, List<double> AZ, List<long> timeStep)
+        private double getStepLength8(int indexPre, int indexNow, List<double> AZ, List<long> timeStep)
         {
             double stepLength = 0;
             //获得中心的数值，淡然如果纠结于细节的话其实这种方法并不正确

@@ -26,6 +26,29 @@ namespace socketServer.Codes
             return TipInformation;
         }
 
+
+
+        public List<double> CarCanculate(List<int> indexBuff , List<double> AxisForCarNoFilter, information theInformationController)
+        {
+            List<double> SL = new List<double>();
+            Filter theFilter = new socketServer.Filter();
+            List<long> timeNoFilter = theInformationController.timeStep;
+
+            List<double> AxisForCar = theFilter.theFilerWork(AxisForCarNoFilter);
+            List<long> TimeForCar = theFilter.theFilerWork(timeNoFilter);
+            flashSpeedForIntegral(false);//重置当前记录下来的速度
+                                                          //theStepLengthController.VNowForCarSave是从上一个阶段继承过来的数值
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                if (i >= 1)
+                    //theStepLengthUse.Add(theCarController.getCarSpeed(indexBuff[i - 1], indexBuff[i], AxisForCarNoFilter, timeNoFilter));
+                    SL.Add(getCarSpeed(indexBuff[i - 1], indexBuff[i], AxisForCar, TimeForCar));
+                else
+                    SL.Add(0);
+            }
+            return SL;
+        }
+
 //--------------------------------------------预存数据和刷新---------------------------------------------//
         //积分车速
         public double VNowForCar = 0;

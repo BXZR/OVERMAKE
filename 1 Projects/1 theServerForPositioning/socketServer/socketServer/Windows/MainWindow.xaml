@@ -37,8 +37,8 @@
                 </Canvas.LayoutTransform>
                 <Image x:Name="HeadingImage" Source="/socketServer;component/pictures/headArrow.png" RenderTransformOrigin="0.5,0.577" Height="32" Canvas.Left="213" Canvas.Top="230" Width="39"/>
             </Canvas>
-            <Label Height="345" Margin="0,1,6,0" x:Name="theStepLabel" VerticalAlignment="Top" />
-            <TextBox x:Name="POSITION" Margin="3,346,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2" FontSize="10" FontWeight="Bold"/>
+            <Label Height="345" Margin="0,7,6,0" x:Name="theStepLabel" VerticalAlignment="Top" />
+            <TextBox x:Name="POSITION" Margin="0,357,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2" FontSize="10" FontWeight="Bold"/>
             <Button x:Name="button2" Content="Save Route Map" Margin="109,2,237,0" VerticalAlignment="Top" Click="button2_Click_1" Grid.Column="1"/>
             <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="11,32,0,0" Grid.Column="1"/>
             <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="212" Height="33" VerticalAlignment="Top" Foreground="#FFD12179" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Margin="0,0,20,0" Grid.Column="1"/>

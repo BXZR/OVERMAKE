@@ -39,6 +39,42 @@ namespace socketServer
             "根据数据连续两次的经过零点来判断走出一步"
         };
 
+
+        public List<int> stepDectionMehtods(int methodID ,List<double> AZValues, PeackSearcher PK)
+        {
+            List<int> indexBuff = new List<int>();
+            if (methodID == 0)
+            {
+                //方法1：波峰波谷大法，我个人推荐的方法
+                //必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
+                //根据下标获得需要的旋转角和步长
+                //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
+                //计算移动的时候用的是去除不可能项的步数
+                indexBuff = stepDectionExtration0(AZValues, PK);
+
+            }
+            else if (methodID == 1)
+            {
+                indexBuff = stepDectionExtration4(AZValues, PK);
+            }
+            else if (methodID == 2)
+            {
+                indexBuff = stepDectionExtration3(AZValues, PK);
+            }
+            else if (methodID == 3)
+            {
+                //方法3：重复性判断方法，相对比较严格（感觉不是人能用的）
+                indexBuff = stepDetectionExtra1(AZValues);
+            }
+            else if (methodID == 4)
+            {
+                //方法4零点交叉
+                indexBuff = stepDetectionExtra2(AZValues);
+            }
+            return indexBuff;
+        }
+
+ //===========================================================================================================//
         private void makeSample(List<double> wave)
         {
             if (wave.Count < dataDropCount || isSampled )

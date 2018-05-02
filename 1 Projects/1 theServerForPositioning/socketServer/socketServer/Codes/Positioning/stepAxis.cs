@@ -19,25 +19,56 @@ namespace socketServer.Codes.stages
             "使用手机加速度传感器XYZ轴平方和开根号进行计算",
             "使用手机加速度传感器XYZ轴中方差最大的值进行计算",
         };
-        public List<double> AZ(information theInformationController , Filter theFilter ,bool useFilter = true)
+
+
+        public List<double> stepAxisUse(int stepAxisUseIndex, information theInformationController, Filter theFilter, bool useFilter = true)
+        {
+            List<double> theFilteredAZ = new List<double>();
+            switch (stepAxisUseIndex)//选择不同的轴向
+            {
+                case 0:
+                    //基础方法:用Z轴加速度来做
+                    theFilteredAZ = AZ(theInformationController, theFilter, useFilter);
+                    break;
+                case 1:
+                    //实验用方法：X轴向
+                    theFilteredAZ = AX(theInformationController, theFilter, useFilter);
+                    break;
+                case 2:
+                    //实验用方法：X轴向
+                    theFilteredAZ = AY(theInformationController, theFilter, useFilter);
+                    break;
+                case 3:
+                    //基础方法:用三个轴的加速度平方和开根号得到
+                    theFilteredAZ = ABXYZ(theInformationController, theFilter, useFilter);
+                    break;
+                case 4:
+                    //基础方法:用三个轴的加速度最大方差得到
+                    theFilteredAZ = XYZMaxVariance(theInformationController, theFilter, useFilter);
+                    break;
+            }
+            return theFilteredAZ;
+        }
+        //--------------------------------------------------------------------------------------------------------//
+        private List<double> AZ(information theInformationController , Filter theFilter ,bool useFilter = true)
         {
             if(useFilter)
                 return theFilter.theFilerWork(theInformationController.accelerometerZ);
             return theInformationController.accelerometerZ;
         }
-        public List<double> AY(information theInformationController, Filter theFilter, bool useFilter = true)
+        private List<double> AY(information theInformationController, Filter theFilter, bool useFilter = true)
         {
             if (useFilter)
                 return theFilter.theFilerWork(theInformationController.accelerometerY);
             return theInformationController.accelerometerY;
         }
-        public List<double> AX(information theInformationController, Filter theFilter, bool useFilter = true)
+        private List<double> AX(information theInformationController, Filter theFilter, bool useFilter = true)
         {
             if(useFilter)
                  return theFilter.theFilerWork(theInformationController.accelerometerX);
             return theInformationController.accelerometerX;
         }
-        public List<double> ABXYZ(information theInformationController, Filter theFilter, bool useFilter = true)
+        private List<double> ABXYZ(information theInformationController, Filter theFilter, bool useFilter = true)
         {
             List<double> work = theInformationController.getOperatedValues();
             if (useFilter)
@@ -45,7 +76,7 @@ namespace socketServer.Codes.stages
             return work;
         }
 
-        public List<double> XYZMaxVariance(information theInformationController, Filter theFilter, bool useFilter = true)
+        private List<double> XYZMaxVariance(information theInformationController, Filter theFilter, bool useFilter = true)
         {
             List<double> Variances = new List<double>();
             List<double> AX; 
@@ -74,7 +105,7 @@ namespace socketServer.Codes.stages
         }
 
         //很简单的辅助方法：计算方差
-        double getVariance(List<double> theValues)
+        private double getVariance(List<double> theValues)
         {
             double average = 0;
             double variance = 0;
@@ -93,7 +124,7 @@ namespace socketServer.Codes.stages
         }
 
         //选取最大的
-        int getMaxIndex(List<double> theValues)
+        private int getMaxIndex(List<double> theValues)
         {
             int index = 0;
             double max = -9999;

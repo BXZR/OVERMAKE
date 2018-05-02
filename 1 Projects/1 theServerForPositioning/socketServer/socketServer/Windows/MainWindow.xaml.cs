@@ -281,33 +281,10 @@ namespace socketServer
         }
 
         //更换使用的判断走看了一步的轴的方法///////////////////////////////////////////////////////////
+        //这是一个外包的方法，不推荐进一步的简化了
         public List<double> stepCheckAxis( int stepAxisUseIndex , bool useFilter = true)
         {
-            List<double> theFilteredAZ = new List<double>();
-            switch (stepAxisUseIndex)//选择不同的轴向
-            {
-                case 0:
-                    //基础方法:用Z轴加速度来做
-                    theFilteredAZ = theStepAxis.AZ(theInformationController , theFilter, useFilter);
-                    break;
-                case 1:
-                    //实验用方法：X轴向
-                    theFilteredAZ = theStepAxis.AX(theInformationController, theFilter, useFilter);
-                    break;
-                case 2:
-                    //实验用方法：X轴向
-                    theFilteredAZ = theStepAxis.AY(theInformationController, theFilter, useFilter);
-                    break;
-                case 3:
-                    //基础方法:用三个轴的加速度平方和开根号得到
-                    theFilteredAZ = theStepAxis.ABXYZ(theInformationController, theFilter, useFilter);
-                    break;
-                case 4:
-                    //基础方法:用三个轴的加速度最大方差得到
-                    theFilteredAZ = theStepAxis.XYZMaxVariance(theInformationController, theFilter, useFilter);
-                    break;
-            }
-            return theFilteredAZ;
+            return  theStepAxis.stepAxisUse(stepAxisUseIndex , theInformationController, theFilter, useFilter);
         }
 
         //判断走了一步的方法///////////////////////////////////////////////////////////
@@ -316,140 +293,23 @@ namespace socketServer
             //0-1两种模式是针对行人的
             if (SystemSave.SystemModeInd <= 1)
             {
-                if (stepDectionMehtodIndex == 0)
-                {
-                    //方法1：波峰波谷大法，我个人推荐的方法
-                    //必要的一步，怎么也需要走一边来刷新缓存（也就是纪录波峰的下标）
-                    //根据下标获得需要的旋转角和步长
-                    //当下的步长的模型可以说完全不对，只能算做支撑架构运作的一个方式
-                    //计算移动的时候用的是去除不可能项的步数
-                    indexBuff = stepExtra.stepDectionExtration0(theFilteredAZ, thePeackFinder);
-
-                }
-                else if (stepDectionMehtodIndex == 1)
-                {
-                    indexBuff = stepExtra.stepDectionExtration4(theFilteredAZ, thePeackFinder);
-                }
-                else if (stepDectionMehtodIndex == 2)
-                {
-                    indexBuff = stepExtra.stepDectionExtration3(theFilteredAZ, thePeackFinder);
-                }
-                else if (stepDectionMehtodIndex == 3)
-                {
-                    //方法3：重复性判断方法，相对比较严格（感觉不是人能用的）
-                    indexBuff = stepExtra.stepDetectionExtra1(theFilteredAZ);
-                }
-                else if (stepDectionMehtodIndex == 4)
-                {
-                    //方法4零点交叉
-                    indexBuff = stepExtra.stepDetectionExtra2(theFilteredAZ);
-                }
-
+            indexBuff = stepExtra.stepDectionMehtods(stepDectionMehtodIndex , theFilteredAZ, thePeackFinder);
             //    //带约束的行人模式之下需要额外的计算来更加严格地剔除错误的步子
             if (SystemSave.SystemModeInd == 1)
                 indexBuff = stepExtra.FixedStepCalculate(theInformationController, theFilter, indexBuff);
-        }
+            }
             else if (SystemSave.SystemModeInd == 2)
             {
                 //在这里的滤波仅仅是一个与之前程序配合的做法，但是也是主要的BUG所在
                 indexBuff = theCarController.stepDectionExtrationForCar(theFilteredAZ);
             }
-}
+         }
 
         //判断走楼梯的模式的方法
         //开销很大...
         public void StairCheck(List<int> indexBuff)
         {
-            //根本就不计算Z轴位移，其实也是另一种开关
-            if (ZAxisSelect.SelectedIndex == 0)
-            {
-                theStairMode = new List<double>();
-                for (int i = 0; i < indexBuff.Count; i++)
-                {
-                    theStairMode.Add(0);
-                }
-            }
-            //决策树的方法
-            if (ZAxisSelect.SelectedIndex == 1)
-            {
-                theStairMode = new List<double>();
-                if (SystemSave.StairTree == null)
-                {
-                    theStairMode = theZMoveController.noneMethod(indexBuff);
-                }
-                else
-                {
-                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
-                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
-                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
-                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
-                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
-                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
-
-                    theStairMode =  theZMoveController.DecisitionTreeMethod(indexBuff,ax,ay,az,gx,gy,gz);
-                }
-            }
-            //人工神经网络方法
-            if (ZAxisSelect.SelectedIndex == 2)
-            {
-                if (SystemSave.AccordANNforSLForZAxis == null)
-                {
-                    theStairMode = theZMoveController.noneMethod(indexBuff);
-                }
-                else 
-                {
-                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
-                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
-                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
-                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
-                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
-                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
-
-                    theStairMode = theZMoveController.ANNZMove(indexBuff, ax, ay, az, gx, gy, gz);
-                }
-            }
-            //KNN方法
-            if (ZAxisSelect.SelectedIndex == 3)
-            {
-                if (SystemSave.theKNNControllerForStair == null)
-                {
-                    theStairMode = theZMoveController.noneMethod(indexBuff);
-                }
-                else
-                {
-                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
-                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
-                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
-                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
-                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
-                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
-
-                    theStairMode = theZMoveController.KNNZMove(indexBuff, ax, ay, az, gx, gy, gz);
-                }
-            }
-            //Means方法
-            if (ZAxisSelect.SelectedIndex == 4)
-            {
-                if (SystemSave.theKMeansForStair == null)
-                {
-                    theStairMode = theZMoveController.noneMethod(indexBuff);
-                }
-                else
-                {
-                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
-                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
-                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
-                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
-                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
-                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
-
-                    theStairMode = theZMoveController.KMeansZMove(indexBuff, ax, ay, az, gx, gy, gz);
-                }
-            }
+            theStairMode = theZMoveController.ZMoving(ZAxisSelect.SelectedIndex , indexBuff , theInformationController);
             //记录最新的移动步长
             if (theStairMode.Count > 0)
             {
@@ -1006,8 +866,6 @@ namespace socketServer
         void drawLine()
         {
             Line s = new Line();
-
-
             s.X1 = theCanvas.Width / 2;
             s.X2 = 0;
             s.Y1 = theCanvas.Height / 2;

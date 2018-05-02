@@ -19,6 +19,106 @@ namespace socketServer.Codes
             "使用KNN判断向上、向下还是平移",
             "使用KMeans判断向上、向下还是平移"
         };
+
+
+        public List<double> ZMoving(int SelectedIndex , List<int>indexBuff , information theInformationController)
+        {
+            Filter theFilter = new socketServer.Filter();
+            List<double> theStairMode = new List<double>();
+            //根本就不计算Z轴位移，其实也是另一种开关
+            if (SelectedIndex == 0)
+            {
+   
+                for (int i = 0; i < indexBuff.Count; i++)
+                {
+                    theStairMode.Add(0);
+                }
+            }
+            //决策树的方法
+            if (SelectedIndex == 1)
+            {
+                theStairMode = new List<double>();
+                if (SystemSave.StairTree == null)
+                {
+                    theStairMode = noneMethod(indexBuff);
+                }
+                else
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                    theStairMode = DecisitionTreeMethod(indexBuff, ax, ay, az, gx, gy, gz);
+                }
+            }
+            //人工神经网络方法
+            if (SelectedIndex == 2)
+            {
+                if (SystemSave.AccordANNforSLForZAxis == null)
+                {
+                    theStairMode = noneMethod(indexBuff);
+                }
+                else
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                    theStairMode = ANNZMove(indexBuff, ax, ay, az, gx, gy, gz);
+                }
+            }
+            //KNN方法
+            if (SelectedIndex == 3)
+            {
+                if (SystemSave.theKNNControllerForStair == null)
+                {
+                    theStairMode = noneMethod(indexBuff);
+                }
+                else
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                    theStairMode = KNNZMove(indexBuff, ax, ay, az, gx, gy, gz);
+                }
+            }
+            //Means方法
+            if (SelectedIndex == 4)
+            {
+                if (SystemSave.theKMeansForStair == null)
+                {
+                    theStairMode = noneMethod(indexBuff);
+                }
+                else
+                {
+                    //这些数据在一些复杂的方法中会用到，因此计算出来备用
+                    List<double> ax = theFilter.theFilerWork(theInformationController.accelerometerX);
+                    List<double> ay = theFilter.theFilerWork(theInformationController.accelerometerY);
+                    List<double> az = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                    List<double> gx = theFilter.theFilerWork(theInformationController.gyroX);
+                    List<double> gy = theFilter.theFilerWork(theInformationController.gyroY);
+                    List<double> gz = theFilter.theFilerWork(theInformationController.gyroZ);
+
+                    theStairMode = KMeansZMove(indexBuff, ax, ay, az, gx, gy, gz);
+                }
+            }
+            return theStairMode;
+        }
+
+        //=====================================================================================//
         //返回对这种方法的说明
         public string getMoreInformation(int index)
         {

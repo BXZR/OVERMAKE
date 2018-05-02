@@ -177,7 +177,7 @@ namespace socketServer.Windows
             SDDataGrid.CanUserAddRows = false;
             DataForSDMethod = new List<classForStepDection>();
             int theAxisIndex = theAxisComboxForStepDection.SelectedIndex;
-            theMainWindow.theFilteredAZ = theMainWindow.stepCheckAxis(theAxisIndex);
+            theMainWindow.theFilteredAZ =  theMainWindow.stepCheckAxis(theAxisIndex);
             for (int i = 0; i < theMainWindow.stepCheckMethod.Items.Count; i++)
             {
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();

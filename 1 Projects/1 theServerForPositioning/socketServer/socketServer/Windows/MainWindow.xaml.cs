@@ -1,5 +1,6 @@
 ﻿using socketServer.Codes;
 using socketServer.Codes.DecisionTree;
+using socketServer.Codes.Positioning;
 using socketServer.Codes.stages;
 using System;
 using System.Collections.Generic;
@@ -34,10 +35,10 @@ namespace socketServer
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
         stepDetection stepExtra;//额外的判断走了一步的方法集合
+        StepFilter theStepFilter;//滤步控制单元
         stepModeCheck theStepModeCheckController;//推断行走状态：站立，行走，奔跑用 的控制单元
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
-        FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         ZAxisMoveController theZMoveController;//Z轴向移动的控制单元
         CarCanculater theCarController;//控制车速的控制单元
 
@@ -65,7 +66,6 @@ namespace socketServer
         public double allStepCountSave = 0;
         public double stepLengthNow = 0;
         public double stepAngleNow = 0;
-        public double slopNow = 0;
         public double heightNow = 0;
         public double stepCount2 = 0;
         public string thePositionNow = "未知";
@@ -129,7 +129,7 @@ namespace socketServer
             //输出坐标记录信息
             showPositiopnInformations(informationForPosition);
             //更新slope的数值
-            stepModeCheck(indexBuff);
+            stepSlopLabel.Content = theStepModeCheckController.stepModeCheckUse(indexBuff,theFilter,theInformationController,theFilteredAZ); 
             //显示分辨率
             showResolutionn();
             //制作输出显示的内容
@@ -203,7 +203,7 @@ namespace socketServer
             stepExtra.makeFlash();
             SystemSave.makeFlash();
             theAngelController.makeMethod34Save();//对于这个连续的服务器端的AHRS需要这样做才能保持连续性能
-            if (SystemSave.SystemModeInd == 2)
+            if (carMode)
                 theCarController.makeFlashForCar();
         }
         //人为的刷新，用来重新定位位置的时候用
@@ -240,7 +240,8 @@ namespace socketServer
             stepExtra.makeFlash();
             SystemSave.makeFlash();
             theAngelController.makeMethod34Save();//对于这个连续的服务器端的AHRS需要这样做才能保持连续性能
-            if (SystemSave.SystemModeInd == 2)
+
+            if (carMode)
                 theCarController.makeFlashForCar();
         }
  //刷新操作OVER////////////////////////////////////////////////////////////////////////////////////
@@ -290,15 +291,13 @@ namespace socketServer
         //判断走了一步的方法///////////////////////////////////////////////////////////
        public void stepDectionUse(int stepDectionMehtodIndex)
         {
-            //0-1两种模式是针对行人的
-            if (SystemSave.SystemModeInd <= 1)
+            if (!carMode)
             {
-            indexBuff = stepExtra.stepDectionMehtods(stepDectionMehtodIndex , theFilteredAZ, thePeackFinder);
-            //    //带约束的行人模式之下需要额外的计算来更加严格地剔除错误的步子
-            if (SystemSave.SystemModeInd == 1)
-                indexBuff = stepExtra.FixedStepCalculate(theInformationController, theFilter, indexBuff);
+                indexBuff = stepExtra.stepDectionMehtods(stepDectionMehtodIndex , theFilteredAZ, thePeackFinder);
+                //带约束的行人模式之下需要额外的计算来更加严格地剔除错误的步子
+                indexBuff = theStepFilter.FilterStep(theInformationController, theFilter, indexBuff, systemModeUse.SelectedIndex);
             }
-            else if (SystemSave.SystemModeInd == 2)
+            else //最后一项留给车用，仅仅作为附录
             {
                 //在这里的滤波仅仅是一个与之前程序配合的做法，但是也是主要的BUG所在
                 indexBuff = theCarController.stepDectionExtrationForCar(theFilteredAZ);
@@ -324,13 +323,13 @@ namespace socketServer
         //实际上获得步长的方法就只在这里进行计算，因为小方法很多，的也是在这里进行分类的
         public void stepLengthGet(int stepLengthMethodIndex ,  List<int> indexBuff, List<double> AZUse)
         {
-            if (SystemSave.SystemModeInd <= 1)
+            if (!carMode)
             {
                 theStepLengthUse = theStepLengthController.SLCanculate(theInformationController,stepLengthMethodIndex,  indexBuff,  AZUse, theStepAngeUse);
             }
  //-------------------------------------------------------------------人车处理分界线------------------------------------------------------------------------//
             //针对车的第一种方法就是加速度积分
-            else if (SystemSave.SystemModeInd == 2)
+            else 
             {
                 List<double> AxisForCarNoFilter= stepCheckAxis(stepCheckAxisUse.SelectedIndex, false);//不滤波的各种轴向切换
                 theStepLengthUse = theCarController.CarCanculate( indexBuff,AxisForCarNoFilter, theInformationController);
@@ -412,7 +411,7 @@ namespace socketServer
         void makeLabelMehtod(int stepcounts2 = 0)
         {
             //如果不是车的模式，也就是两种行人模式，那么就正常显示各种东西就可以了
-            if (SystemSave.SystemModeInd < 2)
+            if (!carMode)
             {
                 allStepCount = allStepCountSave + indexBuff.Count;
                 SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
@@ -444,19 +443,21 @@ namespace socketServer
                 theStepLabel.Content += "\n-----------------------------------------------------------------------------";
                 theStepLabel.Content += "\n使用滤波方法：" + FilterMethods.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theFilter.getInformation(SystemSave.FilterMode);
-                theStepLabel.Content += "\n\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
+                theStepLabel.Content += "\n使用轴向：" + stepCheckAxisUse.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theStepAxis.getMoreInformation(stepCheckAxisUse.SelectedIndex);
-                theStepLabel.Content += "\n\n判步方法：" + stepCheckMethod.SelectionBoxItem;
+                theStepLabel.Content += "\n判步方法：" + stepCheckMethod.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + stepExtra.getMoreInformation(stepCheckMethod.SelectedIndex);
-                theStepLabel.Content += "\n\n步长计算方法：" + StepLengthMethod.SelectionBoxItem;
+                theStepLabel.Content += "\n滤步方法：" + stepCheckMethod.SelectionBoxItem;
+                theStepLabel.Content += "\n思想： " + theStepFilter.getInformation(systemModeUse.SelectedIndex);
+                theStepLabel.Content += "\n步长计算方法：" + StepLengthMethod.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theStepLengthController.getMoreInformation(StepLengthMethod.SelectedIndex);
-                theStepLabel.Content += "\n\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
+                theStepLabel.Content += "\n方向计算方法：" + HeadingMehtod.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theAngelController.getMoreInformation(HeadingMehtod.SelectedIndex);
-                theStepLabel.Content += "\n\n上下位移计算方法：" + ZAxisSelect.SelectionBoxItem;
+                theStepLabel.Content += "\n上下位移计算方法：" + ZAxisSelect.SelectionBoxItem;
                 theStepLabel.Content += "\n思想： " + theZMoveController.getMoreInformation(ZAxisSelect.SelectedIndex);
             }
             //如果是车的模式只需要显示车相关的内容就可以了吧
-            else if (SystemSave.SystemModeInd == 2)
+            else if (carMode)
             {
                 allStepCount = allStepCountSave + indexBuff.Count;
                 SystemSave.allStepCount = SystemSave.stepCount + indexBuff.Count;
@@ -482,42 +483,6 @@ namespace socketServer
             resolutionLabel.Content = "1m = " + SystemSave.routeLineScale.ToString("f2") +"pixel";
             if (SystemSave.routeLineScale > 1)
                 resolutionLabel.Content += "s";
-        }
-
-        //获得走路的最新的slope数值使用
-        //可以在后面用来判断行走姿态，算是为后面做的一个简单的准备工作，留下接口
-        //实际上这个也分为两种
-        //一种是每出现一个周期检查一下这个周期的slope的数值
-        //一种是钉死窗口滑动，检查这个窗口的数值
-        void stepModeCheck(List<int> indexBuff)
-        {
-            if (SystemSave.SystemModeInd <= 1)
-            {
-                if (indexBuff.Count > 1)
-                {
-                    List<double> X = theFilter.theFilerWork(theInformationController.accelerometerX);
-                    List<double> Y = theFilter.theFilerWork(theInformationController.accelerometerY);
-                    List<double> Z = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                    double slopeWithPeack = theStepModeCheckController.getModeCheckWithPeack
-                        (
-                          X, Y, Z,
-                        indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count - 1]
-                        );
-                    this.slopNow = slopeWithPeack;
-                    SystemSave.slopNow = slopeWithPeack;
-                    double slopeWithwindow = theStepModeCheckController.getModeCheckWithWindow(X, Y, Z);
-                    theStage = theStage.ChangeState(slopeWithwindow, indexBuff, theFilteredAZ);
-                    stepSlopLabel.Content = "[" + theStage.getInformation() + "]" + "  Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
-                }
-                else
-                {
-                    stepSlopLabel.Content = "[" + theStage.getInformation() + "]" + "  Slop： 0/0";
-                }
-            }
-            else if (SystemSave.SystemModeInd == 2)
-            {
-                stepSlopLabel.Content = "";
-            }
         }
 
         /*************************************************方法1（比较原始）*************************************************************/
@@ -616,6 +581,7 @@ namespace socketServer
             theStepAxis = new stepAxis();
             theZMoveController = new ZAxisMoveController();
             theCarController = new CarCanculater();
+            theStepFilter = new StepFilter();
             //制作提示信息
             makeToolTips();
             //相关工程更新
@@ -655,6 +621,11 @@ namespace socketServer
             information = theZMoveController.getMoreInformation();
             for (int i = 0; i < ZAxisSelect.Items.Count; i++)
                 (ZAxisSelect.Items[i] as ComboBoxItem).ToolTip = information[i];
+
+            information = theStepFilter.getMoreInformation();
+            for(int i = 0; i < systemModeUse.Items.Count; i++)
+                (systemModeUse.Items[i] as ComboBoxItem).ToolTip = information[i];
+
         }
 
         //关闭分装方法
@@ -1003,27 +974,6 @@ namespace socketServer
             operateFlashPosition();
         }
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SystemSave.SystemModeInd = comboBox.SelectedIndex;
-
-            //对于车子来说，不用判步也不用轴（轴固定），也没有步长和Z轴向的移动（当然也是可以扩展的）
-            if (SystemSave.SystemModeInd == 2)
-            {
-                //stepCheckAxisUse.IsEnabled = false;
-                stepCheckMethod.IsEnabled = false;
-                StepLengthMethod.IsEnabled = false;
-                ZAxisSelect.IsEnabled = false;
-            }
-            else
-            {
-               // stepCheckAxisUse.IsEnabled = true;
-                stepCheckMethod.IsEnabled = true;
-                StepLengthMethod.IsEnabled = true;
-                ZAxisSelect.IsEnabled = true;
-            }
-        }
-
         //-------------------------------这个部分包含的操作可能也会被客户端通过网络方式调用（自己扯的RPC机制）-------------------------------------------//
         //所有这一类的方法都以“operateXXXXXX”作为命名方式
 
@@ -1062,6 +1012,34 @@ namespace socketServer
             theExperimentWindow.Title = "Experiment for [" + this.Title+"]"; 
             theExperimentWindow.theMainWindow = this;//绑定“数据源”
             theExperimentWindow.Show();
+        }
+
+
+        private bool carMode = false;
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+            carMode = !carMode;
+            //对于车子来说，不用判步也不用轴（轴固定），也没有步长和Z轴向的移动（当然也是可以扩展的）
+            if (carMode)
+            {
+                //stepCheckAxisUse.IsEnabled = false;
+                stepCheckMethod.IsEnabled = false;
+                StepLengthMethod.IsEnabled = false;
+                ZAxisSelect.IsEnabled = false;
+                systemModeUse.IsEnabled = false;
+
+                carModeSwitch.Content = "CarMode";
+            }
+            else
+            {
+                // stepCheckAxisUse.IsEnabled = true;
+                stepCheckMethod.IsEnabled = true;
+                StepLengthMethod.IsEnabled = true;
+                ZAxisSelect.IsEnabled = true;
+                systemModeUse.IsEnabled = true;
+
+                carModeSwitch.Content = "PDRMode";
+            }
         }
     }
 }

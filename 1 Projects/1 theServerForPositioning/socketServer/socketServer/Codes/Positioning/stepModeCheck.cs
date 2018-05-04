@@ -1,4 +1,5 @@
-﻿using System;
+﻿using socketServer.Codes.stages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,48 @@ namespace socketServer
         //步长的slop参数
         //根据这个slop的数值可以推测人的移动模式为步行、停止、跑步等等
         //具体操作需要在此基础之上进一步处理，这里这个数值仅仅用于记录
-      
+
+        FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         private int windowCount = 5;//窗口大小，如果是5就是查看最后五个数据
+        public double slopNow = 0;
+        //获得走路的最新的slope数值使用
+        //可以在后面用来判断行走姿态，算是为后面做的一个简单的准备工作，留下接口
+        //实际上这个也分为两种
+        //一种是每出现一个周期检查一下这个周期的slope的数值
+        //一种是钉死窗口滑动，检查这个窗口的数值
+        public string stepModeCheckUse(List<int> indexBuff, Filter theFilter, information theInformationController ,List<double> theFilteredAZ , int  mode = 1)
+        {
+          switch(mode)
+            {
+                case 0:
+                case 1:
+                {
+                    if (indexBuff.Count > 1)
+                    {
+                        List<double> X = theFilter.theFilerWork(theInformationController.accelerometerX);
+                        List<double> Y = theFilter.theFilerWork(theInformationController.accelerometerY);
+                        List<double> Z = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                        double slopeWithPeack = getModeCheckWithPeack
+                            (
+                                X, Y, Z,
+                            indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count - 1]
+                            );
+                        this.slopNow = slopeWithPeack;
+                        SystemSave.slopNow = slopeWithPeack;
+                        double slopeWithwindow = getModeCheckWithWindow(X, Y, Z);
+                        theStage = theStage.ChangeState(slopeWithwindow, indexBuff, theFilteredAZ);
+                        return "[" + theStage.getInformation() + "]" + "  Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
+                    }
+                    else
+                    {
+                        return "[" + theStage.getInformation() + "]" + "  Slop： 0/0";
+                    }
+                }break;
+            }
+           
+            return "";
+        }
+
 
         public double getModeCheckWithWindow(List<double> AX, List<double> AY, List<double> AZ, int windowUse = 5)
         {

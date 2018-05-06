@@ -3,13 +3,13 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\codes\ForSystem\systemValues.cs">
     <Files>
       <File FileName="Assets\codes\ForData\OperateServer.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForData\controller.cs" Line="70" Column="45" />
-      <File FileName="Assets\codes\ForData\server.cs" Line="94" Column="12" />
+      <File FileName="Assets\codes\ForData\controller.cs" Line="1" Column="1" />
+      <File FileName="Assets\codes\ForData\server.cs" Line="1" Column="1" />
       <File FileName="Assets\codes\ForData\informationGeter.cs" Line="1" Column="1" />
       <File FileName="Assets\codes\ForData\methods\AHRS.cs" Line="1" Column="1" />
       <File FileName="Assets\codes\ForData\methods\IMU.cs" Line="1" Column="1" />
-      <File FileName="Assets\codes\ForData\informationShower.cs" Line="55" Column="22" />
-      <File FileName="Assets\codes\ForSystem\systemValues.cs" Line="14" Column="44" />
+      <File FileName="Assets\codes\ForData\informationShower.cs" Line="39" Column="52" />
+      <File FileName="Assets\codes\ForSystem\systemValues.cs" Line="34" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

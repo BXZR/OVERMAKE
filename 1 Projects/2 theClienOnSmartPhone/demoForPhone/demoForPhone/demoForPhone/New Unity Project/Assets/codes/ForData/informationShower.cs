@@ -35,7 +35,7 @@ public class informationShower : MonoBehaviour {
 			showInformation += "步数：" + systemValues.stepCountNow;
 			showInformation += "\n步长：" + systemValues.stepLengthNow;
 			showInformation += "\n方向：" + systemValues.stepAngle ;
-			showInformation += "\nSlop：" + systemValues.slopNow ;
+			//showInformation += "\nSlop：" + systemValues.slopNow ;
 			showInformation += "\n坐标：\n"+ systemValues.positionNow;
 			stepCountShowText.text = showInformation;
 		}

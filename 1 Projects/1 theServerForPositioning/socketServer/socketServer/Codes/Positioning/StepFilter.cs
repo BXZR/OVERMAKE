@@ -17,8 +17,6 @@ namespace socketServer.Codes.Positioning
         {
             "判断走一步之后不再进行额外剔除",
             "其他轴的变化如果不够大，这一步将会被剔除",
-            "在一个峰值的限定内两次经过峰值判断走出一步",
-            "针对车的计算"
         };
         //返回全部的方法说明
         public string[] getMoreInformation()

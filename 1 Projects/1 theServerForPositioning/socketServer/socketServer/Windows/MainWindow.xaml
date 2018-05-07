@@ -46,7 +46,7 @@
             <Button x:Name="clearDraw" Content="ClearDraw" Margin="13,0,0,1" Grid.Column="1" HorizontalAlignment="Left" Width="75" Click="clearDraw_Click" Height="22" VerticalAlignment="Bottom"/>
         </Grid>
         <Label x:Name="Charts_Copy2" Content="StepCheckMethod" Margin="0,243,34,0" HorizontalAlignment="Right" Width="169" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
-        <ComboBox x:Name="stepCheckAxisUse" Margin="0,212,20,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
+        <ComboBox x:Name="stepCheckAxisUse" Margin="0,214,20,0" VerticalAlignment="Top" SelectedIndex="0" Height="22" HorizontalAlignment="Right" Width="173">
             <ComboBoxItem Content="DirectZ"/>
             <ComboBoxItem Content="DirecX"/>
             <ComboBoxItem Content="DirecY"/>

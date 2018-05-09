@@ -36,7 +36,7 @@ namespace socketServer
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
         stepDetection stepExtra;//额外的判断走了一步的方法集合
         StepFilter theStepFilter;//滤步控制单元
-        stepModeCheck theStepModeCheckController;//推断行走状态：站立，行走，奔跑用 的控制单元
+
         TrainFileMaker theTrainFileMake;//制作数据集的控制单元
         stepAxis theStepAxis;//用来判定使用哪一个轴向的封装
         ZAxisMoveController theZMoveController;//Z轴向移动的控制单元
@@ -128,8 +128,7 @@ namespace socketServer
             savePositionStreing();
             //输出坐标记录信息
             showPositiopnInformations(informationForPosition);
-            //更新slope的数值
-            stepSlopLabel.Content = theStepModeCheckController.stepModeCheckUse(indexBuff,theFilter,theInformationController,theFilteredAZ); 
+
             //显示分辨率
             showResolutionn();
             //制作输出显示的内容
@@ -295,7 +294,7 @@ namespace socketServer
             {
                 indexBuff = stepExtra.stepDectionMehtods(stepDectionMehtodIndex , theFilteredAZ, thePeackFinder);
                 //带约束的行人模式之下需要额外的计算来更加严格地剔除错误的步子
-                indexBuff = theStepFilter.FilterStep(theInformationController, theFilter, indexBuff, systemModeUse.SelectedIndex);
+                indexBuff = theStepFilter.FilterStep(theInformationController, theFilter, indexBuff, theFilteredAZ, systemModeUse.SelectedIndex);
             }
             else //最后一项留给车用，仅仅作为附录
             {
@@ -576,7 +575,6 @@ namespace socketServer
             thePictureMaker = new pictureMaker();
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）
             stepExtra = new stepDetection();
-            theStepModeCheckController = new stepModeCheck();
             theTrainFileMake = new TrainFileMaker();
             theStepAxis = new stepAxis();
             theZMoveController = new ZAxisMoveController();

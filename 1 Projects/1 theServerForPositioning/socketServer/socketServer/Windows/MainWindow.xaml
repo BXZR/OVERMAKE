@@ -41,7 +41,6 @@
             <TextBox x:Name="POSITION" Margin="0,309,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2" FontSize="10" FontWeight="Bold"/>
             <Button x:Name="button2" Content="Save Route Map" Margin="109,2,237,0" VerticalAlignment="Top" Click="button2_Click_1" Grid.Column="1"/>
             <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="11,32,0,0" Grid.Column="1"/>
-            <Label x:Name="stepSlopLabel" Content="[动作信息推断]" HorizontalAlignment="Right" Width="212" Height="33" VerticalAlignment="Top" Foreground="#FFD12179" FontWeight="Bold" RenderTransformOrigin="-0.651,-1.116" Background="{x:Null}" Margin="0,0,20,0" Grid.Column="1"/>
             <Label x:Name="resolutionLabel" Content="1m = 12.00 pixels" Grid.Column="1" Margin="0,0,0,-2" FontWeight="Bold" HorizontalAlignment="Right" Width="118" Height="26" VerticalAlignment="Bottom"/>
             <Button x:Name="clearDraw" Content="ClearDraw" Margin="13,0,0,1" Grid.Column="1" HorizontalAlignment="Left" Width="75" Click="clearDraw_Click" Height="22" VerticalAlignment="Bottom"/>
         </Grid>
@@ -106,6 +105,7 @@
         <ComboBox x:Name="systemModeUse" HorizontalAlignment="Right" Margin="0,323,21,0" VerticalAlignment="Top" Width="173" SelectedIndex="0">
             <ComboBoxItem Content="No StepFilter" ToolTip="针对行人的实验环境，环境很好"/>
             <ComboBoxItem Content="Slop StepFilter" ToolTip="针对行人的实际环境，较为苛刻"/>
+            <ComboBoxItem Content="FSM StepFilter"/>
         </ComboBox>
         <Button x:Name="button" Content="Experiment" HorizontalAlignment="Right" Margin="0,97,27,0" VerticalAlignment="Top" Width="80" Height="22" Click="button_Click"/>
         <Button x:Name="button1" Content="Pause" HorizontalAlignment="Right" Margin="0,70,119,0" VerticalAlignment="Top" Width="80" Click="button1_Click" Height="22"/>

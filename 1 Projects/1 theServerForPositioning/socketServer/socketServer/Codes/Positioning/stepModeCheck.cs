@@ -22,41 +22,40 @@ namespace socketServer
         //实际上这个也分为两种
         //一种是每出现一个周期检查一下这个周期的slope的数值
         //一种是钉死窗口滑动，检查这个窗口的数值
-        public string stepModeCheckUse(List<int> indexBuff, Filter theFilter, information theInformationController ,List<double> theFilteredAZ , int  mode = 1)
+        public List<int> stepModeCheckUse(List<int> indexBuff, Filter theFilter, information theInformationController ,List<double> theFilteredAZ)
         {
-          switch(mode)
+
+            if (indexBuff.Count > 1)
             {
-                case 0:
-                case 1:
+                List<double> X = theFilter.theFilerWork(theInformationController.accelerometerX);
+                List<double> Y = theFilter.theFilerWork(theInformationController.accelerometerY);
+                List<double> Z = theFilter.theFilerWork(theInformationController.accelerometerZ);
+                List<int> toDelete = new List<int>();
+                for (int i = 0; i < indexBuff.Count-1; i++)
                 {
-                    if (indexBuff.Count > 1)
-                    {
-                        List<double> X = theFilter.theFilerWork(theInformationController.accelerometerX);
-                        List<double> Y = theFilter.theFilerWork(theInformationController.accelerometerY);
-                        List<double> Z = theFilter.theFilerWork(theInformationController.accelerometerZ);
-                        double slopeWithPeack = getModeCheckWithPeack
-                            (
-                                X, Y, Z,
-                            indexBuff[indexBuff.Count - 2], indexBuff[indexBuff.Count - 1]
-                            );
-                        this.slopNow = slopeWithPeack;
-                        SystemSave.slopNow = slopeWithPeack;
-                        double slopeWithwindow = getModeCheckWithWindow(X, Y, Z);
-                        theStage = theStage.ChangeState(slopeWithwindow, indexBuff, theFilteredAZ);
-                        return "[" + theStage.getInformation() + "]" + "  Slop： " + slopeWithwindow.ToString("f2") + " / " + slopeWithPeack.ToString("f2");
-                    }
-                    else
-                    {
-                        return "[" + theStage.getInformation() + "]" + "  Slop： 0/0";
-                    }
-                }break;
+                    double slopeWithPeack = getModeCheckWithPeack( X, Y, Z, indexBuff[i], indexBuff[i+1]);
+                    this.slopNow = slopeWithPeack;
+                    SystemSave.slopNow = slopeWithPeack;
+                    theStage = theStage.ChangeState(slopeWithPeack, indexBuff, theFilteredAZ);
+                    if (theStage is StageStance)//如果判断为站立状态就删除这个坐标
+                        toDelete.Add(i+1);
+                }
+                for (int i = 0; i < toDelete.Count; i++)
+                    indexBuff.Remove(toDelete[i]);
+                //string stateInformate = "[" + theStage.getInformation() + "]";
+                return indexBuff;
             }
-           
-            return "";
+            else
+            {
+                //string stateInformate = "[" + theStage.getInformation() + "]";
+                return  indexBuff;
+            }
+
+            return indexBuff;
         }
 
-
-        public double getModeCheckWithWindow(List<double> AX, List<double> AY, List<double> AZ, int windowUse = 5)
+//====================================================================================================================================//
+        private double getModeCheckWithWindow(List<double> AX, List<double> AY, List<double> AZ, int windowUse = 5)
         {
             double stepLengthSlop = 0;
             if (AX.Count < windowUse)
@@ -71,7 +70,7 @@ namespace socketServer
             return stepLengthSlop;
         }
 
-        public double  getModeCheckWithPeack(List<double> AX , List<double> AY , List<double> AZ, int startIndex , int endIndex)
+        private double  getModeCheckWithPeack(List<double> AX , List<double> AY , List<double> AZ, int startIndex , int endIndex)
         {
             double stepLengthSlop = 0;
             //Console.WriteLine("startIndex = " + startIndex);

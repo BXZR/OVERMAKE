@@ -11,12 +11,15 @@ namespace socketServer.Codes.Positioning
     //顺带判断当前的状态也可以用这个类来做
     public class StepFilter
     {
+        //分类方法也就是stepFilter的方法之一
+        private stepModeCheck theSlopChecker = new stepModeCheck();
 
         //每一种方法的简短说明信息
         private string[] methodInformations =
         {
-            "判断走一步之后不再进行额外剔除",
+            "判断走一步之后不再进行额外分类剔除",
             "其他轴的变化如果不够大，这一步将会被剔除",
+            "使用有限状态机对亦不进行分类，剔除静止步"
         };
         //返回全部的方法说明
         public string[] getMoreInformation()
@@ -28,15 +31,18 @@ namespace socketServer.Codes.Positioning
             return methodInformations[index];
         }
 
-        public List<int> FilterStep(information theInformationController, Filter theFilter, List<int> indexBuff,int methodID)
+        public List<int> FilterStep(information theInformationController, Filter theFilter, List<int> indexBuff, List<double> filteredAZ ,int methodID )
         {
             switch (methodID)
             {
                 case 0: { return indexBuff; }break;
                 case 1: { return FixedStepCalculate(theInformationController, theFilter, indexBuff); } break;
+                case 2: { indexBuff = theSlopChecker.stepModeCheckUse(indexBuff , theFilter , theInformationController, filteredAZ); };break;
             }
             return indexBuff; 
         }
+
+//================================================================================================================================================//
 
         //方法1，多轴方差比照的做法
         //检测这个移动是不是真的移动，也就是说在原地晃手机的时候是否允许被判断走了一步
@@ -62,7 +68,7 @@ namespace socketServer.Codes.Positioning
                 //如果第二大的项目方法不够大，就认为是原地踏步，这个方法可以在后期扩展
                 //也必须扩展
                 double gate = 0.1;
-                Console.WriteLine(Variances[1]);
+                //Console.WriteLine(Variances[1]);
                 if (Variances[1] < gate)
                     toRemove.Add(indexBuff[i]);
             }
@@ -73,9 +79,6 @@ namespace socketServer.Codes.Positioning
             //Console.WriteLine("indexBuff Count after= " + indexBuff.Count);
             return indexBuff;
         }
-
-
-       
 
     }
 }

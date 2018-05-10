@@ -172,6 +172,8 @@ namespace socketServer
                 ib.ImageSource = theMapImage.Source;
                 theMainWindow.theCanvas.Background = ib;
             }
+            SystemSave.BuffCount = Convert.ToInt32(systemBufferLengthText.Text);
+            systemBufferLengthText.Text = SystemSave.BuffCount.ToString();
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -258,6 +260,8 @@ namespace socketServer
 
             if (theBackImageGet != null)
                 theMapImage.Source = theBackImageGet;
+
+            systemBufferLengthText.Text = SystemSave.BuffCount.ToString();
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -311,6 +315,7 @@ namespace socketServer
         private static string ValueStature2A;
         private static string ValueStature2B;
 
+        private static string ValueForBufferLength;
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -365,7 +370,8 @@ namespace socketServer
               ValueStature2A = SystemSave.StaturaMethod2_A.ToString();
               ValueStature2B = SystemSave.StaturaMethod2_B.ToString();
 
-                hasBasicValue = true;//最初数值只会被记录一次
+              ValueForBufferLength = SystemSave.BuffCount.ToString();
+              hasBasicValue = true;//最初数值只会被记录一次
            }
         }
 
@@ -438,9 +444,9 @@ namespace socketServer
 
             saturate2AText.Text = ValueStature2A;
             saturate2BText.Text = ValueStature2B;
+
+            systemBufferLengthText.Text = ValueForBufferLength;
         }
-
-
 
 
 

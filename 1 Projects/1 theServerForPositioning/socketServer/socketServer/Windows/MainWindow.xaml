@@ -37,8 +37,8 @@
                 </Canvas.LayoutTransform>
                 <Image x:Name="HeadingImage" Source="/socketServer;component/pictures/headArrow.png" RenderTransformOrigin="0.5,0.577" Height="32" Canvas.Left="213" Canvas.Top="230" Width="39"/>
             </Canvas>
-            <Label Height="297" Margin="0,7,6,0" x:Name="theStepLabel" VerticalAlignment="Top" FontWeight="Bold" Foreground="#FF0B0029" />
-            <TextBox x:Name="POSITION" Margin="0,309,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2" FontSize="10" FontWeight="Bold"/>
+            <Label Height="297" Margin="0,10,6,0" x:Name="theStepLabel" VerticalAlignment="Top" FontWeight="Bold" Foreground="#FF0B0029" />
+            <TextBox x:Name="POSITION" Margin="0,323,474,10" TextWrapping="Wrap" Text="Data Information" IsReadOnlyCaretVisible="True" Grid.ColumnSpan="2" FontSize="10" FontWeight="Bold"/>
             <Button x:Name="button2" Content="Save Route Map" Margin="109,2,237,0" VerticalAlignment="Top" Click="button2_Click_1" Grid.Column="1"/>
             <Image x:Name="image" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="84" RenderTransformOrigin="-0.036,0.478" Source="/socketServer;component/pictures/compass.png" Margin="11,32,0,0" Grid.Column="1"/>
             <Label x:Name="resolutionLabel" Content="1m = 12.00 pixels" Grid.Column="1" Margin="0,0,0,-2" FontWeight="Bold" HorizontalAlignment="Right" Width="118" Height="26" VerticalAlignment="Bottom"/>
@@ -116,7 +116,7 @@
             <ComboBoxItem Content="ComplexFilter" ToolTip="使用更加复杂的滤波"/>
             <ComboBoxItem Content="ComplexFilter2" ToolTip="更加复杂的滤波组合2"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy6" Content="MethodNowTips" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold" Margin="1,-5,978,0"/>
+        <Label x:Name="Charts_Copy6" Content="MethodNowTips" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold" Margin="0,0,979,0"/>
         <Button x:Name="carModeSwitch" Content="PDRMode" Margin="0,97,119,0" VerticalAlignment="Top" Click="button3_Click" Width="80" Height="22" HorizontalAlignment="Right"/>
     </Grid>
 </Window>

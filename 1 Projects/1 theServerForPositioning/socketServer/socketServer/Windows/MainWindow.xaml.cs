@@ -138,8 +138,8 @@ namespace socketServer
             drawPicturesShow();
 
             //如果数据足够多，就需要保存成一张图像,同时做刷新处理和一些额外的补充计算
-            if (theInformationController.accelerometerY.Count > SystemSave.buffCount)
-            makeFlash();
+            if (theInformationController.accelerometerY.Count > SystemSave.BuffCount)
+                makeFlash();
         }
 
         //额外补充计算////////////////////////////////////////////////////////////////////////////////////

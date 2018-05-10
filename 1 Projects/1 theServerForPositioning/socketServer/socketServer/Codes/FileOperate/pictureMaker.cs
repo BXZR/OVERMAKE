@@ -34,31 +34,25 @@ namespace socketServer
 
             //千万注意读写路径问题
             //此外在这里需要深拷贝，否则会报错（GDI+）
+            int heightForData = SystemSave.BuffCount / SystemSave.countUseX;
             Bitmap bmp = new Bitmap(SystemSave.countUseX, SystemSave.countUseY);
-
-            for (int i = 0; i < bmp.Height; i++)
+            int moreCount = SystemSave.countUseY / heightForData;//重复的行数
+       
+            for(int  k = 0; k < moreCount; k++ )
+              for (int i = 0; i < heightForData ; i++)
                 for (int j = 0; j < bmp.Width; j++)
                 {
-                    Color c = Color.FromArgb
-                     (
-                        255 ,
-                         //(int)theInformationController.compassDegree[j]* 255 / 360,
-                         MathCanculate.Clamp(((int)theInformationController.accelerometerX[j]+7) * 10, 0, 255),
-                         MathCanculate.Clamp(((int)theInformationController.accelerometerY[j]+7)* 10, 0, 255),
-                         MathCanculate.Clamp(((int)theInformationController.accelerometerZ[j]+7)* 10, 0, 255)
-                         
-                      );
-                   // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");
-                    bmp.SetPixel(j, i, c);
-
+                        int R = MathCanculate.Clamp(((int)theInformationController.accelerometerX[j] + 7) * 10, 0, 255);
+                        int G = MathCanculate.Clamp(((int)theInformationController.accelerometerY[j] + 7) * 10, 0, 255);
+                        int B = MathCanculate.Clamp(((int)theInformationController.accelerometerZ[j] + 7) * 10, 0, 255);
+                    Color c = Color.FromArgb( 255 , R ,G ,B);
+                    bmp.SetPixel(j, i+k* heightForData, c);
                 }
             Bitmap imgSave = new Bitmap(bmp);
             string savePath = path + pictureName;
             imgSave.Save(savePath, System.Drawing.Imaging.ImageFormat.Jpeg);//指定图片格式   
             imgSave.Dispose();
         }
-
-
 
         //真正用的方法
         //输入的是整体控制集合，这可能是以后会用到的更加复杂的方法
@@ -80,68 +74,55 @@ namespace socketServer
 
             //千万注意读写路径问题
             //此外在这里需要深拷贝，否则会报错（GDI+）
+            int heightForData = SystemSave.BuffCount * 4 / SystemSave.countUseX; //因为这里要分四行分别画不同的东西
+            int moreCount = SystemSave.countUseY / heightForData;//重复的行数
             Bitmap bmp = new Bitmap(SystemSave.countUseX, SystemSave.countUseY);
-            //以后可以用这种套路做扩展
-            for (int i = 0; i < bmp.Height;  )
-            {
-                //第一行绘制加速度信息
-                for (int j = 0; j < bmp.Width; j++)
-                {
-                    Color c = Color.FromArgb
-                     (
-                        255,
-                        //(int)theInformationController.compassDegree[j]* 255 / 360,
-                       MathCanculate.Clamp(((int)theInformationController.accelerometerX[j] + 7) * 10 ,0,255),
-                       MathCanculate.Clamp(((int)theInformationController.accelerometerY[j] + 7) * 10, 0, 255),
-                       MathCanculate.Clamp(((int)theInformationController.accelerometerZ[j] + 7) * 10 , 0, 255)
-                      );
-                    // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");
-                    bmp.SetPixel(j, i, c);
-                }
+
+            //第一行绘制加速度信息
+            for (int k = 0; k < moreCount; k++)
+                for (int i = 0; i < heightForData; )
+                { 
+                    for (int j = 0; j < bmp.Width; j++)
+                     {
+                        int R = MathCanculate.Clamp(((int)theInformationController.accelerometerX[j] + 7) * 10, 0, 255);
+                        int G = MathCanculate.Clamp(((int)theInformationController.accelerometerY[j] + 7) * 10, 0, 255);
+                        int B = MathCanculate.Clamp(((int)theInformationController.accelerometerZ[j] + 7) * 10, 0, 255);
+                        Color c = Color.FromArgb(255, R, G, B);
+                         bmp.SetPixel(j, i + k * heightForData, c);
+                     }
                 i++;//换到下一行
                 //第二行绘制陀螺仪信息
                 for (int j = 0; j < bmp.Width; j++)
                 {
-                    Color c = Color.FromArgb
-                     (
-                        255,
-                        MathCanculate.Clamp(((int)theInformationController.gyroX[j] + 50) * 2, 0, 255),
-                        MathCanculate.Clamp(((int)theInformationController.gyroY[j] + 50) * 2, 0, 255),
-                        MathCanculate.Clamp(((int)theInformationController.gyroZ[j] + 50) * 2, 0, 255)
-                      );
-                    // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");
-                    bmp.SetPixel(j, i, c);
+                        int R = MathCanculate.Clamp(((int)theInformationController.gyroX[j] + 50) * 2, 0, 255);
+                        int G = MathCanculate.Clamp(((int)theInformationController.gyroY[j] + 50) * 2, 0, 255);
+                        int B = MathCanculate.Clamp(((int)theInformationController.gyroZ[j] + 50) * 2, 0, 255);
+                    Color c = Color.FromArgb (  255, R ,G ,B );
+                    bmp.SetPixel(j, i + k * heightForData, c);
                 }
                 i++;//换到下一行
                 //第三行绘制磁力计信息
                 for (int j = 0; j < bmp.Width; j++)
                 {
-                    Color c = Color.FromArgb
-                     (
-                        255,
-                        MathCanculate.Clamp(((int)theInformationController.magnetometerX[j] +50), 0, 255),
-                        MathCanculate.Clamp(((int)theInformationController.magnetometerY[j] +50), 0, 255),
-                        MathCanculate.Clamp(((int)theInformationController.magnetometerZ[j] +50) , 0, 255)
-                      );
-                    // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");
-                    bmp.SetPixel(j, i, c);
+                        int R = MathCanculate.Clamp(((int)theInformationController.magnetometerX[j] + 50), 0, 255);
+                        int G = MathCanculate.Clamp(((int)theInformationController.magnetometerY[j] + 50), 0, 255);
+                        int B = MathCanculate.Clamp(((int)theInformationController.magnetometerZ[j] + 50), 0, 255);
+                    Color c = Color.FromArgb ( 255, R ,G ,B );
+                    bmp.SetPixel(j, i + k * heightForData, c);
                 }
                 i++;//换到下一行
                 //第四行绘制compass heading , AHRS heading , IMU heading 
                 for (int j = 0; j < bmp.Width; j++)
                 {
-                    Color c = Color.FromArgb
-                     (
-                        255,
-                       MathCanculate.Clamp((int)(theInformationController.compassDegree[i] * 255/360), 0, 255),
-                       MathCanculate.Clamp((int)(theInformationController.AHRSZFromClient[i] * 255 / 360), 0, 255),
-                       MathCanculate.Clamp((int)(theInformationController.IMUZFromClient[i] * 255 / 360) , 0, 255)
-                      );
+                    int R = MathCanculate.Clamp((int)(theInformationController.compassDegree[i] * 255 / 360), 0, 255);
+                    int G = MathCanculate.Clamp((int)(theInformationController.AHRSZFromClient[i] * 255 / 360), 0, 255);
+                    int B = MathCanculate.Clamp((int)(theInformationController.IMUZFromClient[i] * 255 / 360), 0, 255);
+
+                    Color c = Color.FromArgb(255, R ,G ,B );
                     // Console.WriteLine(c.R  +" "+ c.G +" "+ c.B +"");
-                    bmp.SetPixel(j, i, c);
+                    bmp.SetPixel(j, i + k * heightForData, c);
                 }
                 i++;//换到下一行
-
             }
             Bitmap imgSave = new Bitmap(bmp);
             string savePath = path + pictureName;
@@ -149,9 +130,7 @@ namespace socketServer
             imgSave.Dispose();
         }
 
-
-
-        //概念性的方法，当然需要优化
+        //概念性的方法，当然需要优化 （DEMO）
         //angle输入的是角度值
         public void createPictureFromData(double angle = 0 , double AX =0, double AY  =0, double AZ =0, string path = @"DataForPDR/DataImage/", string pictureName = "demo.bmp")
         {
@@ -172,8 +151,8 @@ namespace socketServer
 
         }
 
-        //-----------------------------------------------------------------------------------------------------------//
-        //此外保存canvas的方法也是保存在这里的
+//------------------------------------------------------------------------------------------------------------------------------------------------------//
+//此外保存canvas的方法也是保存在这里的
         public void saveCanvasPicture(System.Windows.Controls.Canvas theCanvas , String fileName)
         {
              System.Windows.Size theSize = new System.Windows.Size((int)theCanvas.ActualWidth, (int)theCanvas.ActualHeight);
@@ -222,6 +201,5 @@ namespace socketServer
             //theCanvas.Background = ib;
         }
 
- 
     }
 }

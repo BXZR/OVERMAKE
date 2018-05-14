@@ -118,5 +118,6 @@
         </ComboBox>
         <Label x:Name="Charts_Copy6" Content="MethodNowTips" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold" Margin="0,0,979,0"/>
         <Button x:Name="carModeSwitch" Content="PDRMode" Margin="0,97,119,0" VerticalAlignment="Top" Click="button3_Click" Width="80" Height="22" HorizontalAlignment="Right"/>
+        <Label x:Name="StageLabel" Content="RouteMap" Margin="0,12,208,0" HorizontalAlignment="Right" Width="123" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold"/>
     </Grid>
 </Window>

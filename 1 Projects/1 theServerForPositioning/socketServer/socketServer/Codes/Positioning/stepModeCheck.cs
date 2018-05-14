@@ -14,7 +14,7 @@ namespace socketServer
         //根据这个slop的数值可以推测人的移动模式为步行、停止、跑步等等
         //具体操作需要在此基础之上进一步处理，这里这个数值仅仅用于记录
 
-        FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
+        public FSMBasic theStage = new StageStance();//当前状态的推断，使用的是有限状态机
         private int windowCount = 5;//窗口大小，如果是5就是查看最后五个数据
         public double slopNow = 0;
         //获得走路的最新的slope数值使用

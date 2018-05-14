@@ -295,6 +295,7 @@ namespace socketServer
                 indexBuff = stepExtra.stepDectionMehtods(stepDectionMehtodIndex , theFilteredAZ, thePeackFinder);
                 //带约束的行人模式之下需要额外的计算来更加严格地剔除错误的步子
                 indexBuff = theStepFilter.FilterStep(theInformationController, theFilter, indexBuff, theFilteredAZ, systemModeUse.SelectedIndex);
+                StageLabel.Content = theStepFilter.stateInformation(systemModeUse.SelectedIndex);
             }
             else //最后一项留给车用，仅仅作为附录
             {

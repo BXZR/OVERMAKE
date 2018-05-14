@@ -31,7 +31,8 @@ namespace socketServer.Codes.Positioning
             return methodInformations[index];
         }
 
-        public List<int> FilterStep(information theInformationController, Filter theFilter, List<int> indexBuff, List<double> filteredAZ ,int methodID )
+        //过滤掉多余的步子
+        public List<int> FilterStep(information theInformationController, Filter theFilter, List<int> indexBuff, List<double> filteredAZ , int methodID )
         {
             switch (methodID)
             {
@@ -40,6 +41,20 @@ namespace socketServer.Codes.Positioning
                 case 2: { indexBuff = theSlopChecker.stepModeCheckUse(indexBuff , theFilter , theInformationController, filteredAZ); };break;
             }
             return indexBuff; 
+        }
+
+        //当前推断的行动状态信息
+        public string stateInformation(int methodID)
+        {
+            string information = "";
+            switch (methodID)
+            {
+                case 0: { information =  "没有状态信息"; }break;
+                case 1: { information = "没有状态信息"; } break;
+                //这一项最多只能是行走状态，而不会有站立状态，因为已经站立状态已经被剔除了
+                case 2: { information = theSlopChecker.theStage.getInformation(); } break;
+            }
+            return information;
         }
 
 //================================================================================================================================================//

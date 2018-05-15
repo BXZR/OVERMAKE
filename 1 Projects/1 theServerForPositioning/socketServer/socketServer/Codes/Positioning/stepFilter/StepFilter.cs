@@ -8,7 +8,9 @@ namespace socketServer.Codes.Positioning
 {
     //判断走一步之后结合其他数据的“滤步”
     //判步滤镜，用于剔除indexBuff中不能被认为是一步的那些记录
-    //顺带判断当前的状态也可以用这个类来做
+    //顺带判断当前的状态也用这个类来做
+    //作为对原生数据的处理结果的一种判定
+
     public class StepFilter
     {
         //分类方法也就是stepFilter的方法之一
@@ -31,6 +33,7 @@ namespace socketServer.Codes.Positioning
             return methodInformations[index];
         }
 
+       //-------------------------------------------------------------两大核心功能--------------------------------------------------------------------------------//
         //过滤掉多余的步子
         public List<int> FilterStep(information theInformationController, Filter theFilter, List<int> indexBuff, List<double> filteredAZ , int methodID )
         {

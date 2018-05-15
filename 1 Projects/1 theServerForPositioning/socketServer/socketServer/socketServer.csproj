@@ -127,7 +127,7 @@
     <Compile Include="Codes\MathUse\IntegralController.cs" />
     <Compile Include="Codes\FileOperate\Log.cs" />
     <Compile Include="Codes\MathUse\MathCanculate.cs" />
-    <Compile Include="Codes\Positioning\StepFilter.cs" />
+    <Compile Include="Codes\Positioning\stepFilter\StepFilter.cs" />
     <Compile Include="Codes\stages\FSMBasic.cs" />
     <Compile Include="Codes\stages\StageRun.cs" />
     <Compile Include="Codes\stages\StageStair.cs" />
@@ -144,7 +144,7 @@
     </Compile>
     <Compile Include="Codes\FileOperate\FileSaver.cs" />
     <Compile Include="Codes\MathUse\Filter.cs" />
-    <Compile Include="Codes\Positioning\information.cs" />
+    <Compile Include="Codes\Server\information.cs" />
     <Compile Include="Windows\commonWeightSetting.xaml.cs">
       <DependentUpon>commonWeightSetting.xaml</DependentUpon>
     </Compile>
@@ -160,9 +160,9 @@
     <Compile Include="Windows\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Codes\Positioning\stepDetection.cs" />
+    <Compile Include="Codes\Positioning\stepDetection\stepDetection.cs" />
     <Compile Include="Codes\Positioning\stepLength.cs" />
-    <Compile Include="Codes\Positioning\stepModeCheck.cs" />
+    <Compile Include="Codes\Positioning\stepFilter\stepModeCheck.cs" />
     <Compile Include="Codes\SystemSave.cs" />
     <Compile Include="Codes\Learning\tensorflowUse.cs" />
     <Compile Include="Codes\Server\theServer.cs" />
@@ -218,7 +218,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Codes\Positioning\PeackSearcher.cs" />
+    <Compile Include="Codes\Positioning\stepDetection\PeackSearcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

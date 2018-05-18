@@ -481,11 +481,46 @@ namespace socketServer.Windows
         }
         //------------------------------------------------------------Step Filter效果对比--------------------------------------------------------------------------//
 
-        private void button17_Click(object sender, RoutedEventArgs e)
+        private void button17_Click_1(object sender, RoutedEventArgs e)
         {
+            SFDataGrid.CanUserAddRows = false;
+            List<ClassForStepFilter>  DataForFilter = new List<ClassForStepFilter>();
 
+            //计算最后20条数据的滤波结果
+            //滤波的设计使用SystemSave.FilterMode操纵的，这与其他的模块设计有一点不一样
+            //这样考虑是因为Filer是一个可以移动的小模块
+            for (int i = 0; i < theMainWindow.systemModeUse.Items.Count; i++)
+            {
+               
+           
+                //滤步器的前期准备
+                ClassForStepFilter DATA = new ClassForStepFilter();
+                DATA.MethodName = theMainWindow.systemModeUse.Items[i].ToString().Split(':')[1];
+                DATA.MethodInformaton = theMainWindow.TheStepFilter.getInformation(i);
+
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start(); //  开始监视代码
+                 //----------------------------------------------------------------------------------------------------------------
+                theMainWindow.stepDectionUse(0);//刷新indexBuff
+                int theCountSave = theMainWindow.indexBuff.Count;
+                List<int> BuffNew = theMainWindow.TheStepFilter.FilterStep(theMainWindow.InformationController , new Filter() , theMainWindow.indexBuff , theMainWindow.theFilteredAZ , i);
+                //----------------------------------------------------------------------------------------------------------------
+                stopwatch.Stop(); //  停止监视
+                TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
+                double hours = timeSpan.TotalHours; // 小时
+                double minutes = timeSpan.TotalMinutes;  // 分钟
+                double seconds = timeSpan.TotalSeconds;  //  秒数
+                double milliseconds = theMainWindow.theStepLengthUse.Count == 0 ? 0 : timeSpan.TotalMilliseconds / (double)theMainWindow.theStepLengthUse.Count;  //  毫秒数
+                DATA.TimeUse = milliseconds.ToString("f5");
+
+                DATA.DataMinusPercent = theCountSave > 0 ? (100 -(float)BuffNew.Count*100 / (float)theCountSave).ToString("f2") + "%" : "----";
+                DATA.DataCountBefore = theCountSave.ToString();
+                DATA.DataCountOver = BuffNew.Count.ToString();
+
+                DataForFilter.Add(DATA);
+            }
+            SFDataGrid.ItemsSource = DataForFilter;
         }
-
         //-------------------------------------------------------------------------------------------------------------------------------------------//
 
         //有些控件的内容需要加载的时候生成和处理
@@ -569,7 +604,29 @@ namespace socketServer.Windows
             MessageBox.Show("表格已导出到" + path);
         }
 
+
     }
+
+    //stepFilter的各种方法的对比
+    class ClassForStepFilter
+    {
+        private string methodName = "S34343SASD";
+        private string timeUse = " ";
+        private string methodInformaton = "";
+
+        private string dataCountBefore = "";
+        private string dataCountOver = "";
+        private string dataMinusPercent = "";
+
+        public List<double> FilteredValues = new List<double>();
+        public string MethodName { get { return methodName; } set { methodName = value; } }
+        public string DataCountBefore { get { return dataCountBefore; } set { dataCountBefore = value; } }
+        public string DataCountOver { get { return dataCountOver; } set { dataCountOver = value; } }
+        public string TimeUse { get { return timeUse; } set { timeUse = value; } }
+        public string DataMinusPercent { get { return dataMinusPercent; } set { dataMinusPercent = value; } }
+        public string MethodInformaton { get { return methodInformaton; } set { methodInformaton = value; } }
+    }
+
 
     //ANN各种层数的计算对比类
     class ClassForANNLayers

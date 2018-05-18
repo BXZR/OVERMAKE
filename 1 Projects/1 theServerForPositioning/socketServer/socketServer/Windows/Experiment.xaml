@@ -39,14 +39,14 @@
                         <GradientStop Color="#FFF3F3F3" Offset="0"/>
                         <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
                         <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
-                        <GradientStop Color="#FFE8E8E8" Offset="1"/>
+                        <GradientStop Color="#FFCDCDCD" Offset="1"/>
                     </LinearGradientBrush>
                 </TabItem.Background>
-                <Grid Margin="0,0,0,-1" Background="#FFD2D2D2">
-                    <DataGrid x:Name="SFDataGrid" HorizontalAlignment="Left" Margin="20,62,0,0" VerticalAlignment="Top" Width="704" Height="282"/>
+                <Grid Margin="0,0,0,-1" Background="#FFE5E5E5">
+                    <DataGrid x:Name="SFDataGrid" HorizontalAlignment="Left" Margin="20,62,0,0" VerticalAlignment="Top" Width="704" Height="293"/>
                     <Label x:Name="label_Copy4" Content="Data Analys For Step Filter" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="229"/>
                     <Button x:Name="button16" Content="Save As Excel" HorizontalAlignment="Left" Margin="20,35,0,0" VerticalAlignment="Top" Width="106" Click="button16_Click"/>
-                    <Button x:Name="button17" Content="Canculate Syep Filter Check" HorizontalAlignment="Left" Margin="512,30,0,0" VerticalAlignment="Top" Width="212" Click="button17_Click"/>
+                    <Button x:Name="button17" Content="Step Filter Check" HorizontalAlignment="Left" Margin="539,27,0,0" VerticalAlignment="Top" Width="166" Click="button17_Click_1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Heading">

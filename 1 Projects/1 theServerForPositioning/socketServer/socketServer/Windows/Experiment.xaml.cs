@@ -479,6 +479,13 @@ namespace socketServer.Windows
             ANNDataGrig.CanUserAddRows = false;
             ANNDataGrig.ItemsSource = layersInformation;
         }
+        //------------------------------------------------------------Step Filter效果对比--------------------------------------------------------------------------//
+
+        private void button17_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         //-------------------------------------------------------------------------------------------------------------------------------------------//
 
         //有些控件的内容需要加载的时候生成和处理
@@ -551,6 +558,17 @@ namespace socketServer.Windows
             theFileSaver.saveInformationWithEncoding(theStringForSave, path);
             MessageBox.Show("表格已导出到" + path);
         }
+
+        private void button16_Click(object sender, RoutedEventArgs e)
+        {
+            FileSaver theFileSaver = new socketServer.FileSaver();
+            Codes.FileOperate.ExcelUse theExcel = new Codes.FileOperate.ExcelUse();
+            string theStringForSave = theExcel.getExcelStringFromDataGrid(SFDataGrid );
+            string path = @"DataForPDR/Excel/Experiment-StepFilter-" + SystemSave.getTimeString() + ".xls";
+            theFileSaver.saveInformationWithEncoding(theStringForSave, path);
+            MessageBox.Show("表格已导出到" + path);
+        }
+
     }
 
     //ANN各种层数的计算对比类

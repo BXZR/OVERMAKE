@@ -7,34 +7,7 @@
         mc:Ignorable="d"
         Title="Experiment &amp; Show" Height="424.384" Width="760.715" Background="#FFD8D8D8" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
-        <TabControl x:Name="tabControl">
-            <TabItem Header="StepLength" HorizontalAlignment="Left" Width="84">
-                <Grid Background="#FFE5E5E5">
-                    <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Right" Margin="0,11,155,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="24"/>
-                    <DataGrid x:Name="SLDataGrid" Margin="10,56,10,10"/>
-                    <Label x:Name="label" Content="Data Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="233"/>
-                    <Button x:Name="button4" Content="Average Data Chart" Margin="0,11,10,0" VerticalAlignment="Top" Click="button4_Click" IsEnabled="False" Height="24" HorizontalAlignment="Right" Width="140"/>
-                    <Button x:Name="button11" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,29,0,0" VerticalAlignment="Top" Width="140" Click="button11_Click" Height="22"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="StepDection">
-                <Grid Background="#FFE5E5E5">
-                    <Button x:Name="button5" Content="Canculate Step Dection Check" HorizontalAlignment="Right" Margin="0,9,10,0" VerticalAlignment="Top" Width="199" Click="button5_Click" Height="24" RenderTransformOrigin="0.879,-0.714"/>
-                    <DataGrid x:Name="SDDataGrid" Margin="10,56,10,10"/>
-                    <Label x:Name="label_Copy" Content="Data Analys For Step Dection With Axis" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="308"/>
-                    <ComboBox x:Name="theAxisComboxForStepDection" HorizontalAlignment="Right" Margin="0,9,214,0" VerticalAlignment="Top" Width="191" Height="24" SelectedIndex="0"/>
-                    <Button x:Name="button12" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button12_Click"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Heading">
-                <Grid Background="#FFE5E5E5">
-                    <Label x:Name="label_Copy1" Content="Data Analys For Heading" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="204"/>
-                    <DataGrid x:Name="HeadingDataGrid" Margin="10,56,10,10"/>
-                    <Button x:Name="button6" Content="Canculate Heading Check" HorizontalAlignment="Right" Margin="0,11,228,0" VerticalAlignment="Top" Width="226" Height="24" Click="button6_Click"/>
-                    <Button x:Name="button7" Content="Heading  Change Chart" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="201" Height="24" Click="button7_Click" IsEnabled="False"/>
-                    <Button x:Name="button13" Content="Save  As Excel" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button13_Click"/>
-                </Grid>
-            </TabItem>
+        <TabControl x:Name="tabControl" Background="#FFE5E5E5">
             <TabItem Header="Filter">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
@@ -46,6 +19,52 @@
                     <ComboBox x:Name="theAxisComboxForFilter" HorizontalAlignment="Right" Margin="0,11,365,0" VerticalAlignment="Top" Width="147" Height="24" SelectedIndex="0"/>
                     <Button x:Name="button9" Content="Filter Chart Show" HorizontalAlignment="Right" Margin="0,11,22,0" VerticalAlignment="Top" Width="130" Height="24" Click="button9_Click"/>
                     <Button x:Name="button14" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button14_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="StepDection">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="button5" Content="Canculate Step Dection Check" HorizontalAlignment="Right" Margin="0,9,10,0" VerticalAlignment="Top" Width="199" Click="button5_Click" Height="24" RenderTransformOrigin="0.879,-0.714"/>
+                    <DataGrid x:Name="SDDataGrid" Margin="10,56,10,10"/>
+                    <Label x:Name="label_Copy" Content="Data Analys For Step Dection With Axis" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="308" Height="30"/>
+                    <ComboBox x:Name="theAxisComboxForStepDection" HorizontalAlignment="Right" Margin="0,9,214,0" VerticalAlignment="Top" Width="191" Height="24" SelectedIndex="0"/>
+                    <Button x:Name="button12" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button12_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="stepFilter">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        <GradientStop Color="#FFE8E8E8" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Margin="0,0,0,-1" Background="#FFD2D2D2">
+                    <DataGrid x:Name="SFDataGrid" HorizontalAlignment="Left" Margin="20,62,0,0" VerticalAlignment="Top" Width="704" Height="282"/>
+                    <Label x:Name="label_Copy4" Content="Data Analys For Step Filter" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="229"/>
+                    <Button x:Name="button16" Content="Save As Excel" HorizontalAlignment="Left" Margin="20,35,0,0" VerticalAlignment="Top" Width="106" Click="button16_Click"/>
+                    <Button x:Name="button17" Content="Canculate Syep Filter Check" HorizontalAlignment="Left" Margin="512,30,0,0" VerticalAlignment="Top" Width="212" Click="button17_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Heading">
+                <Grid Background="#FFE5E5E5">
+                    <Label x:Name="label_Copy1" Content="Data Analys For Heading" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="204"/>
+                    <DataGrid x:Name="HeadingDataGrid" Margin="10,56,10,10"/>
+                    <Button x:Name="button6" Content="Canculate Heading Check" HorizontalAlignment="Right" Margin="0,11,228,0" VerticalAlignment="Top" Width="226" Height="24" Click="button6_Click"/>
+                    <Button x:Name="button7" Content="Heading  Change Chart" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="201" Height="24" Click="button7_Click" IsEnabled="False"/>
+                    <Button x:Name="button13" Content="Save  As Excel" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="140" Height="22" Click="button13_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="StepLength" HorizontalAlignment="Left" Width="84">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="button3" Content="Canculate Step Lengths For Last 5 Steps " HorizontalAlignment="Right" Margin="0,11,155,0" VerticalAlignment="Top" Width="250" Click="button3_Click_1" Height="24"/>
+                    <DataGrid x:Name="SLDataGrid" Margin="10,56,10,10"/>
+                    <Label x:Name="label" Content="Data Analys For Step Length" VerticalAlignment="Top" FontSize="15" FontWeight="Bold" Foreground="#FF8B00FF" HorizontalAlignment="Left" Width="233"/>
+                    <Button x:Name="button4" Content="Average Data Chart" Margin="0,11,10,0" VerticalAlignment="Top" Click="button4_Click" IsEnabled="False" Height="24" HorizontalAlignment="Right" Width="140"/>
+                    <Button x:Name="button11" Content="Save As Excel" HorizontalAlignment="Left" Margin="10,29,0,0" VerticalAlignment="Top" Width="140" Click="button11_Click" Height="22"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ANN">
@@ -67,6 +86,7 @@
             <TabItem Header="Positioning">
                 <Grid Background="#FFE5E5E5" Margin="0,0,0,1"/>
             </TabItem>
+            <TabItem Header="ZMove"/>
             <TabItem Header="ExtraShowing">
                 <Grid Background="#FFE5E5E5">
                     <Button x:Name="button" Content="theStepAngeData" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="149" Height="26" Click="button_Click"/>

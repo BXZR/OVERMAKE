@@ -320,11 +320,11 @@
                             <Button x:Name="button23" Content="Reset Position" HorizontalAlignment="Left" Margin="132,41,0,0" VerticalAlignment="Top" Width="164" Click="button23_Click"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="appendexDemo" Header="GroupBox" Margin="10,320,10,0" VerticalAlignment="Top" Height="56" BorderBrush="#FF96D8FF">
-                        <Grid Height="36" Margin="0,0,-2,-2" VerticalAlignment="Top">
+                    <GroupBox x:Name="appendexDemo" Header="Appendex" Margin="10,320,10,0" VerticalAlignment="Top" Height="56" BorderBrush="#FF7400FF" Foreground="Black">
+                        <Grid Height="36" Margin="0,0,-2,-2" VerticalAlignment="Top" Background="#FFD4D2D2">
                             <Button x:Name="button12" Content="DataPicture" HorizontalAlignment="Left" Margin="15,6,0,0" VerticalAlignment="Top" Width="105" Click="button12_Click_1"/>
-                            <Button x:Name="button15" Content="AccordLinear" HorizontalAlignment="Right" Margin="0,6,122,0" VerticalAlignment="Top" Width="105" Click="button15_Click"/>
-                            <Button x:Name="button16" Content="AccordANN" Margin="0,6,12,0" VerticalAlignment="Top" Click="button16_Click" HorizontalAlignment="Right" Width="105"/>
+                            <Button x:Name="button15" Content="AccordLinear" HorizontalAlignment="Left" Margin="235,6,0,0" VerticalAlignment="Top" Width="105" Click="button15_Click"/>
+                            <Button x:Name="button16" Content="AccordANN" Margin="345,6,0,0" VerticalAlignment="Top" Click="button16_Click" HorizontalAlignment="Left" Width="105"/>
                             <Button x:Name="button14" Content="tensorFlowSharp" HorizontalAlignment="Left" Margin="125,6,0,0" VerticalAlignment="Top" Width="105" Click="button14_Click"/>
                         </Grid>
                     </GroupBox>

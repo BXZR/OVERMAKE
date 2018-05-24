@@ -189,6 +189,8 @@ namespace socketServer.Codes
         //移动模式转真实的位移
         private double   transToHeightMove(int mode)
         {
+           //传入的mode是012
+           //0下1平2上
             Console.WriteLine("ZMove Mode = "+ mode);
             // 1 或者 -1 用来判断向上走还是向下走
             //0表示根本就是平地

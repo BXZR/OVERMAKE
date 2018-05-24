@@ -35,42 +35,33 @@ namespace socketServer
             List<double> IMU = theFilter.theFilerWork(theInformationController.IMUZFromClient);
             //List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
+            List<double> StartMode = theFilter.theFilerWork(theInformationController.StairType);
             //加工成字符串
             for (int i = 1; i < indexBuff.Count; i++)
             {
                 //Console.WriteLine("0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  10,  11, 12,13,14, 15, 16");
                 //Console.WriteLine("AX,AY,AZ,GX,GY,GZ,MX,MY,MZ,Com,AHRS,IMU,VK,FK,FSL,RSL,RStair");
                 string informationUse = "";
+                //下面这些数据是真实的，可以直接用-----------------------------------------------------------------------------------------------------------
                 informationUse += AX[indexBuff[i]].ToString("f3") + "," + AY[indexBuff[i]].ToString("f3") + "," + AZ[indexBuff[i]].ToString("f3") + ",";
                 informationUse += GX[indexBuff[i]].ToString("f3") + "," + GY[indexBuff[i]].ToString("f3") + "," + GZ[indexBuff[i]].ToString("f3") + ",";
                 informationUse += MX[indexBuff[i]].ToString("f3") + "," + MY[indexBuff[i]].ToString("f3") + "," + MZ[indexBuff[i]].ToString("f3") + ",";
                 informationUse += compass[indexBuff[i]].ToString("f3") + "," + AHRS[indexBuff[i]].ToString("f3") + "," + IMU[indexBuff[i]].ToString("f3")+",";
-                informationUse += getVKFK(indexBuff[i - 1], indexBuff[ i], theA, timeUse) + ",";
-                informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + theStepLengthController.getRandomStairMode();
-
+                double VK = MathCanculate.getVariance(theA, indexBuff[i - 1], indexBuff[i]);
+                double timestep = timeUse[indexBuff[i]] - timeUse[indexBuff[i - 1]];
+                double FK = timestep == 0 ? 0f : (1000 / timestep);//因为时间戳是毫秒作为单位的
+                double[] weights = SystemSave.CommonFormulaWeights[0];
+                double StepLengthInfered = weights[0] * VK + weights[1] * FK + weights[2];//据此推断出来的步长
+                informationUse += VK.ToString("f3") + "," + FK.ToString("f3") + "," + StepLengthInfered + ",";
+                //下面这些数据是随机生成的的，仅仅可以用作实验-------------------------------------------------------------------------------------------------
+                // informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + theStepLengthController.getRandomStairMode();
+                informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + StartMode[indexBuff[i]].ToString("f0");
+                
                 if (i < indexBuff.Count - 1)
                     informationUse += ",";
                 informationToSave.Add(informationUse);
             }
             return informationToSave;
-        }
-
-        private string getVKFK(int indexPre , int indexNow, List<double> theA, List<long> timeUse = null)
-        {
-           // Console.WriteLine("indexPre = " + indexPre + "  indexNow = " + indexNow +" timeUse.count = "+timeUse.Count);
-                double VK = MathCanculate.getVariance(theA, indexPre, indexNow);
-
-                double timestep = timeUse[indexNow] - timeUse[indexPre];
-                //有除零异常说明时间非常短，可以认为根本就没走
-                if (timestep == 0)
-                    return "---";//万金油
-                double FK = (1000 / timestep);//因为时间戳是毫秒作为单位的
-                 //结合systemSave的CommonFormulaWeights来做TrainBase数值
-                 double [] weights = SystemSave.CommonFormulaWeights[0];
-                 double fakeStepLength = weights[0] * VK + weights[1] * FK + weights[2];
-                string saveStringItem = VK.ToString("f3") + "," + FK.ToString("f3") + "," + fakeStepLength.ToString("f3");
-                return saveStringItem;
- 
         }
 
 

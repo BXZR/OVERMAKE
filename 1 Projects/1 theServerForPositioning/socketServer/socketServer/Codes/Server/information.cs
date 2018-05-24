@@ -11,7 +11,8 @@ namespace socketServer
     { accelerometerX, accelerometerY, accelerometerZ,
         gyroX, gyroY, gyroZ, magnetometerX,
         magnetometerY, magnetometerZ, compassDegree  ,
-        timeStamp , GPS, AHRSZ , IMUZ
+        timeStamp , GPS, AHRSZ , IMUZ,
+        StairType
     }
     //这个类用于预处理、缓存保存从客户端得到信息
     //此外，所有查看信息的方法都应该只在这一个类中出现
@@ -38,6 +39,9 @@ namespace socketServer
        public List<double> GPSPositionY = new List<double>();//专门用于记录这个点的GPS信息Y（用于训练）
        public List<double> AHRSZFromClient = new List<double>();//从客户端拿到的AHRS的Z轴信息，偏航角
        public List<double> IMUZFromClient = new List<double>();//从客户端拿到的IMU的Z轴信息，偏航角
+       //客户端人工设定的上下楼梯的状态（毕竟是搜集数据，需要人力......）
+       //虽说这是int类型的，但是为了保证统一还是用double
+       public List<double> StairType = new List<double>();
 
        public List<long> timeStep = new List<long>();//每一组数据的时间戳 （时间戳的位数还是有点长），以毫秒作为单位
        private List<double> theOperatedValue = new List<double>();//记录处理之后的数据，这是一个综合的加速度
@@ -75,6 +79,7 @@ namespace socketServer
             if (theType == UseDataType.magnetometerZ) { saveMagnetometers(information, 2); }
             if (theType == UseDataType.AHRSZ) { saveClientZ(information,0); }
             if (theType == UseDataType.IMUZ) { saveClientZ(information,1); }
+            if (theType == UseDataType.StairType) { saveStairType(information); }
         }
 
         //唯一对外开放的清理方法
@@ -98,6 +103,7 @@ namespace socketServer
             timeStep.Clear();
             AHRSZFromClient.Clear();
             IMUZFromClient.Clear();
+            StairType.Clear();
         }
 
         //----------------------------------------------------------------------------------------------------------------------------//
@@ -293,6 +299,21 @@ namespace socketServer
                try { theAZData = Convert.ToDouble(splitInformation[i]);}
                catch {theAZData = 0;}
                accelerometerZ.Add(theAZData);
+            }
+        }
+
+        //各种分量的存储小方法,私有，绝对要私有
+        private void saveStairType(string information)
+        {
+            string[] splitInformation = information.Split(',');
+            double Stair = 0;
+            for (int i = 0; i < splitInformation.Length; i++)
+            {
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
+                    continue;
+                try { Stair = Convert.ToDouble(splitInformation[i]); }
+                catch { Stair = 0; }
+                StairType.Add(Stair);
             }
         }
 

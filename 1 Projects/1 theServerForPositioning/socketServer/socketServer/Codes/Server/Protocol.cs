@@ -36,43 +36,44 @@ namespace socketServer
             string[] theSplited = information.Split(';');
             //因为信息的第一项是用来做报头了
             //多段的报头，操作标记，数位标记等等，中间以“+”分割
-            if (theSplited[0].Split('+')[1]  == "A")
+            if (theSplited[0].Split('+')[1] == "A")
             {
                 //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
                 //第一大项： Y轴加速度
                 theInformationController.addInformation(UseDataType.accelerometerY, theSplited[1]);
                 //第二大项： 直接从unity里面获取到的角度(最先先用这个做，后期自己优化，本项也可以作为一个基础对照项)
                 //正北0度   
-                theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]);    
+                theInformationController.addInformation(UseDataType.compassDegree, theSplited[2]);
                 //第三大项： X轴加速度
                 theInformationController.addInformation(UseDataType.accelerometerX, theSplited[3]);
                 //第四大项： Z轴加速度
-                theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]); 
+                theInformationController.addInformation(UseDataType.accelerometerZ, theSplited[4]);
                 //第五大项： X轴陀螺仪
-                theInformationController.addInformation(UseDataType.gyroX, theSplited[5]);  
+                theInformationController.addInformation(UseDataType.gyroX, theSplited[5]);
                 //第六大项： Y轴陀螺仪
-                theInformationController.addInformation(UseDataType.gyroY, theSplited[6]); 
+                theInformationController.addInformation(UseDataType.gyroY, theSplited[6]);
                 //第七大项： Z轴陀螺仪
-                theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]); 
+                theInformationController.addInformation(UseDataType.gyroZ, theSplited[7]);
                 //第八大项： X轴磁力计
-                theInformationController.addInformation(UseDataType.magnetometerX, theSplited[8]); 
+                theInformationController.addInformation(UseDataType.magnetometerX, theSplited[8]);
                 //第九大项： y轴磁力计
-                theInformationController.addInformation(UseDataType.magnetometerY, theSplited[9]); 
+                theInformationController.addInformation(UseDataType.magnetometerY, theSplited[9]);
                 //第十大项： z轴磁力计
-                theInformationController.addInformation(UseDataType.magnetometerZ, theSplited[10]); 
+                theInformationController.addInformation(UseDataType.magnetometerZ, theSplited[10]);
                 //GPS
-                theInformationController.addInformation(UseDataType.GPS, theSplited[11]); 
+                theInformationController.addInformation(UseDataType.GPS, theSplited[11]);
                 //时间戳
-                theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]);  
+                theInformationController.addInformation(UseDataType.timeStamp, theSplited[12]);
                 //AHRSZ信息
-                theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); /*Console.WriteLine("13 => " + theSplited[13]);*/ 
+                theInformationController.addInformation(UseDataType.AHRSZ, theSplited[13]); /*Console.WriteLine("13 => " + theSplited[13]);*/
                 //IMU信息
-                theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); /*Console.WriteLine("14 => " + theSplited[14]);*/  
-
+                theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); /*Console.WriteLine("14 => " + theSplited[14]);*/
+                //用户手动录入的stairMode
+                theInformationController.addInformation(UseDataType.StairType, theSplited[15]); /*Console.WriteLine("14 => " + theSplited[14]);*/
             }
-            else if (theSplited[0].Split('+')[1] == "B")
-            {
-                //如果网络带宽实在是不行，就考虑用这种分片的方法分着发送。
+            if (theSplited[0].Split('+')[1] == "B")
+            {  
+
                 //这一点在客户端上也留有接口
                 //实际上下面所有的信息都会被存储，所以可以保证下标保持对应
                 /*

@@ -55,7 +55,9 @@ namespace socketServer
                 informationUse += VK.ToString("f3") + "," + FK.ToString("f3") + "," + StepLengthInfered + ",";
                 //下面这些数据是随机生成的的，仅仅可以用作实验-------------------------------------------------------------------------------------------------
                 // informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + theStepLengthController.getRandomStairMode();
-                informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + StartMode[indexBuff[i]].ToString("f0");
+                informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + StartMode[indexBuff[i]].ToString("f0") ;
+
+                //Console.WriteLine("StartMode[indexBuff[i]] = " + StartMode[indexBuff[i]]);
                 
                 if (i < indexBuff.Count - 1)
                     informationUse += ",";

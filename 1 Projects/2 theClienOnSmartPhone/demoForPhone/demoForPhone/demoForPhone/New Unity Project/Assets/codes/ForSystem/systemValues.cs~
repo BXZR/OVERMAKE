@@ -30,11 +30,11 @@ public class systemValues : MonoBehaviour {
 	public static string getStairModeStirng()
 	{
 		if (stairModeNow == 1)
-			return "直走";
+			return "直行状态";
 		if (stairModeNow == 0)
-			return "下楼梯";
+			return "下楼状态";
 		if (stairModeNow == 2)
-			return "上楼梯";
+			return "上楼状态";
 
 		return "未知状态";
 	}

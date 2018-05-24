@@ -19,6 +19,26 @@ public class systemValues : MonoBehaviour {
 	public static int  valueCount = 0;//总数据条目
 	public static int valueCountMax = 720000;//总数据量上限
 
+	//这个数值是由用户控制的，用来收集当前的数据状态
+	public static int stairModeNow = 1;//0下1平2上
+	public static void changeStairModeNow()
+	{
+		stairModeNow++;
+		if (stairModeNow > 2)
+			stairModeNow = 0;
+	}
+	public static string getStairModeStirng()
+	{
+		if (stairModeNow == 1)
+			return "直走";
+		if (stairModeNow == 0)
+			return "下楼梯";
+		if (stairModeNow == 2)
+			return "上楼梯";
+
+		return "未知状态";
+	}
+
 	public void makeFlush()//关闭的时候做一次清理
 	{
 		stepCountAll = 0;

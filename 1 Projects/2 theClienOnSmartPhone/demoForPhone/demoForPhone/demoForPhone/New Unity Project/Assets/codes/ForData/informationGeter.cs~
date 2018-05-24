@@ -34,6 +34,9 @@ public class informationGeter : MonoBehaviour {
 	//IMU算法的结果
 	string IMUZ = "";
 
+	//当前的Z轴向状态
+	string StairMove = "";
+
 	//一些用于计算的私有参数
 	DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(2017, 10, 1)); //这个是用于计算时间戳用的基础时间
 	//格林威治时间
@@ -75,7 +78,8 @@ public class informationGeter : MonoBehaviour {
 		informationForMY = "";
 		informationForMZ = "";
 
-		sendString += ";" +informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ;
+
+		sendString += ";" +informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ + ";" +  StairMove ;
 
 		//print ("AHRSZ = "+ AHRSZ);
 		//print ("IMUZ = "+ IMUZ);
@@ -84,6 +88,8 @@ public class informationGeter : MonoBehaviour {
 		informationForTimer = "";
 		AHRSZ = "";
 		IMUZ = "";
+		StairMove = "";
+
 		return "clientData+A;"+sendString;
 	}
 
@@ -93,12 +99,13 @@ public class informationGeter : MonoBehaviour {
 	{
 		//注意：发送的信息大项目以";"作为分隔符
 		//大项目内部以“，"作为分隔符
-		string sendString = informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ;
+		string sendString = informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ + ";" +  StairMove ;
 
 		informationForGPSPosition= "";
 		informationForTimer = "";
 		AHRSZ = "";
 		IMUZ = "";
+		StairMove = "";
 		return "B;"+sendString;
 	}
 
@@ -179,6 +186,8 @@ public class informationGeter : MonoBehaviour {
 
 			//print("IMUZUse = " + IMUZUse);
 			IMUZ += IMUZUse.ToString("f4")+",";
+
+			StairMove += systemValues.stairModeNow.ToString("f0") +",";
 		}
 		catch(Exception d)
 		{

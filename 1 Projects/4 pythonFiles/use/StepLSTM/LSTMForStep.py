@@ -13,10 +13,10 @@ lr = 0.001
 training_iters = 1000
 batch_size = 64
 
-n_inputs = 13   # MNIST data input (img shape: 28*28)
-n_steps = 13    # time steps
+n_inputs = 14   # MNIST data input (img shape: 28*28)
+n_steps = 14    # time steps
 n_hidden_units = 128   # neurons in hidden layer
-n_classes = 4   # MNIST classes (0-9 digits)
+n_classes = 2   # MNIST classes (0-9 digits)
 
 # tf Graph input
 x = tf.placeholder(tf.float32, [None, n_steps, n_inputs])

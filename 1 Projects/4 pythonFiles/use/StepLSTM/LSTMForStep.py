@@ -16,7 +16,7 @@ batch_size = 64
 n_inputs = 13   # MNIST data input (img shape: 28*28)
 n_steps = 13    # time steps
 n_hidden_units = 128   # neurons in hidden layer
-n_classes = 2     # MNIST classes (0-9 digits)
+n_classes = 4   # MNIST classes (0-9 digits)
 
 # tf Graph input
 x = tf.placeholder(tf.float32, [None, n_steps, n_inputs])
@@ -85,7 +85,8 @@ def RNN(X, weights, biases):
 pred = RNN(x, weights, biases)
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y))
 train_op = tf.train.AdamOptimizer(lr).minimize(cost)
-
+#预测出来的步态类型
+getType = tf.argmax(pred, 1)
 correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
@@ -98,40 +99,40 @@ with tf.Session() as sess:
         init = tf.global_variables_initializer()
     sess.run(init)
 
-
+    print("数据读取=======================================================================")
     file = open("TrainBase.txt")
-    linesForAll = len(file.readlines())
-    XforAll = [[0 for i in range(n_inputs)]  for i in range(linesForAll)]
-    YforAll = [0 for i in range(linesForAll)]
-    file = open("TrainBase.txt")
-
-    lines = 0
-   
-    for eachline in file:
-        line = file.readline().split("," )
-
-        if len(line) < n_inputs:
-            continue
-        
-        index= 0
-        while index < n_inputs :
-            XforAll[lines][index] = float(str(line[index]))
-            index += 1           
-        YforAll[lines] = float(str(line[index]))
-        lines += 1
+    linesForAll  = file.readlines()
     file.close()
-        
-    print("=============================")
+    print("总行数：" , len(linesForAll))
 
+    XforAll = []
+    YforAll = []
+    
+    for eachline in linesForAll:
+        line = eachline.split("," )
+        XValue = []
+        if len(line) >= n_inputs:
+            index= 0
+            while index < n_inputs :
+                XValue.append( float(str(line[index])) )
+                index += 1
+            XforAll.append(XValue)
+            YforAll.append( float(str(line[index])))
+        else:
+            print("not a line")
+
+    file.close()
+    
+    print("训练LSTM=======================================================================")
     step = 0
-    showC =0
-    while (step+1) * batch_size < linesForAll:
+    while (step+1) * batch_size < len(YforAll):
         #batch_xs, batch_ys = mnist.train.next_batch(batch_size)
         #batch_xs = batch_xs.reshape([batch_size, n_steps, n_inputs])
         
         batch_xs = [[0 for i in range(n_inputs)]  for i in range(n_steps)]
         batch_ys = [0 for i in range(n_steps)]
         lines = 0
+
         while lines < n_steps:
             index= 0
             while index < n_inputs :
@@ -150,28 +151,26 @@ with tf.Session() as sess:
         feed = { x: batch_xs,y: batch_ys}
         sess.run([train_op], feed_dict= feed)
         if step % 5 == 0:
-            print(sess.run(accuracy, feed_dict = feed))
+            print(sess.run(accuracy , feed_dict = feed))
+            #print(sess.run(getType, feed_dict = feed))
         step += 1
 
-    print("------------------------------")
+    print("测试LSTM=======================================================================")
+    
     batch_xs = [[0 for i in range(n_inputs)]  for i in range(n_steps)]
     batch_ys = [0 for i in range(n_steps)]
     lines = 0
     while lines < n_steps:
         index= 0
         while index < n_inputs :
-            batch_xs[lines][index] = XforAll[step * batch_size + lines][index]
+            batch_xs[lines][index] = XforAll[lines][index]
             index += 1
             
-        batch_ys[lines] = YforAll[step * batch_size + lines]
+        batch_ys[lines] = YforAll[lines]
         lines += 1
         
     batch_xs = np.resize(batch_xs,(batch_size,n_inputs ,n_steps ))
     batch_ys = np.resize(batch_xs,(batch_size,n_classes ))
 
     feed = { x: batch_xs,y: batch_ys}
-    test_len = 256
-    #test_data = mnist.test.images[:test_len].reshape((-1, n_steps, n_input))
-    #test_label = mnist.test.labels[:test_len]
-    print(sess.run(accuracy, feed_dict = feed))
-    #print "Testing Accuracy:", sess.run(accuracy, feed_dict={x: batch_xs , y: batch_ys,istate: np.zeros((test_len, 2 * n_hidden))}
+    print(sess.run(getType, feed_dict = feed)[0])

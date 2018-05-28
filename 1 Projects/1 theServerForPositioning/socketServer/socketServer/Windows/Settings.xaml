@@ -226,10 +226,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="button1" Content="Flash Or Build Decision Tree For SL" Margin="15,45,260,0" VerticalAlignment="Top" Click="button1_Click" Height="30"/>
                     <Label
                         Width="225" VerticalAlignment="Top" x:Name="ScarletWeight_Copy1" Margin="7,10,0,0" Height="26" HorizontalAlignment="Left" Foreground="#FF7400FF" Content="Controller For Formula Family" FontWeight="Bold"/>
-                    <Button x:Name="DrawTreeButton1" Content="Draw the Tree" Margin="15,80,345,0" VerticalAlignment="Top" Click="button3_Click" Height="27"/>
                     <ListBox x:Name="CommonFamily" Margin="0,90,10,187" MouseDoubleClick="CommonFamily_MouseDoubleClick" HorizontalAlignment="Right" Width="227">
                         <ListBoxItem Content="A = 1 B = 2 C = 3"/>
                         <ListBoxItem Content="A = 3 B = 454 C = 3"/>
@@ -248,10 +246,18 @@
                     <Label
                         Width="165" VerticalAlignment="Top" x:Name="label_Copy26" Margin="0,64,78,0" Height="26" HorizontalAlignment="Right" Content="Common Formula Weights"/>
                     <Label x:Name="CommonFormulaFamilyLabel" Margin="255,200,10,0" Content="5555555555555555555555555" Foreground="#FF2E00FF"/>
-                    <Button x:Name="button3" Content="Flash Or Build ANN For SL" Margin="15,112,260,0" VerticalAlignment="Top" Click="button3_Click_4" Height="27"/>
-                    <Button x:Name="button17" Content="Flash Or Build KNN Data For SL" Margin="15,144,260,0" VerticalAlignment="Top" Height="27" Click="button17_Click"/>
-                    <Button x:Name="button22" Content="Flash Or Build KMeans Data For SL" Margin="15,176,260,0" VerticalAlignment="Top" Height="30" Click="button22_Click"/>
                     <Label x:Name="MethodCanUseLabel" Margin="0,334,251,-1" Content="5555555555555555555555555" Foreground="#FF2E00FF"/>
+                    <GroupBox x:Name="groupBox4" Header="Builds" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" Width="204" Height="200" BorderBrush="#FF1700FF">
+                        <Grid Margin="0,10,-2,2">
+                            <Button x:Name="button1" Content="Flash Or Build SL DecisionTree " VerticalAlignment="Top" Click="button1_Click" Height="30" HorizontalAlignment="Left" Width="194"/>
+                            <Button x:Name="DrawTreeButton1" Content="Draw the Tree" Margin="0,35,0,0" VerticalAlignment="Top" Click="button3_Click" Height="27" HorizontalAlignment="Left" Width="194"/>
+                            <Button x:Name="button3" Content="Flash Or Build ANN For SL" Margin="0,67,0,0" VerticalAlignment="Top" Click="button3_Click_4" Height="27" HorizontalAlignment="Left" Width="194"/>
+                            <Button x:Name="button17" Content="Flash Or Build KNN For SL" Margin="0,99,0,0" VerticalAlignment="Top" Height="27" Click="button17_Click" HorizontalAlignment="Left" Width="194"/>
+                            <Button x:Name="button22" Content="Flash Or Build KMeans For SL" Margin="0,131,0,0" VerticalAlignment="Top" Height="30" Click="button22_Click" HorizontalAlignment="Left" Width="194"/>
+                        </Grid>
+                    </GroupBox>
+                    <Label x:Name="StepLengthMaxRangeText" Content="StepLengthMaxRange: 1.1" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="204"/>
+                    <Slider x:Name="slider" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Width="204" Minimum="0.4" Maximum="1.8" Value="1.1" ValueChanged="slider_ValueChanged" Foreground="#FF0F45B9"/>
                 </Grid>
             </TabItem>
             <TabItem Header="ZAxisMove">

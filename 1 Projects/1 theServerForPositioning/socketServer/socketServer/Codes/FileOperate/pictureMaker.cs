@@ -67,7 +67,7 @@ namespace socketServer
             //这只是一个假说，很短时间内的内的几步不会变化特别大，所以可以认为步长是在同一个type类型中
             //这样这个图片就算是打上了标记，卷积分类的时候有了依据
             //具体卷积做法有可能需要自行处置，并且这个部分是需要在额外的延迟线程中进行计算
-            int typeIndex = SystemSave.getTypeIndex(SystemSave.stepLengthNow);
+            int typeIndex = SystemSave.getTypeIndexForStepLength(SystemSave.stepLengthNow);
             pictureName = typeIndex + "-dataPictureComplex" + SystemSave.pictureNumber + ".jpeg";
 
             SystemSave.pictureNumber++;

@@ -170,6 +170,11 @@ namespace socketServer
         //路线图绘制缩放值，为了适应不同的路线大小每走一步的距离不一定就是那么大，要有缩放
         public static double routeLineScale = 5;
 
+        //分类最长步长
+                //分类的时候就类似于 最大步长的四分之一，最大步长的一半....分成多类小步子
+        public static double stepLengthMaxRange = 1.1f;//用于分类公式族的最大步长
+
+
         //获得本地IP地址的方法
         public static string getIPAddress()
         {
@@ -201,26 +206,26 @@ namespace socketServer
         {
 
         }
-        //数据分类方法
+        //数据分类方法====================================================================================================
         //其实就是为了适应决策树而进行的属性离散化
-        public static int getTypeIndex(double Value = 0)
+
+        public static int getTypeIndexForData(double value)
         {
-            //if (Value < 0.25)
-            //    return 1;
-            //if (Value >= 0.25 && Value < 0.5)
-            //    return 2;
-            //if (Value >= 0.5 && Value < 0.75)
-            //    return 3;
-            //else
-            //    return 4;
-            //-----------------------------------------------------------
-            //if (Value < 0.5)
-            //    return 1;
-            //else
-            //    return 2;
+            if (value < -0.5)
+                return 0;
+            else if (value > 0.5 && value < 0)
+                return 1;
+            else if (value >= 0 && value < 0.5)
+                return 2;
+            else
+                return 3;
+        }
+        
+        public static int getTypeIndexForStepLength(double Value = 0)
+        {
             //按照下面公式的数量进行分类
             //分类，同时分类的结果是选择的公式参数组的下标
-            double caluetoCheck = 1.2 / CommonFormulaWeights.Count;
+            double caluetoCheck = stepLengthMaxRange / CommonFormulaWeights.Count;
             double checker = caluetoCheck;
             for (int i = 0; i < CommonFormulaWeights.Count; i++)
             {
@@ -232,9 +237,9 @@ namespace socketServer
         }
 
         //其实就是为了适应决策树而进行的属性离散化
-        public static int getTypeIndex(double Value = 0 , int allCount = 1)
+        public static int getTypeIndexForStepLength(double Value = 0 , int allCount = 1)
         {
-            double caluetoCheck = 1.0 / allCount;
+            double caluetoCheck = stepLengthMaxRange / allCount;
             double checker = caluetoCheck;
             for (int i = 0; i < allCount; i++)
             {
@@ -258,6 +263,9 @@ namespace socketServer
 
                 return 0;
         }
+       // ===================================================================================================================
+
+
         //一般步长计算方法参数族群
         //使用决策树,神经网络等等方案选择出来模式，使用这一套模式的参数来做
         //public static  double[] afas = { 0.7, 0.8, 0.9, 1.0 };

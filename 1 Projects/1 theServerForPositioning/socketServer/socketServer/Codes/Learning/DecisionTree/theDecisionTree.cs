@@ -51,12 +51,12 @@ namespace socketServer.Codes.DecisionTree
             {
                 //这个顺序都是AX AY AZ GX GY GZ 顺序不可以打乱
                 //量化成为类型或者说模式
-                int axUse = SystemSave.getTypeIndex(ax);
-                int ayUse = SystemSave.getTypeIndex(ay);
-                int azUse = SystemSave.getTypeIndex(az);
-                int gxUse = SystemSave.getTypeIndex(gx);
-                int gyUse = SystemSave.getTypeIndex(gy);
-                int gzUse = SystemSave.getTypeIndex(gz);
+                int axUse = SystemSave.getTypeIndexForData(ax);
+                int ayUse = SystemSave.getTypeIndexForData(ay);
+                int azUse = SystemSave.getTypeIndexForData(az);
+                int gxUse = SystemSave.getTypeIndexForData(gx);
+                int gyUse = SystemSave.getTypeIndexForData(gy);
+                int gzUse = SystemSave.getTypeIndexForData(gz);
                 List<int> VAL = new List<int>();
                 VAL.Add(axUse);
                 VAL.Add(ayUse);
@@ -175,14 +175,14 @@ namespace socketServer.Codes.DecisionTree
             for (int i = 0; i < AX.Count; i++)
             {
                 //属性的分类数量
-                AXMode.Add(SystemSave. getTypeIndex(AX[i]));
-                AYMode.Add(SystemSave.getTypeIndex(AY[i]));
-                AZMode.Add(SystemSave.getTypeIndex(AZ[i]));
-                GXMode.Add(SystemSave.getTypeIndex(GX[i]));
-                GYMode.Add(SystemSave.getTypeIndex(GY[i]));
-                GZMode.Add(SystemSave.getTypeIndex(GZ[i]));
+                AXMode.Add(SystemSave.getTypeIndexForData(AX[i]));
+                AYMode.Add(SystemSave.getTypeIndexForData(AY[i]));
+                AZMode.Add(SystemSave.getTypeIndexForData(AZ[i]));
+                GXMode.Add(SystemSave.getTypeIndexForData(GX[i]));
+                GYMode.Add(SystemSave.getTypeIndexForData(GY[i]));
+                GZMode.Add(SystemSave.getTypeIndexForData(GZ[i]));
                 //目标的分类数量
-                SLMode.Add(SystemSave.getTypeIndex(SL[i]));
+                SLMode.Add(SystemSave.getTypeIndexForStepLength(SL[i]));
                 StairMode.Add(SystemSave.getTypeIndexForStair(SM[i]));
             }
             //Console.WriteLine("Part get");

@@ -174,6 +174,7 @@ namespace socketServer
             }
             SystemSave.BuffCount = Convert.ToInt32(systemBufferLengthText.Text);
             systemBufferLengthText.Text = SystemSave.BuffCount.ToString();
+            SystemSave.stepLengthMaxRange = slider.Value;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -262,6 +263,7 @@ namespace socketServer
                 theMapImage.Source = theBackImageGet;
 
             systemBufferLengthText.Text = SystemSave.BuffCount.ToString();
+            slider.Value = SystemSave.stepLengthMaxRange;
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -316,6 +318,8 @@ namespace socketServer
         private static string ValueStature2B;
 
         private static string ValueForBufferLength;
+        private static double ValueForStepMaxRange;
+
         void getStartValue()
         {
             if (hasBasicValue == false)
@@ -371,7 +375,10 @@ namespace socketServer
               ValueStature2B = SystemSave.StaturaMethod2_B.ToString();
 
               ValueForBufferLength = SystemSave.BuffCount.ToString();
+              ValueForStepMaxRange = SystemSave.stepLengthMaxRange;
+
               hasBasicValue = true;//最初数值只会被记录一次
+
            }
         }
 
@@ -446,6 +453,7 @@ namespace socketServer
             saturate2BText.Text = ValueStature2B;
 
             systemBufferLengthText.Text = ValueForBufferLength;
+            slider.Value =  ValueForStepMaxRange;
         }
 
 
@@ -920,6 +928,12 @@ namespace socketServer
 
             theMainWindow.makeFlashForOperateNewPosition(xNew, yNew, zNew);
             
+        }
+
+        private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            StepLengthMaxRangeText.Content = "StepLengthMaxRange: " + slider.Value.ToString("f2");
+
         }
     }
 }

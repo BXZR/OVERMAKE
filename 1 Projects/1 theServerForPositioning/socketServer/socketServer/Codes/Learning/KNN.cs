@@ -88,7 +88,7 @@ namespace socketServer.Codes.Learning
             typesInK = new List<int>();
             for (int i = 0; i < theKForKNN; i++)
             {
-                typesInK.Add(SystemSave.getTypeIndex(KNNPoints[i].AIM));
+                typesInK.Add(SystemSave.getTypeIndexForStepLength(KNNPoints[i].AIM));
             }
         }
 

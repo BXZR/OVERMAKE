@@ -108,7 +108,7 @@ namespace socketServer.Codes
                     break;
                 try
                 {
-                    int thistype = SystemSave.getTypeIndex(Convert.ToDouble(informaitonUse[14]), allCount);
+                    int thistype = SystemSave.getTypeIndexForStepLength(Convert.ToDouble(informaitonUse[14]), allCount);
                     //Console.WriteLine("this type = "+ thistype);
                     if (thistype == aimType)
                         indexUse.Add(i);

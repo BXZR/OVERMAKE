@@ -115,7 +115,7 @@ namespace socketServer.Codes.AcordUse
                         break;
 
                     inputsFromFile[i] = new double[] { Convert.ToDouble(informaitonUse[12]), Convert.ToDouble(informaitonUse[13]) };
-                    outputsFromFile[i] = SystemSave.getTypeIndex(Convert.ToDouble(informaitonUse[14]));
+                    outputsFromFile[i] = SystemSave.getTypeIndexForStepLength(Convert.ToDouble(informaitonUse[14]));
                 }
 
                 int numberOfInputs = 2;
@@ -168,7 +168,7 @@ namespace socketServer.Codes.AcordUse
                         break;
 
                     inputsFromFile[i] = new double[] { Convert.ToDouble(informaitonUse[12]), Convert.ToDouble(informaitonUse[13]) };
-                    outputsFromFile[i] = SystemSave.getTypeIndex(Convert.ToDouble(informaitonUse[14]));
+                    outputsFromFile[i] = SystemSave.getTypeIndexForStepLength(Convert.ToDouble(informaitonUse[14]));
                 }
 
                 int numberOfInputs = 2;

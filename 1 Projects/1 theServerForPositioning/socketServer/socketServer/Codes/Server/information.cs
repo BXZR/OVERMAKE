@@ -12,7 +12,7 @@ namespace socketServer
         gyroX, gyroY, gyroZ, magnetometerX,
         magnetometerY, magnetometerZ, compassDegree  ,
         timeStamp , GPS, AHRSZ , IMUZ,
-        StairType
+        StairType , StepType
     }
     //这个类用于预处理、缓存保存从客户端得到信息
     //此外，所有查看信息的方法都应该只在这一个类中出现
@@ -42,7 +42,7 @@ namespace socketServer
        //客户端人工设定的上下楼梯的状态（毕竟是搜集数据，需要人力......）
        //虽说这是int类型的，但是为了保证统一还是用double
        public List<double> StairType = new List<double>();
-
+       public List<double> StepType = new List<double>();
        public List<long> timeStep = new List<long>();//每一组数据的时间戳 （时间戳的位数还是有点长），以毫秒作为单位
        private List<double> theOperatedValue = new List<double>();//记录处理之后的数据，这是一个综合的加速度
                                                                   //引用放在这里是为了优化
@@ -80,6 +80,7 @@ namespace socketServer
             if (theType == UseDataType.AHRSZ) { saveClientZ(information,0); }
             if (theType == UseDataType.IMUZ) { saveClientZ(information,1); }
             if (theType == UseDataType.StairType) { saveStairType(information); }
+            if (theType == UseDataType.StepType) { saveStepType(information); }
         }
 
         //唯一对外开放的清理方法
@@ -314,6 +315,21 @@ namespace socketServer
                 try { Stair = Convert.ToDouble(splitInformation[i]); }
                 catch { Stair = 0; }
                 StairType.Add(Stair);
+            }
+        }
+
+        //各种分量的存储小方法,私有，绝对要私有
+        private void saveStepType(string information)
+        {
+            string[] splitInformation = information.Split(',');
+            double Step = 0;
+            for (int i = 0; i < splitInformation.Length; i++)
+            {
+                if (string.IsNullOrEmpty(splitInformation[i]) == true)
+                    continue;
+                try { Step = Convert.ToDouble(splitInformation[i]); }
+                catch { Step = 0; }
+                StepType.Add(Step);
             }
         }
 

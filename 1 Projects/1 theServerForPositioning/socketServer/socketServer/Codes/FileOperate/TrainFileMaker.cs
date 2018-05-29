@@ -35,12 +35,14 @@ namespace socketServer
             List<double> IMU = theFilter.theFilerWork(theInformationController.IMUZFromClient);
             //List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep, 0.4f, true, theInformationController.accelerometerZ.Count);
             List<long> timeUse = theFilter.theFilerWork(theInformationController.timeStep);
-            List<double> StartMode = theFilter.theFilerWork(theInformationController.StairType);
+            List<double> StairMode = theFilter.theFilerWork(theInformationController.StairType);
+            List<double> stepMode = theFilter.theFilerWork(theInformationController.StepType);
             //加工成字符串
             for (int i = 1; i < indexBuff.Count; i++)
             {
-                //Console.WriteLine("0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  10,  11, 12,13,14, 15, 16");
-                //Console.WriteLine("AX,AY,AZ,GX,GY,GZ,MX,MY,MZ,Com,AHRS,IMU,VK,FK,FSL,RSL,RStair");
+                //StairMode , StepMode是从客户端传入的人手工获取的当前行走状态 StairMode 0 1 2   StepMode 0 1
+                //Console.WriteLine("0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  10,  11, 12,13,14, 15, 16   ,17");
+                //Console.WriteLine("AX,AY,AZ,GX,GY,GZ,MX,MY,MZ,Com,AHRS,IMU,VK,FK,FSL,RSL,StairMode , StepMode");
                 string informationUse = "";
                 //下面这些数据是真实的，可以直接用-----------------------------------------------------------------------------------------------------------
                 informationUse += AX[indexBuff[i]].ToString("f3") + "," + AY[indexBuff[i]].ToString("f3") + "," + AZ[indexBuff[i]].ToString("f3") + ",";
@@ -55,7 +57,8 @@ namespace socketServer
                 informationUse += VK.ToString("f3") + "," + FK.ToString("f3") + "," + StepLengthInfered + ",";
                 //下面这些数据是随机生成的的，仅仅可以用作实验-------------------------------------------------------------------------------------------------
                 // informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + theStepLengthController.getRandomStairMode();
-                informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + StartMode[indexBuff[i]].ToString("f0") ;
+                informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + ",";
+                informationUse += StairMode[indexBuff[i]].ToString("f0") +"," + stepMode[indexBuff[i]].ToString("f0");
 
                 //Console.WriteLine("StartMode[indexBuff[i]] = " + StartMode[indexBuff[i]]);
                 

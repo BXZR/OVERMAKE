@@ -70,6 +70,8 @@ namespace socketServer
                 theInformationController.addInformation(UseDataType.IMUZ, theSplited[14]); /*Console.WriteLine("14 => " + theSplited[14]);*/
                 //用户手动录入的stairMode
                 theInformationController.addInformation(UseDataType.StairType, theSplited[15]); //Console.WriteLine("15 => " + theSplited[15]);
+                //用户手动录入的stepMode
+                theInformationController.addInformation(UseDataType.StepType, theSplited[16]); //Console.WriteLine("16 => " + theSplited[16]);
             }
             if (theSplited[0].Split('+')[1] == "B")
             {  

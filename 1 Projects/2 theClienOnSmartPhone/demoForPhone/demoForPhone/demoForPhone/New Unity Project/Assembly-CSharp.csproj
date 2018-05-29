@@ -47,13 +47,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\codes\ForData\OperateServer.cs" />
-     <Compile Include="Assets\codes\ForData\StairModeButton.cs" />
      <Compile Include="Assets\codes\ForData\controller.cs" />
      <Compile Include="Assets\codes\ForData\informationGeter.cs" />
      <Compile Include="Assets\codes\ForData\informationShower.cs" />
      <Compile Include="Assets\codes\ForData\inputChange.cs" />
      <Compile Include="Assets\codes\ForData\methods\AHRS.cs" />
      <Compile Include="Assets\codes\ForData\methods\IMU.cs" />
+     <Compile Include="Assets\codes\ForData\modeChangeButton.cs" />
      <Compile Include="Assets\codes\ForData\server.cs" />
      <Compile Include="Assets\codes\ForPlay\Camera\SmoothFollow.cs" />
      <Compile Include="Assets\codes\ForPlay\Player\playerMoceWithWeb.cs" />

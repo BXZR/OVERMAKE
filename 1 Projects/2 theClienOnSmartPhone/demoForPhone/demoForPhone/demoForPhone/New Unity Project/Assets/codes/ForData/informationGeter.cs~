@@ -36,6 +36,8 @@ public class informationGeter : MonoBehaviour {
 
 	//当前的Z轴向状态
 	string StairMove = "";
+	//当前移动状态
+	string StepMode = "";
 
 	//一些用于计算的私有参数
 	DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(2017, 10, 1)); //这个是用于计算时间戳用的基础时间
@@ -79,7 +81,7 @@ public class informationGeter : MonoBehaviour {
 		informationForMZ = "";
 
 
-		sendString += ";" +informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ + ";" +  StairMove ;
+		sendString += ";" +informationForGPSPosition +";" +informationForTimer +";"+AHRSZ  +";"+ IMUZ + ";" +  StairMove  +";" + StepMode;
 
 		//print ("AHRSZ = "+ AHRSZ);
 		//print ("IMUZ = "+ IMUZ);
@@ -89,6 +91,7 @@ public class informationGeter : MonoBehaviour {
 		AHRSZ = "";
 		IMUZ = "";
 		StairMove = "";
+		StepMode = "";
 
 		return "clientData+A;"+sendString;
 	}
@@ -188,6 +191,7 @@ public class informationGeter : MonoBehaviour {
 			IMUZ += IMUZUse.ToString("f4")+",";
 
 			StairMove += systemValues.stairModeNow.ToString("f0") +",";
+			StepMode += systemValues.stepModeNow.ToString("f0")+",";
 		}
 		catch(Exception d)
 		{

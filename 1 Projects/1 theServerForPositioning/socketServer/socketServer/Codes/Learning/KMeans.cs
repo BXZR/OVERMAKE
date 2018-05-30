@@ -68,7 +68,7 @@ namespace socketServer.Codes.Learning
             return Math.Sqrt(whole);
         }
 
-        public void builtKMeans(string path, bool forSL = true)
+        public void builtKMeans(string path, TypeCheckClass AIMCheckClass)
         {
             if (string.IsNullOrEmpty(path))
                 return;
@@ -92,10 +92,19 @@ namespace socketServer.Codes.Learning
                     double gy = Convert.ToDouble(rows[4]);
                     double gz = Convert.ToDouble(rows[5]);
                     int aim = 0;
-                    if (forSL)
-                        aim = (int)Convert.ToDouble(rows[15]);
-                    else
-                        aim = (int)Convert.ToDouble(rows[16]);
+
+                    //------------------------------------分支--------------------------------------------------//
+                    switch (AIMCheckClass)
+                    {
+                        //分类步长
+                        case TypeCheckClass.StepLength: {  aim = (int)Convert.ToDouble(rows[15]); }break;
+                        //分类Z轴移动状态
+                        case TypeCheckClass.ZMove: { aim = (int)Convert.ToDouble(rows[16]); } break;
+                        //分类这一步是不是真的存在
+                        case TypeCheckClass.StepType: { aim = (int)Convert.ToDouble(rows[17]); } break;
+                    }
+                    //------------------------------------------------------------------------------------------//
+
                     KMeansPoint thePoint = new KMeansPoint(ax, ay, az, gx, gy, gz, aim);
                     thePoints.Add(thePoint);
                     if (aimSave.Contains(aim) == false)

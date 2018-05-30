@@ -8,6 +8,12 @@ using System.Windows.Media;
 
 namespace socketServer
 {
+
+    //现在有些些内容可以用于一些分类方法进行分类
+    //因为之前的一些封装，在处理不同分类目标的时候很混乱
+    //因此在这里打一下统一的标记，顺带增加可读性
+    public enum TypeCheckClass { StepLength , ZMove , StepType }
+
     //这个类专门用来记录
     class SystemSave
     {
@@ -137,6 +143,7 @@ namespace socketServer
         public static bool isCutForDecisionTree = false;//决策树是不是要剪枝？默认不剪枝，用来对比
         public static theDecisionTree StepLengthTree = null;//步长方法中的决策树
         public static theDecisionTree StairTree = null;//判断走楼梯的方向的决策树
+        public static theDecisionTree StepModeTree = null;//判断是否真的前行的树，用作stepFilter
 
         //实验的时候手机的模式
         //0 手机是平放的，上下平移没有摆动
@@ -172,7 +179,7 @@ namespace socketServer
 
         //分类最长步长
                 //分类的时候就类似于 最大步长的四分之一，最大步长的一半....分成多类小步子
-        public static double stepLengthMaxRange = 1.1f;//用于分类公式族的最大步长
+        public static double stepLengthMaxRange = 1.1;//用于分类公式族的最大步长
 
 
         //获得本地IP地址的方法
@@ -213,7 +220,7 @@ namespace socketServer
         {
             if (value < -0.5)
                 return 0;
-            else if (value > 0.5 && value < 0)
+            else if (value > -0.5 && value < 0)
                 return 1;
             else if (value >= 0 && value < 0.5)
                 return 2;
@@ -233,6 +240,7 @@ namespace socketServer
                     return i;
                 checker += caluetoCheck;
             }
+            System.Console.WriteLine(CommonFormulaWeights.Count - 1);
             return CommonFormulaWeights.Count - 1;
         }
 
@@ -311,14 +319,20 @@ namespace socketServer
         public static AccordANN AccordANNforSL = null;
         //用来进行Z轴移动处理的ANN控制单元
         public static AccordANN AccordANNforSLForZAxis = null;
+        //ANN，StepFilter控制单元
+        public static AccordANN AccordANNForStepMode = null;
         //计算步长的KNN做法，控制单元
         public static KNN theKNNControllerForSL = null;
         //计算上下楼梯的KNN做法，控制单元
         public static KNN theKNNControllerForStair = null;
+        //判步KNN控制单元
+        public static KNN theKNNControllerForStepType = null;
         //计算步长的KMeans控制单元
         public static KMeans theKmeansForSL = null;
         //计算上下楼梯的KMeans控制单元
         public static KMeans theKMeansForStair = null;
+        //判步KMeans控制单元
+        public static KMeans theKmeansForStepMode = null;
 
 
         //计算标记：是否计算，也就是暂停/开始

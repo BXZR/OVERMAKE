@@ -37,13 +37,11 @@ namespace socketServer.Codes.Learning
         List<KNNPoint> KNNPoints;
         List<int> typesInK;
 
-        //这个方法有两种模式可以用
-        //默认，forSL true 用做步长分类
-        //forSL false 用作楼梯姿态分类
-        public void makeKNN(int KIn = 20, string dataPath = "" , bool forSL = true)
+        //这个方法有多种模式可以用
+        public void makeKNN(int KIn = 20, string dataPath = "" , TypeCheckClass ACIn = TypeCheckClass.StepLength)
         {
             theKForKNN = KIn;
-            getData(dataPath , forSL);
+            getData(dataPath, ACIn);
         }
 
 
@@ -119,7 +117,7 @@ namespace socketServer.Codes.Learning
 
         //获得存储的数据
         //这个用于初始化就行
-        private void getData(string dataPath,bool forsl = true)
+        private void getData(string dataPath, TypeCheckClass AIMCheckClass)
         {
             if (string.IsNullOrEmpty(dataPath))
                 return;
@@ -144,10 +142,19 @@ namespace socketServer.Codes.Learning
                     double gy = Convert.ToDouble(rows[4]);
                     double gz = Convert.ToDouble(rows[5]);
                     double aim = 0;
-                    if (forsl)
-                        aim  = Convert.ToDouble(rows[15]);
-                    else
-                        aim = Convert.ToDouble(rows[16]);
+
+                    //------------------------------------分支--------------------------------------------------//
+                    switch (AIMCheckClass)
+                    {
+                        //分类步长
+                        case TypeCheckClass.StepLength: { aim = (int)Convert.ToDouble(rows[15]); } break;
+                        //分类Z轴移动状态
+                        case TypeCheckClass.ZMove: { aim = (int)Convert.ToDouble(rows[16]); } break;
+                        //分类这一步是不是真的存在
+                        case TypeCheckClass.StepType: { aim = (int)Convert.ToDouble(rows[17]); } break;
+                    }
+                    //------------------------------------------------------------------------------------------//
+
                     KNNPoint thePoint =   new KNNPoint(ax,ay,az,gx,gy,gz,aim);
                     KNNPoints.Add(thePoint);
                 }

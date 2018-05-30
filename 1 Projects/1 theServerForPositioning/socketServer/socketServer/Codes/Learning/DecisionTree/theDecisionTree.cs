@@ -19,6 +19,7 @@ namespace socketServer.Codes.DecisionTree
         private List<double> GZ = new List<double>();
         private List<double> SL = new List<double>();
         private List<double> SM = new List<double>();
+        private List<double> ST = new List<double>();
         //因为是针对“程度”的分类，所以其实真正参与到计算的不是确切的数值，而是“分类”
         private List<int> AXMode = new List<int>();
         private List<int> AYMode = new List<int>();
@@ -28,6 +29,7 @@ namespace socketServer.Codes.DecisionTree
         private List<int> GZMode = new List<int>();
         private List<int> SLMode = new List<int>();
         private List<int> StairMode = new List<int>();
+        private List<int> StepMode = new List<int>();
         //这个是属性的集合，方便每一个属性被剥离出去
         private List<List<int>> MAP = new List<List<int>>();
 
@@ -74,14 +76,13 @@ namespace socketServer.Codes.DecisionTree
         //外部构建这个树的方法
         //treeType是作为目标list
         //设定treeType : 0 stepLength 1 StairMode 
-        public void BuildTheTree(string path = "" , int treeType =0)
+        public void BuildTheTree(string path = "" , TypeCheckClass AIMCheckClass = TypeCheckClass.StepLength)
         {
             if (isStarted == false)
             {
-               
                 makeTitles();//建立titles集合
                 initMap(path);//读数据
-                makeTreeType(treeType);//设定决策树的type或者说根节点的目标
+                makeTreeType(AIMCheckClass);//设定决策树的type或者说根节点的目标
                 makePartValues();//建立分类数据
                 makeDictionary();//创建“字典”
                 makeBasicValue();//计算基础数值
@@ -95,13 +96,19 @@ namespace socketServer.Codes.DecisionTree
         }
 
 
-        private void makeTreeType(int treeType = 0)
+        private void makeTreeType(TypeCheckClass AIMCheckClass)
         {
-            //设定决策树的type
-            if (treeType == 0)
-                aimMode = SLMode;
-            else if (treeType == 1)
-                aimMode = StairMode;
+            //------------------------------------分支--------------------------------------------------//
+            switch (AIMCheckClass)
+            {
+                //分类步长
+                case TypeCheckClass.StepLength: { aimMode = SLMode; } break;
+                //分类Z轴移动状态
+                case TypeCheckClass.ZMove: { aimMode = StairMode; } break;
+                //分类这一步是不是真的存在
+                case TypeCheckClass.StepType: { aimMode = StepMode; } break;
+            }
+            //------------------------------------------------------------------------------------------//               
         }
 
         private void makeTitles()
@@ -140,6 +147,7 @@ namespace socketServer.Codes.DecisionTree
                     GZ.Add(Convert.ToDouble(rows[5]));
                     SL.Add(Convert.ToDouble(rows[15]));
                     SM.Add(Convert.ToInt32(rows[16]));
+                    ST.Add(Convert.ToInt32(rows[17]));
                 }
                 catch
                 {
@@ -174,6 +182,7 @@ namespace socketServer.Codes.DecisionTree
         {
             for (int i = 0; i < AX.Count; i++)
             {
+                Console.WriteLine("get data");
                 //属性的分类数量
                 AXMode.Add(SystemSave.getTypeIndexForData(AX[i]));
                 AYMode.Add(SystemSave.getTypeIndexForData(AY[i]));
@@ -184,6 +193,7 @@ namespace socketServer.Codes.DecisionTree
                 //目标的分类数量
                 SLMode.Add(SystemSave.getTypeIndexForStepLength(SL[i]));
                 StairMode.Add(SystemSave.getTypeIndexForStair(SM[i]));
+                StepMode.Add((int)ST[i]);
             }
             //Console.WriteLine("Part get");
         }

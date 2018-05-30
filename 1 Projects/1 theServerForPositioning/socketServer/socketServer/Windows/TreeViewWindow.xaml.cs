@@ -32,20 +32,28 @@ namespace socketServer.Windows
         theDecisionTree theTree;//决策树的引用
         int maxDepth = 910;//记录一下最深层数
         //唯一的公有方法 : 绘图
-        public void drawDecisionTree(int mode1)
+        public void drawDecisionTree(TypeCheckClass AIMCheckClass)
         {
             theDrawCanvas.Children.Clear();
-            if (mode1 == 0)
-                theTree = SystemSave.StepLengthTree;
-            else if (mode1 == 1)
-                theTree = SystemSave.StairTree;
-            else
+
+            //------------------------------------分支--------------------------------------------------//
+            switch (AIMCheckClass)
             {
-                MessageBox.Show("查无此树");
-                Log.saveLog(LogType.error, "决策树未生成，因此绘制失败");
-                return;
+                //分类步长
+                case TypeCheckClass.StepLength: { theTree = SystemSave.StepLengthTree; } break;
+                //分类Z轴移动状态
+                case TypeCheckClass.ZMove: { theTree = SystemSave.StairTree; } break;
+                //分类这一步是不是真的存在
+                case TypeCheckClass.StepType: { theTree = SystemSave.StepModeTree; } break;
+                default:
+                    {
+                        MessageBox.Show("查无此树");
+                        Log.saveLog(LogType.error, "决策树未生成，因此绘制失败");
+                        return;
+                    }
             }
-            
+            //------------------------------------------------------------------------------------------//
+
             Console.WriteLine("开始绘制");
             theDecisionTreeNode root = theTree.theRoot;
             maxDepth = theTree.getDepth();

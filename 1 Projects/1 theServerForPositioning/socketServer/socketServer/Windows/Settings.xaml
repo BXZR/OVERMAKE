@@ -96,24 +96,37 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="label_Copy2" Content="ZeroCross" HorizontalAlignment="Left" Margin="13,73,0,0" VerticalAlignment="Top" Height="26" Width="207" Foreground="#FF7400FF" FontWeight="Bold"/>
-                    <TextBox x:Name="ZeroLine" Height="23" Margin="218,103,40,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy" Content="PeackStep(Trend) " HorizontalAlignment="Left" Margin="12,21,0,0" VerticalAlignment="Top" Height="26" Width="207" Foreground="#FF7705FF" FontWeight="Bold"/>
-                    <TextBox x:Name="PeackStepthreshold" Height="23" Margin="218,46,40,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy1" Content="Threshold" HorizontalAlignment="Left" Margin="63,46,0,0" VerticalAlignment="Top" Height="26" Width="150"/>
-                    <Label x:Name="label_Copy6" Content="ZeroLine" HorizontalAlignment="Left" Margin="65,101,0,0" VerticalAlignment="Top" Height="26" Width="104"/>
-                    <Label x:Name="label_Copy7" Content="PeackStep(Threshold) " HorizontalAlignment="Left" Margin="10,156,0,0" VerticalAlignment="Top" Height="26" Width="207" Foreground="#FF7705FF" FontWeight="Bold"/>
-                    <TextBox x:Name="MaxAForStart" Height="23" Margin="218,189,40,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy8" Content="MaxAForStart" HorizontalAlignment="Left" Margin="65,187,0,0" VerticalAlignment="Top" Height="26" Width="104"/>
-                    <Label x:Name="label_Copy9" Content="MinAForStart" HorizontalAlignment="Left" Margin="65,218,0,0" VerticalAlignment="Top" Height="26" Width="104"/>
-                    <Label x:Name="label_Copy10" Content="ChangeValue" HorizontalAlignment="Left" Margin="65,247,0,0" VerticalAlignment="Top" Height="26" Width="104"/>
-                    <Label Content="UpLine" HorizontalAlignment="Left" Margin="65,276,0,0" VerticalAlignment="Top" Height="26" Width="134"/>
-                    <Label x:Name="D" Content="DownLine" HorizontalAlignment="Left" Margin="65,307,0,0" VerticalAlignment="Top" Height="26" Width="104"/>
-                    <TextBox x:Name="MinAForStart" Height="23" Margin="218,219,40,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <TextBox x:Name="ChangeValue" Height="23" Margin="218,249,40,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <TextBox x:Name="UpForStart" Height="23" Margin="218,278,40,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <TextBox x:Name="DownForStart" Height="23" Margin="218,308,40,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="DynamicallyZeroLine" Content="DynamicallyZeroLine" Margin="218,135,40,0" VerticalAlignment="Top"/>
+                    <GroupBox x:Name="groupBox5" Header="StepDecection" VerticalAlignment="Top" Height="238" BorderBrush="#FF5900F5" Background="#FFD6D6D6" Margin="0,10,0,0">
+                        <Grid Margin="0,0,-2,2">
+                            <Label x:Name="label_Copy" Content="PeackStep(Trend) " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="116" Foreground="#FF7705FF" FontWeight="Bold"/>
+                            <Label x:Name="label_Copy1" Content="Threshold" HorizontalAlignment="Left" Margin="138,13,0,0" VerticalAlignment="Top" Height="26" Width="72" FontWeight="Bold"/>
+                            <TextBox x:Name="PeackStepthreshold" Height="23" Margin="224,13,137,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                            <Label x:Name="label_Copy2" Content="ZeroCross" HorizontalAlignment="Left" Margin="12,46,0,0" VerticalAlignment="Top" Height="26" Width="79" Foreground="#FF7400FF" FontWeight="Bold"/>
+                            <TextBox x:Name="ZeroLine" Height="23" Margin="166,50,196,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                            <Label x:Name="label_Copy6" Content="ZeroLine" HorizontalAlignment="Left" Margin="91,47,0,0" VerticalAlignment="Top" Height="26" Width="75" FontWeight="Bold"/>
+                            <CheckBox x:Name="DynamicallyZeroLine" Content="DynamicallyZeroLine" Margin="300,56,26,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                    <Label x:Name="label_Copy7" Content="PeackStep(Threshold) " HorizontalAlignment="Left" Margin="18,103,0,0" VerticalAlignment="Top" Height="26" Width="207" Foreground="#FF7705FF" FontWeight="Bold"/>
+                    <TextBox x:Name="MaxAForStart" Height="23" Margin="150,134,255,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="80"/>
+                    <Label x:Name="label_Copy8" Content="MaxAForStart" HorizontalAlignment="Left" Margin="41,132,0,0" VerticalAlignment="Top" Height="26" Width="104" FontWeight="Bold"/>
+                    <Label x:Name="label_Copy9" Content="MinAForStart" HorizontalAlignment="Left" Margin="251,134,0,0" VerticalAlignment="Top" Height="26" Width="104" FontWeight="Bold"/>
+                    <Label x:Name="label_Copy10" Content="ChangeValue" HorizontalAlignment="Left" Margin="41,206,0,0" VerticalAlignment="Top" Height="26" Width="104" FontWeight="Bold" RenderTransformOrigin="0.423,0.577"/>
+                    <Label Content="UpLine" HorizontalAlignment="Left" Margin="41,170,0,0" VerticalAlignment="Top" Height="26" Width="134" FontWeight="Bold"/>
+                    <Label x:Name="D" Content="DownLine" HorizontalAlignment="Left" Margin="251,170,0,0" VerticalAlignment="Top" Height="26" Width="104" FontWeight="Bold"/>
+                    <TextBox x:Name="MinAForStart" Height="23" Margin="360,137,52,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="80"/>
+                    <TextBox x:Name="ChangeValue" Height="23" Margin="154,206,104,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                    <TextBox x:Name="UpForStart" Height="23" Margin="154,170,258,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="80"/>
+                    <TextBox x:Name="DownForStart" Height="23" Margin="360,173,52,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="80"/>
+                    <GroupBox x:Name="groupBox6" Header="StepFilter" HorizontalAlignment="Left" Margin="0,253,0,0" VerticalAlignment="Top" Height="131" Width="492" BorderBrush="#FF3A00FF">
+                        <Grid Margin="10,0,-2,1">
+                            <Button x:Name="button24" Content="Flash Or Build SF DecisionTree " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="202" Click="button24_Click"/>
+                            <Button x:Name="showStepFilterTreeButton" Content="Draw the tree" HorizontalAlignment="Left" Margin="236,10,0,0" VerticalAlignment="Top" Width="123" IsEnabled="False" Click="showStepFilterTreeButton_Click"/>
+                            <Button x:Name="button25" Content="Flash Or Build ANN For SF" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="202" Click="button25_Click"/>
+                            <Button x:Name="button26" Content="Flash Or Build KNN For SF" HorizontalAlignment="Left" Margin="236,73,0,0" VerticalAlignment="Top" Width="202" Click="button26_Click"/>
+                            <Button x:Name="button27" Content="Flash Or Build KMeans For SF" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Width="202" Click="button27_Click"/>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Heading">

@@ -475,7 +475,7 @@ namespace socketServer
             theDecisionTreeNode.maxDepth = 0;
             SystemSave.StepLengthTree = new Codes.DecisionTree.theDecisionTree();
             //SystemSave.StepLengthTree.BuildTheTree("TrainBase/TrainBaseTree.txt",0);
-            SystemSave.StepLengthTree.BuildTheTree(SystemSave.TrainBasedFilePath, 0);
+            SystemSave.StepLengthTree.BuildTheTree(SystemSave.TrainBasedFilePath, TypeCheckClass.StepLength);
             string informationS = "根据文件"+ TrainBasePath.Text +"内容已经建立决策树\n";
             if (isPruning.IsChecked == true)
                 informationS += "(使用了一些剪枝策略)\n";
@@ -495,7 +495,7 @@ namespace socketServer
             theDecisionTreeNode.maxDepth = 0;
             SystemSave.StairTree = new Codes.DecisionTree.theDecisionTree();
             //SystemSave.StairTree.BuildTheTree("TrainBase/TrainBaseTree.txt",1);
-            SystemSave.StairTree.BuildTheTree(SystemSave.TrainBasedFilePath, 1);
+            SystemSave.StairTree.BuildTheTree(SystemSave.TrainBasedFilePath, TypeCheckClass.ZMove);
             string informationS = "根据文件" + TrainBasePath.Text + "内容已经建立决策树\n";
             if (isPruning.IsChecked == true)
                 informationS += "(使用了一些剪枝策略)\n";
@@ -575,7 +575,7 @@ namespace socketServer
             TreeViewWindow theWindow = new TreeViewWindow();
             theWindow.Show();
             theWindow.Title= "Step Length Tree";
-            theWindow.drawDecisionTree(0);
+            theWindow.drawDecisionTree(TypeCheckClass.StepLength);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -591,7 +591,7 @@ namespace socketServer
             TreeViewWindow theWindow = new TreeViewWindow();
             theWindow.Show();
             theWindow.Title = "Z Move Tree";
-            theWindow.drawDecisionTree(1);
+            theWindow.drawDecisionTree(TypeCheckClass.ZMove);
         }
 
         private void button3_Click_2(object sender, RoutedEventArgs e)
@@ -857,7 +857,7 @@ namespace socketServer
         {
             //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下AKNN数据（步长）
             SystemSave.theKNNControllerForSL = new Codes.Learning.KNN();
-            SystemSave.theKNNControllerForSL.makeKNN(20, SystemSave.TrainBasedFilePath);
+            SystemSave.theKNNControllerForSL.makeKNN(20, SystemSave.TrainBasedFilePath,TypeCheckClass.StepLength);
             MessageBox.Show("步长计算相关的KNN数据已经新建或重建\n依据的文件："+ TrainBasePath.Text);
             Log.saveLog(LogType.information, "步长计算相关的KNN数据已经新建或重建");
         }
@@ -865,7 +865,7 @@ namespace socketServer
         private void button18_Click(object sender, RoutedEventArgs e)
         {
             SystemSave.theKNNControllerForStair = new Codes.Learning.KNN();
-            SystemSave.theKNNControllerForStair.makeKNN(20,SystemSave.TrainBasedFilePath , false);
+            SystemSave.theKNNControllerForStair.makeKNN(20,SystemSave.TrainBasedFilePath ,TypeCheckClass.ZMove);
             MessageBox.Show("Z轴向相关的KNN数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "Z轴向相关的KNN数据已经新建或重建");
         }
@@ -896,16 +896,16 @@ namespace socketServer
         private void button21_Click(object sender, RoutedEventArgs e)
         {
             SystemSave.theKMeansForStair = new Codes.Learning.KMeans();
-            SystemSave.theKMeansForStair.builtKMeans( SystemSave.TrainBasedFilePath, false);
+            SystemSave.theKMeansForStair.builtKMeans( SystemSave.TrainBasedFilePath, TypeCheckClass.ZMove);
             MessageBox.Show("Z轴向相关的KMeans数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "Z轴向相关的KMeans数据已经新建或重建");
         }
 
         private void button22_Click(object sender, RoutedEventArgs e)
         {
-            //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下AKNN数据（步长）
+            //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下KNN数据（步长）
             SystemSave.theKmeansForSL = new Codes.Learning.KMeans();
-            SystemSave.theKmeansForSL.builtKMeans(SystemSave.TrainBasedFilePath);
+            SystemSave.theKmeansForSL.builtKMeans(SystemSave.TrainBasedFilePath,TypeCheckClass.StepLength);
             MessageBox.Show("步长计算相关的KMeans数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
             Log.saveLog(LogType.information, "步长计算相关的KMeans数据已经新建或重建");
         }
@@ -934,6 +934,62 @@ namespace socketServer
         {
             StepLengthMaxRangeText.Content = "StepLengthMaxRange: " + slider.Value.ToString("f2");
 
+        }
+
+        private void button24_Click(object sender, RoutedEventArgs e)
+        {
+            theDecisionTreeNode.nodeCountAll = 0;
+            theDecisionTreeNode.maxDepth = 0;
+            SystemSave.StepModeTree = new Codes.DecisionTree.theDecisionTree();
+            //SystemSave.StepLengthTree.BuildTheTree("TrainBase/TrainBaseTree.txt",0);
+            SystemSave.StepModeTree.BuildTheTree(SystemSave.TrainBasedFilePath, TypeCheckClass.StepType);
+            string informationS = "根据文件" + TrainBasePath.Text + "内容已经建立决策树\n";
+            if (isPruning.IsChecked == true)
+                informationS += "(使用了一些剪枝策略)\n";
+            else
+                informationS += "(未使用剪枝策略)\n";
+            informationS += "决策树的节点个数： " + SystemSave.StepModeTree.getNodeCount() + "\n";
+            informationS += "决策树的深度： " + SystemSave.StepModeTree.getDepth();
+            MessageBox.Show(informationS);
+            showStepFilterTreeButton.IsEnabled = true;
+
+            Log.saveLog(LogType.information, "根据文件" + TrainBasePath.Text + "内容建立决策树");
+        }
+
+        private void showStepFilterTreeButton_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewWindow theWindow = new TreeViewWindow();
+            theWindow.Show();
+            theWindow.Title = "Step Length Tree";
+            theWindow.drawDecisionTree(TypeCheckClass.StepType);
+        }
+
+        private void button25_Click(object sender, RoutedEventArgs e)
+        {
+            //有一些东西是需要刷新的，例如修改了ANN的参数的时候，需要重新建立一下ANN（步长）
+            //相对而言，上下楼梯的ANN类别数量是固定的，所以没有必要进行修正了
+            SystemSave.AccordANNForStepMode = new AccordANN();
+            SystemSave.AccordANNForStepMode.BuildANNForStepMode();
+            MessageBox.Show("步分类计算相关的ANN已经新建或重建\n依据的文件：" + TrainBasePath.Text);
+            Log.saveLog(LogType.information, "步分类计算相关的ANN已经新建或重建");
+        }
+
+        private void button26_Click(object sender, RoutedEventArgs e)
+        {
+            //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下AKNN数据（步长）
+            SystemSave.theKNNControllerForStepType = new Codes.Learning.KNN();
+            SystemSave.theKNNControllerForStepType.makeKNN(20, SystemSave.TrainBasedFilePath, TypeCheckClass.StepType);
+            MessageBox.Show("步态计算相关的KNN数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
+            Log.saveLog(LogType.information, "步态计算相关的KNN数据已经新建或重建");
+        }
+
+        private void button27_Click(object sender, RoutedEventArgs e)
+        {
+            //有一些东西是需要刷新的，例如修改了KNN的数据集合的时候，需要重新建立一下KNN数据（步长）
+            SystemSave.theKmeansForStepMode = new Codes.Learning.KMeans();
+            SystemSave.theKmeansForStepMode.builtKMeans(SystemSave.TrainBasedFilePath, TypeCheckClass.StepLength);
+            MessageBox.Show("步态计算相关的KMeans数据已经新建或重建\n依据的文件：" + TrainBasePath.Text);
+            Log.saveLog(LogType.information, "步态计算相关的KMeans数据已经新建或重建");
         }
     }
 }

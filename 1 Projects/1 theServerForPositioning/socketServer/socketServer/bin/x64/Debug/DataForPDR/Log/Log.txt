@@ -2294,3 +2294,54 @@
 [error 2018:05:29:10:46:12]: Server 关闭出错: 无法访问已释放的对象。
 对象名:“System.Net.Sockets.Socket”。
 [information 2018:05:29:10:46:12]: Serve已经关闭
+[information 2018:05:30:09:26:01]: 开始进行刷新程序
+[information 2018:05:30:09:26:01]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:09:26:01]: Server以1形式开始侦听
+[information 2018:05:30:09:27:57]: Serve已经关闭
+[information 2018:05:30:09:29:35]: 开始进行刷新程序
+[information 2018:05:30:09:29:35]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:09:29:35]: Server以1形式开始侦听
+[information 2018:05:30:09:30:43]: Serve已经关闭
+[information 2018:05:30:10:40:26]: 开始进行刷新程序
+[information 2018:05:30:10:40:26]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:10:40:26]: Server以1形式开始侦听
+[information 2018:05:30:10:51:41]: 开始进行刷新程序
+[information 2018:05:30:10:51:41]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:10:51:41]: Server以1形式开始侦听
+[information 2018:05:30:10:51:54]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:05:30:10:52:03]: Serve已经关闭
+[information 2018:05:30:10:55:29]: 开始进行刷新程序
+[information 2018:05:30:10:55:29]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:10:55:29]: Server以1形式开始侦听
+[information 2018:05:30:10:55:36]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:05:30:10:55:40]: Serve已经关闭
+[information 2018:05:30:10:57:48]: 开始进行刷新程序
+[information 2018:05:30:10:57:48]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:10:57:48]: Server以1形式开始侦听
+[information 2018:05:30:10:59:44]: 开始进行刷新程序
+[information 2018:05:30:10:59:44]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:10:59:44]: Server以1形式开始侦听
+[information 2018:05:30:10:59:50]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:05:30:11:00:17]: Serve已经关闭
+[information 2018:05:30:11:02:59]: 开始进行刷新程序
+[information 2018:05:30:11:02:59]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:11:02:59]: Server以1形式开始侦听
+[information 2018:05:30:11:03:04]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:05:30:11:03:25]: Serve已经关闭
+[information 2018:05:30:11:04:44]: 开始进行刷新程序
+[information 2018:05:30:11:04:44]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:11:04:44]: Server以1形式开始侦听
+[information 2018:05:30:11:37:42]: 开始进行刷新程序
+[information 2018:05:30:11:37:42]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:11:37:42]: Server以1形式开始侦听
+[information 2018:05:30:11:37:51]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:05:30:11:38:00]: Serve已经关闭
+[information 2018:05:30:11:48:17]: 开始进行刷新程序
+[information 2018:05:30:11:48:17]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:11:48:17]: Server以1形式开始侦听
+[information 2018:05:30:11:48:25]: 步态计算相关的KMeans数据已经新建或重建
+[information 2018:05:30:11:48:27]: Serve已经关闭
+[information 2018:05:30:11:49:29]: 开始进行刷新程序
+[information 2018:05:30:11:49:29]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:05:30:11:49:29]: Server以1形式开始侦听
+[information 2018:05:30:11:49:57]: Serve已经关闭

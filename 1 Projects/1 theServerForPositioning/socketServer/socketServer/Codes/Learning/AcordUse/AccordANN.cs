@@ -149,6 +149,16 @@ namespace socketServer.Codes.AcordUse
             return answer;
         }
 
+        public int getModeWithANNForStepMode(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            double[] input = new double[] { AX, AY, AZ, GX, GY, GZ };// 0
+            int answer;
+            double[] output = network.Compute(input);
+            answer = getMaxIndex(output);
+            //Console.WriteLine(answer + " is the mode");
+            return answer;
+        }
+
 
 
 
@@ -287,7 +297,7 @@ namespace socketServer.Codes.AcordUse
             return indexUse;
         }
 
-        //这是一个官方的示例-----------------------------
+        //这是一个官方的示例-------------------------------------------------------------------------------------------------------------
         public void checkClass()
         {
             // Here we will be creating a neural network to process 3-valued input

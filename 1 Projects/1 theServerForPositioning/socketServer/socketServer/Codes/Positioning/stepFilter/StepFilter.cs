@@ -21,7 +21,11 @@ namespace socketServer.Codes.Positioning
         {
             "判断走一步之后不再进行额外分类剔除",
             "其他轴的变化如果不够大，这一步将会被剔除",
-            "使用有限状态机对亦不进行分类，剔除静止步"
+            "使用有限状态机对亦不进行分类，剔除静止步",
+            "决策树分类剔除静止的步",
+            "ANN分类剔除静止步",
+            "KNN分类剔除静止步",
+            "KMeans分类剔除静止步"
         };
         //返回全部的方法说明
         public string[] getMoreInformation()
@@ -42,6 +46,10 @@ namespace socketServer.Codes.Positioning
                 case 0: { return indexBuff; }break;
                 case 1: { return FixedStepCalculate(theInformationController, theFilter, indexBuff); } break;
                 case 2: { indexBuff = theSlopChecker.stepModeCheckUse(indexBuff , theFilter , theInformationController, filteredAZ); };break;
+                case 3: { indexBuff = DecisionTreeStepFilter(theInformationController, theFilter, indexBuff); } break;
+                case 4: { indexBuff = ANNForStepFilter(theInformationController, theFilter, indexBuff); } break;
+                case 5: { indexBuff = KNNForStepFilter(theInformationController, theFilter, indexBuff); } break;
+                case 6: { indexBuff = KMeansForStepFilter(theInformationController, theFilter, indexBuff); } break;
             }
             return indexBuff; 
         }
@@ -60,8 +68,112 @@ namespace socketServer.Codes.Positioning
             return information;
         }
 
-//================================================================================================================================================//
+        //================================================================================================================================================//    
+        //方法5, KMeans方法
+        private List<int> KMeansForStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
+        {
+            if (SystemSave.theKmeansForStepMode == null)
+                return indexBuff;
 
+            List<int> toRemove = new List<int>();
+            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                int type = SystemSave.theKmeansForStepMode.getTypeWithKMeans(AX[indexBuff[i]], AY[indexBuff[i]], AZ[indexBuff[i]], GX[indexBuff[i]], GY[indexBuff[i]], GZ[indexBuff[i]]);
+                if (type == 0)
+                    toRemove.Add(i);
+            }
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                indexBuff.Remove(toRemove[i]);
+            }
+            return indexBuff;
+        }
+
+
+        //方法4，KNN方法
+        private List<int> KNNForStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
+        {
+            if (SystemSave.theKNNControllerForStepType == null)
+                return indexBuff;
+
+            List<int> toRemove = new List<int>();
+            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                int type = SystemSave.theKNNControllerForStepType.getKNNType(AX[indexBuff[i]], AY[indexBuff[i]], AZ[indexBuff[i]], GX[indexBuff[i]], GY[indexBuff[i]], GZ[indexBuff[i]]);
+                if (type == 0)
+                    toRemove.Add(i);
+            }
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                indexBuff.Remove(toRemove[i]);
+            }
+            return indexBuff;
+        }
+
+
+        //方法3， ANN方法
+        private List<int> ANNForStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
+        {
+            if (SystemSave.AccordANNForStepMode == null)
+                return indexBuff;
+
+            List<int> toRemove = new List<int>();
+            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+            for (int i = 0; i < indexBuff.Count; i++)
+            {
+                int type = SystemSave.AccordANNForStepMode.getModeWithANNForStepMode(AX[indexBuff[i]], AY[indexBuff[i]], AZ[indexBuff[i]], GX[indexBuff[i]], GY[indexBuff[i]], GZ[indexBuff[i]]);
+                if (type == 0)
+                    toRemove.Add(i);
+            }
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                indexBuff.Remove(toRemove[i]);
+            }
+            return indexBuff;
+
+        }
+        //方法2，决策树方法
+        private List<int> DecisionTreeStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
+        {
+            if (SystemSave.StepModeTree == null)
+                return indexBuff;
+
+            List<int> toRemove = new List<int>();
+            List<double> AX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> AY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> AZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+            List<double> GX = theFilter.theFilerWork(theInformationController.gyroX);
+            List<double> GY = theFilter.theFilerWork(theInformationController.gyroY);
+            List<double> GZ = theFilter.theFilerWork(theInformationController.gyroZ);
+            for(int i = 0; i < indexBuff.Count ; i++)
+            { 
+              int type =  SystemSave.StepModeTree.searchModeWithTree(AX[indexBuff[i]], AY [indexBuff[i]] , AZ[indexBuff[i]] , GX[indexBuff[i]] , GY[indexBuff[i]] , GZ[indexBuff[i]]);
+                if (type == 0)
+                    toRemove.Add(i);
+            }
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                indexBuff.Remove(toRemove[i]);
+            }
+            return indexBuff;
+        }
         //方法1，多轴方差比照的做法
         //检测这个移动是不是真的移动，也就是说在原地晃手机的时候是否允许被判断走了一步
         //在实验的时候原地晃手机是可以的，但是在实际使用的时候原地晃手机不可以这样，者可以通过一个模式进行判断
@@ -70,11 +182,12 @@ namespace socketServer.Codes.Positioning
             //Console.WriteLine("-------------------------------------------");
             // Console.WriteLine("indexBuff Count pre= " + indexBuff.Count);
             List<int> toRemove = new List<int>();
+            List<double> theX = theFilter.theFilerWork(theInformationController.accelerometerX);
+            List<double> theY = theFilter.theFilerWork(theInformationController.accelerometerY);
+            List<double> theZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
+
             for (int i = 1; i < indexBuff.Count; i++)
             {
-                List<double> theX = theFilter.theFilerWork(theInformationController.accelerometerX);
-                List<double> theY = theFilter.theFilerWork(theInformationController.accelerometerY);
-                List<double> theZ = theFilter.theFilerWork(theInformationController.accelerometerZ);
                 double XVariance = MathCanculate.getVariance(theX, indexBuff[i - 1], indexBuff[i]);
                 double YVariance = MathCanculate.getVariance(theY, indexBuff[i - 1], indexBuff[i]);
                 double ZVariance = MathCanculate.getVariance(theZ, indexBuff[i - 1], indexBuff[i]);

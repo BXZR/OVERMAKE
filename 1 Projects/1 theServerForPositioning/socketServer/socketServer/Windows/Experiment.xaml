@@ -81,6 +81,11 @@
                     <TextBox x:Name="TrainMin" HorizontalAlignment="Left" Height="23" Margin="145,78,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="99"/>
                     <TextBox x:Name="TrainMax" HorizontalAlignment="Left" Height="23" Margin="389,78,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="120"/>
                     <Button x:Name="button15" Content="Save As Excel" Margin="550,85,25,0" VerticalAlignment="Top" Click="button15_Click" Height="24"/>
+                    <ComboBox x:Name="theANNUseSelect" Margin="550,13,25,0" VerticalAlignment="Top" RenderTransformOrigin="0.517,1.409" SelectedIndex="0">
+                        <ComboBoxItem Content="StepLength"/>
+                        <ComboBoxItem Content="ZMove"/>
+                        <ComboBoxItem Content="StepType"/>
+                    </ComboBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Positioning">

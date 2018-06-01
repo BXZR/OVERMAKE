@@ -13,8 +13,6 @@ namespace socketServer
 {
     public class demoForTensorFlow
     {
-
-
         //基础方法，线性回归
         public static void lineNear()
         {
@@ -34,7 +32,7 @@ namespace socketServer
             var lost = tf.ReduceMean(tf.Square(tf.Sub(SL, sl)));
            
             TFSession d = new TFSession();
-            
+
         }
 
 

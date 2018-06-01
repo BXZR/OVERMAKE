@@ -68,8 +68,30 @@ namespace socketServer.Codes.Positioning
             return information;
         }
 
+        //单独获取一步的stepFilter类型
+        public int  getOneTypeForStepFilter(double AX , double AY , double AZ , double  GX , double GY , double GZ ,  int methodID)
+        {
+            if (SystemSave.theKNNControllerForStepType == null)
+                return 0;
+
+            return SystemSave.AccordANNForStepMode.getModeWithANNForStepMode(AX, AY, AZ, GX, GY, GZ);
+
+            int type = 0;
+            switch (methodID)
+            {
+                case 0: { type = 1; } break;
+                case 1: { type = FixedStepCalculate(AX, AY, AZ, GX, GY, GZ); } break;
+                case 2: { type = FSMFilter(AX, AY, AZ, GX, GY, GZ); } break;
+                case 3: { type = DecisionTreeStepFilter(AX, AY, AZ, GX, GY, GZ); } break;
+                case 4: { type = ANNForStepFilter(AX, AY, AZ, GX, GY, GZ); } break;
+                case 5: { type = KNNForStepFilter(AX, AY, AZ, GX, GY, GZ); } break;
+                case 6: { type = KMeansForStepFilter( AX,  AY,  AZ,  GX,  GY, GZ); } break;
+            }
+            return type;
+
+        }
         //================================================================================================================================================//    
-        //方法5, KMeans方法
+        //方法5, KMeans方法-----------------------------------------------------------
         private List<int> KMeansForStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
         {
             if (SystemSave.theKmeansForStepMode == null)
@@ -94,9 +116,17 @@ namespace socketServer.Codes.Positioning
             }
             return indexBuff;
         }
+        //单独判断的方法
+        private int KMeansForStepFilter(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            if (SystemSave.theKmeansForStepMode == null)
+                return 1;
+          return  SystemSave.theKmeansForStepMode.getTypeWithKMeans(AX, AY, AZ, GX, GY, GZ);
+        }
 
 
-        //方法4，KNN方法
+
+        //方法4，KNN方法-----------------------------------------------------------
         private List<int> KNNForStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
         {
             if (SystemSave.theKNNControllerForStepType == null)
@@ -121,9 +151,15 @@ namespace socketServer.Codes.Positioning
             }
             return indexBuff;
         }
+        private int  KNNForStepFilter(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            if (SystemSave.theKNNControllerForStepType == null)
+                return 1;
+            int type = SystemSave.theKNNControllerForStepType.getKNNType(AX, AY, AZ, GX, GY, GZ);
+            return type;
+        }
 
-
-        //方法3， ANN方法
+        //方法3， ANN方法-----------------------------------------------------------
         private List<int> ANNForStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
         {
             if (SystemSave.AccordANNForStepMode == null)
@@ -149,7 +185,16 @@ namespace socketServer.Codes.Positioning
             return indexBuff;
 
         }
-        //方法2，决策树方法
+        private int ANNForStepFilter(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            if (SystemSave.AccordANNForStepMode == null)
+                return 1;
+            int type = SystemSave.AccordANNForStepMode.getModeWithANNForStepMode(AX, AY, AZ, GX, GY, GZ);
+            return type;
+        }
+
+
+        //方法2，决策树方法-----------------------------------------------------------
         private List<int> DecisionTreeStepFilter(information theInformationController, Filter theFilter, List<int> indexBuff)
         {
             if (SystemSave.StepModeTree == null)
@@ -174,7 +219,17 @@ namespace socketServer.Codes.Positioning
             }
             return indexBuff;
         }
-        //方法1，多轴方差比照的做法
+
+        private int DecisionTreeStepFilter(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            if (SystemSave.StepModeTree == null)
+                return 1;
+
+            int type = SystemSave.StepModeTree.searchModeWithTree(AX, AY, AZ, GX, GY, GZ);
+            return type;
+        }
+
+        //方法1，多轴方差比照的做法-----------------------------------------------------------
         //检测这个移动是不是真的移动，也就是说在原地晃手机的时候是否允许被判断走了一步
         //在实验的时候原地晃手机是可以的，但是在实际使用的时候原地晃手机不可以这样，者可以通过一个模式进行判断
         private List<int> FixedStepCalculate(information theInformationController, Filter theFilter, List<int> indexBuff)
@@ -209,6 +264,18 @@ namespace socketServer.Codes.Positioning
             }
             //Console.WriteLine("indexBuff Count after= " + indexBuff.Count);
             return indexBuff;
+        }
+
+        private int FixedStepCalculate(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            //这是一个类似统计的方法，单独的数据是没办法用的，直接返回
+            return 1;
+        }
+
+        private int FSMFilter(double AX, double AY, double AZ, double GX, double GY, double GZ)
+        {
+            //这是一个需要使用状态机的的方法，单独的数据是没办法用的，直接返回
+            return 1;
         }
 
     }

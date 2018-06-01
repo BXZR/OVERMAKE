@@ -408,6 +408,17 @@ namespace socketServer.Windows
                    //----------------------------------------------------------------------------------------------------------------
                     SystemSave.AccordANNforSL = new Codes.AcordUse.AccordANN();
                     SystemSave.AccordANNforSL.BuildANNForSL(i, t);
+                    SystemSave.AccordANNforSLForZAxis = new Codes.AcordUse.AccordANN();
+                    SystemSave.AccordANNforSLForZAxis.BuildANNForStair();
+                    SystemSave.AccordANNForStepMode = new Codes.AcordUse.AccordANN();
+                    SystemSave.AccordANNForStepMode.BuildANNForStepMode();
+                    Filter theFilter = new Filter();
+                    List<double> AX = theFilter.theFilerWork(theMainWindow.InformationController.accelerometerX);
+                    List<double> AY = theFilter.theFilerWork(theMainWindow.InformationController.accelerometerY);
+                    List<double> AZ = theFilter.theFilerWork(theMainWindow.InformationController.accelerometerZ);
+                    List<double> GX = theFilter.theFilerWork(theMainWindow.InformationController.gyroX);
+                    List<double> GY = theFilter.theFilerWork(theMainWindow.InformationController.gyroY);
+                    List<double> GZ = theFilter.theFilerWork(theMainWindow.InformationController.gyroZ);
                     //----------------------------------------------------------------------------------------------------------------
                     stopwatch.Stop(); //  停止监视
                     TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
@@ -431,8 +442,26 @@ namespace socketServer.Windows
                             if (SystemSave.AccordANNforSL == null) { typesGet.Add(0); }
                             else
                             {
-                                int stepLengthType = theMainWindow.TheStepLengthController.getStepLengthIndexWithANN(theMainWindow.indexBuff[i - 1], theMainWindow.indexBuff[i], theMainWindow.theFilteredAZ, timeUse);
-                                typesGet.Add(stepLengthType);//这个写法后期需要大量的扩展，或者说这才是这个程序的核心所在
+                                int indexUse = theMainWindow.indexBuff[i];
+                                switch(theANNUseSelect.SelectedIndex)
+                                {
+                                    case 0:
+                                        {
+                                            int stepLengthType = theMainWindow.TheStepLengthController.getStepLengthIndexWithANN(theMainWindow.indexBuff[i - 1], theMainWindow.indexBuff[i], theMainWindow.theFilteredAZ, timeUse);
+                                            typesGet.Add(stepLengthType);
+                                        }break;
+                                    case 1:
+                                        {
+                                            int stepModeType = theMainWindow.TheStepFilter.getOneTypeForStepFilter(AX[indexUse], AY[indexUse], AZ[indexUse], GX[indexUse], GY[indexUse], GZ[indexUse], 4);
+                                            typesGet.Add(stepModeType);
+                                        }break;
+                                    case 2:
+                                        {
+                                            int ZmoveType = (int)theMainWindow.TheZMoveController.ANNZMove(AX[indexUse], AY[indexUse], AZ[indexUse], GX[indexUse], GY[indexUse], GZ[indexUse]);
+                                            typesGet.Add(ZmoveType);
+                                        }
+                                        break;
+                                }
                             }
                         }
                         else
@@ -454,22 +483,22 @@ namespace socketServer.Windows
                         {
                             switch (j)
                             {
-                                case 0: { theANN.SLType1 = typesGet[j].ToString("f0"); } break;
-                                case 1: { theANN.SLType2 = typesGet[j].ToString("f0"); } break;
-                                case 2: { theANN.SLType3 = typesGet[j].ToString("f0"); } break;
-                                case 3: { theANN.SLType4 = typesGet[j].ToString("f0"); } break;
-                                case 4: { theANN.SLType5 = typesGet[j].ToString("f0"); } break;
+                                case 0: { theANN.Type1 = typesGet[j].ToString("f0"); } break;
+                                case 1: { theANN.Type2 = typesGet[j].ToString("f0"); } break;
+                                case 2: { theANN.Type3 = typesGet[j].ToString("f0"); } break;
+                                case 3: { theANN.Type4 = typesGet[j].ToString("f0"); } break;
+                                case 4: { theANN.Type5 = typesGet[j].ToString("f0"); } break;
                             }
                         }
                         else
                         {
                             switch (j)
                             {
-                                case 0: { theANN.SLType1 = "-"; } break;
-                                case 1: { theANN.SLType2 = "-"; } break;
-                                case 2: { theANN.SLType3 = "-"; } break;
-                                case 3: { theANN.SLType4 = "-"; } break;
-                                case 4: { theANN.SLType5 = "-"; } break;
+                                case 0: { theANN.Type1 = "-"; } break;
+                                case 1: { theANN.Type2 = "-"; } break;
+                                case 2: { theANN.Type3 = "-"; } break;
+                                case 3: { theANN.Type4 = "-"; } break;
+                                case 4: { theANN.Type5 = "-"; } break;
                             }
                         }
                     }
@@ -643,11 +672,11 @@ namespace socketServer.Windows
 
         public string LayerCount { get { return layerCount; } set { layerCount = value; } }
         public string TrainTimes { get { return trainTimes; } set { trainTimes = value; } }
-        public string SLType1 { get { return SL1; } set { SL1 = value; } }
-        public string SLType2 { get { return SL2; } set { SL2 = value; } }
-        public string SLType3 { get { return SL3; } set { SL3 = value; } }
-        public string SLType4 { get { return SL4; } set { SL4 = value; } }
-        public string SLType5 { get { return SL5; } set { SL5 = value; } }
+        public string Type1 { get { return SL1; } set { SL1 = value; } }
+        public string Type2 { get { return SL2; } set { SL2 = value; } }
+        public string Type3 { get { return SL3; } set { SL3 = value; } }
+        public string Type4 { get { return SL4; } set { SL4 = value; } }
+        public string Type5 { get { return SL5; } set { SL5 = value; } }
         public string TimeUseForBuilt { get { return timeUseForBuilt; } set { timeUseForBuilt = value; } }
         public string TimeUseForCanculate { get { return timeUseForCanculate; } set { timeUseForCanculate = value; } }
     }

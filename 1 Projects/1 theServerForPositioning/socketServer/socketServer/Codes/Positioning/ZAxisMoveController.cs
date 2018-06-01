@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace socketServer.Codes
 {
-    class ZAxisMoveController
+   public  class ZAxisMoveController
     {
 
         //每一种方法的简短说明信息
@@ -163,6 +163,13 @@ namespace socketServer.Codes
             }
             return theStairMode;
         }
+
+        public double ANNZMove(double ax, double ay, double az, double gx, double gy, double gz)
+        {
+            int mode = SystemSave.AccordANNforSLForZAxis.getModeWithANNForStair(ax, ay, az, gx, gy, gz);
+            return mode;
+        }
+
         //KNN和ANN完全不是一个东西
         public List<double> KNNZMove(List<int> indexBuff, List<double> ax, List<double> ay, List<double> az, List<double> gx, List<double> gy, List<double> gz)
         {

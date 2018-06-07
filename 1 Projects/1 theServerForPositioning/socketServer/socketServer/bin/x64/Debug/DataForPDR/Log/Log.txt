@@ -2386,3 +2386,7 @@
 [information 2018:06:01:11:59:20]: Server以1形式开始侦听
 [information 2018:06:01:11:59:48]: Server以1形式开始侦听
 [information 2018:06:01:12:00:27]: Serve已经关闭
+[information 2018:06:07:09:59:35]: 开始进行刷新程序
+[information 2018:06:07:09:59:35]: 服务器正式启动(端口:8886  IP:219.216.65.64)
+[information 2018:06:07:09:59:36]: Server以1形式开始侦听
+[information 2018:06:07:10:00:09]: Serve已经关闭

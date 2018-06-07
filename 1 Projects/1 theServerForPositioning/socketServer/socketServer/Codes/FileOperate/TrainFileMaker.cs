@@ -41,8 +41,8 @@ namespace socketServer
             for (int i = 1; i < indexBuff.Count; i++)
             {
                 //StairMode , StepMode是从客户端传入的人手工获取的当前行走状态 StairMode 0 1 2   StepMode 0 1
-                //Console.WriteLine("0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  10,  11, 12,13,14, 15, 16   ,17");
-                //Console.WriteLine("AX,AY,AZ,GX,GY,GZ,MX,MY,MZ,Com,AHRS,IMU,VK,FK,FSL,RSL,StairMode , StepMode");
+                //Console.WriteLine("0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  10,  11, 12,13,14, 15, 16   ,17 , 18");
+                //Console.WriteLine("AX,AY,AZ,GX,GY,GZ,MX,MY,MZ,Com,AHRS,IMU,VK,FK,FSL,RSL,StairMode , StepMode , RSLMode");
                 string informationUse = "";
                 //下面这些数据是真实的，可以直接用-----------------------------------------------------------------------------------------------------------
                 informationUse += AX[indexBuff[i]].ToString("f3") + "," + AY[indexBuff[i]].ToString("f3") + "," + AZ[indexBuff[i]].ToString("f3") + ",";
@@ -54,11 +54,11 @@ namespace socketServer
                 double FK = timestep == 0 ? 0f : (1000 / timestep);//因为时间戳是毫秒作为单位的
                 double[] weights = SystemSave.CommonFormulaWeights[0];
                 double StepLengthInfered = weights[0] * VK + weights[1] * FK + weights[2];//据此推断出来的步长
-                informationUse += VK.ToString("f3") + "," + FK.ToString("f3") + "," + SystemSave.getTypeIndexForStepLength( StepLengthInfered ) + ",";
+                informationUse += VK.ToString("f3") + "," + FK.ToString("f3") + "," +  StepLengthInfered  + ",";
                 //下面这些数据是随机生成的的，仅仅可以用作实验-------------------------------------------------------------------------------------------------
                 // informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + theStepLengthController.getRandomStairMode();
                 informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + ",";
-                informationUse += StairMode[indexBuff[i]].ToString("f0") +"," + stepMode[indexBuff[i]].ToString("f0");
+                informationUse += StairMode[indexBuff[i]].ToString("f0") +"," + stepMode[indexBuff[i]].ToString("f0") + "," + SystemSave.getTypeIndexForStepLength(StepLengthInfered);
 
                 //Console.WriteLine("StartMode[indexBuff[i]] = " + StartMode[indexBuff[i]]);
                 

@@ -70,6 +70,7 @@ namespace socketServer
         //颜色设置
         public static Color theOldColor = Colors.Magenta;//绘制颜色（之前的旧轨迹）
         public static Color theNewColor = Colors.Black;//绘制颜色（当前的轨迹）
+        public static Color thePreColor = Colors.Gray;//推测
         public static Color theNewColor2 = Colors.Orange;//绘制颜色（当前的轨迹  ，方法2的颜色）
                                                          //应该还有一个对比用的颜色，但是在这里先不写
 
@@ -89,6 +90,8 @@ namespace socketServer
         public static double zeroCrossOffset = -0.75;
         //是否使用buffer绘制路线图
         public static bool drawWithBuffer = true;
+        //是否绘制预测路径
+        public static bool drawPrediectRoute = false;
         //默认行人路长
         public static double stepLengthForImmediate = 0.6;
         //转弯测试阀值

@@ -125,6 +125,7 @@ namespace socketServer
             StairCheck(indexBuff);
             //计算坐标并获得显示的文本
             string informationForPosition = thePositionController.getPositions(theStepAngeUse, theStepLengthUse, theStairMode);
+            thePositionController.makePrediect(theStepLengthUse);
             //记录一下当前的坐标字符串（最新）
             savePositionStreing();
             //输出坐标记录信息
@@ -136,8 +137,7 @@ namespace socketServer
             //做这些输出显示内容是整合过的主题功能，与上面的slop和分辨率不太一样
             makeLabelMehtod(stepcounts);
             //绘制路线图
-            drawPicturesShow();
-
+            drawPicturesShow(SystemSave.drawPrediectRoute);
             //如果数据足够多，就需要保存成一张图像,同时做刷新处理和一些额外的补充计算
             if (theInformationController.accelerometerY.Count > SystemSave.BuffCount)
                 makeFlash();
@@ -255,13 +255,13 @@ namespace socketServer
 
 
         //绘制路线图/////////////////////////////////////////////////////////////////////////////////
-        void drawPicturesShow()
+        void drawPicturesShow(bool withPre = false)
         {
             //两种绘制方法也算是各有千秋，所以给一个选项自行选择吧
             if (SystemSave.drawWithBuffer)
             {
                 //实时绘制图像，重新绘制的方式
-                drawPositionLine();
+                drawPositionLine(withPre);
                 // Console.WriteLine("sdf");
             }
             else
@@ -276,10 +276,28 @@ namespace socketServer
                         thePositionController.theTransformPosition[u].heading
                         );
                 }
+
+                if (withPre)
+                {
+                    for (int u = 0; u < thePositionController.theTransformPositionPre.Count; u++)
+                        drawPositionLineOnTime(thePositionController.theTransformPositionPre[u].X, thePositionController.theTransformPositionPre[u].Y, thePositionController.theTransformPositionPre[u].heading, SystemSave.thePreColor);
+                }
+
                 //修正箭头位置和方向
                 flashHeadingPicture(thePositionController.theTransformPosition);
             }
         }
+
+
+        void drawPicturesShow(List<transForm> theTransformas)
+        {
+                //实时绘制图像，但是并不重新绘制
+                for (int u = savedIndex; u < theTransformas.Count; u++)
+                    drawPositionLineOnTime(theTransformas[u].X, theTransformas[u].Y, theTransformas[u].heading);
+        }
+
+        //绘制路线图/////////////////////////////////////////////////////////////////////////////////
+
 
         //更换使用的判断走看了一步的轴的方法///////////////////////////////////////////////////////////
         //这是一个外包的方法，不推荐进一步的简化了
@@ -655,8 +673,8 @@ namespace socketServer
         private double  X1Save = 0;
         private double  Y1Save = 0;
         private int savedIndex = 0;
-        //实时的动态绘制路线图 (方法2,单纯地累加，误差一定会有，但是相对可控性提高)
-        private void drawPositionLineOnTime(double X2 , double Y2,double heading)
+        //实时的动态绘制路线图 (方法2,单纯地累加，误差一定会有，但是相对可控性提高) ----------------------------------------------------------
+        private void drawPositionLineOnTime(double X2 , double Y2,double heading )
         {
             //绘制圆心
             var ellipse = new Ellipse()
@@ -682,19 +700,41 @@ namespace socketServer
             theCanvas.Children.Add(drawLine);
 
         }
-
-        //实时的动态绘制路线图 (方法1,每一次都重新绘制，所以会自带修正效果)
-        private void drawPositionLine()
+        private void drawPositionLineOnTime(double X2, double Y2, double heading , Color theColor)
         {
-            theCanvas.Children.Remove(HeadingImage);
-            theCanvas.Children.Clear();
+            //绘制圆心
             var ellipse = new Ellipse()
             {
                 Width = 10,
                 Height = 10,
                 Fill = new SolidColorBrush(Colors.Red)
             };
+            Canvas.SetLeft(ellipse, theCanvas.Width / 2);
+            Canvas.SetTop(ellipse, theCanvas.Height / 2);
+            theCanvas.Children.Add(ellipse);
 
+            Line drawLine = new Line();
+            drawLine.X1 = theCanvas.Width / 2 + X1Save * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            drawLine.Y1 = theCanvas.Height / 2 - Y1Save * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            drawLine.X2 = theCanvas.Width / 2 + X2 * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            drawLine.Y2 = theCanvas.Height / 2 - Y2 * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+            //保存字段值
+            X1Save = X2;
+            Y1Save = Y2;
+            drawLine.Stroke = new SolidColorBrush(theColor);
+            drawLine.StrokeThickness = 2;
+            theCanvas.Children.Add(drawLine);
+
+        }
+        //-------------------------------------------------------------------------------------------
+
+
+        //实时的动态绘制路线图 (方法1,每一次都重新绘制，所以会自带修正效果)
+        private void drawPositionLine(bool withPre = false)
+        {
+            theCanvas.Children.Remove(HeadingImage);
+            theCanvas.Children.Clear();
+            var ellipse = new Ellipse() { Width = 10,Height = 10,Fill = new SolidColorBrush(Colors.Red)};
             Canvas.SetLeft(ellipse, theCanvas.Width / 2);
             Canvas.SetTop(ellipse , theCanvas.Height / 2);
             theCanvas.Children.Add(ellipse);
@@ -723,7 +763,33 @@ namespace socketServer
                 theCanvas.Children.Add(drawLine);
             }
 
- 
+
+            if (withPre)
+            {
+                if (thePositionController.theTransformPositionPre.Count <= 0)
+                    return;
+
+                for (int u = 0; u < thePositionController.theTransformPositionPre.Count - 1; u++)
+                {
+                    Line drawLine = new Line();
+                    drawLine.X1 = theCanvas.Width / 2 + thePositionController.theTransformPositionPre[u].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                    drawLine.Y1 = theCanvas.Height / 2 - thePositionController.theTransformPositionPre[u].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                    drawLine.X2 = theCanvas.Width / 2 + thePositionController.theTransformPositionPre[u+1].X * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                    drawLine.Y2 = theCanvas.Height / 2 - thePositionController.theTransformPositionPre[u+1].Y * SystemSave.routeLineScale;//怕跑出范围，所以就缩小了一些
+                    drawLine.Stroke = new SolidColorBrush(SystemSave.thePreColor);
+                    drawLine.StrokeThickness = 3;
+                    theCanvas.Children.Add(drawLine);
+                }
+
+               // double XX = thePositionController.theTransformPositionPre[thePositionController.theTransformPositionPre.Count - 1].X;
+               // double YY = thePositionController.theTransformPositionPre[thePositionController.theTransformPositionPre.Count - 1].Y;
+               // Ellipse ellipseForPre = new Ellipse() {  Width = 30 ,Height = 30, Fill = new SolidColorBrush(Colors.Red) };
+               // Canvas.SetLeft(ellipseForPre, theCanvas.Width / 2 - XX );
+               // Canvas.SetTop(ellipseForPre, theCanvas.Height / 2 - YY );
+               // theCanvas.Children.Add(ellipseForPre);
+            }
+
+
             flashHeadingPicture(thePositionController.theTransformPosition);
         }
 

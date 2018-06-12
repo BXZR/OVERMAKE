@@ -72,8 +72,9 @@ namespace socketServer
         public double positionY = 0;
         public double positionZ = 0;
         public List<transForm> theTransformPosition = new List<transForm>();//真正用来记录坐标的工具
-    /*****************************方法1，立即计算的方法*****************************************/
-        //最基础的架构公式
+        public List<transForm> theTransformPositionPre = new List<transForm>();//真正用来记录坐标的工具
+        /*****************************方法1，立即计算的方法*****************************************/
+         //最基础的架构公式
         public void calculationPosition ( double angel , double stepLength , double ZMove = 0)
         {
             positionX = positionX + Math.Sin(angel) * stepLength;
@@ -144,16 +145,40 @@ namespace socketServer
             }
 
             theTransformPosition.Clear();
+         
             for (int i = 0; i < XSave.Count; i++)
             {
-                theTransformPosition.Add(new transForm(XSave[i] , YSave[i], ZSave[i], headingSave[i]));
-                //最终展示的时候除了偏移量还需要加上真实初始的坐标
+                transForm theNewTreansform = new transForm(XSave[i], YSave[i], ZSave[i], headingSave[i]);
+                theTransformPosition.Add(theNewTreansform);
+               //最终展示的时候除了偏移量还需要加上真实初始的坐标
                 theInformation += "角度： " + angels[i].ToString("f4") + "  步长： " + stepLengths[i].ToString("f4");
                 theInformation += "  坐标： (" + (XSave[i] + SystemSave.startPositionX).ToString("f4") + " , ";
                 theInformation += (YSave[i] + SystemSave.startPositionY).ToString("f4") + " , ";
                 theInformation += (ZSave[i]+SystemSave.startPositionZ).ToString("f4") + ") \n";
             }
             return theInformation;
+        }
+
+        public void makePrediect(List<double> stepLength)
+        {
+            if (theTransformPosition.Count <= 0 || stepLength.Count <= 0 )
+                return;
+
+            Console.WriteLine("pre");
+            double stepLengthForLastStep = stepLength[stepLength.Count - 1];
+            theTransformPositionPre.Clear();
+            transForm theLastTransform = theTransformPosition[theTransformPosition.Count - 1];
+            double XAdd = 0;
+            double YAdd = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                XAdd += Math.Sin(MathCanculate.getRadianFromDegree(theLastTransform.heading)) * stepLengthForLastStep;
+                YAdd += Math.Cos(MathCanculate.getRadianFromDegree(theLastTransform.heading)) * stepLengthForLastStep;
+
+                transForm theNewTreansform = new transForm(theLastTransform.X + XAdd , theLastTransform.Y + YAdd , theLastTransform.Z, theLastTransform.heading);
+                theTransformPositionPre.Add(theNewTreansform);
+            }
+
         }
 
         //矫正更新最终的位置

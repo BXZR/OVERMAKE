@@ -175,6 +175,8 @@ namespace socketServer
             SystemSave.BuffCount = Convert.ToInt32(systemBufferLengthText.Text);
             systemBufferLengthText.Text = SystemSave.BuffCount.ToString();
             SystemSave.stepLengthMaxRange = slider.Value;
+
+            SystemSave.drawPrediectRoute = DrawThePrediectRouteCheck.IsChecked == true ? true : false;
         }
 
         private void saveRestart_Loaded(object sender, RoutedEventArgs e)
@@ -264,6 +266,9 @@ namespace socketServer
 
             systemBufferLengthText.Text = SystemSave.BuffCount.ToString();
             slider.Value = SystemSave.stepLengthMaxRange;
+
+            DrawThePrediectRouteCheck.IsChecked =  (SystemSave.drawPrediectRoute == true ) ? true : false;
+
         }
 
         //第一次打开窗口的时候记录默认数值
@@ -319,6 +324,7 @@ namespace socketServer
 
         private static string ValueForBufferLength;
         private static double ValueForStepMaxRange;
+        private static bool drawPrediectRouteValue;
 
         void getStartValue()
         {
@@ -376,8 +382,8 @@ namespace socketServer
 
               ValueForBufferLength = SystemSave.BuffCount.ToString();
               ValueForStepMaxRange = SystemSave.stepLengthMaxRange;
-
-              hasBasicValue = true;//最初数值只会被记录一次
+              drawPrediectRouteValue = SystemSave.drawPrediectRoute;
+               hasBasicValue = true;//最初数值只会被记录一次
 
            }
         }
@@ -454,6 +460,8 @@ namespace socketServer
 
             systemBufferLengthText.Text = ValueForBufferLength;
             slider.Value =  ValueForStepMaxRange;
+
+            DrawThePrediectRouteCheck.IsChecked = drawPrediectRouteValue;
         }
 
 

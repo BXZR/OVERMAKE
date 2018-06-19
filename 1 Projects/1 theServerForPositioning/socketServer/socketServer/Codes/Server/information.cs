@@ -45,7 +45,7 @@ namespace socketServer
        public List<double> StepType = new List<double>();
        public List<long> timeStep = new List<long>();//每一组数据的时间戳 （时间戳的位数还是有点长），以毫秒作为单位
        private List<double> theOperatedValue = new List<double>();//记录处理之后的数据，这是一个综合的加速度
-                                                                  //引用放在这里是为了优化
+       //引用放在这里是为了优化
 
 
         //除了直接调用传过来存储的数据，当然也可以做或得到经过一些前期处理得到的数据用于计算

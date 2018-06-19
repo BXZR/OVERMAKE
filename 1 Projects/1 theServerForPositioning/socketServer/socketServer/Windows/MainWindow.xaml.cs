@@ -31,6 +31,7 @@ namespace socketServer
         Filter theFilter;//专门用于滤波的控制单元
         rotationAngel theAngelController;//角度控制单元
         position thePositionController;//最终定位的控制单元
+        GPSPosition theGPSPositionController;//辅助定位的GPS单元
         stepLength theStepLengthController;//用来确定步长的控制单元
         workType theWorkType = workType.timerFlash;//收集数据分析的模式
         pictureMaker thePictureMaker;//隔一段时间，做一张图片
@@ -130,6 +131,10 @@ namespace socketServer
             savePositionStreing();
             //输出坐标记录信息
             showPositiopnInformations(informationForPosition);
+            //GPS信息处理
+            theGPSPositionController.makeGPSPosition(indexBuff , theInformationController, theFilter);
+            //GPS辅助更新当前位置
+            theGPSPositionController.fixPositionWithGPS(thePositionController);
 
             //显示分辨率
             showResolutionn();
@@ -336,6 +341,8 @@ namespace socketServer
                 SystemSave.heightNow = theStairMode[theStairMode.Count - 1];
             }
         }
+
+        
 
 
         //获取步长的方法//////////////////////////////////////////////////////////////////////////
@@ -592,6 +599,7 @@ namespace socketServer
             theAngelController = new rotationAngel();
             tm = new DispatcherTimer();
             thePositionController = new position();
+            theGPSPositionController = new Codes.Positioning.GPSPosition();
             theStepLengthController = new stepLength();
             thePictureMaker = new pictureMaker();
             theWorkType = workType.withSavedData;//选择工作模式（可以考虑在界面给出选择）

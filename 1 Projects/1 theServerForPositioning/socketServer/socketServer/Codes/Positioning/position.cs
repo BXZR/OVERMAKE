@@ -66,7 +66,7 @@ namespace socketServer
     }
 
     //这个类专门用来计算坐标
-    class position
+   public  class position
     {
         public double positionX = 0;
         public double positionY = 0;

@@ -127,6 +127,7 @@
     <Compile Include="Codes\MathUse\IntegralController.cs" />
     <Compile Include="Codes\FileOperate\Log.cs" />
     <Compile Include="Codes\MathUse\MathCanculate.cs" />
+    <Compile Include="Codes\Positioning\GPSPosition.cs" />
     <Compile Include="Codes\Positioning\stepFilter\StepFilter.cs" />
     <Compile Include="Codes\stages\FSMBasic.cs" />
     <Compile Include="Codes\stages\StageRun.cs" />

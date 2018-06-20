@@ -36,6 +36,15 @@ namespace socketServer.Codes.Positioning
             if (thetransformPositions.Count < 5 || thetransformPositions.Count != theGPSPositions.Count)
                 return;
 
+
+            //开始进行修正
+            fixMethod1(thePositionController);
+        }
+
+
+        //修正方法1
+        private void fixMethod1(position thePositionController)
+        {
             //首尾如如果差距不是非常大，那么尾就换成GPS尾，这样实现GPS更新当前位置
             transForm P1 = thePositionController.theTransformPosition[0];
             transForm P2 = thePositionController.theTransformPosition[thePositionController.theTransformPosition.Count - 1];
@@ -44,13 +53,14 @@ namespace socketServer.Codes.Positioning
             double P2x = (theGPSPositions[0].GPSX - theGPSPositions[theGPSPositions.Count - 1].GPSX);
             double P2y = (theGPSPositions[0].GPSY - theGPSPositions[theGPSPositions.Count - 1].GPSY);
             double distance2 = P2x * P2x + P2y * P2y;
-
             //距离低于门限，用GPS最后一个信号更新最后一个transform的坐标
             if (Math.Abs(distance1 - distance2) < 2)
             {
                 //真正的更新
-                P2.X = theGPSPositions[theGPSPositions.Count - 1].GPSX;
-                P2.Y = theGPSPositions[theGPSPositions.Count - 1].GPSY;
+                //这里更新的不是真实坐标，因为PDR全部都是相对坐标
+                //这里用的是最终相对位移叠加到初试位置来做的
+                P2.X = P1.X + P2x;
+                P2.Y = P1.Y + P2y;
             }
         }
     }

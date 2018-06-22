@@ -2581,3 +2581,24 @@
 [information 2018:06:20:11:17:40]: 服务器正式启动(端口:8886  IP:219.216.64.133)
 [information 2018:06:20:11:17:40]: Server以1形式开始侦听
 [information 2018:06:20:11:17:43]: Serve已经关闭
+[information 2018:06:22:10:04:46]: 开始进行刷新程序
+[information 2018:06:22:10:04:46]: 服务器正式启动(端口:8886  IP:219.216.64.251)
+[information 2018:06:22:10:04:46]: Server以1形式开始侦听
+[information 2018:06:22:10:05:26]: Server以1形式开始侦听
+[error 2018:06:22:10:05:57]: 腿长步长计算方法计算中出现负数开根号
+[information 2018:06:22:10:14:47]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:06:22:10:14:56]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:06:22:10:17:01]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:06:22:10:17:16]: Serve已经关闭
+[information 2018:06:22:12:14:15]: 开始进行刷新程序
+[information 2018:06:22:12:14:15]: 服务器正式启动(端口:8886  IP:219.216.64.251)
+[information 2018:06:22:12:14:15]: Server以1形式开始侦听
+[information 2018:06:22:12:15:01]: Serve已经关闭
+[information 2018:06:22:12:18:21]: 开始进行刷新程序
+[information 2018:06:22:12:18:21]: 服务器正式启动(端口:8886  IP:219.216.64.251)
+[information 2018:06:22:12:18:21]: Server以1形式开始侦听
+[information 2018:06:22:12:18:29]: Serve已经关闭
+[information 2018:06:22:12:19:54]: 开始进行刷新程序
+[information 2018:06:22:12:19:54]: 服务器正式启动(端口:8886  IP:219.216.64.251)
+[information 2018:06:22:12:19:54]: Server以1形式开始侦听
+[information 2018:06:22:12:20:00]: Serve已经关闭

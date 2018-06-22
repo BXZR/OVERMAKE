@@ -54,7 +54,7 @@ namespace socketServer
                 double FK = timestep == 0 ? 0f : (1000 / timestep);//因为时间戳是毫秒作为单位的
                 double[] weights = SystemSave.CommonFormulaWeights[0];
                 double StepLengthInfered = weights[0] * VK + weights[1] * FK + weights[2];//据此推断出来的步长
-                informationUse += VK.ToString("f3") + "," + FK.ToString("f3") + "," +  StepLengthInfered  + ",";
+                informationUse += VK.ToString("f3") + "," + FK.ToString("f3") + "," +  StepLengthInfered.ToString("f3")  + ",";
                 //下面这些数据是随机生成的的，仅仅可以用作实验-------------------------------------------------------------------------------------------------
                 // informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + "," + theStepLengthController.getRandomStairMode();
                 informationUse += theStepLengthController.getRandomStepLength().ToString("f3") + ",";

@@ -483,22 +483,22 @@ namespace socketServer.Windows
                         {
                             switch (j)
                             {
-                                case 0: { theANN.Type1 = typesGet[j].ToString("f0"); } break;
-                                case 1: { theANN.Type2 = typesGet[j].ToString("f0"); } break;
-                                case 2: { theANN.Type3 = typesGet[j].ToString("f0"); } break;
-                                case 3: { theANN.Type4 = typesGet[j].ToString("f0"); } break;
-                                case 4: { theANN.Type5 = typesGet[j].ToString("f0"); } break;
+                                case 0: { theANN.step1Type = typesGet[j].ToString("f0"); } break;
+                                case 1: { theANN.step2Type = typesGet[j].ToString("f0"); } break;
+                                case 2: { theANN.step3Type = typesGet[j].ToString("f0"); } break;
+                                case 3: { theANN.step4Type = typesGet[j].ToString("f0"); } break;
+                                case 4: { theANN.step5Type = typesGet[j].ToString("f0"); } break;
                             }
                         }
                         else
                         {
                             switch (j)
                             {
-                                case 0: { theANN.Type1 = "-"; } break;
-                                case 1: { theANN.Type2 = "-"; } break;
-                                case 2: { theANN.Type3 = "-"; } break;
-                                case 3: { theANN.Type4 = "-"; } break;
-                                case 4: { theANN.Type5 = "-"; } break;
+                                case 0: { theANN.step1Type = "-"; } break;
+                                case 1: { theANN.step2Type = "-"; } break;
+                                case 2: { theANN.step3Type = "-"; } break;
+                                case 3: { theANN.step4Type = "-"; } break;
+                                case 4: { theANN.step5Type = "-"; } break;
                             }
                         }
                     }
@@ -672,11 +672,11 @@ namespace socketServer.Windows
 
         public string LayerCount { get { return layerCount; } set { layerCount = value; } }
         public string TrainTimes { get { return trainTimes; } set { trainTimes = value; } }
-        public string Type1 { get { return SL1; } set { SL1 = value; } }
-        public string Type2 { get { return SL2; } set { SL2 = value; } }
-        public string Type3 { get { return SL3; } set { SL3 = value; } }
-        public string Type4 { get { return SL4; } set { SL4 = value; } }
-        public string Type5 { get { return SL5; } set { SL5 = value; } }
+        public string step1Type { get { return SL1; } set { SL1 = value; } }
+        public string step2Type { get { return SL2; } set { SL2 = value; } }
+        public string step3Type { get { return SL3; } set { SL3 = value; } }
+        public string step4Type { get { return SL4; } set { SL4 = value; } }
+        public string step5Type { get { return SL5; } set { SL5 = value; } }
         public string TimeUseForBuilt { get { return timeUseForBuilt; } set { timeUseForBuilt = value; } }
         public string TimeUseForCanculate { get { return timeUseForCanculate; } set { timeUseForCanculate = value; } }
     }

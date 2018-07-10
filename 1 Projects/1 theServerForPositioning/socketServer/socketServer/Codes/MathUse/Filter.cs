@@ -16,8 +16,8 @@ namespace socketServer
         {
             "不进行滤波",
             "一阶平均+卡尔曼滤波",
-            "一阶滞后+一阶平均+卡尔曼+巴特沃斯滤波",
-            "一阶滞后+一阶平均+卡尔曼+巴特沃斯滤波（倒序）",
+            "卡尔曼滤波",
+            "巴特沃斯滤波",
 
         };
 
@@ -45,7 +45,7 @@ namespace socketServer
                             outList.Add(IN[i]);
 
                         outList = theFliterMethodAverage(outList ,SystemSave.filterSmoothCount);
-                        outList = GetKalMan(outList);
+                        //outList = GetKalMan(outList);
                     }
                     break;
                 case 2:
@@ -53,10 +53,10 @@ namespace socketServer
                         for (int i = 0; i < IN.Count; i++)
                             outList.Add(IN[i]);
 
-                        outList = theFliterMethod1(outList, theValueUse);
+                        //outList = theFliterMethod1(outList, theValueUse);
                         outList = theFliterMethodAverage(outList ,SystemSave.filterSmoothCount);
                         outList = GetKalMan(outList);
-                        outList = ButterworthFilter(outList);
+                        //outList = ButterworthFilter(outList);
                     }
                     break;
                 case 3:
@@ -65,10 +65,10 @@ namespace socketServer
                         for (int i = 0; i < IN.Count; i++)
                             outList.Add(IN[i]);
 
-                        outList = theFliterMethod1(outList, theValueUse);
+                       // outList = theFliterMethod1(outList, theValueUse);
                         //倒叙滤波的效果似乎更好一点，但是更加基于贪心的做法
                         outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
-                        outList = GetKalMan(outList);
+                        //outList = GetKalMan(outList);
                         outList = ButterworthFilter(outList);
                     }
                     break;
@@ -120,7 +120,7 @@ namespace socketServer
                         for (int i = 0; i < IN.Count; i++)
                             outList.Add(IN[i]);
 
-                        outList = theFliterMethod1(outList, theValueUse);
+                       // outList = theFliterMethod1(outList, theValueUse);
                         outList = theFliterMethodAverage(outList, SystemSave.filterSmoothCount);
                     }
                     break;
@@ -270,8 +270,9 @@ namespace socketServer
         }
 
         //滤波方法3，究极的卡尔曼滤波
-        double[] CanShu = { 23, 9, 16, 16, 1, 0, 0, 0 };
-        double[] Observ = { 22, 24, 24, 25, 24, 26, 21, 26, };
+        //http://blog.sciencenet.cn/blog-1060307-727434.html
+        double[] CanShu = { 2, -1, 2, 2, 1, 0, 0, 0 };
+        //double[] Observ = { 22, 24, 24, 25, 24, 26, 21, 26, };
         //double[] Observ = { 25, 26 };
         public List<double> GetKalMan(List<double> IN)
         {

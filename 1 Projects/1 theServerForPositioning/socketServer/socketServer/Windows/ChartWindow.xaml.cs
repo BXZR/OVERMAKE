@@ -171,7 +171,7 @@ namespace socketServer
 
             Axis yAxis = new Axis();
             //设置图标中Y轴的最小值永远为0           
-            yAxis.AxisMinimum = -2;
+            yAxis.AxisMinimum = -5;
             //设置图表中Y轴的后缀 
             switch (IN)
             {

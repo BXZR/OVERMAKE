@@ -94,9 +94,10 @@
             <TabItem Header="ZMove"/>
             <TabItem Header="ExtraShowing">
                 <Grid Background="#FFE5E5E5">
-                    <Button x:Name="button" Content="theStepAngeData" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="149" Height="26" Click="button_Click"/>
+                    <Button x:Name="button" Content="theStepAngeData" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Width="149" Height="26" Click="button_Click"/>
                     <Button x:Name="button1" Content="SelectedAxisData" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="149" Height="27" Click="button1_Click"/>
                     <Button x:Name="button2" Content="3DViewDemo" HorizontalAlignment="Right" Margin="0,0,17,22" Width="105" Click="button2_Click" Height="27" VerticalAlignment="Bottom"/>
+                    <Button x:Name="button18" Content="ZAxisNoFilter" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Width="149" Height="26" Click="button18_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

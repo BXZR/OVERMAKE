@@ -356,7 +356,7 @@ namespace socketServer.Windows
             List<string> XLabels = new List<string>();
             List<List<double>> FilteredValues = new List<List<double>>();
             //第一项是不滤波的要跳过去
-            for (int i = 1; i <DataForFilter.Count; i++)
+            for (int i = 1 ; i <DataForFilter.Count; i++)
             {
               FilteredValues.Add(DataForFilter[i].FilteredValues);
               XLabels.Add(DataForFilter[i].MethodName);
@@ -364,6 +364,16 @@ namespace socketServer.Windows
             ChartWindow theChartWindow = new ChartWindow();
             theChartWindow.CreateChartSplines(FilteredValues, XLabels, "滤波结果最后20条数据的对比", "m/s2" , 3, -3);
             theChartWindow.Show();
+
+            /*
+            List<List<double>> noFilterValue = new List<List<double>>();
+            noFilterValue.Add(DataForFilter[0].FilteredValues);
+            XLabels.Clear();
+            XLabels.Add(DataForFilter[0].MethodName);
+            ChartWindow theChartWindowNone = new ChartWindow();
+            theChartWindowNone.CreateChartSplines(noFilterValue , XLabels, "滤波结果最后20条数据的对比", "m/s2", 3, -3);
+            theChartWindowNone.Show();
+            */
         }
 
         //----------------------------------------ANN层数对比------------------------------------------------------------------------------------------//
@@ -633,7 +643,14 @@ namespace socketServer.Windows
             MessageBox.Show("表格已导出到" + path);
         }
 
+        private void button18_Click(object sender, RoutedEventArgs e)
+        {
 
+            ChartWindow theChartWindow = new ChartWindow();
+            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theMainWindow.InformationController.accelerometerZ , theMainWindow.stepCheckAxisUse.SelectionBoxItem.ToString());
+            theChartWindow.Show();
+            
+        }
     }
 
     //stepFilter的各种方法的对比

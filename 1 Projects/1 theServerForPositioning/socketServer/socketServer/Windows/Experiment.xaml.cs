@@ -60,6 +60,10 @@ namespace socketServer.Windows
         {
             //展示“滤波”之后的加速度的曲线
             List<double> theFiltered = theMainWindow. theFilteredAZ;
+
+            for (int i = 0; i < theFiltered.Count; i++)
+                theFiltered[i] *= 9.8;
+
             // List<double> theFiltered = 
             if (theFiltered == null)
                 return;
@@ -75,7 +79,7 @@ namespace socketServer.Windows
 
             ChartWindow theChartWindow = new ChartWindow();
 
-            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered, theMainWindow.stepCheckAxisUse.SelectionBoxItem.ToString());
+            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theFiltered, theMainWindow.stepCheckAxisUse.SelectionBoxItem.ToString(), -20);
             theChartWindow.Show();
             //MessageBox.Show("一共" + stepCount + "步");
         }
@@ -362,7 +366,7 @@ namespace socketServer.Windows
               XLabels.Add(DataForFilter[i].MethodName);
             }
             ChartWindow theChartWindow = new ChartWindow();
-            theChartWindow.CreateChartSplines(FilteredValues, XLabels, "滤波结果最后20条数据的对比", "m/s2" , 3, -3);
+            theChartWindow.CreateChartSplines(FilteredValues, XLabels, "滤波结果最后20条数据的对比", "g" , 3, -3);
             theChartWindow.Show();
 
             /*
@@ -646,8 +650,12 @@ namespace socketServer.Windows
         private void button18_Click(object sender, RoutedEventArgs e)
         {
 
+            List<double> used = new List<double>();
+            for (int i = 0; i < theMainWindow.InformationController.accelerometerZ.Count; i++)
+                used.Add(theMainWindow.InformationController.accelerometerZ[i]*9.8);
+
             ChartWindow theChartWindow = new ChartWindow();
-            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, theMainWindow.InformationController.accelerometerZ , theMainWindow.stepCheckAxisUse.SelectionBoxItem.ToString());
+            theChartWindow.CreateChartSpline(UseDataType.accelerometerY, used , theMainWindow.stepCheckAxisUse.SelectionBoxItem.ToString(),-20);
             theChartWindow.Show();
             
         }

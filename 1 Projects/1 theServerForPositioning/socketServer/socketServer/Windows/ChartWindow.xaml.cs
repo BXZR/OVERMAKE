@@ -114,7 +114,7 @@ namespace socketServer
 
 
         #region 折线图
-        public void CreateChartSpline(UseDataType IN, List<double> theValues ,string titleName = "")
+        public void CreateChartSpline(UseDataType IN, List<double> theValues ,string titleName = "", int yMin =  -5)
         {
             //创建一个图标
             Chart chart = new Chart();
@@ -171,7 +171,7 @@ namespace socketServer
 
             Axis yAxis = new Axis();
             //设置图标中Y轴的最小值永远为0           
-            yAxis.AxisMinimum = -5;
+            yAxis.AxisMinimum = yMin;
             //设置图表中Y轴的后缀 
             switch (IN)
             {

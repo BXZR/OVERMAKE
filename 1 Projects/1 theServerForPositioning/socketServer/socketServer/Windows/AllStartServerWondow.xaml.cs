@@ -90,21 +90,28 @@ namespace socketServer.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //这两种也是展示IP的方式，先留在这里
-            //ALLIP.Text = SystemSave.serverIP;
-            //ALLIP.Text = SystemSave.getIPAddress();
-
-            ALLPort.Text = SystemSave.serverPort.ToString();
-
-            List<string> IPS = SystemSave.getIPAddressAll();
-            comboBoxForIP.Items.Clear();
-            for (int i = 0; i < IPS.Count; i++)
+            try
             {
-                ComboBoxItem Item = new ComboBoxItem();
-                Item.Content = IPS[i];
-                comboBoxForIP.Items.Add(Item);
+                //这两种也是展示IP的方式，先留在这里
+                //ALLIP.Text = SystemSave.serverIP;
+                //ALLIP.Text = SystemSave.getIPAddress();
+
+                ALLPort.Text = SystemSave.serverPort.ToString();
+
+                List<string> IPS = SystemSave.getIPAddressAll();
+                comboBoxForIP.Items.Clear();
+                for (int i = 0; i < IPS.Count; i++)
+                {
+                    ComboBoxItem Item = new ComboBoxItem();
+                    Item.Content = IPS[i];
+                    comboBoxForIP.Items.Add(Item);
+                }
+                comboBoxForIP.SelectedIndex = 0;
             }
-            comboBoxForIP.SelectedIndex = 0;
+            catch
+            {
+                MessageBox.Show("初始化失败，原因很可能是.netframework不匹配，请安装最新版");
+            }
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)

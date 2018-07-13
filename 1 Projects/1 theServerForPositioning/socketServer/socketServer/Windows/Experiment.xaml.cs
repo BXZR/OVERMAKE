@@ -659,6 +659,24 @@ namespace socketServer.Windows
             theChartWindow.Show();
             
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            List<string> XLabels = new List<string>();
+            List<List<double>> axiss = new List<List<double>>();
+            for (int i = 0; i < theMainWindow.stepCheckAxisUse.Items.Count; i++)
+            {
+                List<double> Axis = theMainWindow.stepCheckAxis(i);
+                for (int w = 0; w < Axis.Count; w++)
+                    Axis[w] *= 9.8;
+
+                axiss.Add(Axis);
+                XLabels.Add(theMainWindow.stepCheckAxisUse.Items[i].ToString().Split(':')[1]);
+            }
+            ChartWindow theChartWindow = new ChartWindow();
+            theChartWindow.CreateChartSplines(axiss, XLabels, "主轴波形对比", "m/s2",20,-20);
+            theChartWindow.Show();
+        }
     }
 
     //stepFilter的各种方法的对比

@@ -2788,3 +2788,22 @@
 [information 2018:07:13:03:41:00]: Server以1形式开始侦听
 [information 2018:07:13:03:41:10]: Server以1形式开始侦听
 [information 2018:07:13:03:41:56]: Serve已经关闭
+[information 2018:07:14:08:51:04]: 开始进行刷新程序
+[information 2018:07:14:08:51:04]: 服务器正式启动(端口:8886  IP:172.17.1.231)
+[information 2018:07:14:08:51:04]: Server以1形式开始侦听
+[information 2018:07:14:08:51:23]: Server以1形式开始侦听
+[information 2018:07:14:08:51:44]: 缓冲区满，进行数据保存
+[information 2018:07:14:08:51:45]: 保存训练用的数据
+[information 2018:07:14:08:51:45]: 保存一张数据生成图
+[information 2018:07:14:08:53:04]: Server以1形式开始侦听
+[information 2018:07:14:08:53:45]: Server以1形式开始侦听
+[error 2018:07:14:08:54:49]: 传送信息失败 socket已经关闭
+[error 2018:07:14:08:54:49]: 传送信息失败 socket已经关闭
+[error 2018:07:14:08:54:49]: 传送信息失败 socket已经关闭
+[error 2018:07:14:08:54:49]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:07:14:08:54:49]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:07:14:08:54:49]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:07:14:08:54:49]: Serve已经关闭

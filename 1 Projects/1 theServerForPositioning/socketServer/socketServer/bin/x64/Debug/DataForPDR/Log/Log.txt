@@ -2811,3 +2811,33 @@
 [information 2018:07:14:02:05:16]: Server以1形式开始侦听
 [information 2018:07:14:02:05:16]: 服务器正式启动(端口:8886  IP:172.17.1.231)
 [information 2018:07:14:02:15:27]: Serve已经关闭
+[information 2018:07:16:10:37:17]: 开始进行刷新程序
+[information 2018:07:16:10:37:17]: Server以1形式开始侦听
+[information 2018:07:16:10:37:17]: 服务器正式启动(端口:8886  IP:172.17.1.231)
+[information 2018:07:16:10:37:50]: Server以1形式开始侦听
+[information 2018:07:16:10:39:35]: Serve已经关闭
+[information 2018:07:16:10:42:15]: 开始进行刷新程序
+[information 2018:07:16:10:42:15]: 服务器正式启动(端口:8886  IP:172.17.1.231)
+[information 2018:07:16:10:42:15]: Server以1形式开始侦听
+[information 2018:07:16:10:42:31]: Serve已经关闭
+[information 2018:07:16:10:51:29]: 开始进行刷新程序
+[information 2018:07:16:10:51:29]: Server以1形式开始侦听
+[information 2018:07:16:10:51:29]: 服务器正式启动(端口:8886  IP:172.17.1.231)
+[information 2018:07:16:10:51:46]: 保存设置数据
+[information 2018:07:16:11:04:11]: Server以1形式开始侦听
+[error 2018:07:16:11:04:14]: 传送信息失败 socket已经关闭
+[information 2018:07:16:11:04:32]: Server以1形式开始侦听
+[error 2018:07:16:11:04:33]: 传送信息失败 socket已经关闭
+[error 2018:07:16:11:04:40]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[error 2018:07:16:11:04:40]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:07:16:11:04:40]: Serve已经关闭
+[information 2018:07:16:11:04:43]: 开始进行刷新程序
+[information 2018:07:16:11:04:44]: Server以1形式开始侦听
+[information 2018:07:16:11:04:44]: 服务器正式启动(端口:8886  IP:172.17.1.231)
+[information 2018:07:16:11:05:00]: Server以1形式开始侦听
+[error 2018:07:16:11:05:06]: 传送信息失败 socket已经关闭
+[error 2018:07:16:11:05:11]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:07:16:11:05:11]: Serve已经关闭

@@ -101,7 +101,7 @@ namespace socketServer
             if (wave.Count < 1)
                 return 0;
 
-            Console.WriteLine("ee");
+           // Console.WriteLine("ee");
             peackBuff.Clear();//每一次都重新计算，这个方法整体可以考虑大优化
             int theCountChecked = 0;//走步数
 
@@ -130,8 +130,8 @@ namespace socketServer
                     SystemSave.uperGateForShow = uperGate;
                     SystemSave.downGateForShow = downGate;
                 }
-                Console.WriteLine("step with - > " + changeCount + " uperGate = " + uperGate + " downGate = " + downGate);
-                Console.WriteLine("maxA = " + maxA + " minA  = " + minA + " ANow = " + wave[i]);
+                //Console.WriteLine("step with - > " + changeCount + " uperGate = " + uperGate + " downGate = " + downGate);
+                //Console.WriteLine("maxA = " + maxA + " minA  = " + minA + " ANow = " + wave[i]);
                 if (wave[i] > uperGate)
                 {
                     //这个动态调整在最开始初始化的时候有可能挥霍的超大的数值，导致以后所有步都难以检测

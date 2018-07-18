@@ -101,9 +101,9 @@
             <ComboBoxItem Content="KNN"/>
             <ComboBoxItem Content="KMeans"/>
         </ComboBox>
-        <Label x:Name="Charts_Copy1" Content="StepFilter" Margin="0,297,44,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold" RenderTransformOrigin="0.503,-0.038"/>
+        <Label x:Name="Charts_Copy1" Content="ActionDetection" Margin="0,297,44,0" HorizontalAlignment="Right" Width="159" Height="26" VerticalAlignment="Top" Foreground="#FF4600FF" FontWeight="Bold" RenderTransformOrigin="0.503,-0.038"/>
         <ComboBox x:Name="systemModeUse" HorizontalAlignment="Right" Margin="0,323,21,0" VerticalAlignment="Top" Width="173" SelectedIndex="0">
-            <ComboBoxItem Content="No StepFilter" ToolTip="针对行人的实验环境，环境很好"/>
+            <ComboBoxItem Content="No Detection" ToolTip="针对行人的实验环境，环境很好"/>
             <ComboBoxItem Content="Slop StepFilter" ToolTip="针对行人的实际环境，较为苛刻"/>
             <ComboBoxItem Content="FSM StepFilter"/>
             <ComboBoxItem Content="Decision Tree"/>

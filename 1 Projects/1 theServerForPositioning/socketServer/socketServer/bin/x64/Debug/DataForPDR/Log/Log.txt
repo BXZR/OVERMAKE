@@ -2883,3 +2883,48 @@
 [information 2018:10:25:06:32:10]: 服务器正式启动(端口:8886  IP:219.216.64.252)
 [information 2018:10:25:06:32:10]: Server以1形式开始侦听
 [information 2018:10:25:06:52:31]: Serve已经关闭
+[information 2018:10:26:10:32:43]: 开始进行刷新程序
+[information 2018:10:26:10:32:43]: 服务器正式启动(端口:8886  IP:219.216.65.192)
+[information 2018:10:26:10:32:43]: Server以1形式开始侦听
+[information 2018:10:26:10:34:08]: Server以1形式开始侦听
+[error 2018:10:26:10:42:45]: 传送信息失败 socket已经关闭
+[error 2018:10:26:10:42:48]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:10:26:10:42:48]: Serve已经关闭
+[information 2018:10:26:10:42:54]: 开始进行刷新程序
+[information 2018:10:26:10:42:54]: 服务器正式启动(端口:8886  IP:219.216.65.192)
+[information 2018:10:26:10:42:54]: Server以1形式开始侦听
+[information 2018:10:26:10:43:25]: Server以1形式开始侦听
+[error 2018:10:26:10:43:49]: 传送信息失败 socket已经关闭
+[error 2018:10:26:10:44:02]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:10:26:10:44:02]: Serve已经关闭
+[information 2018:10:26:10:44:05]: 开始进行刷新程序
+[information 2018:10:26:10:44:05]: 服务器正式启动(端口:8886  IP:219.216.65.192)
+[information 2018:10:26:10:44:05]: Server以1形式开始侦听
+[information 2018:10:26:10:44:22]: Server以1形式开始侦听
+[error 2018:10:26:10:45:21]: 传送信息失败 socket已经关闭
+[error 2018:10:26:10:45:25]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:10:26:10:45:25]: Serve已经关闭
+[information 2018:10:26:10:45:28]: 开始进行刷新程序
+[information 2018:10:26:10:45:28]: 服务器正式启动(端口:8886  IP:219.216.65.192)
+[information 2018:10:26:10:45:28]: Server以1形式开始侦听
+[information 2018:10:26:10:45:54]: Server以1形式开始侦听
+[error 2018:10:26:10:46:15]: 传送信息失败 socket已经关闭
+[error 2018:10:26:10:46:24]: Server 关闭出错: 无法访问已释放的对象。
+对象名:“System.Net.Sockets.Socket”。
+[information 2018:10:26:10:46:24]: Serve已经关闭
+[information 2018:10:26:10:46:28]: 开始进行刷新程序
+[information 2018:10:26:10:46:28]: 服务器正式启动(端口:8886  IP:219.216.65.192)
+[information 2018:10:26:10:46:28]: Server以1形式开始侦听
+[information 2018:10:26:10:46:47]: Server以1形式开始侦听
+[information 2018:10:26:10:53:47]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:10:26:10:53:49]: 步长计算相关的ANN已经新建或重建
+[information 2018:10:26:10:53:51]: 步长计算相关的KNN数据已经新建或重建
+[information 2018:10:26:10:53:52]: 步长计算相关的KMeans数据已经新建或重建
+[information 2018:10:26:11:07:37]: 根据文件DataForPDR/TrainBase/TrainBase.txt内容建立决策树
+[information 2018:10:26:11:07:40]: 步分类计算相关的ANN已经新建或重建
+[information 2018:10:26:11:07:42]: 步态计算相关的KMeans数据已经新建或重建
+[information 2018:10:26:11:07:43]: 步态计算相关的KNN数据已经新建或重建
+[information 2018:10:26:11:16:07]: Serve已经关闭
